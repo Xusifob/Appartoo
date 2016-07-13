@@ -3,17 +3,33 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
-    <View style="@style/Separator"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/default_profile_picture"/>
     <TextView
         style="@style/Paragraph"
+        android:textStyle="bold"
+        android:id="@+id/profileName"
+        android:text="User"/>
+    <TextView
+        style="@style/Paragraph"
+        android:text="Student, 22 years"/>
+    <View style="@style/Separator"
+        android:layout_margin="40dp"/>
+    <TextView
+        style="@style/Paragraph"
+        android:padding="10dp"
         android:text="@string/action_settings"
         android:textColor="@color/colorSalmon"/>
     <TextView
         style="@style/Paragraph"
         android:text="@string/modify_profile"
+        android:padding="10dp"
         android:textColor="@color/colorSalmon"/>
     <TextView
         style="@style/Paragraph"
+        android:padding="10dp"
         android:text="@string/my_offers"
         android:textColor="@color/colorSalmon"/>
 </LinearLayout>
