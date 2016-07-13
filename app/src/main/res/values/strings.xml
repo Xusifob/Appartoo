@@ -1,0 +1,64 @@
+<resources>
+
+    <string name="app_name">Appartoo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- GENERAL STRINGS -->
+    <string name="action_settings">Réglages</string>
+    <string name="action_send_message">Envoyer un message</string>
+    <string name="age">ans</string>
+    <string name="connection_failed">La connexion au serveur a échouée.</string>
+    <string name="progress_bar_title">Connexion au serveur</string>
+    <string name="progress_bar_description">Chargement des entrées</string>
+    <string name="mail">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="connect_with_fb">Connectez-vous avec Facebook</string>
+    <string name="signup"><u>Inscrivez-vous à Appartoo</u></string>
+    <string name="connect">Connexion</string>
+    <string name="man">Homme</string>
+    <string name="woman">Femme</string>
+    <string name="single">Célibataire</string>
+    <string name="couple">En couple</string>
+    <string name="smoker">Fumeur</string>
+    <string name="non_smoker">Non fumeur</string>
+
+    <!-- SIGN UP STRINGS -->
+    <string name="join_appartoo">Rejoignez Appartoo</string>
+    <string name="warning_condition">En continuant vous acceptez les conditions d\'utilisation.</string>
+    <string name="see_condition"><u>Voir les conditions.</u></string>
+    <string name="go_further">Continuer</string>
+    <string name="start">Commencer</string>
+    <string name="ask_informations">Entrez vos informations</string>
+    <string name="firstname_signup">Prénom : </string>
+    <string name="lastname_signup">Nom : </string>
+    <string name="mail_signup">Email : </string>
+    <string name="password_signup">Mot de passe : </string>
+    <string name="confirm_password_signup">Confirmez le mot de passe : </string>
+    <string name="birthdate_signup">Date de naissance : </string>
+    <string name="gender_signup">Quel est votre sexe ?</string>
+    <string name="status_signup">Quel est votre statut ?</string>
+    <string name="smoker_signup">Fumez-vous ?</string>
+    <string name="finish_signup">"Terminer l'inscription"</string>
+
+    <!-- NAVIGATION DRAWER STRINGS -->
+    <string-array name="navigation_drawer_titles">
+        <item name="profile">Mon profil</item>
+        <item name="badges">Mes badges</item>
+        <item name="leaderboard">Mon classement</item>
+        <item name="favorites">Mes favoris</item>
+        <item name="alerts">Mes alertes</item>
+        <item name="settings">Mes paramètres</item>
+        <item name="list">Ma liste</item>
+        <item name="logout">Se déconnecter</item>
+    </string-array>
+
+
+    <!-- USER PROFILE STRINGS -->
+    <string name="modify_profile">Modifier mon profil</string>
+    <string name="my_offers">Mes offres</string>
+
+    <!-- ACTIVITIES STRINGS -->
+    <string name="title_activity_login">Connexion</string>
+    <string name="title_activity_signup">Inscription</string>
+</resources>

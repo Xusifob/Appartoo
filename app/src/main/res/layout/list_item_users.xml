@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:padding="10dp">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/default_profile_picture"
+        android:scaleType="centerCrop"
+        android:id="@+id/residentThumbnail"/>
+
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/residentThumbnail">
+        <TextView
+            style="@style/Paragraph"
+            android:text="Emmanuel"
+            android:id="@+id/residentName"/>
+        <TextView
+            style="@style/Paragraph"
+            android:text="35 ans"
+            android:id="@+id/residentAge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        >
+        <ImageView
+            style="@style/Image"
+            android:layout_height="40dp"
+            android:src="@drawable/indifferent_with_smoking"
+            android:id="@+id/residentIsSmoker"/>
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            style="@style/Image"
+            android:layout_height="40dp"
+            android:src="@drawable/indifferent_with_animals"
+            android:id="@+id/residentAcceptsAnimals"/>
+        <ImageView
+            style="@style/Image"
+            android:layout_height="40dp"
+            android:src="@drawable/alone"
+            android:id="@+id/residentIsSingle"/>
+    </LinearLayout>
+</RelativeLayout>

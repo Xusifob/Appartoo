@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="navigation_drawer_images">
+        <item>@drawable/profile</item>
+        <item>@drawable/medal</item>
+        <item>@drawable/podium</item>
+        <item>@drawable/heart</item>
+        <item>@drawable/message_drawer</item>
+        <item>@drawable/gear</item>
+        <item>@drawable/house</item>
+        <item>@drawable/shutdown</item>
+    </array>
+</resources>

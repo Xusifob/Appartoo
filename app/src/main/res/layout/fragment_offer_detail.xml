@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/offerFlatImage">
+        <android.support.v4.view.ViewPager
+            app:layout_widthPercent="100%"
+            app:layout_aspectRatio="100%"
+            android:background="@color/colorGray"
+            android:id="@+id/offerFlatImagesPager">
+        </android.support.v4.view.ViewPager>
+        </android.support.percent.PercentRelativeLayout>
+        <TextView
+            style="@style/Title"
+            android:textStyle="bold"
+            android:text="Title"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/offerTitle"
+            android:layout_gravity="left" />
+
+        <View
+            style="@style/Separator"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
+                <TextView
+                    style="@style/Paragraph"
+                    android:textStyle="bold"
+                    android:text="City"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/offerCity" />
+                <TextView
+                    style="@style/Paragraph"
+                    android:textStyle="bold"
+                    android:text="Key and Price"
+                    android:id="@+id/offerKeyword"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
+            <TextView
+                style="@style/Paragraph"
+                android:text="Début"
+                android:id="@+id/offerStart"
+                android:layout_alignParentLeft="true" />
+            <TextView
+                style="@style/Paragraph"
+                android:text="Chambres"
+                android:id="@+id/offerRooms"
+                android:layout_gravity="right"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <TextView
+            style="@style/Paragraph"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text="Fin"
+            android:id="@+id/offerEnd" />
+
+        <View
+            style="@style/Separator"/>
+        <mobile.appartoo.view.NonScrollableListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:id="@+id/offerResidentList" />
+        <View
+            style="@style/Separator"/>
+        <TextView
+            style="@style/Paragraph"
+            android:padding="10dp"
+            android:text="Description"
+            android:id="@+id/offerDescription" />
+        <View
+            style="@style/Separator"/>
+    </LinearLayout>
+</RelativeLayout>
