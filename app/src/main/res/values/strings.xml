@@ -57,8 +57,12 @@
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>
     <string name="my_offers">Mes offres</string>
+    <string name="situation">Activité</string>
+    <string name="important_infos">Informations importantes</string>
+    <string name="personnal_infos">A propos de vous</string>
 
     <!-- ACTIVITIES STRINGS -->
     <string name="title_activity_login">Connexion</string>
     <string name="title_activity_signup">Inscription</string>
+
 </resources>

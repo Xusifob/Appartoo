@@ -2,6 +2,7 @@ package mobile.appartoo.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -52,6 +53,13 @@ public class LoginActivity extends Activity {
     @Override
     protected void onStart(){
         super.onStart();
+
+        databaseHelper.setLastUserLoggedCredentials();
+
+        if(Appartoo.TOKEN != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     private boolean isFormValid(){
@@ -131,6 +139,7 @@ public class LoginActivity extends Activity {
             });
 
         } else {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             Toast.makeText(getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
         }
     }

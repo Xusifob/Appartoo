@@ -32,6 +32,21 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
+    <style name="ProfileSection" parent="Paragraph">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/colorLightGray</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="NoTextSwitch">
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:thumbTextPadding">5dp</item>
+        <item name="android:switchMinWidth">60dp</item>
+    </style>
+
     <style name="Separator">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>

@@ -56,12 +56,9 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void toggleView(View v) {
-        System.out.println("Clicked !");
 
         int sdk = android.os.Build.VERSION.SDK_INT;
         LinearLayout parent = (LinearLayout) v.getParent();
-
-        System.out.println(parent.getChildCount());
 
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
             for(int i = 0 ; i < parent.getChildCount() ; i++){

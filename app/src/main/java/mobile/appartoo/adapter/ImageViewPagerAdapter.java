@@ -39,10 +39,8 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
 
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resources[position], options);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resources[position]);
 
         if(crop) {
             bitmap = bitmapToSquare(bitmap);

@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center_horizontal">
     <ImageView
+        android:layout_marginTop="100dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/default_profile_picture"/>
@@ -19,17 +20,23 @@
         android:layout_margin="40dp"/>
     <TextView
         style="@style/Paragraph"
+        android:tag="my_settings"
+        android:onClick="switchFragment"
         android:padding="10dp"
         android:text="@string/action_settings"
         android:textColor="@color/colorSalmon"/>
     <TextView
         style="@style/Paragraph"
+        android:tag="modify_profile"
+        android:onClick="switchFragment"
         android:text="@string/modify_profile"
         android:padding="10dp"
         android:textColor="@color/colorSalmon"/>
     <TextView
         style="@style/Paragraph"
         android:padding="10dp"
+        android:tag="my_offers"
+        android:onClick="switchFragment"
         android:text="@string/my_offers"
         android:textColor="@color/colorSalmon"/>
 </LinearLayout>

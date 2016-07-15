@@ -8,10 +8,10 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
+import mobile.appartoo.activity.UserProfileActivity;
 import mobile.appartoo.adapter.NavigationDrawerAdapter;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.FeedReaderCredentials;
@@ -62,10 +62,17 @@ public class DrawerListView extends NonScrollableListView {
     }
 
     private void selectMenuOption(int position) {
+        Intent intent;
+
         switch (position) {
+            case 0:
+                intent = new Intent(context, UserProfileActivity.class);
+                System.out.println("ACTIVITY USERPROFILE");
+                context.startActivity(intent);
+                break;
             case 7:
                 databaseHelper.updateUserLoggedState(Appartoo.LOGGED_USER_MAIL, false);
-                Intent intent = new Intent(context, LoginActivity.class);
+                intent = new Intent(context, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 context.startActivity(intent);
