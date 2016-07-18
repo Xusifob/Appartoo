@@ -23,9 +23,11 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/rounded_bordered_square"
+            android:clickable="true"
+            android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView">
+            android:onClick="toggleView"
+            android:id="@+id/signUpSmoker">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,9 +47,11 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/rounded_bordered_square"
+            android:clickable="true"
+            android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView">
+            android:onClick="toggleView"
+            android:id="@+id/signUpNonSmoker">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +74,7 @@
         style="@style/ButtonSalmon"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/finish_signup"
+        android:text="@string/go_further"
         android:onClick="finishSignup"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"

@@ -30,16 +30,22 @@ public class DrawerListView extends NonScrollableListView {
 
     public DrawerListView(Context context) {
         super(context);
-        defineDrawerMenu(context);
+        if(!isInEditMode()) {
+            defineDrawerMenu(context);
+        }
     }
 
     public DrawerListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        defineDrawerMenu(context);
+        if(!isInEditMode()) {
+            defineDrawerMenu(context);
+        }
     }
     public DrawerListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        defineDrawerMenu(context);
+        if(!isInEditMode()) {
+            defineDrawerMenu(context);
+        }
     }
 
     public void setDrawerLayout(DrawerLayout drawerLayout) {
@@ -69,11 +75,10 @@ public class DrawerListView extends NonScrollableListView {
         switch (position) {
             case 0:
                 intent = new Intent(context, UserProfileActivity.class);
-                System.out.println("ACTIVITY USERPROFILE");
                 context.startActivity(intent);
                 break;
             case 7:
-                sharedPreferences.edit().remove("token");
+                sharedPreferences.edit().remove("token").commit();
                 intent = new Intent(context, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

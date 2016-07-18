@@ -22,6 +22,7 @@
     <string name="couple">En couple</string>
     <string name="smoker">Fumeur</string>
     <string name="non_smoker">Non fumeur</string>
+    <string name="student">Etudiant</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -40,6 +41,9 @@
     <string name="status_signup">Quel est votre statut ?</string>
     <string name="smoker_signup">Fumez-vous ?</string>
     <string name="finish_signup">"Terminer l'inscription"</string>
+    <string name="configure_profile">Configurer mon profil</string>
+    <string name="congratulations">Félicitations !</string>
+        <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
 
     <!-- NAVIGATION DRAWER STRINGS -->
     <string-array name="navigation_drawer_titles">
@@ -57,12 +61,35 @@
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>
     <string name="my_offers">Mes offres</string>
-    <string name="situation">Activité</string>
-    <string name="important_infos">Informations importantes</string>
-    <string name="personnal_infos">A propos de vous</string>
 
     <!-- ACTIVITIES STRINGS -->
     <string name="title_activity_login">Connexion</string>
     <string name="title_activity_signup">Inscription</string>
 
+    <!-- USER MODIFY PROFILE STRINGS -->
+    <string name="lastname">Nom</string>
+    <string name="firstName">Prénom</string>
+    <string name="phone">Téléphone</string>
+    <string name="inRelationship">En couple</string>
+    <string name="generous">Généreux</string>
+    <string name="organized">Ordonné</string>
+    <string name="maniac">Maniac</string>
+    <string name="party_goer">Fêtard</string>
+    <string name="spendthrift">Dépensier</string>
+    <string name="musician">Musicien</string>
+    <string name="traveller">Voyageur</string>
+    <string name="cook">Cuisinier</string>
+    <string name="layabout">Glandeur</string>
+    <string name="nerdy">Geek</string>
+    <string name="worker">Salarié</string>
+    <string name="situation">Activité</string>
+    <string name="important_infos">Informations importantes</string>
+    <string name="personnal_infos">A propos de vous</string>
+    
+    <!-- USER CONFIGURE PROFILE STRINGS -->
+    <string name="what_are_you_looking_for">Que recherchez-vous ?</string>
+    <string name="looking_for_a_shared_flat">Je cherche une colocation</string>
+    <string name="looking_for_a_roomate">Je cherche un colocataire</string>
+    <string name="rent_my_flat">Je veux louer mon appartement</string>
+    <string name="situation_configure_profile">Quelle est votre situation ?</string>
 </resources>

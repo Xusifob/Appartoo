@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import mobile.appartoo.R;
 
@@ -16,5 +17,14 @@ public class SignUpThirdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_signup_page3, container, false);
         return rootView;
+    }
+
+    public boolean isFormValid() {
+        View man = getActivity().findViewById(R.id.signUpMan);
+        View woman = getActivity().findViewById(R.id.signUpMan);
+
+        System.out.println(man.isSelected());
+        System.out.println(woman.isSelected());
+        return true;
     }
 }

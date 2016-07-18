@@ -31,7 +31,7 @@
                     android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Salarié"/>
+                    android:text="@string/worker"/>
                 <Switch
                     style="@style/NoTextSwitch"/>
             </LinearLayout>
@@ -45,22 +45,22 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nom"
+                    android:hint="@string/lastname"
                     android:layout_weight="1"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Prénom"
+                    android:hint="@string/firstName"
                     android:layout_weight="1"/>
             </LinearLayout>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Téléphone"/>
+                android:hint="@string/phone"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Adresse mail"/>
+                android:hint="@string/mail"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +76,8 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="En couple"/>
+                        android:text="@string/inRelationship"
+                        android:layout_weight="1"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                 </LinearLayout>
@@ -91,7 +92,8 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fumeur"/>
+                        android:text="@string/smoker"
+                        android:layout_weight="1"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                 </LinearLayout>
@@ -110,7 +112,8 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Généreux"/>
+                        android:text="@string/generous"
+                        android:layout_weight="1"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                     <TextView
@@ -118,27 +121,9 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Musicien"/>
-                    <Switch
-                        style="@style/NoTextSwitch" />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        style="@style/Paragraph"
-                        android:padding="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ordonné"/>
-                    <Switch
-                        style="@style/NoTextSwitch" />
-                    <TextView
-                        style="@style/Paragraph"
-                        android:padding="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Voyageur"/>
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/musician"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                 </TableRow>
@@ -150,7 +135,8 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Maniac"/>
+                        android:text="@string/organized"
+                        android:layout_weight="1"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                     <TextView
@@ -158,27 +144,9 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cuisinier"/>
-                    <Switch
-                        style="@style/NoTextSwitch" />
-                </TableRow>
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        style="@style/Paragraph"
-                        android:padding="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fêtard"/>
-                    <Switch
-                        style="@style/NoTextSwitch" />
-                    <TextView
-                        style="@style/Paragraph"
-                        android:padding="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Glandeur"/>
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/traveller"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                 </TableRow>
@@ -190,7 +158,8 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dépensier" />
+                        android:text="@string/maniac"
+                        android:layout_weight="1"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                     <TextView
@@ -198,7 +167,55 @@
                         android:padding="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Geek"/>
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="cook"/>
+                    <Switch
+                        style="@style/NoTextSwitch" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/Paragraph"
+                        android:padding="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/party_goer"
+                        android:layout_weight="1"/>
+                    <Switch
+                        style="@style/NoTextSwitch" />
+                    <TextView
+                        style="@style/Paragraph"
+                        android:padding="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/layabout"/>
+                    <Switch
+                        style="@style/NoTextSwitch" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/Paragraph"
+                        android:padding="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/spendthrift"
+                        android:layout_weight="1"/>
+                    <Switch
+                        style="@style/NoTextSwitch" />
+                    <TextView
+                        style="@style/Paragraph"
+                        android:padding="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:text="@string/nerdy"/>
                     <Switch
                         style="@style/NoTextSwitch" />
                 </TableRow>

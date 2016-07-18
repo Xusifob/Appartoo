@@ -54,5 +54,4 @@ public class UserDetailFragment extends Fragment {
             ((ImageView) getActivity().findViewById(R.id.residentContract)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.worker, null));
         }
     }
-
 }

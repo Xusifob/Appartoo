@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/gender_signup"
+        android:text="@string/situation_configure_profile"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"/>
@@ -23,19 +23,16 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:clickable="true"
-            android:background="@drawable/toggle_rounded_bordered_square"
+            android:background="@drawable/rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView"
-            android:id="@+id/signUpMan"
-            android:tag="man">
+            android:onClick="toggleView">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-                android:src="@drawable/male"/>
+                android:src="@drawable/student"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,24 +40,21 @@
                 android:layout_centerHorizontal="true"
                 android:padding="2dp"
                 android:textColor="@color/colorSalmon"
-                android:text="@string/man" />
+                android:text="@string/student" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:clickable="true"
-            android:background="@drawable/toggle_rounded_bordered_square"
+            android:background="@drawable/rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView"
-            android:id="@+id/signUpWoman"
-            android:tag="woman">
+            android:onClick="toggleView">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-                android:src="@drawable/female"/>
+                android:src="@drawable/worker"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +62,7 @@
                 android:layout_centerHorizontal="true"
                 android:padding="2dp"
                 android:textColor="@color/colorSalmon"
-                android:text="@string/woman" />
+                android:text="@string/worker"/>
         </RelativeLayout>
     </LinearLayout>
 
