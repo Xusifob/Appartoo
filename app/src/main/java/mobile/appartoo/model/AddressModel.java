@@ -1,16 +1,20 @@
 package mobile.appartoo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by alexandre on 16-07-06.
  */
-public class AddressModel implements JsonModel {
+public class AddressModel implements Serializable {
 
+    @SerializedName("@id")
     private String id;
     private double latitude;
     private double longitude;
@@ -77,14 +81,13 @@ public class AddressModel implements JsonModel {
     }
 
     @Override
-    public AddressModel createFromJSON(JSONObject jsonObject) throws JSONException {
-        this.id = jsonObject.getString("@id");
-        this.latitude = jsonObject.getDouble("latitude");
-        this.longitude = jsonObject.getDouble("longitude");
-        this.name = jsonObject.getString("name");
-        this.placeId = jsonObject.getString("placeId");
-        this.formattedAddress = jsonObject.getString("formattedAddress");
-
-        return this;
+    public String toString(){
+        String str = "AddressModel: {id: " + id + ", " +
+                "latitude: " + latitude + ", " +
+                "longitude: " + longitude + ", " +
+                "name: " + name + ", " +
+                "placeId: " + placeId + ", " +
+                "formattedAddress: " + formattedAddress + "}";
+        return str;
     }
 }

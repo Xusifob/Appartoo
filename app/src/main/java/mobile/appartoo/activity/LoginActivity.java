@@ -1,6 +1,8 @@
 package mobile.appartoo.activity;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +41,7 @@ public class LoginActivity extends Activity {
     private Button logInButton;
     private String mail;
     private String password;
-    private FeedReaderCredentials databaseHelper;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +49,18 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         logInButton = (Button) findViewById(R.id.connectButton);
-        databaseHelper = new FeedReaderCredentials(LoginActivity.this);
+        sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-        databaseHelper.setLastUserLoggedCredentials();
+        Appartoo.TOKEN = sharedPreferences.getString("token", "");
 
-        if(Appartoo.TOKEN != null) {
+        System.out.println( "Appartoo Token "  + Appartoo.TOKEN);
+
+        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
@@ -109,11 +113,7 @@ public class LoginActivity extends Activity {
                             Appartoo.TOKEN = jsonResponse.get("token").getAsString();
                             Appartoo.LOGGED_USER_MAIL = mail;
 
-                            if (!databaseHelper.userIsInDatabase(mail)) {
-                                databaseHelper.addUserToDatabase(mail, Appartoo.TOKEN);
-                            } else {
-                                databaseHelper.updateUserLoggedState(mail, true);
-                            }
+                            sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
@@ -123,9 +123,8 @@ public class LoginActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
+                        System.out.println(response.code());
                         logInButton.setEnabled(true);
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
                         Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
                     }
                 }

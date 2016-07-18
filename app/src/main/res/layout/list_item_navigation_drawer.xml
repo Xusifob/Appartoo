@@ -6,6 +6,7 @@
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_margin="15dp"
         android:scaleType="centerCrop"
         android:id="@+id/navigation_drawer_icon"
         android:src="@drawable/shadow"

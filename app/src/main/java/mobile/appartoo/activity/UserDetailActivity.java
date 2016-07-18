@@ -32,8 +32,6 @@ import mobile.appartoo.view.DrawerListView;
  */
 public class UserDetailActivity extends Activity {
 
-
-    SimpleDateFormat toString = new SimpleDateFormat("dd/MM/yyyy");
     private DrawerLayout drawerLayout;
     private UserModel user;
     private ActionBarDrawerToggle drawerToggle;
@@ -50,12 +48,6 @@ public class UserDetailActivity extends Activity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        facebookButton = (RelativeLayout) findViewById(R.id.userFacebookLayout);
-        phoneButton = (RelativeLayout) findViewById(R.id.userPhoneLayout);
-        messengerButton = (RelativeLayout) findViewById(R.id.userMessageLayout);
-
-        user = (UserModel) getIntent().getSerializableExtra("user");
     }
 
     @Override
@@ -66,90 +58,6 @@ public class UserDetailActivity extends Activity {
 
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
-
-        facebookButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                openUserFacebook(v, event);
-                return true;
-            }
-        });
-
-        messengerButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                openUserMessenger(v, event);
-                return true;
-            }
-        });
-
-        phoneButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                openUserPhone(v, event);
-                return true;
-            }
-        });
-
-        populateView();
-    }
-
-    private void openUserFacebook(View v, MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).startTransition(0);
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).reverseTransition(0);
-        }
-    }
-
-    private void openUserMessenger(View v, MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).startTransition(0);
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).reverseTransition(0);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("sms:" + user.getTelephone()));
-            startActivity(intent);
-        }
-    }
-
-    private void openUserPhone(View v, MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).startTransition(0);
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            ((TransitionDrawable)((RelativeLayout)v).getChildAt(1).getBackground()).reverseTransition(0);
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:" + user.getTelephone()));
-            startActivity(intent);
-        }
-    }
-
-    private void populateView() {
-        ((TextView) findViewById(R.id.userName)).setText(user.getGivenName());
-        String job = user.getContract();
-        if (!user.getSociety().equals("null")) {
-            job += ", " + user.getSociety();
-        }
-        ((TextView) findViewById(R.id.userContractAndSociety)).setText(job);
-        ((TextView) findViewById(R.id.userAge)).setText(Integer.toString(user.getAge()) + " " + getResources().getString(R.string.age));
-        ((TextView) findViewById(R.id.userDescription)).setText(user.getDescription());
-        if(user.getSmoker() != null) {
-            if(user.getSmoker() == true) {
-                ((ImageView) findViewById(R.id.residentIsSmoker)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.is_smoker, null));
-            } else {
-                ((ImageView) findViewById(R.id.residentIsSmoker)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.is_not_smoker, null));
-            }
-        }
-
-        if(user.getInRelationship() == true) {
-            ((ImageView) findViewById(R.id.residentIsSingle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.couple, null));
-        }
-
-        if(user.getContract().equals("worker")) {
-            ((ImageView) findViewById(R.id.residentContract)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.worker, null));
-        }
-
-        new RetrieveUserPicTask().execute(user.getImageModel().getContentUrl());
     }
 
     @Override
@@ -164,30 +72,5 @@ public class UserDetailActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private class RetrieveUserPicTask extends AsyncTask<String, Void, Drawable> {
-
-        @Override
-        protected void onPreExecute(){
-            System.out.println("Retrieving picture...");
-        }
-
-        @Override
-        protected Drawable doInBackground(String... params) {
-            try {
-                InputStream is = (InputStream) new URL(params[0]).getContent();
-                Drawable d = Drawable.createFromStream(is, "src name");
-                return d;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Drawable d){
-            ((ImageView) findViewById(R.id.userProfilePic)).setImageDrawable(d);
-        }
     }
 }

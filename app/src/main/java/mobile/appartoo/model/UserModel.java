@@ -1,8 +1,8 @@
 package mobile.appartoo.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,11 +10,13 @@ import java.util.Date;
 /**
  * Created by alexandre on 16-07-05.
  */
-public class UserModel implements JsonModel {
+public class UserModel implements Serializable {
     private Boolean isSmoker;
     private Boolean inRelationship;
     private Double income;
     private Date birthDate;
+
+    @SerializedName("@id")
     private String id;
     private String user;
     private String society;
@@ -26,8 +28,8 @@ public class UserModel implements JsonModel {
     private String gender;
     private String telephone;
     private String givenName;
-    private ImageModel imageModel;
-    private AddressModel addressModel;
+    private ImageModel image;
+    private AddressModel address;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -151,20 +153,20 @@ public class UserModel implements JsonModel {
         this.telephone = telephone;
     }
 
-    public ImageModel getImageModel() {
-        return imageModel;
+    public ImageModel getImage() {
+        return image;
     }
 
-    public void setImageModel(ImageModel imageModel) {
-        this.imageModel = imageModel;
+    public void setImage(ImageModel image) {
+        this.image = image;
     }
 
-    public AddressModel getAddressModel() {
-        return addressModel;
+    public AddressModel getAddress() {
+        return address;
     }
 
-    public void setAddressModel(AddressModel addressModel) {
-        this.addressModel = addressModel;
+    public void setAddress(AddressModel address) {
+        this.address = address;
     }
 
     public int getAge() {
@@ -178,32 +180,25 @@ public class UserModel implements JsonModel {
         return age;
     }
 
-    @Override
-    public UserModel createFromJSON(JSONObject jsonObject) throws JSONException {
-        this.isSmoker = Boolean.valueOf(jsonObject.getString("isSmoker"));
-        this.inRelationship = Boolean.valueOf(jsonObject.getString("inRelationship"));
-        this.id = jsonObject.getString("@id");
-        this.user = jsonObject.getString("user");
-        this.society = jsonObject.getString("society");
-        this.function = jsonObject.getString("function");
-        this.contract = jsonObject.getString("contract");
-        this.plus = jsonObject.getString("plus");
-        this.description = jsonObject.getString("description");
-        this.familyName = jsonObject.getString("familyName");
-        this.givenName = jsonObject.getString("givenName");
-        this.gender = jsonObject.getString("gender");
-        this.telephone = jsonObject.getString("telephone");
+    public String toString() {
+        String str = "UserModel: {isSmoker: " + isSmoker + ", " +
+                "inRelationship: " + inRelationship + ", " +
+                "income: " + income + ", " +
+                "birthDate: " + birthDate + ", " +
+                "id: " + id + ", " +
+                "user: " + user + ", " +
+                "society: " + society + ", " +
+                "function: " + function + ", " +
+                "contract: " + contract + ", " +
+                "plus: " + plus + ", " +
+                "description: " + description + ", " +
+                "familyName: " + familyName + ", " +
+                "gender: " + gender + ", " +
+                "telephone: " + telephone + ", " +
+                "givenName: " + givenName + ", " +
+                "image: " + image.toString() + ", " +
+                "address: " + address.toString() + "}";
 
-        String birthDateStr = jsonObject.getString("birthDate");
-        try {
-            this.birthDate = format.parse(birthDateStr);
-        } catch (Exception e) {
-            this.birthDate = null;
-            e.printStackTrace();
-        }
-
-        this.imageModel = new ImageModel().createFromJSON(jsonObject.getJSONObject("image"));
-        this.addressModel = new AddressModel().createFromJSON(jsonObject.getJSONObject("address"));
-        return this;
+        return str;
     }
 }

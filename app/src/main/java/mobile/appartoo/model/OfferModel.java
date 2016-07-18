@@ -1,9 +1,12 @@
 package mobile.appartoo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,18 +14,20 @@ import java.util.Date;
 /**
  * Created by alexandre on 16-07-05.
  */
-public class OfferModel implements JsonModel {
+public class OfferModel implements Serializable {
 
     private int price;
     private int rooms;
     private int conversationId;
+
+    @SerializedName("@id")
     private String id;
     private String description;
     private String name;
     private String keyword;
     private AddressModel address;
     private ArrayList<ImageModel> images;
-    private ArrayList<UserModel> residents;
+    private ArrayList<UserModel> resident;
     private UserModel owner;
     private Date availabilityEnds;
     private Date availabilityStarts;
@@ -151,54 +156,32 @@ public class OfferModel implements JsonModel {
         this.acceptAnimal = acceptAnimal;
     }
 
-    public ArrayList<UserModel> getResidents() {
-        return residents;
+    public ArrayList<UserModel> getResident() {
+        return resident;
     }
 
-    public void setResidents(ArrayList<UserModel> residents) {
-        this.residents = residents;
+    public void setResident(ArrayList<UserModel> resident) {
+        this.resident = resident;
     }
 
     @Override
-    public OfferModel createFromJSON(JSONObject jsonObject) throws JSONException {
-        this.price = Integer.valueOf(jsonObject.getString("price"));
-        this.rooms = Integer.valueOf(jsonObject.getString("rooms"));
-        this.conversationId = Integer.valueOf(jsonObject.getString("conversationId"));
-        this.id = jsonObject.getString("@id");
-        this.description = jsonObject.getString("description");
-        this.name = jsonObject.getString("name");
-        this.keyword = jsonObject.getString("keyword");
-
-        String availabilityEndsStr = jsonObject.getString("availabilityEnds");
-        String availabilityStartsStr = jsonObject.getString("availabilityStarts");
-
-        try {
-            this.availabilityEnds = format.parse(availabilityEndsStr);
-            this.availabilityStarts = format.parse(availabilityStartsStr);
-        } catch (Exception e) {
-            this.availabilityEnds = null;
-            this.availabilityStarts = null;
-            e.printStackTrace();
-        }
-
-        this.isActive = Boolean.valueOf(jsonObject.getString("isActive"));
-        this.isSmoker = Boolean.valueOf(jsonObject.getString("isSmoker"));
-        this.acceptAnimal = Boolean.valueOf(jsonObject.getString("acceptAnimal"));
-        this.owner = new UserModel().createFromJSON(jsonObject.getJSONObject("owner"));
-
-        this.images = new ArrayList<>();
-        JSONArray jsonImages = jsonObject.getJSONArray("images");
-        for (int i = 0 ; i < jsonImages.length() ; i++){
-            images.add(new ImageModel().createFromJSON(jsonImages.getJSONObject(i)));
-        }
-
-        this.residents = new ArrayList<>();
-        JSONArray jsonResidents = jsonObject.getJSONArray("resident");
-        for (int i = 0 ; i < jsonResidents.length() ; i++) {
-            residents.add(new UserModel().createFromJSON(jsonResidents.getJSONObject(i)));
-        }
-
-        this.address = new AddressModel().createFromJSON(jsonObject.getJSONObject("address"));
-        return this;
+    public String toString() {
+        String str = "OfferModel: {price: " + price + ", " +
+                "rooms: " + rooms + ", " +
+                "conversationId: " + conversationId + ", " +
+                "id: " + id + ", " +
+                "description: " + description + ", " +
+                "name: " + name + ", " +
+                "keyword: " + keyword + ", " +
+                "address: " + address.toString() + ", " +
+                "images: " + images + ", " +
+                "resident: " + resident + ", " +
+                "owner: " + owner.toString() + ", " +
+                "availabilityEnds: " + availabilityEnds + ", " +
+                "availabilityStarts: " + availabilityStarts + ", " +
+                "isActive: " + isActive + ", " +
+                "isSmoker: " + isSmoker + ", " +
+                "acceptAnimal: " + acceptAnimal + "}";
+        return str;
     }
 }

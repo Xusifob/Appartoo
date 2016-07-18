@@ -4,207 +4,26 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
         <Button
             style="@style/ButtonSalmon"
             android:text="@string/action_send_message"
             android:id="@+id/sendMessageButton"
             android:layout_alignParentBottom="true"/>
-
-        
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/scrollView"
             android:layout_above="@+id/sendMessageButton">
-            <LinearLayout
+            <fragment
+                android:name="mobile.appartoo.fragment.UserDetailFragment"
+                android:id="@+id/userDetailFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <android.support.percent.PercentRelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/userProfilePicLayout">
-                        <ImageView
-                            app:layout_widthPercent="100%"
-                            app:layout_aspectRatio="100%"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:id="@+id/userProfilePic"
-                            android:layout_alignParentTop="true"
-                            android:minHeight="100dp"
-                            android:background="@color/colorGray"/>
-                    </android.support.percent.PercentRelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="-40dp"
-                        android:layout_below="@+id/userProfilePicLayout"
-                        android:id="@+id/userFacebookLayout">
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:src="@drawable/shadow"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:background="@drawable/round_clicked"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="15dp"
-                            android:src="@drawable/facebook_blue"
-                            android:scaleType="centerCrop"
-                            android:adjustViewBounds="true"
-                            android:layout_centerHorizontal="true"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="-40dp"
-                        android:layout_below="@+id/userProfilePicLayout"
-                        android:layout_toLeftOf="@+id/userFacebookLayout"
-                        android:id="@+id/userPhoneLayout">
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/shadow"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:background="@drawable/round_clicked"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="15dp"
-                            android:src="@drawable/phone"
-                            android:scaleType="centerCrop"
-                            android:adjustViewBounds="true"
-                            android:layout_centerHorizontal="true"/>
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="-40dp"
-                        android:layout_below="@+id/userProfilePicLayout"
-                        android:layout_toLeftOf="@+id/userPhoneLayout"
-                        android:id="@+id/userMessageLayout">
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/shadow"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:background="@drawable/round_clicked"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"/>
-                        <ImageView
-
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="15dp"
-                            android:src="@drawable/message"
-                            android:scaleType="centerCrop"
-                            android:adjustViewBounds="true"
-                            android:layout_centerHorizontal="true"/>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/userProfilePicLayout"
-                        android:orientation="vertical"
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp">
-                        <TextView
-                            style="@style/Paragraph"
-                            android:textStyle="bold"
-                            android:text="Wade Wilson"
-                            android:id="@+id/userName"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"/>
-                        <TextView
-                            style="@style/Paragraph"
-                            android:text="Mercenary, Solo"
-                            android:id="@+id/userContractAndSociety" />
-                        <TextView
-                            style="@style/Paragraph"
-                            android:text="30 ans"
-                            android:id="@+id/userAge" />
-                    </LinearLayout>
-                </RelativeLayout>
-                <View
-                    style="@style/Separator"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        style="@style/Image"
-                        android:layout_marginRight="15dp"
-                        android:src="@drawable/indifferent_with_smoking"
-                        android:id="@+id/residentIsSmoker"/>
-                    <ImageView
-                        style="@style/Image"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:src="@drawable/student"
-                        android:id="@+id/residentContract"/>
-                    <ImageView
-                        style="@style/Image"
-                        android:layout_marginLeft="15dp"
-                        android:src="@drawable/alone"
-                        android:id="@+id/residentIsSingle"/>
-                </LinearLayout>
-                <View
-                    style="@style/Separator" />
-                <TextView
-                    style="@style/Paragraph"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="Blah blah blah"
-                    android:id="@+id/userDescription" />
-            </LinearLayout>
+                android:layout_height="wrap_content" />
         </ScrollView>
+
     </RelativeLayout>
 
     <include layout="@layout/navigation_drawer_layout"/>

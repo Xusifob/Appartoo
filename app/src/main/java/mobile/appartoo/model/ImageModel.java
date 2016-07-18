@@ -1,12 +1,18 @@
 package mobile.appartoo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * Created by alexandre on 16-07-06.
  */
-public class ImageModel implements JsonModel {
+public class ImageModel implements Serializable {
+
+    @SerializedName("@id")
     private String id;
     private String caption;
     private String contentUrl;
@@ -44,17 +50,21 @@ public class ImageModel implements JsonModel {
         this.thumbnail = thumbnail;
     }
 
-    @Override
-    public ImageModel createFromJSON(JSONObject jsonObject) throws JSONException {
-        this.id = jsonObject.getString("@id");
-        this.caption = jsonObject.getString("caption");
-        this.contentUrl = jsonObject.getString("contentUrl");
+    public String toString(){
+        String str;
 
-        try {
-            this.thumbnail = new ImageModel().createFromJSON(jsonObject.getJSONObject("thumbnail"));
-        } catch (JSONException e) {
-            this.thumbnail = null;
+        if(thumbnail != null) {
+            str = "ImageModel: {id: " + id + ", " +
+                    "caption: " + caption + ", " +
+                    "contentUrl: " + contentUrl + ", " +
+                    "thumbnail: " + thumbnail.toString() + "}";
+        } else {
+            str = "ImageModel: {id: " + id + ", " +
+                    "caption: " + caption + ", " +
+                    "contentUrl: " + contentUrl + ", " +
+                    "thumbnail: null}";
         }
-        return this;
+
+        return str;
     }
 }

@@ -2,6 +2,7 @@ package mobile.appartoo.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
@@ -24,8 +25,8 @@ public class DrawerListView extends NonScrollableListView {
     private String[] drawerTitles;
     private TypedArray drawerImages;
     private Context context;
-    private FeedReaderCredentials databaseHelper;
     private DrawerLayout drawerLayout;
+    private SharedPreferences sharedPreferences;
 
     public DrawerListView(Context context) {
         super(context);
@@ -47,8 +48,9 @@ public class DrawerListView extends NonScrollableListView {
 
     public void defineDrawerMenu(Context context) {
 
-        this.databaseHelper = new FeedReaderCredentials(context);
         this.context = context;
+        this.sharedPreferences = context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+
         this.drawerTitles = getResources().getStringArray(R.array.navigation_drawer_titles);
         this.drawerImages = getResources().obtainTypedArray(R.array.navigation_drawer_images);
 
@@ -71,7 +73,7 @@ public class DrawerListView extends NonScrollableListView {
                 context.startActivity(intent);
                 break;
             case 7:
-                databaseHelper.updateUserLoggedState(Appartoo.LOGGED_USER_MAIL, false);
+                sharedPreferences.edit().remove("token");
                 intent = new Intent(context, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

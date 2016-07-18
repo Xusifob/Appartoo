@@ -1,23 +1,19 @@
 package mobile.appartoo.fragment;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
-import mobile.appartoo.activity.OfferDetailActivity;
 import mobile.appartoo.activity.UserDetailActivity;
 import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.ResidentsAdapter;
@@ -66,7 +62,7 @@ public class OfferDetailFragment extends Fragment {
 
         ArrayList<UserModel> residents = new ArrayList<>();
         residents.add(offer.getOwner());
-        residents.addAll(offer.getResidents());
+        residents.addAll(offer.getResident());
 
         ResidentsAdapter residentsAdapter = new ResidentsAdapter(getActivity(), residents);
         residentsAdapter.setAcceptAnimals(offer.getAcceptAnimal());
@@ -79,7 +75,7 @@ public class OfferDetailFragment extends Fragment {
                 if (position == 0) {
                     intent.putExtra("user", offer.getOwner());
                 } else {
-                    intent.putExtra("user", offer.getResidents().get(position - 1));
+                    intent.putExtra("user", offer.getResident().get(position - 1));
                 }
                 startActivity(intent);
             }

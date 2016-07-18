@@ -3,7 +3,6 @@ package mobile.appartoo.fragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -11,27 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import mobile.appartoo.R;
 import mobile.appartoo.activity.OfferDetailActivity;
 import mobile.appartoo.adapter.OfferAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.RestService;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-13.
@@ -59,8 +55,17 @@ public class OfferListFragment extends Fragment {
         progress.setTitle(getResources().getString(R.string.progress_bar_title));
         progress.setMessage(getResources().getString(R.string.progress_bar_description));
 
+        offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
+                intent.putExtra("offer", offersList.get(position));
+                startActivity(intent);
+            }
+        });
+
         if(offersList.size() == 0) {
-            new RetrieveOffersTask().execute();
+            getOffers();
         }
 
         super.onStart();
@@ -74,123 +79,91 @@ public class OfferListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                new RetrieveOffersTask().execute();
+                getOffers();
             }
         });
     }
 
-    private class RetrieveOffersTask extends AsyncTask<Void, Void, ArrayList<OfferModel>> {
-
-        ArrayList<OfferModel> offerModels;
-
-        @Override
-        protected void onPreExecute(){
-            if(!swipeRefreshLayout.isRefreshing()){
-                progress.show();
-            }
+    private void getOffers(){
+        if(!swipeRefreshLayout.isRefreshing()){
+            progress.show();
         }
 
-        @Override
-        protected ArrayList<OfferModel> doInBackground(Void... params) {
-            offerModels = new ArrayList<>();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            try {
-                URL url = new URL(Appartoo.SERVER_URL + "/offers");
-                //String response = getHttpResponse(url);
-                String response = loadJSONFromAsset();
-                if (response != null) {
-                    return retrieveOffers(response);
+        RestService restService = retrofit.create(RestService.class);
+        Call<ResponseBody> callback = restService.getOffers();
+
+        callback.enqueue(new Callback<ResponseBody>(){
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(swipeRefreshLayout.isRefreshing()){
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    progress.dismiss();
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(final ArrayList<OfferModel> offerModels){
+                if(response.isSuccessful()) {
+                    try {
+                        String responseBody = IOUtils.toString(response.body().charStream());
+                        JSONObject jsonObject = new JSONObject(responseBody);
+                        OfferModel[] offers = new Gson().fromJson(jsonObject.getJSONArray("hydra:member").toString(), OfferModel[].class);
+                        populateView(offers);
 
-            if(offerModels != null){
-                offersList.clear();
-                offersList.addAll(offerModels);
-                OfferAdapter offerAdapter = new OfferAdapter(getActivity(), offersList);
-
-                offersListView.setAdapter(offerAdapter);
-                offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
-                        intent.putExtra("offer", offerModels.get(position));
-                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                     }
-                });
-                offerAdapter.notifyDataSetChanged();
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.connection_failed), Toast.LENGTH_SHORT).show();
-            }
-
-            if(swipeRefreshLayout.isRefreshing()){
-                swipeRefreshLayout.setRefreshing(false);
-            } else {
-                progress.dismiss();
-            }
-        }
-
-        public ArrayList<OfferModel> retrieveOffers(String response) {
-            try {
-                JSONObject json = new JSONObject(response);
-                JSONArray array = json.getJSONArray("hydra:member");
-                for(int i = 0 ; i < array.length() ; i++){
-                    JSONObject object = array.getJSONObject(i);
-                    OfferModel offerModel = new OfferModel();
-                    offerModel.createFromJSON(object);
-                    offerModels.add(offerModel);
+                } else {
+                    System.out.println("Est-ce que le serveur est en ligne ?");
+                    Toast.makeText(getActivity(), "Erreur de connection.", Toast.LENGTH_SHORT).show();
                 }
-
-                return offerModels;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
 
-            return null;
-        }
-
-        public String getHttpResponse(URL url) {
-            try {
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-
-                try {
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    return IOUtils.toString(in);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if(swipeRefreshLayout.isRefreshing()){
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    progress.dismiss();
                 }
-
-                urlConnection.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
+                Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
             }
-            return null;
-        }
+        });
     }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
+    private void populateView(OfferModel[] offers) {
+        for(OfferModel o : offers) {
 
-            InputStream is = getActivity().getAssets().open("data.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
         }
-        return json;
-
+        offersList.clear();
+        offersList.addAll(Arrays.asList(offers));
+        OfferAdapter offerAdapter = new OfferAdapter(getActivity(), offersList);
+        offersListView.setAdapter(offerAdapter);
+        offerAdapter.notifyDataSetChanged();
     }
+
+
+//    public String loadJSONFromAsset() {
+//        String json = null;
+//        try {
+//
+//            InputStream is = getActivity().getAssets().open("data.json");
+//            int size = is.available();
+//            byte[] buffer = new byte[size];
+//            is.read(buffer);
+//            is.close();
+//            json = new String(buffer, "UTF-8");
+//
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            return null;
+//        }
+//        return json;
+//
+//    }
 }

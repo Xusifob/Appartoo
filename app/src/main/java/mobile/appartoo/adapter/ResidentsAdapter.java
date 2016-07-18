@@ -21,7 +21,7 @@ public class ResidentsAdapter extends BaseAdapter {
 
     private ArrayList<UserModel> userModels;
     private LayoutInflater layoutInflater;
-    private Boolean accetAnimals;
+    private Boolean acceptAnimals;
 
     public ResidentsAdapter(Context context, ArrayList<UserModel> om) {
         userModels = om;
@@ -29,7 +29,7 @@ public class ResidentsAdapter extends BaseAdapter {
     }
 
     public void setAcceptAnimals(Boolean acceptAnimals){
-        this.accetAnimals = acceptAnimals;
+        this.acceptAnimals = acceptAnimals;
     }
 
     @Override
@@ -81,15 +81,15 @@ public class ResidentsAdapter extends BaseAdapter {
             }
         }
 
-        if(accetAnimals != null){
-            if(accetAnimals == true){
+        if(acceptAnimals != null){
+            if(acceptAnimals == true){
                 holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.accept_animals, null));
             } else {
                 holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.dont_accept_animals, null));
             }
         }
 
-        if(userModel.getInRelationship() == true){
+        if(userModel.getInRelationship() != null && userModel.getInRelationship() == true){
             holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
         }
     }
