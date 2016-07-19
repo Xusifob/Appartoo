@@ -69,8 +69,7 @@ public class SignUpActivity extends FragmentActivity {
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -92,10 +91,10 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void finishSignup(View v){
-        if(isFormValid()){
+//        if(isFormValid()){
             startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
             finish();
-        }
+//        }
     }
 
     private void updateBirthDate(){

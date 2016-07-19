@@ -1,9 +1,7 @@
 package mobile.appartoo.activity;
 
-/**
- * Created by alexandre on 16-07-18.
- */
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,19 +11,20 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.ConfigureProfileFifthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
+import mobile.appartoo.fragment.ConfigureProfileFourthFragment;
 import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
+import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
 import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class ConfigureProfileActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 3;
+    private static final int NUM_PAGES = 6;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
@@ -39,11 +38,30 @@ public class ConfigureProfileActivity extends FragmentActivity {
         pager.setAdapter(pagerAdapter);
     }
 
+
     @Override
-    public void onStart(){
-        pager.setOffscreenPageLimit(NUM_PAGES - 1);
+    public void onStart() {
         super.onStart();
+        pager.setOffscreenPageLimit(NUM_PAGES - 1);
     }
+
+
+    public void selectContract(View v) {
+        AlertDialog.Builder selectContractDialog = new AlertDialog.Builder(this);
+        final String[] items = getResources().getStringArray(R.array.contracts);
+
+        selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ((EditText) findViewById(R.id.contractConfigureProfile)).setText(items[which]);
+            }
+        });
+
+        selectContractDialog.setNegativeButton("Annuler", null);
+        selectContractDialog.show();
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -73,12 +91,12 @@ public class ConfigureProfileActivity extends FragmentActivity {
         LinearLayout parent = (LinearLayout) v.getParent();
 
         for(int i = 0 ; i < parent.getChildCount() ; i++) {
-            if(parent.getChildAt(i).equals(v)) {
-                parent.getChildAt(i).getBackground().setState(new int[] {android.R.attr.state_checked});
-            } else {
-                parent.getChildAt(i).getBackground().setState(new int[] {});
+            if(!parent.getChildAt(i).equals(v)) {
+                parent.getChildAt(i).setSelected(false);
             }
         }
+
+        v.setSelected(true);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -93,6 +111,9 @@ public class ConfigureProfileActivity extends FragmentActivity {
                 case 0: return new ConfigureProfileFirstFragment();
                 case 1: return new ConfigureProfileSecondFragment();
                 case 2: return new ConfigureProfileThirdFragment();
+                case 3: return new ConfigureProfileFourthFragment();
+                case 4: return new ConfigureProfileFifthFragment();
+                case 5: return new ConfigureProfileSixthFragment();
                 default: return new ConfigureProfileFirstFragment();
             }
         }
@@ -103,4 +124,3 @@ public class ConfigureProfileActivity extends FragmentActivity {
         }
     }
 }
-

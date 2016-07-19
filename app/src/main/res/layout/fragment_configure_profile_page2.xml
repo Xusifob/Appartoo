@@ -30,7 +30,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:onClick="toggleView"
-        android:background="@drawable/rounded_bordered_square"
+        android:background="@drawable/toggle_rounded_bordered_square"
         android:tag="0">
         <TextView
             style="@style/Paragraph"
@@ -48,7 +48,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:onClick="toggleView"
-        android:background="@drawable/rounded_bordered_square"
+        android:background="@drawable/toggle_rounded_bordered_square"
         android:tag="1">
         <TextView
             style="@style/Paragraph"
@@ -66,7 +66,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:onClick="toggleView"
-            android:background="@drawable/rounded_bordered_square"
+            android:background="@drawable/toggle_rounded_bordered_square"
             android:tag="2">
             <TextView
                 style="@style/Paragraph"
@@ -82,7 +82,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="@string/go_further"
-        android:onClick="goToMainActivity"
+        android:onClick="nextView"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_square_salmon" />

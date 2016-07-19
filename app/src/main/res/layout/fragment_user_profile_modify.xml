@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="mobile.appartoo.fragment.UserProfileSettingsFragment">
 
     <ScrollView
@@ -11,13 +12,21 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageView
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/default_profile_picture"/>
+            <android.support.percent.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/offerFlatImage">
+                <LinearLayout
+                    app:layout_widthPercent="100%"
+                    app:layout_aspectRatio="200%"
+                    android:gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp">
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/default_profile_picture"/>
+                </LinearLayout>
+            </android.support.percent.PercentRelativeLayout>
             <TextView
                 style="@style/ProfileSection"
                 android:text="@string/situation"/>

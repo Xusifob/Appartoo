@@ -23,7 +23,7 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/rounded_bordered_square"
+            android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
             android:onClick="toggleView">
             <ImageView
@@ -45,7 +45,7 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/rounded_bordered_square"
+            android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
             android:onClick="toggleView">
             <ImageView

@@ -92,4 +92,15 @@
     <string name="looking_for_a_roomate">Je cherche un colocataire</string>
     <string name="rent_my_flat">Je veux louer mon appartement</string>
     <string name="situation_configure_profile">Quelle est votre situation ?</string>
+    <string name="company_configure_profile">Quelle est votre entreprise ?</string>
+    <string name="company">Entreprise</string>
+    <string name="function_configure_profile">Quelle est votre fonction ?</string>
+    <string name="function">Fonction</string>
+    <string name="contract_configure_profile">Quelle est votre contrat ?</string>
+    <string name="contract">Contrat</string>
+    <string-array name="contracts">
+        <item name="cdd">CDD</item>
+        <item name="cdi">CDI</item>
+    </string-array>
+
 </resources>

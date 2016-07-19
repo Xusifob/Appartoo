@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/default_profile_picture"/>
-    <TextView
-        style="@style/Paragraph"
-        android:textStyle="bold"
-        android:id="@+id/profileName"
-        android:text="User"/>
-    <TextView
-        style="@style/Paragraph"
-        android:text="Student, 22 years"/>
-    <View style="@style/Separator"
-        android:layout_margin="40dp"/>
-    <TextView
-        style="@style/Paragraph"
-        android:tag="my_settings"
-        android:onClick="switchFragment"
-        android:padding="10dp"
-        android:text="@string/action_settings"
-        android:textColor="@color/colorSalmon"/>
-    <TextView
-        style="@style/Paragraph"
-        android:tag="modify_profile"
-        android:onClick="switchFragment"
-        android:text="@string/modify_profile"
-        android:padding="10dp"
-        android:textColor="@color/colorSalmon"/>
-    <TextView
-        style="@style/Paragraph"
-        android:padding="10dp"
-        android:tag="my_offers"
-        android:onClick="switchFragment"
-        android:text="@string/my_offers"
-        android:textColor="@color/colorSalmon"/>
+    android:gravity="center_horizontal">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/offerFlatImage">
+        <LinearLayout
+            app:layout_widthPercent="100%"
+            app:layout_aspectRatio="200%"
+            android:gravity="bottom|center_horizontal">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_profile_picture"/>
+        </LinearLayout>
+    </android.support.percent.PercentRelativeLayout>
+        <TextView
+            style="@style/Paragraph"
+            android:textStyle="bold"
+            android:id="@+id/profileName"
+            android:text="User"/>
+        <TextView
+            style="@style/Paragraph"
+            android:text="Student, 22 years"/>
+        <View style="@style/Separator"
+            android:layout_margin="40dp"/>
+        <TextView
+            style="@style/Paragraph"
+            android:tag="my_settings"
+            android:onClick="switchFragment"
+            android:padding="10dp"
+            android:text="@string/action_settings"
+            android:textColor="@color/colorSalmon"/>
+        <TextView
+            style="@style/Paragraph"
+            android:tag="modify_profile"
+            android:onClick="switchFragment"
+            android:text="@string/modify_profile"
+            android:padding="10dp"
+            android:textColor="@color/colorSalmon"/>
+        <TextView
+            style="@style/Paragraph"
+            android:padding="10dp"
+            android:tag="my_offers"
+            android:onClick="switchFragment"
+            android:text="@string/my_offers"
+            android:textColor="@color/colorSalmon"/>
 </LinearLayout>
