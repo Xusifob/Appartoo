@@ -45,6 +45,7 @@ public class UserDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
 
+        //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -53,9 +54,10 @@ public class UserDetailActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
+
+        //Define the drawer
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
     }

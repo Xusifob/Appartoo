@@ -17,6 +17,8 @@ public class OfferImagesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_images);
+
+        //Retreive the resources
         resources = getIntent().getIntArrayExtra("resources");
         currentItem = getIntent().getIntExtra("currentImage", 0);
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
@@ -26,6 +28,7 @@ public class OfferImagesActivity extends Activity {
     protected void onStart(){
         super.onStart();
 
+        //Add the pictures to the view pager
         viewPager.setAdapter(new ImageViewPagerAdapter(this, resources, false));
         viewPager.setCurrentItem(currentItem);
     }

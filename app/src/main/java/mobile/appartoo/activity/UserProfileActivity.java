@@ -33,14 +33,9 @@ public class UserProfileActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("ACTIVITY USERPROFILE CREATION");
         setContentView(R.layout.activity_user_profile);
 
-        fragmentManager = getSupportFragmentManager();
-        mainFragment = new UserProfileMainFragment();
-        modifyFragment = new UserProfileModifyFragment();
-        settingsFragment = new UserProfileSettingsFragment();
-
+        //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -50,11 +45,17 @@ public class UserProfileActivity extends FragmentActivity {
     public void onStart(){
         super.onStart();
 
+        //Define the drawer
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
+
+        //Define the fragments
+        fragmentManager = getSupportFragmentManager();
+        mainFragment = new UserProfileMainFragment();
+        modifyFragment = new UserProfileModifyFragment();
+        settingsFragment = new UserProfileSettingsFragment();
 
         fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
     }
@@ -82,6 +83,10 @@ public class UserProfileActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Switch between the fragments
+     * @param v - the button corresponding to the fragments
+     */
     public void switchFragment(View v) {
         if(v.getTag().equals("my_settings")) {
             fragmentManager.beginTransaction().replace(R.id.userProfileFrame, settingsFragment).commit();

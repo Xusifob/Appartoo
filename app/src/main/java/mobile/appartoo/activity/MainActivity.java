@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -31,6 +32,7 @@ public class MainActivity extends FragmentActivity {
     public void onStart(){
         super.onStart();
 
+        //Define the drawer
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -40,6 +42,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Define the action to do according to the selected menu
         switch (item.getItemId()) {
             case android.R.id.home:
                 if(drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -48,7 +51,8 @@ public class MainActivity extends FragmentActivity {
                     drawerLayout.openDrawer(Gravity.LEFT);
                 }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

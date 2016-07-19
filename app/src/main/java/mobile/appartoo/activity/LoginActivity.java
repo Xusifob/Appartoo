@@ -31,11 +31,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
-
 public class LoginActivity extends Activity {
 
     private Button logInButton;
@@ -48,6 +43,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Retrieve login button and shared preferences
         logInButton = (Button) findViewById(R.id.connectButton);
         sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
     }
@@ -56,23 +52,32 @@ public class LoginActivity extends Activity {
     protected void onStart(){
         super.onStart();
 
+        //Retrieve the user token
         Appartoo.TOKEN = sharedPreferences.getString("token", "");
 
-        System.out.println( "Appartoo Token "  + Appartoo.TOKEN);
-
+        //If the token exist, launch the main activity
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
     }
 
+    /**
+     * Check if the login form is valid
+     * @return true if the form is correctly filled, false if not
+     */
     private boolean isFormValid(){
+        //Get the mail and password typed
         mail = ((EditText) findViewById(R.id.logInMail)).getText().toString();
         password = ((EditText) findViewById(R.id.logInPassword)).getText().toString();
 
+        //Check that the mail and the password aren't null
         if(mail != null && password != null && !mail.equals("") && !password.equals("")){
+
+            //If the mail has a proper form, return true
             if(isEmailValid(mail)){
                 return true;
+
             } else {
                 return false;
             }
@@ -82,39 +87,59 @@ public class LoginActivity extends Activity {
 
     }
 
+    /**
+     * Check if the string is an email
+     * @param email
+     * @return true if the string is an email, false if not
+     */
     public static boolean isEmailValid(String email) {
+        //Regex defining an email
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+
+        //Return the match result of the regex
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-
         return matcher.matches();
     }
 
+    /**
+     * Launch the login action
+     * @param v - the button that launched the login
+     */
     public void logIn(View v){
+        //If the form is valid
         if(isFormValid()){
 
+            //Disable the login button
             logInButton.setEnabled(false);
+
+            //Build a retrofit request
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Appartoo.SERVER_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
+            //Post the login form
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> callback = restService.postLogIn(mail, password);
 
+            //Handle the server response
             callback.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    //If the login is successful
                     if(response.isSuccessful()) {
                         try {
+                            //Retrieve the user token
                             String responseBody = IOUtils.toString(response.body().charStream());
                             JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
-
                             Appartoo.TOKEN = jsonResponse.get("token").getAsString();
                             Appartoo.LOGGED_USER_MAIL = mail;
 
+                            //Stock the token in shared preferences
                             sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
 
+                            //Start the main activity
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
 
@@ -122,10 +147,16 @@ public class LoginActivity extends Activity {
                             logInButton.setEnabled(true);
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        System.out.println(response.code());
+
+                    //If the user didn't send the right credentials
+                    } else if(response.code() == 401){
                         logInButton.setEnabled(true);
                         Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
+
+                    //If the server isn't responding
+                    } else {
+                        logInButton.setEnabled(true);
+                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -133,24 +164,23 @@ public class LoginActivity extends Activity {
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     logInButton.setEnabled(true);
                     t.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Erreur de connexion avec le serveur.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
                 }
             });
 
+        //If the form isn't valid, prevent the user.
         } else {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             Toast.makeText(getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Launch the signup activity
+     * @param v - the button to launch the activity
+     */
     public void signUp(View v){
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
     }
 }
 

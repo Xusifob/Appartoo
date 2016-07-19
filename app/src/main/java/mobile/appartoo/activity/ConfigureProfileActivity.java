@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import mobile.appartoo.R;
@@ -21,11 +22,12 @@ import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
 import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
 import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
+import mobile.appartoo.view.DisableLastSwipeViewPager;
 
 public class ConfigureProfileActivity extends FragmentActivity {
 
     private static final int NUM_PAGES = 10;
-    private ViewPager pager;
+    private DisableLastSwipeViewPager pager;
     private PagerAdapter pagerAdapter;
 
     @Override
@@ -33,7 +35,7 @@ public class ConfigureProfileActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_profile);
 
-        pager = (ViewPager) findViewById(R.id.signup_pager);
+        pager = (DisableLastSwipeViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
     }
@@ -50,16 +52,24 @@ public class ConfigureProfileActivity extends FragmentActivity {
         if(pager.getCurrentItem() == 0) {
             startActivity(new Intent(ConfigureProfileActivity.this, MainActivity.class));
             finish();
-        } else {
+        } else if (pager.getCurrentItem() < 9){
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
     }
 
+    /**
+     * Launch the main activity
+     * @param v - the button pressed to launch the activity
+     */
     public void goToMainActivity(View v) {
         startActivity(new Intent(ConfigureProfileActivity.this, MainActivity.class));
         finish();
     }
 
+    /**
+     * Switch to the next fragment
+     * @param v - the button to switch to the next view
+     */
     public void nextView(View v){
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
             startActivity(new Intent(ConfigureProfileActivity.this, MainActivity.class));
@@ -69,18 +79,27 @@ public class ConfigureProfileActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Modify the layout of the toggle buttons
+     * @param v - the clicked button
+     */
     public void toggleView(View v) {
         LinearLayout parent = (LinearLayout) v.getParent();
 
+        //Set all buttons as unselected
         for(int i = 0 ; i < parent.getChildCount() ; i++) {
             if(!parent.getChildAt(i).equals(v)) {
                 parent.getChildAt(i).setSelected(false);
             }
         }
 
+        //Set the clicked button as selected
         v.setSelected(true);
     }
 
+    /**
+     * A simple adapter to associate with the view pager
+     */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {

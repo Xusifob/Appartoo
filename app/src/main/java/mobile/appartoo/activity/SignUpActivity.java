@@ -54,6 +54,7 @@ public class SignUpActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        //Retreive the resources
         pager = (ViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
@@ -61,11 +62,13 @@ public class SignUpActivity extends FragmentActivity {
 
     @Override
     public void onStart(){
+
+        //Define the number of pages to keep in memory
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
+
+        //Define today's date
         calendar = Calendar.getInstance();
-
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -91,21 +94,35 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void finishSignup(View v){
-//        if(isFormValid()){
+        //When form is valid,
+        if(isFormValid()){
+            // TODO request API to add user
             startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
             finish();
-//        }
+        }
     }
 
+    /**
+     * Update the edit text object that shows the selected date
+     */
     private void updateBirthDate(){
         ((EditText) findViewById(R.id.signUpBirthdate)).setText(dateFormat.format(calendar.getTime()));
     }
 
+    /**
+     * Open a dialog to pick a date easily
+     * @param v
+     */
     public void openDatePicker(View v) {
         new DatePickerDialog(SignUpActivity.this, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    /**
+     * Checks if the informations submitted have correct
+     * @return true if the informations are correct, false if they are not.
+     */
     private boolean isFormValid(){
+        //Retrieve the form inputs
         boolean man = findViewById(R.id.signUpMan).isSelected();
         boolean woman = findViewById(R.id.signUpWoman).isSelected();
         boolean single = findViewById(R.id.signUpSingle).isSelected();
@@ -119,11 +136,13 @@ public class SignUpActivity extends FragmentActivity {
         String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
         String email = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
 
+        //Check the toggle buttons
         if((!man && !woman) || (!single && !inRelationship) || (!smoker && !nonSmoker)) {
             Toast.makeText(getApplicationContext(), "Vous devez entrer toutes les informations du formulaires pour finir l'inscription.", Toast.LENGTH_LONG).show();
             return false;
         }
 
+        //Check the edit text input
         if(firstName.replaceAll("\\s+","").equals("") || lastName.replaceAll("\\s+","").equals("") ||
                 password.replaceAll("\\s+","").equals("") || password_confirm.replaceAll("\\s+","").equals("") ||
                 birthdate.replaceAll("\\s+","").equals("") || email.replaceAll("\\s+","").equals("")) {
@@ -131,11 +150,13 @@ public class SignUpActivity extends FragmentActivity {
             return false;
         }
 
+        //Check if mail is valid
         if(!isEmailValid(email)) {
             Toast.makeText(getApplicationContext(), "Veuillez entrer une adresse électronique correcte.", Toast.LENGTH_LONG).show();
             return false;
         }
 
+        //Check if password is valid
         if(!password.equals(password_confirm)) {
             Toast.makeText(getApplicationContext(), "Les mots de passes doivent être identiques.", Toast.LENGTH_LONG).show();
             return false;
@@ -144,14 +165,25 @@ public class SignUpActivity extends FragmentActivity {
         return true;
     }
 
+    /**
+     * Check if the string is an email
+     * @param email
+     * @return true if the string is an email, false if not
+     */
     public static boolean isEmailValid(String email) {
+        //Regex defining an email
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+
+        //Return the match result of the regex
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-
         return matcher.matches();
     }
 
+    /**
+     * Switch to the next fragment
+     * @param v - the button to switch to the next view
+     */
     public void nextView(View v){
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
             finish();
@@ -160,18 +192,27 @@ public class SignUpActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Modify the layout of the toggle buttons
+     * @param v - the clicked button
+     */
     public void toggleView(View v) {
         LinearLayout parent = (LinearLayout) v.getParent();
 
+        //Set all buttons as unselected
         for(int i = 0 ; i < parent.getChildCount() ; i++) {
             if(!parent.getChildAt(i).equals(v)) {
                 parent.getChildAt(i).setSelected(false);
             }
         }
 
+        //Set the clicked button as selected
         v.setSelected(true);
     }
 
+    /**
+     * A simple adapter to associate with the view pager
+     */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -194,7 +235,5 @@ public class SignUpActivity extends FragmentActivity {
             return NUM_PAGES;
         }
     }
-
-
 }
 
