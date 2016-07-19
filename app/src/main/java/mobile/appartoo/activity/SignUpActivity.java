@@ -123,10 +123,10 @@ public class SignUpActivity extends FragmentActivity {
         boolean nonSmoker = findViewById(R.id.signUpNonSmoker).isSelected();
         String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
         String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString();
-        String password = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
-        String password_confirm = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
+        String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
+        String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
         String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
-        String email = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
+        String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString();
 
         //Check the toggle buttons
         if((!man && !woman) || (!single && !inRelationship) || (!smoker && !nonSmoker)) {
