@@ -1,7 +1,5 @@
 package mobile.appartoo.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,20 +9,22 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFifthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
 import mobile.appartoo.fragment.ConfigureProfileFourthFragment;
+import mobile.appartoo.fragment.ConfigureProfileNinethFragment;
 import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
+import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
+import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
 import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
 
 public class ConfigureProfileActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 6;
+    private static final int NUM_PAGES = 10;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
@@ -44,24 +44,6 @@ public class ConfigureProfileActivity extends FragmentActivity {
         super.onStart();
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
     }
-
-
-    public void selectContract(View v) {
-        AlertDialog.Builder selectContractDialog = new AlertDialog.Builder(this);
-        final String[] items = getResources().getStringArray(R.array.contracts);
-
-        selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ((EditText) findViewById(R.id.contractConfigureProfile)).setText(items[which]);
-            }
-        });
-
-        selectContractDialog.setNegativeButton("Annuler", null);
-        selectContractDialog.show();
-
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -114,6 +96,10 @@ public class ConfigureProfileActivity extends FragmentActivity {
                 case 3: return new ConfigureProfileFourthFragment();
                 case 4: return new ConfigureProfileFifthFragment();
                 case 5: return new ConfigureProfileSixthFragment();
+                case 6: return new ConfigureProfileSeventhFragment();
+                case 7: return new ConfigureProfileEighthFragment();
+                case 8: return new ConfigureProfileNinethFragment();
+                case 9: return new ConfigureProfileTenthFragment();
                 default: return new ConfigureProfileFirstFragment();
             }
         }

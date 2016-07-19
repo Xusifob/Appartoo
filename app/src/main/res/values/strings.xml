@@ -43,7 +43,7 @@
     <string name="finish_signup">"Terminer l'inscription"</string>
     <string name="configure_profile">Configurer mon profil</string>
     <string name="congratulations">Félicitations !</string>
-        <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
+    <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
 
     <!-- NAVIGATION DRAWER STRINGS -->
     <string-array name="navigation_drawer_titles">
@@ -102,5 +102,11 @@
         <item name="cdd">CDD</item>
         <item name="cdi">CDI</item>
     </string-array>
-
+    <string name="income_configure_profile">Quelle est votre revenu mensuel ?</string>
+    <string name="income">Revenu</string>
+    <string name="responsible_configure_profile">Avez-vous des garants ?</string>
+    <string name="presentation_configure_profile">Qui êtes-vous ?</string>
+    <string name="end_of_configuration">"Votre profil a été complété. Vous pouvez le modifier à tout moment dans les réglages."</string>
+    <string name="finish_configuration">"Terminer la configuration."</string>
+    <string name="go_to_offer_list">"Voir les offres."</string>
 </resources>

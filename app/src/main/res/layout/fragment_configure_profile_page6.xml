@@ -11,6 +11,7 @@
     <TextView
         style="@style/TitleSalmon"
         android:text="@string/contract_configure_profile"
+        android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
@@ -23,7 +24,6 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:hint="@string/contract"
-        android:onClick="selectContract"
         android:focusable="false"
         android:id="@+id/contractConfigureProfile"/>
 

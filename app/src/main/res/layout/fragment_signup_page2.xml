@@ -9,6 +9,7 @@
         android:layout_height="match_parent">
         <TextView
             style="@style/TitleSalmon"
+            android:gravity="center"
             android:text="@string/ask_informations"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"

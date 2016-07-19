@@ -11,6 +11,7 @@
     <TextView
         style="@style/TitleSalmon"
         android:text="@string/join_appartoo"
+        android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"/>

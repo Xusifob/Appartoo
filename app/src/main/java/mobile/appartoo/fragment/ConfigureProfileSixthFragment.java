@@ -1,12 +1,14 @@
 package mobile.appartoo.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,11 +29,22 @@ public class ConfigureProfileSixthFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-//        ((TextView) getActivity().findViewById(R.id.contractConfigureProfile)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new AlertDialog.Builder(getActivity()).show();
-//            }
-//        });
+        ((EditText) getActivity().findViewById(R.id.contractConfigureProfile)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
+                final String[] items = getResources().getStringArray(R.array.contracts);
+
+                selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((EditText) getActivity().findViewById(R.id.contractConfigureProfile)).setText(items[which]);
+                    }
+                });
+
+                selectContractDialog.setNegativeButton("Annuler", null);
+                selectContractDialog.show();
+            }
+        });
     }
 }
