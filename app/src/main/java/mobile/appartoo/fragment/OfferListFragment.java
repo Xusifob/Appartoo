@@ -11,11 +11,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import mobile.appartoo.R;
 import mobile.appartoo.activity.OfferDetailActivity;
 import mobile.appartoo.adapter.OfferAdapter;

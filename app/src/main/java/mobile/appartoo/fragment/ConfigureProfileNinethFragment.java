@@ -1,22 +1,13 @@
 package mobile.appartoo.fragment;
 
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 import mobile.appartoo.R;
-import mobile.appartoo.adapter.ResponsiblesAdapter;
-import mobile.appartoo.model.ResponsibleModel;
 
 /**
  * Created by alexandre on 16-07-12.

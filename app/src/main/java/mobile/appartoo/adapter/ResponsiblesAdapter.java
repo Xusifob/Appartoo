@@ -2,7 +2,6 @@ package mobile.appartoo.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.ResponsibleModel;
-import mobile.appartoo.model.UserModel;
 
 /**
  * Created by alexandre on 16-07-05.

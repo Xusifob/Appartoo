@@ -1,4 +1,5 @@
 package mobile.appartoo.fragment;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;
 

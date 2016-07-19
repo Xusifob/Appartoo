@@ -1,27 +1,13 @@
 package mobile.appartoo.activity;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;

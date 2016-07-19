@@ -14,8 +14,6 @@ import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 import mobile.appartoo.adapter.NavigationDrawerAdapter;
-import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.FeedReaderCredentials;
 
 /**
  * Created by alexandre on 16-07-13.

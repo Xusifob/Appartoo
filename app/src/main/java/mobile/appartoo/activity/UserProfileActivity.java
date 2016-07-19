@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.UserProfileMainFragment;

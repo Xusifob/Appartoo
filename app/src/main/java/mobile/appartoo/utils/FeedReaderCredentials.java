@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import se.simbio.encryption.Encryption;
-
 /**
  * Created by alexandre on 16-07-13.
  */

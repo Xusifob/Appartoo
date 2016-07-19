@@ -2,9 +2,6 @@ package mobile.appartoo.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 
 /**

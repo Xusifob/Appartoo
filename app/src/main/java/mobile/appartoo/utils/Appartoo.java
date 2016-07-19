@@ -1,7 +1,5 @@
 package mobile.appartoo.utils;
 
-import mobile.appartoo.model.UserModel;
-
 /**
  * Created by alexandre on 16-07-06.
  */

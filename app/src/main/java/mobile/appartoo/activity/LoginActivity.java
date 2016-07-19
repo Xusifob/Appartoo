@@ -1,28 +1,26 @@
 package mobile.appartoo.activity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.CharSequenceInputStream;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import mobile.appartoo.R;
 import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.FeedReaderCredentials;
 import mobile.appartoo.utils.RestService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

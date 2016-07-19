@@ -1,25 +1,18 @@
 package mobile.appartoo.activity;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
-import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
 import mobile.appartoo.fragment.SignUpFifthFragment;
 import mobile.appartoo.fragment.SignUpFirstFragment;
 import mobile.appartoo.fragment.SignUpFourthFragment;
