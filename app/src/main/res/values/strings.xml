@@ -104,4 +104,7 @@
     <string name="end_of_configuration">"Votre profil a été complété. Vous pouvez le modifier à tout moment dans les réglages."</string>
     <string name="finish_configuration">"Terminer la configuration."</string>
     <string name="go_to_offer_list">"Voir les offres."</string>
+
+    <string name="demo_min_label">Min</string>
+    <string name="demo_max_label">Max</string>
 </resources>

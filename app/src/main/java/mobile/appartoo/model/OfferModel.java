@@ -162,22 +162,20 @@ public class OfferModel implements Serializable {
 
     @Override
     public String toString() {
-        String str = "OfferModel: {price: " + price + ", " +
-                "rooms: " + rooms + ", " +
-                "conversationId: " + conversationId + ", " +
-                "id: " + id + ", " +
-                "description: " + description + ", " +
-                "name: " + name + ", " +
-                "keyword: " + keyword + ", " +
+        String str = "OfferModel: {price: " + String.valueOf(price) + ", " +
+                "rooms: " + String.valueOf(rooms) + ", " +
+                "conversationId: " + String.valueOf(conversationId) + ", " +
+                "id: " + String.valueOf(id) + ", " +
+                "description: " + String.valueOf(description) + ", " +
+                "name: " + String.valueOf(name) + ", " +
+                "keyword: " + String.valueOf(keyword) + ", " +
                 "address: " + address.toString() + ", " +
-                "images: " + images + ", " +
-                "resident: " + resident + ", " +
-                "owner: " + owner.toString() + ", " +
-                "availabilityEnds: " + availabilityEnds + ", " +
-                "availabilityStarts: " + availabilityStarts + ", " +
-                "isActive: " + isActive + ", " +
-                "isSmoker: " + isSmoker + ", " +
-                "acceptAnimal: " + acceptAnimal + "}";
+                "owner: " + String.valueOf(owner) + ", " +
+                "availabilityEnds: " + String.valueOf(availabilityEnds) + ", " +
+                "availabilityStarts: " + String.valueOf(availabilityStarts) + ", " +
+                "isActive: " + String.valueOf(isActive) + ", " +
+                "isSmoker: " + String.valueOf(isSmoker) + ", " +
+                "acceptAnimal: " + String.valueOf(acceptAnimal) + "}";
         return str;
     }
 }

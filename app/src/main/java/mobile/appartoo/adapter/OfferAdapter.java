@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
@@ -43,6 +45,8 @@ public class OfferAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
         ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.list_item_offers, null);
@@ -58,6 +62,8 @@ public class OfferAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        System.out.println(new Gson().toJson(offerModels.get(position)));
 
         OfferModel offerModel = offerModels.get(position);
 

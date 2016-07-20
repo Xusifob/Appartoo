@@ -13,8 +13,8 @@ public class AddressModel implements Serializable {
 
     @SerializedName("@id")
     private String id;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private String name;
     private String placeId;
     private String formattedAddress;
@@ -79,12 +79,12 @@ public class AddressModel implements Serializable {
 
     @Override
     public String toString(){
-        String str = "AddressModel: {id: " + id + ", " +
-                "latitude: " + latitude + ", " +
-                "longitude: " + longitude + ", " +
-                "name: " + name + ", " +
-                "placeId: " + placeId + ", " +
-                "formattedAddress: " + formattedAddress + "}";
+        String str = "AddressModel: {id: " + String.valueOf(id) + ", " +
+                "latitude: " + String.valueOf(latitude) + ", " +
+                "longitude: " + String.valueOf(longitude) + ", " +
+                "name: " + String.valueOf(name) + ", " +
+                "placeId: " + String.valueOf(placeId) + ", " +
+                "formattedAddress: " + String.valueOf(formattedAddress) + "}";
         return str;
     }
 }

@@ -34,7 +34,7 @@ public class ConfigureProfileEighthFragment extends Fragment {
 
         garantorModels = new ArrayList<>();
         garantorsListView = (ListView) rootView.findViewById(R.id.garantorList);
-        addgarantorButton = (ImageView) rootView.findViewById(R.id.addgarantorButton);
+        addgarantorButton = (ImageView) rootView.findViewById(R.id.addGarantorButton);
         garantorsAdapter = new GarantorsAdapter(getActivity(), garantorModels);
         return rootView;
     }

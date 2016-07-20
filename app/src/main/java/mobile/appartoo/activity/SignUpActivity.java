@@ -218,11 +218,11 @@ public class SignUpActivity extends FragmentActivity {
         }
 
         if(man) {
-            Appartoo.LOGGED_USER.setGender("man");
-            Appartoo.LOGGED_USER.getProfileModel().setGender("man");
+            Appartoo.LOGGED_USER.setGender("Male");
+            Appartoo.LOGGED_USER.getProfileModel().setGender("Male");
         } else {
-            Appartoo.LOGGED_USER.setGender("woman");
-            Appartoo.LOGGED_USER.getProfileModel().setGender("woman");
+            Appartoo.LOGGED_USER.setGender("Female");
+            Appartoo.LOGGED_USER.getProfileModel().setGender("Female");
         }
 
         if(single) {

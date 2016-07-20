@@ -44,17 +44,13 @@
         android:layout_below="@+id/logInMail"/>
 
     <Button
+        style="@style/ButtonGreen"
         android:layout_below="@+id/logInPassword"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/connectButton"
         android:onClick="logIn"
         android:layout_marginRight="20dp"
-        android:text="@string/connect"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/rounded_square_green"/>
+        android:text="@string/connect"/>
 
     <TextView
         android:padding="10dp"

@@ -1,9 +1,9 @@
 package mobile.appartoo.fragment;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +51,11 @@ public class OfferListFragment extends Fragment {
         offersListView = (ListView) view.findViewById(R.id.offersList);
         offersList = new ArrayList<>();
         progress = new ProgressDialog(getActivity());
+
+        if (container != null) {
+            container.removeAllViews();
+        }
+
         return view;
     }
 
