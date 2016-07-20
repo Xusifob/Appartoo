@@ -30,8 +30,15 @@ public class UserModel implements Serializable {
     private String givenName;
     private ImageModel image;
     private AddressModel address;
+    private ProfileModel profileModel;
 
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    public ProfileModel getProfileModel() {
+        return profileModel;
+    }
+
+    public void setProfileModel(ProfileModel profileModel) {
+        this.profileModel = profileModel;
+    }
 
     public Boolean getSmoker() {
         return isSmoker;

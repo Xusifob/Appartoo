@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
+import mobile.appartoo.activity.MainActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 import mobile.appartoo.adapter.NavigationDrawerAdapter;
 
@@ -72,14 +73,19 @@ public class DrawerListView extends NonScrollableListView {
 
         switch (position) {
             case 0:
-                intent = new Intent(context, UserProfileActivity.class);
-                context.startActivity(intent);
+                if(!(context instanceof UserProfileActivity)){
+                    context.startActivity(new Intent(context, UserProfileActivity.class));
+                }
                 break;
-            case 7:
+            case 1:
+                if(!(context instanceof MainActivity)){
+                    context.startActivity(new Intent(context, MainActivity.class));
+                }
+                break;
+            case 2:
                 sharedPreferences.edit().remove("token").commit();
                 intent = new Intent(context, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
                 context.startActivity(intent);
                 break;
             default:

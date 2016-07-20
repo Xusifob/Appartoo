@@ -35,6 +35,7 @@ public class LoginActivity extends Activity {
     private String mail;
     private String password;
     private SharedPreferences sharedPreferences;
+    private RestService restService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,13 @@ public class LoginActivity extends Activity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
+
+        //Build a retrofit request
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        restService = retrofit.create(RestService.class);
     }
 
     /**
@@ -111,20 +119,13 @@ public class LoginActivity extends Activity {
             //Disable the login button
             logInButton.setEnabled(false);
 
-            //Build a retrofit request
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Appartoo.SERVER_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            //Post the login form
-            RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> callback = restService.postLogIn(mail, password);
 
             //Handle the server response
             callback.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
                     //If the login is successful
                     if(response.isSuccessful()) {
                         try {
@@ -132,7 +133,6 @@ public class LoginActivity extends Activity {
                             String responseBody = IOUtils.toString(response.body().charStream());
                             JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
                             Appartoo.TOKEN = jsonResponse.get("token").getAsString();
-                            Appartoo.LOGGED_USER_MAIL = mail;
 
                             //Stock the token in shared preferences
                             sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
@@ -142,27 +142,25 @@ public class LoginActivity extends Activity {
                             finish();
 
                         } catch (IOException e) {
-                            logInButton.setEnabled(true);
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+
                         }
 
                     //If the user didn't send the right credentials
                     } else if(response.code() == 401){
-                        logInButton.setEnabled(true);
                         Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
-
                     //If the server isn't responding
                     } else {
-                        logInButton.setEnabled(true);
                         Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
                     }
+                    logInButton.setEnabled(true);
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    logInButton.setEnabled(true);
                     t.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
+                    logInButton.setEnabled(true);
                 }
             });
 

@@ -3,7 +3,7 @@ package mobile.appartoo.model;
 /**
  * Created by alexandre on 16-07-19.
  */
-public class ResponsibleModel {
+public class GarantorModel {
     String firstname;
     String lastname;
     String mail;

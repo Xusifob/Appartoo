@@ -9,29 +9,31 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/responsibleRecordFirstName"
+            android:id="@+id/garantorRecordFirstName"
             android:hint="@string/firstName"
+            android:inputType="textPersonName"
             android:gravity="center"
             android:layout_weight="1"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/responsibleRecordLastName"
+            android:id="@+id/garantorRecordLastName"
             android:hint="@string/lastname"
+            android:inputType="textPersonName"
             android:gravity="center"
             android:layout_weight="1"/>
     </LinearLayout>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/responsibleRecordMail"
+        android:id="@+id/garantorRecordMail"
         android:gravity="center"
         android:inputType="textEmailAddress"
         android:hint="@string/mail" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/responsibleRecordIncome"
+        android:id="@+id/garantorRecordIncome"
         android:gravity="center"
         android:inputType="numberDecimal"
         android:hint="@string/income" />

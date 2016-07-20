@@ -8,23 +8,23 @@
         android:layout_centerVertical="true">
         <TextView
             style="@style/Paragraph"
-            android:id="@+id/responsibleFullName"
+            android:id="@+id/garantorFullName"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="Eric Lapointe"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/responsibleFullName"
-            android:id="@+id/responsibleMail"
+            android:layout_below="@id/garantorFullName"
+            android:id="@+id/garantorMail"
             android:layout_alignParentLeft="true"
             android:text="aric.lapointe@laposte.fr"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/responsibleMail"
+            android:layout_below="@id/garantorMail"
             android:layout_alignParentLeft="true"
-            android:id="@+id/responsibleIncome"
+            android:id="@+id/garantorIncome"
             android:text="1000€"/>
     </RelativeLayout>
     <ImageView
@@ -32,7 +32,7 @@
         android:layout_height="50dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:id="@+id/deleteResponsible"
+        android:id="@+id/deleteGarantor"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/delete" />
@@ -41,8 +41,8 @@
         android:layout_height="50dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:id="@+id/modifyResponsible"
-        android:layout_toLeftOf="@+id/deleteResponsible"
+        android:id="@+id/modifyGarantor"
+        android:layout_toLeftOf="@+id/deleteGarantor"
         android:layout_marginRight="5dp"
         android:layout_centerVertical="true"
         android:src="@drawable/edit"/>

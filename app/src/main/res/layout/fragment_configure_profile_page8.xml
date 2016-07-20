@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/responsible_configure_profile"
+        android:text="@string/garantor_configure_profile"
         android:gravity="center"
         android:layout_marginTop="40dp"
         android:id="@+id/textView"
@@ -32,11 +32,11 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:src="@drawable/plus"
-            android:id="@+id/addResponsibleButton"/>
+            android:id="@+id/addGarantorButton"/>
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/responsibleList">
+            android:id="@+id/garantorList">
         </ListView>
     </LinearLayout>
     <Button

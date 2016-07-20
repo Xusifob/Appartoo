@@ -1,7 +1,9 @@
 package mobile.appartoo.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,11 +12,19 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,11 +32,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
 import mobile.appartoo.fragment.SignUpFifthFragment;
 import mobile.appartoo.fragment.SignUpFirstFragment;
 import mobile.appartoo.fragment.SignUpFourthFragment;
 import mobile.appartoo.fragment.SignUpSecondFragment;
 import mobile.appartoo.fragment.SignUpThirdFragment;
+import mobile.appartoo.model.ProfileModel;
+import mobile.appartoo.model.SignUpModel;
+import mobile.appartoo.model.UserModel;
+import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.RestService;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -34,12 +56,17 @@ import mobile.appartoo.fragment.SignUpThirdFragment;
  */
 public class SignUpActivity extends FragmentActivity {
 
+    private String password;
+    private String email;
     private static final int NUM_PAGES = 5;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
     private SimpleDateFormat dateFormat;
+    private RestService restService;
+    private Button signUpButton;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +76,7 @@ public class SignUpActivity extends FragmentActivity {
         //Retreive the resources
         pager = (ViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         pager.setAdapter(pagerAdapter);
     }
 
@@ -57,10 +85,10 @@ public class SignUpActivity extends FragmentActivity {
 
         //Define the number of pages to keep in memory
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
+        sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         //Define today's date
         calendar = Calendar.getInstance();
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -72,6 +100,14 @@ public class SignUpActivity extends FragmentActivity {
             }
 
         };
+
+        //Build a retrofit request
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        restService = retrofit.create(RestService.class);
+        signUpButton = (Button) findViewById(R.id.signUpButton);
 
         super.onStart();
     }
@@ -88,9 +124,121 @@ public class SignUpActivity extends FragmentActivity {
     public void finishSignup(View v){
         //When form is valid,
         if(isFormValid()){
-            // TODO request API to add user
-            startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
-            finish();
+
+            signUpButton.setEnabled(false);
+            Call<ResponseBody> callback = restService.postUser(new SignUpModel(email, password));
+
+            //Handle the server response
+            callback.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    //If the login is successful
+                    if(response.isSuccessful()) {
+                        try {
+                            String responseBody = IOUtils.toString(response.body().charStream());
+                            JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
+                            Appartoo.LOGGED_USER.setId(jsonResponse.get("@id").getAsString());
+                            logUser();
+
+                        } catch (IOException e) {
+                            Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
+                    }
+                    signUpButton.setEnabled(true);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
+                    signUpButton.setEnabled(true);
+                }
+            });
+
+        //If the form isn't valid, prevent the user.
+        } else {
+            Toast.makeText(getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void logUser() {
+        Call<ResponseBody> newCallback = restService.postLogIn(email, password);
+
+        newCallback.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    try {
+                        String responseBody = IOUtils.toString(response.body().charStream());
+                        JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
+                        Appartoo.TOKEN = jsonResponse.get("token").getAsString();
+                        Appartoo.LOGGED_USER = new UserModel();
+                        Appartoo.LOGGED_USER.setProfileModel(new ProfileModel());
+
+                        setLoggedUser();
+                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
+                        startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "L'inscription s'est bien déroulée, mais un problème est survenu lors de la connection.", Toast.LENGTH_SHORT).show();
+                }
+                signUpButton.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "L'inscription s'est bien déroulée, mais un problème est survenu lors de la connection.", Toast.LENGTH_SHORT).show();
+                signUpButton.setEnabled(true);
+            }
+        });
+    }
+
+    private void setLoggedUser() {
+        boolean man = findViewById(R.id.signUpMan).isSelected();
+        boolean single = findViewById(R.id.signUpSingle).isSelected();
+        boolean smoker = findViewById(R.id.signUpSmoker).isSelected();
+        String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
+        String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString();
+        String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
+
+        Appartoo.LOGGED_USER.setGivenName(firstName);
+        Appartoo.LOGGED_USER.getProfileModel().setGivenName(firstName);
+        Appartoo.LOGGED_USER.setFamilyName(lastName);
+        Appartoo.LOGGED_USER.getProfileModel().setFamilyName(lastName);
+
+        try {
+            Appartoo.LOGGED_USER.setBirthDate(dateFormat.parse(birthdate));
+            Appartoo.LOGGED_USER.getProfileModel().setBirthDate(dateFormat.parse(birthdate));
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        if(man) {
+            Appartoo.LOGGED_USER.setGender("man");
+            Appartoo.LOGGED_USER.getProfileModel().setGender("man");
+        } else {
+            Appartoo.LOGGED_USER.setGender("woman");
+            Appartoo.LOGGED_USER.getProfileModel().setGender("woman");
+        }
+
+        if(single) {
+            Appartoo.LOGGED_USER.setInRelationship(false);
+            Appartoo.LOGGED_USER.getProfileModel().setInRelationship(false);
+        } else {
+            Appartoo.LOGGED_USER.setInRelationship(true);
+            Appartoo.LOGGED_USER.getProfileModel().setInRelationship(true);
+        }
+
+        if(smoker) {
+            Appartoo.LOGGED_USER.setSmoker(true);
+            Appartoo.LOGGED_USER.getProfileModel().setSmoker(true);
+        } else {
+            Appartoo.LOGGED_USER.setSmoker(false);
+            Appartoo.LOGGED_USER.getProfileModel().setSmoker(false);
         }
     }
 
@@ -123,10 +271,10 @@ public class SignUpActivity extends FragmentActivity {
         boolean nonSmoker = findViewById(R.id.signUpNonSmoker).isSelected();
         String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
         String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString();
-        String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
         String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
         String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
-        String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString();
+        email = ((EditText) findViewById(R.id.signUpMail)).getText().toString();
+        password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
 
         //Check the toggle buttons
         if((!man && !woman) || (!single && !inRelationship) || (!smoker && !nonSmoker)) {

@@ -16,6 +16,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -24,37 +25,34 @@
         <activity
             android:name=".activity.OfferDetailActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.UserDetailActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.UserProfileActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.SignUpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_signup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".activity.ConfigureProfileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_signup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
-        <activity android:name=".activity.OfferImagesActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.OfferImagesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

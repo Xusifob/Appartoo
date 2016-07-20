@@ -17,13 +17,4 @@ public class SignUpThirdFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_signup_page3, container, false);
         return rootView;
     }
-
-    public boolean isFormValid() {
-        View man = getActivity().findViewById(R.id.signUpMan);
-        View woman = getActivity().findViewById(R.id.signUpMan);
-
-        System.out.println(man.isSelected());
-        System.out.println(woman.isSelected());
-        return true;
-    }
 }

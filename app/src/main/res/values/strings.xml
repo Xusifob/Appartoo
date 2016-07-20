@@ -48,12 +48,7 @@
     <!-- NAVIGATION DRAWER STRINGS -->
     <string-array name="navigation_drawer_titles">
         <item name="profile">Mon profil</item>
-        <item name="badges">Mes badges</item>
-        <item name="leaderboard">Mon classement</item>
-        <item name="favorites">Mes favoris</item>
-        <item name="alerts">Mes alertes</item>
-        <item name="settings">Mes paramètres</item>
-        <item name="list">Ma liste</item>
+        <item name="badges">Parcourir les offres</item>
         <item name="logout">Se déconnecter</item>
     </string-array>
 
@@ -85,7 +80,7 @@
     <string name="situation">Activité</string>
     <string name="important_infos">Informations importantes</string>
     <string name="personnal_infos">A propos de vous</string>
-    
+
     <!-- USER CONFIGURE PROFILE STRINGS -->
     <string name="what_are_you_looking_for">Que recherchez-vous ?</string>
     <string name="looking_for_a_shared_flat">Je cherche une colocation</string>
@@ -104,7 +99,7 @@
     </string-array>
     <string name="income_configure_profile">Quelle est votre revenu mensuel ?</string>
     <string name="income">Revenu</string>
-    <string name="responsible_configure_profile">Avez-vous des garants ?</string>
+    <string name="garantor_configure_profile">Avez-vous des garants ?</string>
     <string name="presentation_configure_profile">Qui êtes-vous ?</string>
     <string name="end_of_configuration">"Votre profil a été complété. Vous pouvez le modifier à tout moment dans les réglages."</string>
     <string name="finish_configuration">"Terminer la configuration."</string>

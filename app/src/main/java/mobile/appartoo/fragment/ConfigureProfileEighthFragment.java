@@ -15,27 +15,27 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
-import mobile.appartoo.adapter.ResponsiblesAdapter;
-import mobile.appartoo.model.ResponsibleModel;
+import mobile.appartoo.adapter.GarantorsAdapter;
+import mobile.appartoo.model.GarantorModel;
 
 /**
  * Created by alexandre on 16-07-12.
  */
 public class ConfigureProfileEighthFragment extends Fragment {
 
-    ArrayList<ResponsibleModel> responsibleModels;
-    ResponsiblesAdapter responsiblesAdapter;
-    ListView responsiblesListView;
-    ImageView addResponsibleButton;
+    ArrayList<GarantorModel> garantorModels;
+    GarantorsAdapter garantorsAdapter;
+    ListView garantorsListView;
+    ImageView addgarantorButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page8, container, false);
 
-        responsibleModels = new ArrayList<>();
-        responsiblesListView = (ListView) rootView.findViewById(R.id.responsibleList);
-        addResponsibleButton = (ImageView) rootView.findViewById(R.id.addResponsibleButton);
-        responsiblesAdapter = new ResponsiblesAdapter(getActivity(), responsibleModels);
+        garantorModels = new ArrayList<>();
+        garantorsListView = (ListView) rootView.findViewById(R.id.garantorList);
+        addgarantorButton = (ImageView) rootView.findViewById(R.id.addgarantorButton);
+        garantorsAdapter = new GarantorsAdapter(getActivity(), garantorModels);
         return rootView;
     }
 
@@ -43,26 +43,26 @@ public class ConfigureProfileEighthFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        responsiblesListView.setAdapter(responsiblesAdapter);
+        garantorsListView.setAdapter(garantorsAdapter);
 
-        addResponsibleButton.setOnClickListener(new View.OnClickListener() {
+        addgarantorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService (Context.LAYOUT_INFLATER_SERVICE);
-            final View dialogLayout = inflater.inflate(R.layout.alert_dialog_responsible, null);
+            final View dialogLayout = inflater.inflate(R.layout.alert_dialog_garantor, null);
             android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
             selectContractDialog.setTitle("Ajouter un garant");
             selectContractDialog.setView(dialogLayout);
             selectContractDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ResponsibleModel newResponsible = new ResponsibleModel();
-                    newResponsible.setFirstname(((EditText) dialogLayout.findViewById(R.id.responsibleRecordFirstName)).getText().toString());
-                    newResponsible.setLastname(((EditText) dialogLayout.findViewById(R.id.responsibleRecordLastName)).getText().toString());
-                    newResponsible.setMail(((EditText) dialogLayout.findViewById(R.id.responsibleRecordMail)).getText().toString());
-                    newResponsible.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.responsibleRecordIncome)).getText().toString()));
-                    responsibleModels.add(newResponsible);
-                    responsiblesAdapter.notifyDataSetChanged();
+                    GarantorModel newgarantor = new GarantorModel();
+                    newgarantor.setFirstname(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
+                    newgarantor.setLastname(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
+                    newgarantor.setMail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
+                    newgarantor.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString()));
+                    garantorModels.add(newgarantor);
+                    garantorsAdapter.notifyDataSetChanged();
                 }
             });
             selectContractDialog.setNegativeButton("Annuler", null);
