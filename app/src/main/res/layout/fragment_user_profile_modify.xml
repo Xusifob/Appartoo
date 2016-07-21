@@ -52,21 +52,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <EditText
+                    android:singleLine="true"
+                    android:inputType="textPersonName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/lastname"
                     android:layout_weight="1"/>
                 <EditText
+                    android:singleLine="true"
+                    android:inputType="textPersonName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/firstName"
                     android:layout_weight="1"/>
             </LinearLayout>
             <EditText
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
                 android:hint="@string/phone"/>
             <EditText
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/mail"/>

@@ -30,6 +30,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/firstname_signup" />
                 <EditText
+                    android:singleLine="true"
                     android:id="@+id/signupFirstName"
                     android:layout_width="200dp"
                     android:inputType="textPersonName"/>
@@ -42,6 +43,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/lastname_signup"/>
                 <EditText
+                    android:singleLine="true"
                     android:id="@+id/signupLastName"
                     android:layout_width="200dp"
                     android:inputType="textPersonName"/>
@@ -54,6 +56,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/mail_signup" />
                 <EditText
+                    android:singleLine="true"
                     android:layout_width="200dp"
                     android:inputType="textEmailAddress"
                     android:id="@+id/signUpMail"/>
@@ -66,6 +69,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/birthdate_signup" />
                 <EditText
+                    android:singleLine="true"
                     android:layout_width="200dp"
                     android:id="@+id/signUpBirthdate"
                     android:onClick="openDatePicker"
@@ -80,6 +84,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/password_signup" />
                 <EditText
+                    android:singleLine="true"
                     android:layout_width="200dp"
                     android:inputType="textPassword"
                     android:id="@+id/signUpPassword"/>
@@ -92,6 +97,7 @@
                     android:gravity="center_vertical|right"
                     android:text="@string/confirm_password_signup" />
                 <EditText
+                    android:singleLine="true"
                     android:layout_width="200dp"
                     android:inputType="textPassword"
                     android:id="@+id/signUpPasswordConfirm"/>

@@ -1,5 +1,6 @@
 package mobile.appartoo.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +41,7 @@ public class DrawerListView extends NonScrollableListView {
             defineDrawerMenu(context);
         }
     }
+
     public DrawerListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if(!isInEditMode()) {
@@ -84,9 +86,14 @@ public class DrawerListView extends NonScrollableListView {
                 break;
             case 2:
                 sharedPreferences.edit().remove("token").commit();
+                ((Activity) context).finish();
+
                 intent = new Intent(context, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
+
                 break;
             default:
                 break;

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@android:color/background_light">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,14 +12,17 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/searchFirstField">
         <ImageView
             android:layout_margin="5dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:adjustViewBounds="true"
             android:id="@+id/placeLogo"
             android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
             android:src="@drawable/marker"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
@@ -33,14 +37,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_below="@id/searchFirstField"
         android:id="@+id/searchSecondField">
         <ImageView
-            android:layout_margin="7.5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/key"/>
@@ -53,52 +58,79 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_below="@id/searchSecondField"
-        android:id="@+id/searchThirdField">
-        <ImageView
-            android:layout_margin="7.5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/money"/>
-        <TextView
-            android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/viewMoreOptions"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/searchThirdField"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+            <ImageView
+                android:layout_margin="5dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/money"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:gravity="center|right"
+                android:id="@+id/searchRangeMinValue"
+                android:text="0"/>
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/searchOfferPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:barHeight="2dp"
+                app:showLabels="false"
+                app:absoluteMaxValue="2000"
+                app:absoluteMinValue="0"
+                app:valuesAboveThumbs="false" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:gravity="center|left"
+                android:id="@+id/searchRangeMaxValue"
+                android:text="2000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:gravity="center|right"
-            android:id="@+id/searchRangeMinValue"
-            android:text="0"/>
-        <org.florescu.android.rangeseekbar.RangeSeekBar
-            android:id="@+id/searchOfferPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:barHeight="2dp"
-            app:showLabels="false"
-            app:absoluteMaxValue="2000"
-            app:absoluteMinValue="0"
-            app:valuesAboveThumbs="false" />
-        <TextView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:gravity="center|left"
-            android:id="@+id/searchRangeMaxValue"
-            android:text="2000"/>
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Du"/>
+            <View
+                android:layout_width="10dp"
+                android:layout_height="0dp" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Au"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_margin="10dp"
-        android:layout_below="@id/searchThirdField">
+        android:layout_margin="10dp">
         <Button
             style="@style/ButtonSalmon"
+            android:id="@+id/buttonMoreOptions"
             android:text="Plus d'options"
             android:layout_weight="1"/>
         <View
@@ -110,4 +142,4 @@
             android:text="Rechercher"
             android:layout_weight="1"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
