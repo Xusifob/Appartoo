@@ -76,8 +76,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="@string/go_further"
-        android:onClick="finishSignup"
-        android:id="@+id/signUpButton"
+        android:onClick="finishSignUp"
+        android:id="@+id/buttonFinishSignUp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_square_salmon" />

@@ -18,12 +18,12 @@ import mobile.appartoo.model.OfferModel;
 /**
  * Created by alexandre on 16-07-05.
  */
-public class OfferAdapter extends BaseAdapter {
+public class OffersAdapter extends BaseAdapter {
 
     private ArrayList<OfferModel> offerModels;
     private LayoutInflater layoutInflater;
 
-    public OfferAdapter(Context context, ArrayList<OfferModel> om) {
+    public OffersAdapter(Context context, ArrayList<OfferModel> om) {
         offerModels = om;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -46,11 +46,12 @@ public class OfferAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-
         ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.list_item_offers, null);
+
             holder = new ViewHolder();
+
             holder.owner = (TextView) convertView.findViewById(R.id.offerOwner);
             holder.city = (TextView) convertView.findViewById(R.id.offerCity);
             holder.rooms = (TextView) convertView.findViewById(R.id.offerRooms);
@@ -58,12 +59,11 @@ public class OfferAdapter extends BaseAdapter {
             holder.price = (TextView) convertView.findViewById(R.id.offerPrice);
             holder.flatThumbnail = (ImageView) convertView.findViewById(R.id.offerFlatImage);
             holder.ownerThumbnail = (ImageView) convertView.findViewById(R.id.offerOwnerImage);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        System.out.println(new Gson().toJson(offerModels.get(position)));
 
         OfferModel offerModel = offerModels.get(position);
 

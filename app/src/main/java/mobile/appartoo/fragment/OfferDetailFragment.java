@@ -48,7 +48,7 @@ public class OfferDetailFragment extends Fragment {
         imagesPager.setAdapter(imagesAdapter);
         offer = (OfferModel) getActivity().getIntent().getSerializableExtra("offer");
 
-        populateView();
+        //populateView();
     }
 
     private void populateView(){

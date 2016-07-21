@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.OfferDetailActivity;
-import mobile.appartoo.adapter.OfferAdapter;
+import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
@@ -146,12 +146,9 @@ public class OfferListFragment extends Fragment {
     }
 
     private void populateView(OfferModel[] offers) {
-        for(OfferModel o : offers) {
-
-        }
         offersList.clear();
         offersList.addAll(Arrays.asList(offers));
-        OfferAdapter offerAdapter = new OfferAdapter(getActivity(), offersList);
+        OffersAdapter offerAdapter = new OffersAdapter(getActivity(), offersList);
         offersListView.setAdapter(offerAdapter);
         offerAdapter.notifyDataSetChanged();
     }

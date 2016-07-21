@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@android:color/background_light">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_alignParentTop="true"
+        android:id="@+id/searchFirstField">
         <ImageView
             android:layout_margin="5dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:adjustViewBounds="true"
+            android:id="@+id/placeLogo"
             android:scaleType="centerCrop"
             android:src="@drawable/marker"/>
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/searchPlace"
+            android:layout_toRightOf="@+id/placeLogo"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:completionThreshold="1"
             android:hint="Où recherchez-vous ?" />
-    </LinearLayout>
-
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_below="@id/searchFirstField"
+        android:id="@+id/searchSecondField">
         <ImageView
             android:layout_margin="7.5dp"
             android:layout_width="30dp"
@@ -40,15 +47,17 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="Mots-clés" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_weight="1">
+        android:layout_below="@id/searchSecondField"
+        android:id="@+id/searchThirdField">
         <ImageView
             android:layout_margin="7.5dp"
             android:layout_width="30dp"
@@ -56,19 +65,38 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/money"/>
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:gravity="center|right"
+            android:id="@+id/searchRangeMinValue"
+            android:text="0"/>
         <org.florescu.android.rangeseekbar.RangeSeekBar
             android:id="@+id/searchOfferPrice"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:barHeight="2dp"
+            app:showLabels="false"
             app:absoluteMaxValue="2000"
-            app:absoluteMinValue="0"/>
+            app:absoluteMinValue="0"
+            app:valuesAboveThumbs="false" />
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:gravity="center|left"
+            android:id="@+id/searchRangeMaxValue"
+            android:text="2000"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:layout_margin="10dp"
+        android:layout_below="@id/searchThirdField">
         <Button
             style="@style/ButtonSalmon"
             android:text="Plus d'options"
@@ -82,4 +110,4 @@
             android:text="Rechercher"
             android:layout_weight="1"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

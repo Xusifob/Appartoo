@@ -107,7 +107,7 @@ public class SignUpActivity extends FragmentActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         restService = retrofit.create(RestService.class);
-        signUpButton = (Button) findViewById(R.id.signUpButton);
+        signUpButton = (Button) findViewById(R.id.buttonFinishSignUp);
 
         super.onStart();
     }
@@ -121,8 +121,9 @@ public class SignUpActivity extends FragmentActivity {
         }
     }
 
-    public void finishSignup(View v){
-        //When form is valid,
+    public void finishSignUp(View v){
+        signUpButton = (Button) v;
+
         if(isFormValid()){
 
             signUpButton.setEnabled(false);
@@ -158,8 +159,6 @@ public class SignUpActivity extends FragmentActivity {
             });
 
         //If the form isn't valid, prevent the user.
-        } else {
-            Toast.makeText(getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
         }
     }
 

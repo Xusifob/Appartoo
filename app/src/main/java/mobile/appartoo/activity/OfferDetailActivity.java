@@ -88,7 +88,7 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        //Define the latitude and longitude to user with the map fragment
+        //Define the latitude and longitude to use with the map fragment
         LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());
 
         //Add the marker to the map
