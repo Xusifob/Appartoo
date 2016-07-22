@@ -58,8 +58,7 @@ public class LoginActivity extends Activity {
 
         //If the token exist, launch the main activity
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            retrieveUserProfile();
         }
 
         //Build a retrofit request
@@ -141,11 +140,11 @@ public class LoginActivity extends Activity {
 
                             if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
                                 retrieveUserProfile();
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
                             }
 
-                            //Start the main activity
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
 
                         } catch (IOException e) {
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
@@ -198,7 +197,7 @@ public class LoginActivity extends Activity {
                     try {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         Appartoo.LOGGED_USER_PROFILE = new Gson().fromJson(responseBody, UserWithProfileModel.class);
-                        System.out.println(Appartoo.LOGGED_USER_PROFILE.toString());
+
                     } catch (IOException e) {
                         Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                     }
@@ -207,12 +206,18 @@ public class LoginActivity extends Activity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
                 }
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
         });
     }

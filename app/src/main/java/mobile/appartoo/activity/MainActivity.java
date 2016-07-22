@@ -15,10 +15,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.OfferListFragment;
 import mobile.appartoo.fragment.SearchOfferFragment;
+import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.view.DrawerListView;
 
 public class MainActivity extends FragmentActivity {
@@ -57,6 +59,10 @@ public class MainActivity extends FragmentActivity {
 
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
+
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
+        }
     }
 
     @Override
