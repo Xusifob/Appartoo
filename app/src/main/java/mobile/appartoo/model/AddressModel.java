@@ -2,13 +2,14 @@ package mobile.appartoo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by alexandre on 16-07-22.
  */
-public class AddressModel {
+public class AddressModel implements Serializable{
     @SerializedName("@id")
     private String id;
     private AddressCountryModel addressCountry;

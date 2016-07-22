@@ -141,6 +141,7 @@ public class LoginActivity extends Activity {
                             if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
                                 retrieveUserProfile();
                             } else {
+                                System.out.println("Starting Activity 1");
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
@@ -180,6 +181,7 @@ public class LoginActivity extends Activity {
      * @param v - the button to launch the activity
      */
     public void signUp(View v){
+        System.out.println("Starting Activity SignUp");
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
@@ -207,6 +209,7 @@ public class LoginActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
                 }
 
+                System.out.println("Starting Activity 2");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
@@ -216,6 +219,7 @@ public class LoginActivity extends Activity {
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
 
+                System.out.println("Starting Activity 3");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }

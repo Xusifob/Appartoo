@@ -19,8 +19,9 @@ public interface RestService {
     @POST("/login")
     Call<ResponseBody> postLogIn(@Field("username") String username, @Field("password") String password);
 
+    @FormUrlEncoded
     @POST("/register")
-    Call<ResponseBody> postUser(@Body SignUpModel signUpModel);
+    Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
 
     @GET("/offers")
     Call<ResponseBody> getOffers();

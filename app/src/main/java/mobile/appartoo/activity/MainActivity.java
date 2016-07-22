@@ -37,6 +37,8 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("CREATION");
+
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
@@ -73,7 +75,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if(!offersFragment.isVisible()){
+        if(searchOfferFragment.isVisible()){
             getSupportFragmentManager().beginTransaction().replace(R.id.mainFragments, offersFragment).commit();
         } else {
             finish();

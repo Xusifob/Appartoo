@@ -63,6 +63,7 @@ public class SignUpActivity extends FragmentActivity {
     private RestService restService;
     private Button signUpButton;
     private SharedPreferences sharedPreferences;
+    private SignUpModel newUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,42 +122,75 @@ public class SignUpActivity extends FragmentActivity {
     public void finishSignUp(View v){
         signUpButton = (Button) v;
 
-        SignUpModel newUser = getSignUpModel();
+        newUser = getSignUpModel();
         if(getSignUpModel() != null){
 
-//            signUpButton.setEnabled(false);
-//            Call<ResponseBody> callback = restService.postUser(newUser);
-//
-//            //Handle the server response
-//            callback.enqueue(new Callback<ResponseBody>() {
-//                @Override
-//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                    //If the login is successful
-//                    if(response.isSuccessful()) {
-//                        try {
-//                            String responseBody = IOUtils.toString(response.body().charStream());
-//                            JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
-//
-//                            startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
-//
-//                        } catch (IOException e) {
-//                            Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
-//                    }
-//                    signUpButton.setEnabled(true);
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                    t.printStackTrace();
-//                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
-//                    signUpButton.setEnabled(true);
-//                }
-//            });
-            startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
+            signUpButton.setEnabled(false);
+            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
+
+            //Handle the server response
+            callback.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    //If the login is successful
+                    if(response.isSuccessful()) {
+                        try {
+                            String responseBody = IOUtils.toString(response.body().charStream());
+                            System.out.println(responseBody.toString());
+                            logUser();
+
+                        } catch (IOException e) {
+                            Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        System.out.println(response.code());
+                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
+                    signUpButton.setEnabled(true);
+                }
+            });
         }
+    }
+
+    private void logUser() {
+        System.out.println("Logging user...");
+        Call<ResponseBody> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
+
+        newCallback.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    try {
+                        String responseBody = IOUtils.toString(response.body().charStream());
+                        JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
+                        Appartoo.TOKEN = jsonResponse.get("token").getAsString();
+                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
+
+                        startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
+                    } catch (IOException e) {
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    finish();
+                    Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                }
+                signUpButton.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                finish();
+                Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                signUpButton.setEnabled(true);
+            }
+        });
     }
 
     /**
