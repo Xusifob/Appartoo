@@ -27,6 +27,7 @@ public class DrawerListView extends NonScrollableListView {
     private Context context;
     private DrawerLayout drawerLayout;
     private SharedPreferences sharedPreferences;
+    private static String userName;
 
     public DrawerListView(Context context) {
         super(context);

@@ -10,33 +10,28 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/contract_configure_profile"
-        android:gravity="center"
+        android:text="@string/congratulations"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textView" />
+        android:layout_marginTop="40dp"/>
 
-    <EditText
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:hint="@string/contract"
-        android:singleLine="true"
-        android:focusable="false"
-        android:id="@+id/contractConfigureProfile"/>
+        <TextView
+            style="@style/Paragraph"
+            android:gravity="center"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/colorSalmon"
+            android:text="@string/end_of_configuration"
+            android:layout_centerInParent="true"/>
 
     <Button
         style="@style/ButtonSalmon"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/go_further"
-        android:onClick="nextView"
+        android:text="@string/go_to_offer_list"
         android:layout_alignParentBottom="true"
-        android:prompt="@string/contract"
         android:layout_marginBottom="20dp"
+        android:onClick="nextView"
         android:background="@drawable/rounded_square_salmon" />
-
 </RelativeLayout>

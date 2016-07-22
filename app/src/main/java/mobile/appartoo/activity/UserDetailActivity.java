@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;
+import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.view.DrawerListView;
 
 /**
@@ -46,6 +48,10 @@ public class UserDetailActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
+
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
+        }
     }
 
     @Override

@@ -11,21 +11,24 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.ConfigureProfileEleventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFifthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
 import mobile.appartoo.fragment.ConfigureProfileFourthFragment;
-import mobile.appartoo.fragment.ConfigureProfileNinethFragment;
-import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
 import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
-import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
-import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
 import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
+import mobile.appartoo.fragment.ConfigureProfileTwelfthFragment;
+import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
+import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
+import mobile.appartoo.fragment.ConfigureProfileNinthFragment;
+import mobile.appartoo.fragment.ConfigureProfileThirteenthFragment;
+import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
 import mobile.appartoo.view.DisableLastSwipeViewPager;
 
 public class ConfigureProfileActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 10;
+    private static final int NUM_PAGES = 13;
     private DisableLastSwipeViewPager pager;
     private PagerAdapter pagerAdapter;
 
@@ -116,8 +119,11 @@ public class ConfigureProfileActivity extends FragmentActivity {
                 case 5: return new ConfigureProfileSixthFragment();
                 case 6: return new ConfigureProfileSeventhFragment();
                 case 7: return new ConfigureProfileEighthFragment();
-                case 8: return new ConfigureProfileNinethFragment();
+                case 8: return new ConfigureProfileNinthFragment();
                 case 9: return new ConfigureProfileTenthFragment();
+                case 10: return new ConfigureProfileEleventhFragment();
+                case 11: return new ConfigureProfileTwelfthFragment();
+                case 12: return new ConfigureProfileThirteenthFragment();
                 default: return new ConfigureProfileFirstFragment();
             }
         }

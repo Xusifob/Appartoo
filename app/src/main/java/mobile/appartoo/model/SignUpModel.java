@@ -6,17 +6,16 @@ package mobile.appartoo.model;
 public class SignUpModel {
     private String email;
     private String password;
-    private String facebookId;
+    private String givenName;
+    private String familyName;
+    private String birthdate;
 
-    public SignUpModel(String email, String password, String facebookId) {
+    public SignUpModel(String email, String password, String givenName, String familyName, String birthdate) {
         this.email = email;
         this.password = password;
-        this.facebookId = facebookId;
-    }
-
-    public SignUpModel(String email, String password) {
-        this.email = email;
-        this.password = password;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.birthdate = birthdate;
     }
 
     public String getEmail() {
@@ -35,11 +34,27 @@ public class SignUpModel {
         this.password = password;
     }
 
-    public String getFacebookId() {
-        return facebookId;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 }

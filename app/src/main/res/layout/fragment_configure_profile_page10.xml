@@ -10,28 +10,33 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/congratulations"
+        android:text="@string/income_configure_profile"
+        android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="40dp"
+        android:id="@+id/textView" />
 
-        <TextView
-            style="@style/Paragraph"
-            android:gravity="center"
-            android:paddingRight="30dp"
-            android:paddingLeft="30dp"
-            android:paddingBottom="10dp"
-            android:textColor="@color/colorSalmon"
-            android:text="@string/end_of_configuration"
-            android:layout_centerInParent="true"/>
+    <EditText
+        android:layout_margin="20dp"
+        android:singleLine="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:inputType="numberDecimal"
+        android:gravity="center"
+        android:hint="@string/income"
+        android:id="@+id/incomeConfigureProfile"/>
 
     <Button
         style="@style/ButtonSalmon"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/go_to_offer_list"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:text="@string/go_further"
         android:onClick="nextView"
+        android:layout_alignParentBottom="true"
+        android:prompt="@string/contract"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_square_salmon" />
+
 </RelativeLayout>

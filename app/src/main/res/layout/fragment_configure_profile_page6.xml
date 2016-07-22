@@ -10,23 +10,62 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/contract_configure_profile"
+        android:text="@string/situation_configure_profile"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textView" />
+        android:layout_marginTop="40dp"/>
 
-    <EditText
-        android:layout_margin="20dp"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:hint="@string/contract"
-        android:singleLine="true"
-        android:focusable="false"
-        android:id="@+id/contractConfigureProfile"/>
+        android:orientation="horizontal"
+        android:layout_centerInParent="true">
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/toggle_rounded_bordered_square"
+            android:layout_marginRight="10dp"
+            android:onClick="toggleView">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:layout_centerInParent="true"
+                android:src="@drawable/student"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="2dp"
+                android:textColor="@color/colorSalmon"
+                android:text="@string/student" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/toggle_rounded_bordered_square"
+            android:layout_marginRight="10dp"
+            android:onClick="toggleView">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:layout_centerInParent="true"
+                android:src="@drawable/worker"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="2dp"
+                android:textColor="@color/colorSalmon"
+                android:text="@string/worker"/>
+        </RelativeLayout>
+    </LinearLayout>
 
     <Button
         style="@style/ButtonSalmon"
@@ -35,8 +74,6 @@
         android:text="@string/go_further"
         android:onClick="nextView"
         android:layout_alignParentBottom="true"
-        android:prompt="@string/contract"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_square_salmon" />
-
 </RelativeLayout>

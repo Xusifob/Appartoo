@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import mobile.appartoo.R;
 import mobile.appartoo.adapter.WorkaroundMapFragment;
 import mobile.appartoo.model.OfferModel;
+import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.view.DrawerListView;
 
 /**
@@ -67,6 +69,10 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
                 scrollView.requestDisallowInterceptTouchEvent(true);
             }
         });
+
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
+        }
     }
 
     @Override

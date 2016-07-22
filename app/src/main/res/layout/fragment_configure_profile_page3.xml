@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/situation_configure_profile"
+        android:text="@string/gender_signup"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -24,16 +24,19 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:clickable="true"
             android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView">
+            android:onClick="toggleView"
+            android:id="@+id/signUpMan"
+            android:tag="man">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-                android:src="@drawable/student"/>
+                android:src="@drawable/male"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,21 +44,24 @@
                 android:layout_centerHorizontal="true"
                 android:padding="2dp"
                 android:textColor="@color/colorSalmon"
-                android:text="@string/student" />
+                android:text="@string/man" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:clickable="true"
             android:background="@drawable/toggle_rounded_bordered_square"
             android:layout_marginRight="10dp"
-            android:onClick="toggleView">
+            android:onClick="toggleView"
+            android:id="@+id/signUpWoman"
+            android:tag="woman">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:layout_centerInParent="true"
-                android:src="@drawable/worker"/>
+                android:src="@drawable/female"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,7 +69,7 @@
                 android:layout_centerHorizontal="true"
                 android:padding="2dp"
                 android:textColor="@color/colorSalmon"
-                android:text="@string/worker"/>
+                android:text="@string/woman" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -23,6 +23,7 @@
     <string name="smoker">Fumeur</string>
     <string name="non_smoker">Non fumeur</string>
     <string name="student">Etudiant</string>
+    <string name="birthdate">Date de naissance</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -31,12 +32,7 @@
     <string name="go_further">Continuer</string>
     <string name="start">Commencer</string>
     <string name="ask_informations">Entrez vos informations</string>
-    <string name="firstname_signup">Prénom : </string>
-    <string name="lastname_signup">Nom : </string>
-    <string name="mail_signup">Email : </string>
-    <string name="password_signup">Mot de passe : </string>
-    <string name="confirm_password_signup">Confirmez le mot de passe : </string>
-    <string name="birthdate_signup">Date de naissance : </string>
+    <string name="confirm_password_signup">Confirmez le mot de passe</string>
     <string name="gender_signup">Quel est votre sexe ?</string>
     <string name="status_signup">Quel est votre statut ?</string>
     <string name="smoker_signup">Fumez-vous ?</string>

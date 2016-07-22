@@ -20,5 +20,4 @@ public class SignUpFifthFragment extends Fragment {
 
         return rootView;
     }
-
 }

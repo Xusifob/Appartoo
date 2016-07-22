@@ -19,7 +19,7 @@ public interface RestService {
     @POST("/login")
     Call<ResponseBody> postLogIn(@Field("username") String username, @Field("password") String password);
 
-    @POST("/users")
+    @POST("/register")
     Call<ResponseBody> postUser(@Body SignUpModel signUpModel);
 
     @GET("/offers")

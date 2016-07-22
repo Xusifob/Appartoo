@@ -10,12 +10,11 @@
 
     <TextView
         style="@style/TitleSalmon"
-        android:text="@string/income_configure_profile"
+        android:text="@string/company_configure_profile"
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textView" />
+        android:layout_marginTop="40dp"/>
 
     <EditText
         android:layout_margin="20dp"
@@ -23,10 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:inputType="numberDecimal"
         android:gravity="center"
-        android:hint="@string/income"
-        android:id="@+id/incomeConfigureProfile"/>
+        android:hint="@string/company"/>
 
     <Button
         style="@style/ButtonSalmon"
@@ -35,8 +32,6 @@
         android:text="@string/go_further"
         android:onClick="nextView"
         android:layout_alignParentBottom="true"
-        android:prompt="@string/contract"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_square_salmon" />
-
 </RelativeLayout>

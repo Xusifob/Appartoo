@@ -9,11 +9,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.UserProfileMainFragment;
 import mobile.appartoo.fragment.UserProfileModifyFragment;
 import mobile.appartoo.fragment.UserProfileSettingsFragment;
+import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.view.DrawerListView;
 
 /**
@@ -55,6 +57,10 @@ public class UserProfileActivity extends FragmentActivity {
         mainFragment = new UserProfileMainFragment();
         modifyFragment = new UserProfileModifyFragment();
         settingsFragment = new UserProfileSettingsFragment();
+
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
+        }
 
         fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
     }

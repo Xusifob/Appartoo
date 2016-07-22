@@ -56,17 +56,17 @@ public class LoginActivity extends Activity {
         //Retrieve the user token
         Appartoo.TOKEN = sharedPreferences.getString("token", "");
 
-        //If the token exist, launch the main activity
-        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-            retrieveUserProfile();
-        }
-
         //Build a retrofit request
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         restService = retrofit.create(RestService.class);
+
+        //If the token exist, launch the main activity
+        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            retrieveUserProfile();
+        }
     }
 
     /**
