@@ -3,41 +3,37 @@ package mobile.appartoo.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by alexandre on 16-07-05.
+ * Created by alexandre on 16-07-22.
  */
 public class UserModel implements Serializable {
-    private Boolean isSmoker;
-    private Boolean inRelationship;
-    private Double income;
-    private Date birthDate;
-
     @SerializedName("@id")
     private String id;
-    private String user;
+    private Boolean isSmoker;
+    private Boolean inRelationship;
     private String society;
     private String function;
     private String contract;
-    private String plus;
+    private Integer plus;
+    private Double income;
+    private AddressModel address;
+    private Date birthDate;
     private String description;
     private String familyName;
     private String gender;
-    private String telephone;
     private String givenName;
     private ImageModel image;
-    private AddressModel address;
-    private ProfileModel profileModel;
+    private String telephone;
 
-    public ProfileModel getProfileModel() {
-        return profileModel;
+    public String getId() {
+        return id;
     }
 
-    public void setProfileModel(ProfileModel profileModel) {
-        this.profileModel = profileModel;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Boolean getSmoker() {
@@ -54,38 +50,6 @@ public class UserModel implements Serializable {
 
     public void setInRelationship(Boolean inRelationship) {
         this.inRelationship = inRelationship;
-    }
-
-    public Double getIncome() {
-        return income;
-    }
-
-    public void setIncome(Double income) {
-        this.income = income;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getSociety() {
@@ -112,12 +76,36 @@ public class UserModel implements Serializable {
         this.contract = contract;
     }
 
-    public String getPlus() {
+    public Integer getPlus() {
         return plus;
     }
 
-    public void setPlus(String plus) {
+    public void setPlus(Integer plus) {
         this.plus = plus;
+    }
+
+    public Double getIncome() {
+        return income;
+    }
+
+    public void setIncome(Double income) {
+        this.income = income;
+    }
+
+    public AddressModel getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressModel address) {
+        this.address = address;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getDescription() {
@@ -136,14 +124,6 @@ public class UserModel implements Serializable {
         this.familyName = familyName;
     }
 
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -152,12 +132,12 @@ public class UserModel implements Serializable {
         this.gender = gender;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
     public ImageModel getImage() {
@@ -168,12 +148,12 @@ public class UserModel implements Serializable {
         this.image = image;
     }
 
-    public AddressModel getAddress() {
-        return address;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setAddress(AddressModel address) {
-        this.address = address;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public int getAge() {
@@ -187,25 +167,25 @@ public class UserModel implements Serializable {
         return age;
     }
 
+    @Override
     public String toString() {
-        String str = "UserModel: {isSmoker: " + isSmoker + ", " +
-                "inRelationship: " + inRelationship + ", " +
-                "income: " + income + ", " +
-                "birthDate: " + birthDate + ", " +
-                "id: " + id + ", " +
-                "user: " + user + ", " +
-                "society: " + society + ", " +
-                "function: " + function + ", " +
-                "contract: " + contract + ", " +
-                "plus: " + plus + ", " +
-                "description: " + description + ", " +
-                "familyName: " + familyName + ", " +
-                "gender: " + gender + ", " +
-                "telephone: " + telephone + ", " +
-                "givenName: " + givenName + ", " +
-                "image: " + image.toString() + ", " +
-                "address: " + address.toString() + "}";
-
-        return str;
+        return "UserModel{" +
+                "id='" + id + '\'' +
+                ", isSmoker=" + isSmoker +
+                ", inRelationship=" + inRelationship +
+                ", society='" + society + '\'' +
+                ", function='" + function + '\'' +
+                ", contract='" + contract + '\'' +
+                ", plus=" + plus +
+                ", income=" + income +
+                ", address=" + address +
+                ", birthDate=" + birthDate +
+                ", description='" + description + '\'' +
+                ", familyName='" + familyName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", image=" + image +
+                ", telephone='" + telephone + '\'' +
+                '}';
     }
 }

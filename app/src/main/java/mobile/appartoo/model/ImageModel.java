@@ -47,6 +47,7 @@ public class ImageModel implements Serializable {
         this.thumbnail = thumbnail;
     }
 
+    @Override
     public String toString(){
         String str;
 

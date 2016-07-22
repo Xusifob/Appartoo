@@ -20,6 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
+import mobile.appartoo.model.UserModel;
+import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
 import okhttp3.ResponseBody;
@@ -137,6 +139,10 @@ public class LoginActivity extends Activity {
                             //Stock the token in shared preferences
                             sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
 
+                            if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                                retrieveUserProfile();
+                            }
+
                             //Start the main activity
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
@@ -177,6 +183,38 @@ public class LoginActivity extends Activity {
     public void signUp(View v){
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
+    }
+
+    private void retrieveUserProfile(){
+        Call<ResponseBody> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+
+        //Handle the server response
+        callback.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                //If the login is successful
+                if(response.isSuccessful()) {
+                    try {
+                        String responseBody = IOUtils.toString(response.body().charStream());
+                        Appartoo.LOGGED_USER_PROFILE = new Gson().fromJson(responseBody, UserWithProfileModel.class);
+                        System.out.println(Appartoo.LOGGED_USER_PROFILE.toString());
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                    }
+
+                //If the user didn't send the right credentials
+                } else {
+                    Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

@@ -125,7 +125,7 @@ public class OfferListFragment extends Fragment {
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Erreur dans le chargement des offres.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     System.out.println("Est-ce que le serveur est en ligne ?");

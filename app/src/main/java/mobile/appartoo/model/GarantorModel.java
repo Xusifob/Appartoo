@@ -40,4 +40,14 @@ public class GarantorModel {
     public void setIncome(float income) {
         this.income = income;
     }
+
+    @Override
+    public String toString() {
+        return "GarantorModel{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", mail='" + mail + '\'' +
+                ", income=" + income +
+                '}';
+    }
 }

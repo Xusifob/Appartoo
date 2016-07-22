@@ -1,19 +1,21 @@
 package mobile.appartoo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by alexandre on 16-07-20.
+ * Created by alexandre on 16-07-22.
  */
-public class ProfileModel implements Serializable {
-    private Boolean isSmoker;
+public class UserWithProfileModel extends UserModel implements Serializable {
+
     private Boolean isCook;
     private Boolean isMusician;
     private Boolean isSpendthrift;
     private Boolean isPartyGoer;
     private Boolean isLayabout;
-    private Boolean inRelationship;
     private Boolean isGeek;
     private Boolean isTraveller;
     private Boolean isGenerous;
@@ -22,28 +24,12 @@ public class ProfileModel implements Serializable {
     private Boolean isManiac;
     private Boolean acceptAnimal;
     private String relationshipStatus;
-    private String society;
-    private String function;
-    private String contract;
-    private String plus;
+    private SimpleUserModel user;
     private Boolean emailChecked;
-    private Double income;
-    private Date birthDate;
-    private String description;
-    private String familyName;
-    private String gender;
-    private String givenName;
+    private Integer percentCompleteProfile;
     private String honorificPrefix;
     private String jobTitle;
-    private String telephone;
-
-    public Boolean getSmoker() {
-        return isSmoker;
-    }
-
-    public void setSmoker(Boolean smoker) {
-        isSmoker = smoker;
-    }
+    private NationalityModel nationality;
 
     public Boolean getCook() {
         return isCook;
@@ -83,14 +69,6 @@ public class ProfileModel implements Serializable {
 
     public void setLayabout(Boolean layabout) {
         isLayabout = layabout;
-    }
-
-    public Boolean getInRelationship() {
-        return inRelationship;
-    }
-
-    public void setInRelationship(Boolean inRelationship) {
-        this.inRelationship = inRelationship;
     }
 
     public Boolean getGeek() {
@@ -157,36 +135,12 @@ public class ProfileModel implements Serializable {
         this.relationshipStatus = relationshipStatus;
     }
 
-    public String getSociety() {
-        return society;
+    public SimpleUserModel getUser() {
+        return user;
     }
 
-    public void setSociety(String society) {
-        this.society = society;
-    }
-
-    public String getFunction() {
-        return function;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
-    }
-
-    public String getContract() {
-        return contract;
-    }
-
-    public void setContract(String contract) {
-        this.contract = contract;
-    }
-
-    public String getPlus() {
-        return plus;
-    }
-
-    public void setPlus(String plus) {
-        this.plus = plus;
+    public void setUser(SimpleUserModel user) {
+        this.user = user;
     }
 
     public Boolean getEmailChecked() {
@@ -197,52 +151,12 @@ public class ProfileModel implements Serializable {
         this.emailChecked = emailChecked;
     }
 
-    public Double getIncome() {
-        return income;
+    public Integer getPercentCompleteProfile() {
+        return percentCompleteProfile;
     }
 
-    public void setIncome(Double income) {
-        this.income = income;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public void setPercentCompleteProfile(Integer percentCompleteProfile) {
+        this.percentCompleteProfile = percentCompleteProfile;
     }
 
     public String getHonorificPrefix() {
@@ -261,11 +175,36 @@ public class ProfileModel implements Serializable {
         this.jobTitle = jobTitle;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public NationalityModel getNationality() {
+        return nationality;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setNationality(NationalityModel nationality) {
+        this.nationality = nationality;
+    }
+
+    @Override
+    public String toString() {
+        return "UserWithProfileModel{" +
+                "isCook=" + isCook +
+                ", isMusician=" + isMusician +
+                ", isSpendthrift=" + isSpendthrift +
+                ", isPartyGoer=" + isPartyGoer +
+                ", isLayabout=" + isLayabout +
+                ", isGeek=" + isGeek +
+                ", isTraveller=" + isTraveller +
+                ", isGenerous=" + isGenerous +
+                ", isAnimalFriend=" + isAnimalFriend +
+                ", isMessy=" + isMessy +
+                ", isManiac=" + isManiac +
+                ", acceptAnimal=" + acceptAnimal +
+                ", relationshipStatus='" + relationshipStatus + '\'' +
+                ", user=" + user +
+                ", emailChecked=" + emailChecked +
+                ", percentCompleteProfile=" + percentCompleteProfile +
+                ", honorificPrefix='" + honorificPrefix + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", nationality=" + nationality +
+                '}';
     }
 }

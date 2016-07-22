@@ -2,17 +2,21 @@ package mobile.appartoo.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by alexandre on 16-07-06.
+ * Created by alexandre on 16-07-22.
  */
-public class AddressModel implements Serializable {
-
+public class AddressModel {
     @SerializedName("@id")
     private String id;
+    private AddressCountryModel addressCountry;
+    private String addressLocality;
+    private String addressRegion;
+    private String postalCode;
+    private String postOfficeBoxNumber;
+    private String streetAddress;
     private Double latitude;
     private Double longitude;
     private String name;
@@ -27,19 +31,67 @@ public class AddressModel implements Serializable {
         this.id = id;
     }
 
-    public double getLatitude() {
+    public AddressCountryModel getAddressCountry() {
+        return addressCountry;
+    }
+
+    public void setAddressCountry(AddressCountryModel addressCountry) {
+        this.addressCountry = addressCountry;
+    }
+
+    public String getAddressLocality() {
+        return addressLocality;
+    }
+
+    public void setAddressLocality(String addressLocality) {
+        this.addressLocality = addressLocality;
+    }
+
+    public String getAddressRegion() {
+        return addressRegion;
+    }
+
+    public void setAddressRegion(String addressRegion) {
+        this.addressRegion = addressRegion;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getPostOfficeBoxNumber() {
+        return postOfficeBoxNumber;
+    }
+
+    public void setPostOfficeBoxNumber(String postOfficeBoxNumber) {
+        this.postOfficeBoxNumber = postOfficeBoxNumber;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -78,13 +130,20 @@ public class AddressModel implements Serializable {
     }
 
     @Override
-    public String toString(){
-        String str = "AddressModel: {id: " + String.valueOf(id) + ", " +
-                "latitude: " + String.valueOf(latitude) + ", " +
-                "longitude: " + String.valueOf(longitude) + ", " +
-                "name: " + String.valueOf(name) + ", " +
-                "placeId: " + String.valueOf(placeId) + ", " +
-                "formattedAddress: " + String.valueOf(formattedAddress) + "}";
-        return str;
+    public String toString() {
+        return "AddressModel{" +
+                "id='" + id + '\'' +
+                ", addressCountry=" + addressCountry +
+                ", addressLocality='" + addressLocality + '\'' +
+                ", addressRegion='" + addressRegion + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", postOfficeBoxNumber='" + postOfficeBoxNumber + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", name='" + name + '\'' +
+                ", placeId='" + placeId + '\'' +
+                ", formattedAddress='" + formattedAddress + '\'' +
+                '}';
     }
 }

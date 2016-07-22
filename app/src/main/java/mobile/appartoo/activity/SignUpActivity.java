@@ -24,7 +24,6 @@ import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -32,15 +31,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
-import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
 import mobile.appartoo.fragment.SignUpFifthFragment;
 import mobile.appartoo.fragment.SignUpFirstFragment;
 import mobile.appartoo.fragment.SignUpFourthFragment;
 import mobile.appartoo.fragment.SignUpSecondFragment;
 import mobile.appartoo.fragment.SignUpThirdFragment;
-import mobile.appartoo.model.ProfileModel;
 import mobile.appartoo.model.SignUpModel;
-import mobile.appartoo.model.UserModel;
+import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
 import okhttp3.ResponseBody;
@@ -138,8 +135,8 @@ public class SignUpActivity extends FragmentActivity {
                         try {
                             String responseBody = IOUtils.toString(response.body().charStream());
                             JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
-                            Appartoo.LOGGED_USER.setId(jsonResponse.get("@id").getAsString());
                             logUser();
+                            startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
 
                         } catch (IOException e) {
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
@@ -163,6 +160,7 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     private void logUser() {
+        System.out.println("Logging user...");
         Call<ResponseBody> newCallback = restService.postLogIn(email, password);
 
         newCallback.enqueue(new Callback<ResponseBody>() {
@@ -173,12 +171,11 @@ public class SignUpActivity extends FragmentActivity {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
                         Appartoo.TOKEN = jsonResponse.get("token").getAsString();
-                        Appartoo.LOGGED_USER = new UserModel();
-                        Appartoo.LOGGED_USER.setProfileModel(new ProfileModel());
-
-                        setLoggedUser();
                         sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
-                        startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
+
+                        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                            retrieveUserProfile();
+                        }
                     } catch (IOException e) {
                         Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                     }
@@ -196,49 +193,37 @@ public class SignUpActivity extends FragmentActivity {
         });
     }
 
-    private void setLoggedUser() {
-        boolean man = findViewById(R.id.signUpMan).isSelected();
-        boolean single = findViewById(R.id.signUpSingle).isSelected();
-        boolean smoker = findViewById(R.id.signUpSmoker).isSelected();
-        String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
-        String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString();
-        String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
+    private void retrieveUserProfile(){
+        System.out.println("Retrieving profile user...");
+        Call<ResponseBody> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
 
-        Appartoo.LOGGED_USER.setGivenName(firstName);
-        Appartoo.LOGGED_USER.getProfileModel().setGivenName(firstName);
-        Appartoo.LOGGED_USER.setFamilyName(lastName);
-        Appartoo.LOGGED_USER.getProfileModel().setFamilyName(lastName);
+        //Handle the server response
+        callback.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-        try {
-            Appartoo.LOGGED_USER.setBirthDate(dateFormat.parse(birthdate));
-            Appartoo.LOGGED_USER.getProfileModel().setBirthDate(dateFormat.parse(birthdate));
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
+                //If the login is successful
+                if(response.isSuccessful()) {
+                    try {
+                        String responseBody = IOUtils.toString(response.body().charStream());
+                        Appartoo.LOGGED_USER_PROFILE = new Gson().fromJson(responseBody, UserWithProfileModel.class);
+                        System.out.println(Appartoo.LOGGED_USER_PROFILE.toString());
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                    }
 
-        if(man) {
-            Appartoo.LOGGED_USER.setGender("Male");
-            Appartoo.LOGGED_USER.getProfileModel().setGender("Male");
-        } else {
-            Appartoo.LOGGED_USER.setGender("Female");
-            Appartoo.LOGGED_USER.getProfileModel().setGender("Female");
-        }
+                //If the user didn't send the right credentials
+                } else {
+                    Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        if(single) {
-            Appartoo.LOGGED_USER.setInRelationship(false);
-            Appartoo.LOGGED_USER.getProfileModel().setInRelationship(false);
-        } else {
-            Appartoo.LOGGED_USER.setInRelationship(true);
-            Appartoo.LOGGED_USER.getProfileModel().setInRelationship(true);
-        }
-
-        if(smoker) {
-            Appartoo.LOGGED_USER.setSmoker(true);
-            Appartoo.LOGGED_USER.getProfileModel().setSmoker(true);
-        } else {
-            Appartoo.LOGGED_USER.setSmoker(false);
-            Appartoo.LOGGED_USER.getProfileModel().setSmoker(false);
-        }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

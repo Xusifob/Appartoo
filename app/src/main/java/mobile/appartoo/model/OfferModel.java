@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -12,49 +13,22 @@ import java.util.Date;
  */
 public class OfferModel implements Serializable {
 
-    private int price;
-    private int rooms;
-    private int conversationId;
-
     @SerializedName("@id")
     private String id;
-    private String description;
-    private String name;
-    private String keyword;
-    private AddressModel address;
-    private ArrayList<ImageModel> images;
-    private ArrayList<UserModel> resident;
-    private UserModel owner;
     private Date availabilityEnds;
     private Date availabilityStarts;
+    private String description;
+    private String name;
+    private Integer price;
+    private UserModel owner;
+    private AddressModel address;
     private Boolean isActive;
+    private ArrayList<ImageModel> images;
+    private Integer rooms;
     private Boolean isSmoker;
     private Boolean acceptAnimal;
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(int rooms) {
-        this.rooms = rooms;
-    }
-
-    public int getConversationId() {
-        return conversationId;
-    }
-
-    public void setConversationId(int conversationId) {
-        this.conversationId = conversationId;
-    }
+    private String keyword;
+    private ArrayList<UserModel> resident;
 
     public String getId() {
         return id;
@@ -62,54 +36,6 @@ public class OfferModel implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public AddressModel getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressModel address) {
-        this.address = address;
-    }
-
-    public ArrayList<ImageModel> getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList<ImageModel> images) {
-        this.images = images;
-    }
-
-    public UserModel getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserModel owner) {
-        this.owner = owner;
     }
 
     public Date getAvailabilityEnds() {
@@ -128,12 +54,68 @@ public class OfferModel implements Serializable {
         this.availabilityStarts = availabilityStarts;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public UserModel getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserModel owner) {
+        this.owner = owner;
+    }
+
+    public AddressModel getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressModel address) {
+        this.address = address;
+    }
+
     public Boolean getActive() {
         return isActive;
     }
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public ArrayList<ImageModel> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<ImageModel> images) {
+        this.images = images;
+    }
+
+    public Integer getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Integer rooms) {
+        this.rooms = rooms;
     }
 
     public Boolean getSmoker() {
@@ -152,6 +134,14 @@ public class OfferModel implements Serializable {
         this.acceptAnimal = acceptAnimal;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public ArrayList<UserModel> getResident() {
         return resident;
     }
@@ -162,20 +152,22 @@ public class OfferModel implements Serializable {
 
     @Override
     public String toString() {
-        String str = "OfferModel: {price: " + String.valueOf(price) + ", " +
-                "rooms: " + String.valueOf(rooms) + ", " +
-                "conversationId: " + String.valueOf(conversationId) + ", " +
-                "id: " + String.valueOf(id) + ", " +
-                "description: " + String.valueOf(description) + ", " +
-                "name: " + String.valueOf(name) + ", " +
-                "keyword: " + String.valueOf(keyword) + ", " +
-                "address: " + address.toString() + ", " +
-                "owner: " + String.valueOf(owner) + ", " +
-                "availabilityEnds: " + String.valueOf(availabilityEnds) + ", " +
-                "availabilityStarts: " + String.valueOf(availabilityStarts) + ", " +
-                "isActive: " + String.valueOf(isActive) + ", " +
-                "isSmoker: " + String.valueOf(isSmoker) + ", " +
-                "acceptAnimal: " + String.valueOf(acceptAnimal) + "}";
-        return str;
+        return "OfferModel{" +
+                "id='" + id + '\'' +
+                ", availabilityEnds=" + availabilityEnds +
+                ", availabilityStarts=" + availabilityStarts +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", owner=" + owner +
+                ", address=" + address +
+                ", isActive=" + isActive +
+                ", images=" + images +
+                ", rooms=" + rooms +
+                ", isSmoker=" + isSmoker +
+                ", acceptAnimal=" + acceptAnimal +
+                ", keyword='" + keyword + '\'' +
+                ", resident=" + resident +
+                '}';
     }
 }

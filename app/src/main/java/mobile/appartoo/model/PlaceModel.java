@@ -36,4 +36,5 @@ public class PlaceModel {
     public String toString() {
         return fullText;
     }
+
 }
