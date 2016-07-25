@@ -20,10 +20,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
-import mobile.appartoo.model.UserModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.view.DrawerListView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +38,9 @@ public class LoginActivity extends Activity {
     private String password;
     private SharedPreferences sharedPreferences;
     private RestService restService;
+
+    private String givenName;
+    private String familyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class LoginActivity extends Activity {
 
         //If the token exist, launch the main activity
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             retrieveUserProfile();
         }
     }
@@ -136,29 +140,29 @@ public class LoginActivity extends Activity {
                             Appartoo.TOKEN = jsonResponse.get("token").getAsString();
 
                             //Stock the token in shared preferences
-                            sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
+                            sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
 
                             if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
                                 retrieveUserProfile();
-                            } else {
-                                System.out.println("Starting Activity 1");
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
                             }
-
 
                         } catch (IOException e) {
                             Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
-
                         }
 
                     //If the user didn't send the right credentials
                     } else if(response.code() == 401){
                         Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
+
                     //If the server isn't responding
                     } else {
                         Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
                     }
+
                     logInButton.setEnabled(true);
                 }
 
@@ -181,7 +185,6 @@ public class LoginActivity extends Activity {
      * @param v - the button to launch the activity
      */
     public void signUp(View v){
-        System.out.println("Starting Activity SignUp");
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
@@ -200,28 +203,30 @@ public class LoginActivity extends Activity {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         Appartoo.LOGGED_USER_PROFILE = new Gson().fromJson(responseBody, UserWithProfileModel.class);
 
+                        sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName()).apply();
+                        sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
+                        sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
+
+                        DrawerListView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),
+                                Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     } catch (IOException e) {
-                        Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                        System.out.println("Can't retrieve user informations.");
                     }
-
-                //If the user didn't send the right credentials
-                } else {
-                    Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
                 }
-
-                System.out.println("Starting Activity 2");
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Impossible de récupérer vos informations via le serveur.", Toast.LENGTH_SHORT).show();
 
-                System.out.println("Starting Activity 3");
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                givenName = sharedPreferences.getString("givenName", "");
+                familyName = sharedPreferences.getString("familyName", "");
+                mail = sharedPreferences.getString("email", "");
+
+                if(!givenName.equals("") && !familyName.equals("") && !mail.equals("")) {
+                    DrawerListView.setHeaderInformations(givenName + " " + familyName, mail);
+                }
+
+                t.printStackTrace();
             }
         });
     }

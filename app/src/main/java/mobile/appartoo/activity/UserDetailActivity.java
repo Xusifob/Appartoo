@@ -48,10 +48,6 @@ public class UserDetailActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
-
-        if(Appartoo.LOGGED_USER_PROFILE != null) {
-            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        }
     }
 
     @Override

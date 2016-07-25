@@ -37,8 +37,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("CREATION");
-
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerListView = (DrawerListView) findViewById(R.id.drawerList);
@@ -61,10 +59,6 @@ public class MainActivity extends FragmentActivity {
 
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
-
-        if(Appartoo.LOGGED_USER_PROFILE != null) {
-            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        }
     }
 
     @Override

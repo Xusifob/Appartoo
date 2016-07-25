@@ -67,10 +67,6 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
                 scrollView.requestDisallowInterceptTouchEvent(true);
             }
         });
-
-        if(Appartoo.LOGGED_USER_PROFILE != null) {
-            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        }
     }
 
     @Override

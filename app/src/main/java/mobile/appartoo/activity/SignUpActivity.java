@@ -170,7 +170,7 @@ public class SignUpActivity extends FragmentActivity {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
                         Appartoo.TOKEN = jsonResponse.get("token").getAsString();
-                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).commit();
+                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
 
                         startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
                     } catch (IOException e) {

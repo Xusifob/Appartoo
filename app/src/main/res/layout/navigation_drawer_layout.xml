@@ -6,33 +6,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="@android:color/background_light">
-    <LinearLayout
+    <mobile.appartoo.view.DrawerListView
+        android:id="@+id/drawerList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:gravity="center_vertical"
-        android:background="@color/colorSalmon">
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:id="@+id/drawerUserProfilePic"
-            android:src="@drawable/default_profile_picture"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/drawerUserName"
-            android:paddingLeft="10dp"
-            android:textSize="20dp"
-            android:text="Wade Wilson"/>
-    </LinearLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light">
-        <mobile.appartoo.view.DrawerListView
-            android:id="@+id/drawerList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </ScrollView>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

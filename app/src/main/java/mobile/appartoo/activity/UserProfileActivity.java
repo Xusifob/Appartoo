@@ -58,10 +58,6 @@ public class UserProfileActivity extends FragmentActivity {
         modifyFragment = new UserProfileModifyFragment();
         settingsFragment = new UserProfileSettingsFragment();
 
-        if(Appartoo.LOGGED_USER_PROFILE != null) {
-            ((TextView) drawerLayout.findViewById(R.id.drawerUserName)).setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        }
-
         fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
     }
 
