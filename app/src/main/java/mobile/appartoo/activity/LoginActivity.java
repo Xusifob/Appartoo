@@ -69,7 +69,8 @@ public class LoginActivity extends Activity {
         //If the token exist, launch the main activity
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            retrieveUserProfile();
+            finish();
+            //retrieveUserProfile();
         }
     }
 

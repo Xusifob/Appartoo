@@ -20,6 +20,7 @@ import android.widget.TextView;
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.OfferListFragment;
 import mobile.appartoo.fragment.SearchOfferFragment;
+import mobile.appartoo.fragment.SearchOfferListFragment;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.view.DrawerListView;
 
@@ -31,6 +32,7 @@ public class MainActivity extends FragmentActivity {
     private ActionBarDrawerToggle drawerToggle;
     private OfferListFragment offersFragment;
     private SearchOfferFragment searchOfferFragment;
+    private SearchOfferListFragment searchOfferListFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MainActivity extends FragmentActivity {
 
         offersFragment = new OfferListFragment();
         searchOfferFragment = new SearchOfferFragment();
-
+        searchOfferListFragment = new SearchOfferListFragment();
     }
 
     @Override
@@ -69,7 +71,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if(searchOfferFragment.isVisible()){
+        if(searchOfferListFragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainFragments, searchOfferFragment).commit();
+        } else if(searchOfferFragment.isVisible()){
             getSupportFragmentManager().beginTransaction().replace(R.id.mainFragments, offersFragment).commit();
         } else {
             finish();
@@ -93,5 +97,11 @@ public class MainActivity extends FragmentActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void searchOffers(View v){
+        String[] keywordsStr = {"test"};
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragments, searchOfferListFragment).commit();
+        searchOfferListFragment.searchOffer(keywordsStr);
     }
 }

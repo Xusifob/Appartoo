@@ -76,6 +76,12 @@ public class OffersAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void updateOfferList(ArrayList<OfferModel> offers) {
+        offerModels.clear();
+        offerModels.addAll(offers);
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder {
         TextView owner;
         TextView city;

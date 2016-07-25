@@ -82,6 +82,7 @@ public class OfferDetailFragment extends Fragment {
                     intent.putExtra("user", offer.getResident().get(position - 1));
                 }
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }
         });
     }

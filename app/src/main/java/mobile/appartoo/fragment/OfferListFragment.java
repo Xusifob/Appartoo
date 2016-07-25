@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -41,6 +42,7 @@ public class OfferListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
     private ArrayList<OfferModel> offersList;
+    private OffersAdapter offersAdapter;
     private ProgressDialog progress;
 
     @Override
@@ -50,6 +52,7 @@ public class OfferListFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (ListView) view.findViewById(R.id.offersList);
         offersList = new ArrayList<>();
+        offersAdapter = new OffersAdapter(getActivity(), offersList);
         progress = new ProgressDialog(getActivity());
 
         if (container != null) {
@@ -68,14 +71,15 @@ public class OfferListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
-                System.out.println("PUTTING OFFER");
                 intent.putExtra("offer", offersList.get(position));
-                System.out.println("STARTING ACTIVITY");
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }
         });
 
-        if(offersList.size() == 0) {
+        offersListView.setAdapter(offersAdapter);
+
+        if(offersAdapter.getCount() == 0) {
             getOffers();
         }
 
@@ -86,6 +90,11 @@ public class OfferListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null) {
+
+        }
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -122,8 +131,10 @@ public class OfferListFragment extends Fragment {
                     try {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         JSONObject jsonObject = new JSONObject(responseBody);
-                        OfferModel[] offers = new Gson().fromJson(jsonObject.getJSONArray("hydra:member").toString(), OfferModel[].class);
-                        populateView(offers);
+                        ArrayList<OfferModel> offers = new Gson().fromJson(jsonObject.getJSONArray("hydra:member").toString(), new TypeToken<ArrayList<OfferModel>>(){}.getType());
+                        offersList.clear();
+                        offersList.addAll(offers);
+                        offersAdapter.notifyDataSetChanged();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -147,12 +158,11 @@ public class OfferListFragment extends Fragment {
         });
     }
 
-    private void populateView(OfferModel[] offers) {
-        offersList.clear();
-        offersList.addAll(Arrays.asList(offers));
-        OffersAdapter offerAdapter = new OffersAdapter(getActivity(), offersList);
-        offersListView.setAdapter(offerAdapter);
-        offerAdapter.notifyDataSetChanged();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's state here
     }
 
 

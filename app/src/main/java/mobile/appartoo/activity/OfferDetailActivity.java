@@ -99,4 +99,10 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
         googleMap.animateCamera(CameraUpdateFactory.zoomIn());
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
     }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+    }
 }
