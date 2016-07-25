@@ -27,7 +27,7 @@ public class UserDetailFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        user = (UserModel) getActivity().getIntent().getSerializableExtra("user");
+        user = getActivity().getIntent().getParcelableExtra("user");
         populateView();
     }
 

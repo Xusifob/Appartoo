@@ -35,6 +35,7 @@ public class OfferDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        System.out.println("VIEW CREATION");
         View view = inflater.inflate(R.layout.fragment_offer_detail, container, false);
         residentList = (NonScrollableListView) view.findViewById(R.id.offerResidentList);
         imagesPager = (ViewPager) view.findViewById(R.id.offerFlatImagesPager);
@@ -44,14 +45,17 @@ public class OfferDetailFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+        System.out.println("FRAGMENT STARTED");
         ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(getActivity(), resources, true);
         imagesPager.setAdapter(imagesAdapter);
-        offer = (OfferModel) getActivity().getIntent().getSerializableExtra("offer");
-
+        System.out.println("GETTING OFFER");
+        offer = getActivity().getIntent().getParcelableExtra("offer");
+        System.out.println("OFFER GOT");
         populateView();
+        System.out.println("POPULATING VIEW DONE");
     }
 
-    private void populateView(){
+    private void populateView() {
         ((TextView) getActivity().findViewById(R.id.offerCity)).setText(offer.getAddress().getCity());
         ((TextView) getActivity().findViewById(R.id.offerDescription)).setText(offer.getDescription());
         ((TextView) getActivity().findViewById(R.id.offerTitle)).setText(offer.getName());

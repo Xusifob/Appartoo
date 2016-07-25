@@ -14,7 +14,7 @@ import mobile.appartoo.R;
 public class ConfigureProfileEighthFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page8, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page08, container, false);
         return rootView;
     }
 }

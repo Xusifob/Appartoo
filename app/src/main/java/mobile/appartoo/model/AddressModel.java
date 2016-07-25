@@ -1,5 +1,8 @@
 package mobile.appartoo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,20 +12,71 @@ import java.util.regex.Pattern;
 /**
  * Created by alexandre on 16-07-22.
  */
-public class AddressModel implements Serializable{
+public class AddressModel implements Parcelable{
     @SerializedName("@id")
     private String id;
-    private AddressCountryModel addressCountry;
     private String addressLocality;
     private String addressRegion;
     private String postalCode;
     private String postOfficeBoxNumber;
     private String streetAddress;
-    private Double latitude;
-    private Double longitude;
     private String name;
     private String placeId;
     private String formattedAddress;
+    private Double latitude;
+    private Double longitude;
+    private AddressCountryModel addressCountry;
+
+    private static final ClassLoader DOUBLE_CLASS_LOADER = Double.class.getClassLoader();
+    private static final ClassLoader ADDRESSCOUNTRYMODEL_CLASS_LOADER = AddressCountryModel.class.getClassLoader();
+
+    protected AddressModel(Parcel in) {
+        id = in.readString();
+        addressLocality = in.readString();
+        addressRegion = in.readString();
+        postalCode = in.readString();
+        postOfficeBoxNumber = in.readString();
+        streetAddress = in.readString();
+        name = in.readString();
+        placeId = in.readString();
+        formattedAddress = in.readString();
+        latitude = (Double) in.readValue(DOUBLE_CLASS_LOADER);
+        longitude = (Double) in.readValue(DOUBLE_CLASS_LOADER);
+        addressCountry = in.readParcelable(ADDRESSCOUNTRYMODEL_CLASS_LOADER);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(addressLocality);
+        dest.writeString(addressRegion);
+        dest.writeString(postalCode);
+        dest.writeString(postOfficeBoxNumber);
+        dest.writeString(streetAddress);
+        dest.writeString(name);
+        dest.writeString(placeId);
+        dest.writeString(formattedAddress);
+        dest.writeValue(latitude);
+        dest.writeValue(longitude);
+        dest.writeParcelable(addressCountry, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<AddressModel> CREATOR = new Creator<AddressModel>() {
+        @Override
+        public AddressModel createFromParcel(Parcel in) {
+            return new AddressModel(in);
+        }
+
+        @Override
+        public AddressModel[] newArray(int size) {
+            return new AddressModel[size];
+        }
+    };
 
     public String getId() {
         return id;

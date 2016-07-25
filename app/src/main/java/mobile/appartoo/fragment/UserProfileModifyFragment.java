@@ -63,6 +63,8 @@ public class UserProfileModifyFragment extends Fragment {
         super.onStart();
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             populateView();
+        } else {
+
         }
     }
 

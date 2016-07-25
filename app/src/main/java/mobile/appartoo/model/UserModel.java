@@ -1,5 +1,9 @@
 package mobile.appartoo.model;
 
+import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,24 +13,87 @@ import java.util.Date;
 /**
  * Created by alexandre on 16-07-22.
  */
-public class UserModel implements Serializable {
+public class UserModel implements Parcelable {
     @SerializedName("@id")
     private String id;
-    private Boolean isSmoker;
-    private Boolean inRelationship;
     private String society;
     private String function;
     private String contract;
-    private Integer plus;
-    private Double income;
-    private AddressModel address;
-    private Date birthDate;
     private String description;
     private String familyName;
     private String gender;
     private String givenName;
-    private ImageModel image;
     private String telephone;
+    private Boolean isSmoker;
+    private Boolean inRelationship;
+    private Integer plus;
+    private Double income;
+    private Date birthDate;
+    private AddressModel address;
+    private ImageModel image;
+
+    private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
+    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
+    private static final ClassLoader DOUBLE_CLASS_LOADER = Double.class.getClassLoader();
+    private static final ClassLoader DATE_CLASS_LOADER = Date.class.getClassLoader();
+    private static final ClassLoader IMAGEMODEL_CLASS_LOADER = ImageModel.class.getClassLoader();
+    private static final ClassLoader ADDRESSMODEL_CLASS_LOADER = AddressModel.class.getClassLoader();
+
+    protected UserModel(Parcel in) {
+        id = in.readString();
+        society = in.readString();
+        function = in.readString();
+        contract = in.readString();
+        description = in.readString();
+        familyName = in.readString();
+        gender = in.readString();
+        givenName = in.readString();
+        telephone = in.readString();
+        isSmoker = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        inRelationship = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        plus = (Integer) in.readValue(INTEGER_CLASS_LOADER);
+        income = (Double) in.readValue(DOUBLE_CLASS_LOADER);
+        birthDate = (Date) in.readValue(DATE_CLASS_LOADER);
+        address = (AddressModel) in.readValue(ADDRESSMODEL_CLASS_LOADER);
+        image = (ImageModel) in.readValue(IMAGEMODEL_CLASS_LOADER);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(society);
+        dest.writeString(function);
+        dest.writeString(contract);
+        dest.writeString(description);
+        dest.writeString(familyName);
+        dest.writeString(gender);
+        dest.writeString(givenName);
+        dest.writeString(telephone);
+        dest.writeValue(isSmoker);
+        dest.writeValue(inRelationship);
+        dest.writeValue(plus);
+        dest.writeValue(income);
+        dest.writeValue(birthDate);
+        dest.writeValue(address);
+        dest.writeValue(image);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
+        @Override
+        public UserModel createFromParcel(Parcel in) {
+            return new UserModel(in);
+        }
+
+        @Override
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
+        }
+    };
 
     public String getId() {
         return id;

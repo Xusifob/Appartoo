@@ -68,7 +68,9 @@ public class OfferListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
+                System.out.println("PUTTING OFFER");
                 intent.putExtra("offer", offersList.get(position));
+                System.out.println("STARTING ACTIVITY");
                 startActivity(intent);
             }
         });

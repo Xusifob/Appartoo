@@ -1,5 +1,8 @@
 package mobile.appartoo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -7,13 +10,45 @@ import java.io.Serializable;
 /**
  * Created by alexandre on 16-07-06.
  */
-public class ImageModel implements Serializable {
+public class ImageModel implements Parcelable {
 
     @SerializedName("@id")
     private String id;
     private String caption;
     private String contentUrl;
     private ImageModel thumbnail;
+
+    protected ImageModel(Parcel in) {
+        id = in.readString();
+        caption = in.readString();
+        contentUrl = in.readString();
+        thumbnail = in.readParcelable(ImageModel.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(caption);
+        dest.writeString(contentUrl);
+        dest.writeParcelable(thumbnail, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ImageModel> CREATOR = new Creator<ImageModel>() {
+        @Override
+        public ImageModel createFromParcel(Parcel in) {
+            return new ImageModel(in);
+        }
+
+        @Override
+        public ImageModel[] newArray(int size) {
+            return new ImageModel[size];
+        }
+    };
 
     public String getId() {
         return id;

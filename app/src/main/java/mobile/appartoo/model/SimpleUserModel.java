@@ -1,15 +1,48 @@
 package mobile.appartoo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by alexandre on 16-07-22.
  */
-public class SimpleUserModel {
+public class SimpleUserModel implements Parcelable{
     @SerializedName("@id")
     String id;
     String email;
     String facebookId;
+
+    protected SimpleUserModel(Parcel in) {
+        id = in.readString();
+        email = in.readString();
+        facebookId = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(email);
+        dest.writeString(facebookId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SimpleUserModel> CREATOR = new Creator<SimpleUserModel>() {
+        @Override
+        public SimpleUserModel createFromParcel(Parcel in) {
+            return new SimpleUserModel(in);
+        }
+
+        @Override
+        public SimpleUserModel[] newArray(int size) {
+            return new SimpleUserModel[size];
+        }
+    };
 
     public String getId() {
         return id;

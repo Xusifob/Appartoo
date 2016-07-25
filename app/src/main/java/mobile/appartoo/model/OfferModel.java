@@ -1,5 +1,9 @@
 package mobile.appartoo.model;
 
+import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -11,24 +15,84 @@ import java.util.Date;
 /**
  * Created by alexandre on 16-07-05.
  */
-public class OfferModel implements Serializable {
+public class OfferModel implements Parcelable {
 
     @SerializedName("@id")
     private String id;
-    private Date availabilityEnds;
-    private Date availabilityStarts;
     private String description;
     private String name;
-    private Integer price;
-    private UserModel owner;
-    private AddressModel address;
+    private String keyword;
     private Boolean isActive;
-    private ArrayList<ImageModel> images;
-    private Integer rooms;
     private Boolean isSmoker;
     private Boolean acceptAnimal;
-    private String keyword;
+    private Integer price;
+    private Integer rooms;
+    private Date availabilityEnds;
+    private Date availabilityStarts;
+    private UserModel owner;
+    private AddressModel address;
+    private ArrayList<ImageModel> images;
     private ArrayList<UserModel> resident;
+
+    private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
+    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
+    private static final ClassLoader USERMODEL_CLASS_LOADER = UserModel.class.getClassLoader();
+    private static final ClassLoader ADDRESSMODEL_CLASS_LOADER = AddressModel.class.getClassLoader();
+    private static final ClassLoader IMAGEMODEL_CLASS_LOADER = ImageModel.class.getClassLoader();
+
+    protected OfferModel(Parcel in) {
+        id = in.readString();
+        description = in.readString();
+        name = in.readString();
+        keyword = in.readString();
+        isActive = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isSmoker = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        price = (Integer) in.readValue(INTEGER_CLASS_LOADER);
+        rooms = (Integer) in.readValue(INTEGER_CLASS_LOADER);
+        availabilityEnds = (Date) in.readSerializable();
+        availabilityStarts = (Date) in.readSerializable();
+        owner = in.readParcelable(USERMODEL_CLASS_LOADER);
+        address = in.readParcelable(ADDRESSMODEL_CLASS_LOADER);
+        images = in.readArrayList(IMAGEMODEL_CLASS_LOADER);
+        resident = in.readArrayList(USERMODEL_CLASS_LOADER);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(description);
+        dest.writeString(name);
+        dest.writeString(keyword);
+        dest.writeValue(isActive);
+        dest.writeValue(isSmoker);
+        dest.writeValue(acceptAnimal);
+        dest.writeValue(price);
+        dest.writeValue(rooms);
+        dest.writeSerializable(availabilityEnds);
+        dest.writeSerializable(availabilityStarts);
+        dest.writeParcelable(owner, flags);
+        dest.writeParcelable(address, flags);
+        dest.writeList(images);
+        dest.writeList(resident);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<OfferModel> CREATOR = new Creator<OfferModel>() {
+        @Override
+        public OfferModel createFromParcel(Parcel in) {
+            return new OfferModel(in);
+        }
+
+        @Override
+        public OfferModel[] newArray(int size) {
+            return new OfferModel[size];
+        }
+    };
 
     public String getId() {
         return id;

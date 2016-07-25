@@ -31,7 +31,6 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
     private ScrollView scrollView;
     private DrawerLayout drawerLayout;
     private DrawerListView drawerListView;
-    private OfferModel offer;
     private ActionBarDrawerToggle drawerToggle;
     private SupportMapFragment mapFragment;
 
@@ -60,7 +59,6 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
         getActionBar().setDisplayHomeAsUpEnabled(true);
         drawerListView.setDrawerLayout(drawerLayout);
         drawerLayout.addDrawerListener(drawerToggle);
-        offer = (OfferModel) getIntent().getSerializableExtra("offer");
 
         //Disable the scrollview on map interaction
         ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).setListener(new WorkaroundMapFragment.OnTouchListener() {
@@ -93,6 +91,8 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        OfferModel offer = getIntent().getParcelableExtra("offer");
 
         //Define the latitude and longitude to use with the map fragment
         LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());

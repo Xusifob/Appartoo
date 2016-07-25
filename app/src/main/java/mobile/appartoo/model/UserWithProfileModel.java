@@ -1,5 +1,8 @@
 package mobile.appartoo.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,8 +12,11 @@ import java.util.Date;
 /**
  * Created by alexandre on 16-07-22.
  */
-public class UserWithProfileModel extends UserModel implements Serializable {
+public class UserWithProfileModel extends UserModel {
 
+    private String relationshipStatus;
+    private String honorificPrefix;
+    private String jobTitle;
     private Boolean isCook;
     private Boolean isMusician;
     private Boolean isSpendthrift;
@@ -23,13 +29,79 @@ public class UserWithProfileModel extends UserModel implements Serializable {
     private Boolean isMessy;
     private Boolean isManiac;
     private Boolean acceptAnimal;
-    private String relationshipStatus;
-    private SimpleUserModel user;
     private Boolean emailChecked;
     private Integer percentCompleteProfile;
-    private String honorificPrefix;
-    private String jobTitle;
+    private SimpleUserModel user;
     private NationalityModel nationality;
+
+    private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
+    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
+    private static final ClassLoader SIMPLEUSERMODEL_CLASS_LOADER = SimpleUserModel.class.getClassLoader();
+    private static final ClassLoader NATIONALITYMODEL_CLASS_LOADER = NationalityModel.class.getClassLoader();
+
+    protected UserWithProfileModel(Parcel in) {
+        super(in);
+        relationshipStatus = in.readString();
+        honorificPrefix = in.readString();
+        jobTitle = in.readString();
+        isCook = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isMusician = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isSpendthrift = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isPartyGoer = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isLayabout = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isGeek = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isTraveller = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isGenerous = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isAnimalFriend = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isMessy = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        isManiac = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        emailChecked = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        percentCompleteProfile = (Integer) in.readValue(INTEGER_CLASS_LOADER);
+        user = in.readParcelable(SIMPLEUSERMODEL_CLASS_LOADER);
+        nationality = in.readParcelable(NATIONALITYMODEL_CLASS_LOADER);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(relationshipStatus);
+        dest.writeString(honorificPrefix);
+        dest.writeString(jobTitle);
+        dest.writeValue(isCook);
+        dest.writeValue(isMusician);
+        dest.writeValue(isSpendthrift);
+        dest.writeValue(isPartyGoer);
+        dest.writeValue(isLayabout);
+        dest.writeValue(isGeek);
+        dest.writeValue(isTraveller);
+        dest.writeValue(isGenerous);
+        dest.writeValue(isAnimalFriend);
+        dest.writeValue(isMessy);
+        dest.writeValue(isManiac);
+        dest.writeValue(acceptAnimal);
+        dest.writeValue(emailChecked);
+        dest.writeValue(percentCompleteProfile);
+        dest.writeParcelable(user, flags);
+        dest.writeParcelable(nationality, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<UserWithProfileModel> CREATOR = new Creator<UserWithProfileModel>() {
+        @Override
+        public UserWithProfileModel createFromParcel(Parcel in) {
+            return new UserWithProfileModel(in);
+        }
+
+        @Override
+        public UserWithProfileModel[] newArray(int size) {
+            return new UserWithProfileModel[size];
+        }
+    };
 
     public Boolean getCook() {
         return isCook;

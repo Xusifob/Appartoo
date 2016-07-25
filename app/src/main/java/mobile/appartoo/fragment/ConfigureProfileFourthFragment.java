@@ -16,7 +16,7 @@ public class ConfigureProfileFourthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_configure_profile_page4, container, false);
+                R.layout.fragment_configure_profile_page04, container, false);
 
         return rootView;
     }
