@@ -11,19 +11,19 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import mobile.appartoo.R;
-import mobile.appartoo.fragment.ConfigureProfileEleventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
+import mobile.appartoo.fragment.ConfigureProfileEleventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileFifthFragment;
 import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
 import mobile.appartoo.fragment.ConfigureProfileFourthFragment;
-import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
-import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
-import mobile.appartoo.fragment.ConfigureProfileTwelfthFragment;
-import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
-import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
 import mobile.appartoo.fragment.ConfigureProfileNinthFragment;
-import mobile.appartoo.fragment.ConfigureProfileThirteenthFragment;
+import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
+import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
 import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
+import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
+import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
+import mobile.appartoo.fragment.ConfigureProfileThirteenthFragment;
+import mobile.appartoo.fragment.ConfigureProfileTwelfthFragment;
 import mobile.appartoo.view.DisableLastSwipeViewPager;
 
 public class ConfigureProfileActivity extends FragmentActivity {

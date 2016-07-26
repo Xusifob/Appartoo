@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,18 +12,25 @@
             android:layout_height="wrap_content"
             android:id="@+id/userProfilePicLayout">
             <ImageView
-                app:layout_widthPercent="100%"
-                app:layout_aspectRatio="178%"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:id="@+id/offerFlatImage"
                 android:adjustViewBounds="true"
                 android:minHeight="100dp"
-                android:background="@color/colorGray"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/flat2"/>
             <TextView
-                style="@style/BlankTextWithShadow"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@color/colorAlphaBlack"
                 android:layout_alignBottom="@+id/offerFlatImage"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:textSize="18sp"
+                android:text="price"
+                android:textColor="@color/colorWhite"
                 android:id="@+id/offerPrice"/>
         </android.support.percent.PercentRelativeLayout>
     </RelativeLayout>

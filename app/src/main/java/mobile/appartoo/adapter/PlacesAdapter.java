@@ -5,12 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
-
-import com.google.android.gms.location.places.AutocompletePrediction;
 
 import java.util.ArrayList;
 import java.util.List;

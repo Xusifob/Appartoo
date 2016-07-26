@@ -42,12 +42,9 @@
     <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
 
     <!-- NAVIGATION DRAWER STRINGS -->
-    <string-array name="navigation_drawer_titles">
-        <item name="profile">Mon profil</item>
-        <item name="badges">Parcourir les offres</item>
-        <item name="logout">Se déconnecter</item>
-    </string-array>
-
+    <string name="drawer_profile">Mon profil</string>
+    <string name="drawer_offers">Parcourir les offres</string>
+    <string name="drawer_logout">Se déconnecter</string>
 
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>

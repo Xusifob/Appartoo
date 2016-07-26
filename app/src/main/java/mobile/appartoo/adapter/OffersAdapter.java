@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
@@ -68,7 +66,11 @@ public class OffersAdapter extends BaseAdapter {
         OfferModel offerModel = offerModels.get(position);
 
         holder.owner.setText(offerModel.getOwner().getGivenName());
-        holder.city.setText(String.valueOf(offerModel.getAddress().getCity()));
+        try {
+            holder.city.setText(String.valueOf(offerModel.getAddress().getCity()));
+        } catch (Exception e) {
+            holder.city.setText("Ville inconnue");
+        }
         holder.keyword.setText(offerModel.getKeyword());
         holder.rooms.setText(Integer.toString(offerModel.getRooms()));
         holder.price.setText(Integer.toString(offerModel.getPrice()) + " €");

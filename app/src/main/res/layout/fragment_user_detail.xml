@@ -19,7 +19,8 @@
                 android:id="@+id/userProfilePic"
                 android:layout_alignParentTop="true"
                 android:minHeight="100dp"
-                android:background="@color/colorGray"/>
+                android:background="@color/colorGray"
+                android:src="@drawable/portrait"/>
         </android.support.percent.PercentRelativeLayout>
         <RelativeLayout
             android:layout_width="80dp"

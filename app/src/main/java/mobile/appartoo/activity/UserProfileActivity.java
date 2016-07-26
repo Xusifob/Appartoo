@@ -1,35 +1,32 @@
 package mobile.appartoo.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.UserProfileMainFragment;
 import mobile.appartoo.fragment.UserProfileModifyFragment;
 import mobile.appartoo.fragment.UserProfileSettingsFragment;
-import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.view.DrawerListView;
+import mobile.appartoo.view.NavigationDrawerView;
 
 /**
  * Created by alexandre on 16-07-15.
  */
-public class UserProfileActivity extends FragmentActivity {
+public class UserProfileActivity extends AppCompatActivity {
 
     private UserProfileMainFragment mainFragment;
     private UserProfileSettingsFragment settingsFragment;
     private UserProfileModifyFragment modifyFragment;
     private FragmentManager fragmentManager;
     private DrawerLayout drawerLayout;
-    private DrawerListView drawerListView;
-    private ActionBarDrawerToggle drawerToggle;
+    private Toolbar toolbar;
+    private NavigationDrawerView navigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +35,8 @@ public class UserProfileActivity extends FragmentActivity {
 
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerListView = (DrawerListView) findViewById(R.id.drawerList);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
     }
 
     @Override
@@ -47,10 +44,20 @@ public class UserProfileActivity extends FragmentActivity {
         super.onStart();
 
         //Define the drawer
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        drawerListView.setDrawerLayout(drawerLayout);
-        drawerLayout.addDrawerListener(drawerToggle);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Appartoo");
+        navigationView.setDrawerLayout(drawerLayout);
+        toolbar.setNavigationIcon(R.drawable.ic_drawer);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
 
         //Define the fragments
         fragmentManager = getSupportFragmentManager();
@@ -59,20 +66,6 @@ public class UserProfileActivity extends FragmentActivity {
         settingsFragment = new UserProfileSettingsFragment();
 
         fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
-                }
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

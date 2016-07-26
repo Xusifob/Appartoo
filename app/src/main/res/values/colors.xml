@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSalmon">#EF785A</color>
+    <color name="colorDarkSalmon">#d35b3d</color>
     <color name="colorLightSalmon">#e8c9c2</color>
     <color name="colorLightGreen">#8ad1be</color>
     <color name="colorGreen">#4DBA9D</color>
@@ -13,5 +14,6 @@
     <color name="colorGray">#808080</color>
     <color name="colorLightGray">#C3C3C3</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorAlphaBlack">#B7000000</color>
     <color name="black_overlay">#66000000</color>
 </resources>

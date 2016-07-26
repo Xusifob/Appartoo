@@ -1,14 +1,13 @@
 package mobile.appartoo.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,18 +19,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import mobile.appartoo.R;
 import mobile.appartoo.adapter.WorkaroundMapFragment;
 import mobile.appartoo.model.OfferModel;
-import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.view.DrawerListView;
+import mobile.appartoo.view.NavigationDrawerView;
 
 /**
  * Created by alexandre on 16-07-06.
  */
-public class OfferDetailActivity  extends FragmentActivity implements OnMapReadyCallback {
+public class OfferDetailActivity  extends AppCompatActivity implements OnMapReadyCallback {
 
     private ScrollView scrollView;
     private DrawerLayout drawerLayout;
-    private DrawerListView drawerListView;
-    private ActionBarDrawerToggle drawerToggle;
+    private NavigationDrawerView navigationView;
+    private Toolbar toolbar;
     private SupportMapFragment mapFragment;
 
     @Override
@@ -41,8 +39,8 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
 
         //Retrieve the drawer element
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerListView = (DrawerListView) findViewById(R.id.drawerList);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
 
         //Retrieve the others elements
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -55,10 +53,20 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
         super.onStart();
 
         //Define the drawer
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        drawerListView.setDrawerLayout(drawerLayout);
-        drawerLayout.addDrawerListener(drawerToggle);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Appartoo");
+        navigationView.setDrawerLayout(drawerLayout);
+        toolbar.setNavigationIcon(R.drawable.ic_drawer);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
 
         //Disable the scrollview on map interaction
         ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).setListener(new WorkaroundMapFragment.OnTouchListener() {
@@ -67,22 +75,6 @@ public class OfferDetailActivity  extends FragmentActivity implements OnMapReady
                 scrollView.requestDisallowInterceptTouchEvent(true);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //Define the action to do according to the selected menu
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

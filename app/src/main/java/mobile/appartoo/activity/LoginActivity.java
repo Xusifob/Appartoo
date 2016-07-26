@@ -23,7 +23,6 @@ import mobile.appartoo.R;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
-import mobile.appartoo.view.DrawerListView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -208,8 +207,8 @@ public class LoginActivity extends Activity {
                         sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
                         sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
 
-                        DrawerListView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),
-                                Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                        //NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),
+                            //    Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     } catch (IOException e) {
                         System.out.println("Can't retrieve user informations.");
                     }
@@ -224,7 +223,7 @@ public class LoginActivity extends Activity {
                 mail = sharedPreferences.getString("email", "");
 
                 if(!givenName.equals("") && !familyName.equals("") && !mail.equals("")) {
-                    DrawerListView.setHeaderInformations(givenName + " " + familyName, mail);
+                   // NavigationDrawerView.setHeaderInformations(givenName + " " + familyName, mail);
                 }
 
                 t.printStackTrace();

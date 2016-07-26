@@ -19,7 +19,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.OfferDetailActivity;
@@ -37,10 +36,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by alexandre on 16-07-13.
  */
-public class OfferListFragment extends Fragment {
+public class OffersListFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
+
+
     private ArrayList<OfferModel> offersList;
     private OffersAdapter offersAdapter;
     private ProgressDialog progress;
@@ -48,9 +49,10 @@ public class OfferListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_offer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (ListView) view.findViewById(R.id.offersList);
+
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
         progress = new ProgressDialog(getActivity());
@@ -132,6 +134,9 @@ public class OfferListFragment extends Fragment {
                         String responseBody = IOUtils.toString(response.body().charStream());
                         JSONObject jsonObject = new JSONObject(responseBody);
                         ArrayList<OfferModel> offers = new Gson().fromJson(jsonObject.getJSONArray("hydra:member").toString(), new TypeToken<ArrayList<OfferModel>>(){}.getType());
+
+                        System.out.println(offers.size());
+
                         offersList.clear();
                         offersList.addAll(offers);
                         offersAdapter.notifyDataSetChanged();
