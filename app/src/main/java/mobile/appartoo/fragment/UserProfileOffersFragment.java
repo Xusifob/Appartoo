@@ -12,6 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
@@ -20,17 +26,14 @@ import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
-import mobile.appartoo.utils.ServerResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by alexandre on 16-07-13.
- */
-public class OffersListFragment extends Fragment {
+public class UserProfileOffersFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
@@ -76,7 +79,7 @@ public class OffersListFragment extends Fragment {
         offersListView.setAdapter(offersAdapter);
 
         if(offersAdapter.getCount() == 0) {
-            getOffers();
+//            getOffers();
         }
 
         super.onStart();
@@ -95,83 +98,70 @@ public class OffersListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                getOffers();
+//                getOffers();
             }
         });
     }
 
-    private void getOffers(){
-        if(!swipeRefreshLayout.isRefreshing()){
-            progress.show();
-        }
-
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RestService restService = retrofit.create(RestService.class);
-        Call<ServerResponse<ArrayList<OfferModel>>> callback = restService.getOffers();
-
-        callback.enqueue(new Callback<ServerResponse<ArrayList<OfferModel>>>(){
-            @Override
-            public void onResponse(Call<ServerResponse<ArrayList<OfferModel>>> call, Response<ServerResponse<ArrayList<OfferModel>>> response) {
-
-                if(swipeRefreshLayout.isRefreshing()){
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    progress.dismiss();
-                }
-
-                if(response.isSuccessful()) {
-                    offersList.clear();
-                    offersList.addAll(response.body().getData());
-                    offersAdapter.notifyDataSetChanged();
-                } else {
-                    System.out.println(response.code());
-                    Toast.makeText(getActivity(), "Erreur de connection", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResponse<ArrayList<OfferModel>>> call, Throwable t) {
-                if(swipeRefreshLayout.isRefreshing()){
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    progress.dismiss();
-                }
-                t.printStackTrace();
-                Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void getOffers(){
+//        if(!swipeRefreshLayout.isRefreshing()){
+//            progress.show();
+//        }
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(Appartoo.SERVER_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        RestService restService = retrofit.create(RestService.class);
+//        Call<ArrayList<OfferModel>> callback = restService.getOffers();
+//
+//        callback.enqueue(new Callback<ArrayList<OfferModel>>(){
+//            @Override
+//            public void onResponse(Call<ArrayList<OfferModel>> call, Response<ArrayList<OfferModel>> response) {
+//
+//                if(swipeRefreshLayout.isRefreshing()){
+//                    swipeRefreshLayout.setRefreshing(false);
+//                } else {
+//                    progress.dismiss();
+//                }
+//
+//                if(response.isSuccessful()) {
+//                    try {
+//                        String responseBody = IOUtils.toString(response.body().charStream());
+//                        JSONObject jsonObject = new JSONObject(responseBody);
+//                        ArrayList<OfferModel> offers = new Gson().fromJson(jsonObject.getJSONArray("hydra:member").toString(), new TypeToken<ArrayList<OfferModel>>(){}.getType());
+//
+//                        System.out.println(offers.size());
+//
+//                        offersList.clear();
+//                        offersList.addAll(offers);
+//                        offersAdapter.notifyDataSetChanged();
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(getActivity(), "Erreur dans le chargement des offres.", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    System.out.println("Est-ce que le serveur est en ligne ?");
+//                    Toast.makeText(getActivity(), "Erreur de connection.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<OfferModel>> call, Throwable t) {
+//                if(swipeRefreshLayout.isRefreshing()){
+//                    swipeRefreshLayout.setRefreshing(false);
+//                } else {
+//                    progress.dismiss();
+//                }
+//                Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
     }
-
-
-//    public String loadJSONFromAsset() {
-//        String json = null;
-//        try {
-//
-//            InputStream is = getActivity().getAssets().open("data.json");
-//            int size = is.available();
-//            byte[] buffer = new byte[size];
-//            is.read(buffer);
-//            is.close();
-//            json = new String(buffer, "UTF-8");
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            return null;
-//        }
-//        return json;
-//
-//    }
 }

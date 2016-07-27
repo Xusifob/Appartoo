@@ -1,5 +1,7 @@
 package mobile.appartoo.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +11,15 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import mobile.appartoo.R;
+import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.RestService;
+import mobile.appartoo.view.NavigationDrawerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserProfileModifyFragment extends Fragment {
 
@@ -29,6 +39,8 @@ public class UserProfileModifyFragment extends Fragment {
     private Switch isGenerous;
     private Switch isMessy;
     private Switch isManiac;
+    private RestService restService;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,10 +73,18 @@ public class UserProfileModifyFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        restService = retrofit.create(RestService.class);
+
+        sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             populateView();
         } else {
-
+            retrieveUserProfile();
         }
     }
 
@@ -86,5 +106,46 @@ public class UserProfileModifyFragment extends Fragment {
         if(Appartoo.LOGGED_USER_PROFILE.getGenerous() != null) isGenerous.setChecked(Appartoo.LOGGED_USER_PROFILE.getGenerous());
         if(Appartoo.LOGGED_USER_PROFILE.getMessy() != null) isMessy.setChecked(Appartoo.LOGGED_USER_PROFILE.getMessy());
         if(Appartoo.LOGGED_USER_PROFILE.getManiac() != null) isManiac.setChecked(Appartoo.LOGGED_USER_PROFILE.getManiac());
+    }
+
+    private void retrieveUserProfile(){
+
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+
+        //Handle the server response
+        callback.enqueue(new Callback<UserWithProfileModel>() {
+            @Override
+            public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+
+                //If the login is successful
+                if(response.isSuccessful()) {
+                    Appartoo.LOGGED_USER_PROFILE = response.body();
+
+                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName()).apply();
+                    sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
+                    sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
+
+                    populateView();
+
+                    NavigationDrawerView.setHeaderInformations(response.body().getGivenName() + " " + response.body().getFamilyName(), response.body().getUser().getEmail());
+                    ((NavigationDrawerView) getActivity().findViewById(R.id.navigationDrawer)).updateHeader();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+
+                String givenName = sharedPreferences.getString("givenName", "");
+                String familyName = sharedPreferences.getString("familyName", "");
+                String mail = sharedPreferences.getString("email", "");
+
+                if(!givenName.equals("") && !familyName.equals("") && !mail.equals("")) {
+                    NavigationDrawerView.setHeaderInformations(givenName + " " + familyName, mail);
+                    ((NavigationDrawerView) getActivity().findViewById(R.id.navigationDrawer)).updateHeader();
+                }
+
+                t.printStackTrace();
+            }
+        });
     }
 }

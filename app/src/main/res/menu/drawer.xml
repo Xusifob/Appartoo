@@ -6,6 +6,10 @@
             android:icon="@drawable/profile"
             android:title="@string/drawer_profile"/>
         <item
+            android:id="@+id/drawer_search"
+            android:icon="@drawable/search"
+            android:title="@string/drawer_search"/>
+        <item
             android:id="@+id/drawer_offers"
             android:icon="@drawable/house"
             android:title="@string/drawer_offers"/>

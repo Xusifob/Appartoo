@@ -8,10 +8,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
 import mobile.appartoo.activity.MainActivity;
+import mobile.appartoo.activity.SearchActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 
 /**
@@ -21,26 +24,44 @@ public class NavigationDrawerView extends NavigationView {
 
     private Context context;
     private DrawerLayout drawerLayout;
+    private static String userName;
+    private static String userMail;
 
     public NavigationDrawerView(Context context) {
         super(context);
         this.context = context;
         setMenuActions();
+        updateHeader();
     }
 
     public NavigationDrawerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         setMenuActions();
+        updateHeader();
     }
 
     public NavigationDrawerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
         setMenuActions();
+        updateHeader();
     }
 
     public void setDrawerLayout(DrawerLayout drawerLayout) { this.drawerLayout = drawerLayout; }
+
+    public static void setHeaderInformations(String fullName, String email){
+        userName = fullName;
+        userMail = email;
+    }
+
+    public void updateHeader() {
+        View header = getHeaderView(0);
+        if(userMail != null && userName != null) {
+            ((TextView) header.findViewById(R.id.drawerUserName)).setText(userName);
+            ((TextView) header.findViewById(R.id.drawerUserEmail)).setText(userMail);
+        }
+    }
 
     private void setMenuActions() {
 
@@ -57,18 +78,26 @@ public class NavigationDrawerView extends NavigationView {
                 switch (item.getItemId()){
                     case R.id.drawer_profile:
                         if(!(context instanceof UserProfileActivity)) {
-                            context.startActivity(new Intent(context, UserProfileActivity.class));
+                            Intent intent = new Intent(context, UserProfileActivity.class);
+                            context.startActivity(intent);
                         }
                         return true;
                     case R.id.drawer_offers:
                         if(!(context instanceof MainActivity)){
-                            context.startActivity(new Intent(context, MainActivity.class));
+                            Intent intent = new Intent(context, MainActivity.class);
+                            context.startActivity(intent);
+                        }
+                        return true;
+                    case R.id.drawer_search:
+                        if(!(context instanceof SearchActivity)) {
+                            Intent intent = new Intent(context, SearchActivity.class);
+                            context.startActivity(intent);
                         }
                         return true;
                     case R.id.drawer_logout:
                         context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE).edit().remove("token").apply();
-                        ((Activity) context).finish();
 
+                        ((Activity) context).finish();
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -39,6 +39,7 @@ import mobile.appartoo.fragment.SignUpThirdFragment;
 import mobile.appartoo.model.SignUpModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.TokenReceiver;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -159,23 +160,15 @@ public class SignUpActivity extends FragmentActivity {
 
     private void logUser() {
         System.out.println("Logging user...");
-        Call<ResponseBody> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
+        Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
 
-        newCallback.enqueue(new Callback<ResponseBody>() {
+        newCallback.enqueue(new Callback<TokenReceiver>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
                 if(response.isSuccessful()) {
-                    try {
-                        String responseBody = IOUtils.toString(response.body().charStream());
-                        JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
-                        Appartoo.TOKEN = jsonResponse.get("token").getAsString();
-                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
-
-                        startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
-                    } catch (IOException e) {
-                        finish();
-                        Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
-                    }
+                    Appartoo.TOKEN = response.body().getToken();
+                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                    startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
                 } else {
                     finish();
                     Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
@@ -184,7 +177,7 @@ public class SignUpActivity extends FragmentActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TokenReceiver> call, Throwable t) {
                 finish();
                 Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
                 signUpButton.setEnabled(true);

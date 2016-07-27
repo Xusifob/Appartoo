@@ -23,6 +23,9 @@ import mobile.appartoo.R;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.ServerResponse;
+import mobile.appartoo.utils.TokenReceiver;
+import mobile.appartoo.view.NavigationDrawerView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,42 +127,33 @@ public class LoginActivity extends Activity {
             //Disable the login button
             logInButton.setEnabled(false);
 
-            Call<ResponseBody> callback = restService.postLogIn(mail, password);
+            Call<TokenReceiver> callback = restService.postLogIn(mail, password);
 
             //Handle the server response
-            callback.enqueue(new Callback<ResponseBody>() {
+            callback.enqueue(new Callback<TokenReceiver>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
 
                     //If the login is successful
                     if(response.isSuccessful()) {
-                        try {
-                            //Retrieve the user token
-                            String responseBody = IOUtils.toString(response.body().charStream());
-                            JsonObject jsonResponse = new Gson().fromJson(responseBody, JsonObject.class);
-                            Appartoo.TOKEN = jsonResponse.get("token").getAsString();
+                        //Retrieve the user token
+                        Appartoo.TOKEN = response.body().getToken();
 
-                            //Stock the token in shared preferences
-                            sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                        //Stock the token in shared preferences
+                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
 
-                            if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-                                retrieveUserProfile();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (IOException e) {
-                            Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
+                        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                            retrieveUserProfile();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }
 
                     //If the user didn't send the right credentials
                     } else if(response.code() == 401){
                         Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
-
                     //If the server isn't responding
                     } else {
+                        System.out.println(response.code());
                         Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -167,7 +161,7 @@ public class LoginActivity extends Activity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<TokenReceiver> call, Throwable t) {
                     t.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
                     logInButton.setEnabled(true);
@@ -190,40 +184,34 @@ public class LoginActivity extends Activity {
     }
 
     private void retrieveUserProfile(){
-        Call<ResponseBody> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
 
         //Handle the server response
-        callback.enqueue(new Callback<ResponseBody>() {
+        callback.enqueue(new Callback<UserWithProfileModel>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
 
                 //If the login is successful
                 if(response.isSuccessful()) {
-                    try {
-                        String responseBody = IOUtils.toString(response.body().charStream());
-                        Appartoo.LOGGED_USER_PROFILE = new Gson().fromJson(responseBody, UserWithProfileModel.class);
+                    Appartoo.LOGGED_USER_PROFILE = response.body();
 
-                        sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName()).apply();
-                        sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
-                        sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
+                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName()).apply();
+                    sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
+                    sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
 
-                        //NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),
-                            //    Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
-                    } catch (IOException e) {
-                        System.out.println("Can't retrieve user informations.");
-                    }
+                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
 
                 givenName = sharedPreferences.getString("givenName", "");
                 familyName = sharedPreferences.getString("familyName", "");
                 mail = sharedPreferences.getString("email", "");
 
                 if(!givenName.equals("") && !familyName.equals("") && !mail.equals("")) {
-                   // NavigationDrawerView.setHeaderInformations(givenName + " " + familyName, mail);
+                   NavigationDrawerView.setHeaderInformations(givenName + " " + familyName, mail);
                 }
 
                 t.printStackTrace();

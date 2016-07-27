@@ -44,6 +44,7 @@
     <!-- NAVIGATION DRAWER STRINGS -->
     <string name="drawer_profile">Mon profil</string>
     <string name="drawer_offers">Parcourir les offres</string>
+    <string name="drawer_search">Recherche</string>
     <string name="drawer_logout">Se déconnecter</string>
 
     <!-- USER PROFILE STRINGS -->
