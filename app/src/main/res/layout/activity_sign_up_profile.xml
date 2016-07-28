@@ -6,4 +6,5 @@
     android:orientation="horizontal"
     android:background="@android:color/background_light"
     android:gravity="center"
-    android:id="@+id/signup_pager"/>
+    android:id="@+id/signup_pager"
+    android:fitsSystemWindows="true"/>

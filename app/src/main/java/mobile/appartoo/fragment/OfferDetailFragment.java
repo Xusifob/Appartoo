@@ -18,6 +18,7 @@ import mobile.appartoo.activity.UserDetailActivity;
 import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.ResidentsAdapter;
 import mobile.appartoo.model.OfferModel;
+import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.model.UserModel;
 import mobile.appartoo.view.NonScrollableListView;
 
@@ -56,11 +57,13 @@ public class OfferDetailFragment extends Fragment {
         ((TextView) getActivity().findViewById(R.id.offerTitle)).setText(offer.getName());
         ((TextView) getActivity().findViewById(R.id.offerKeyword)).setText(offer.getKeyword() + " " + Integer.toString(offer.getPrice()) + "€");
         ((TextView) getActivity().findViewById(R.id.offerRooms)).setText(Integer.toString(offer.getRooms()) + " chambre(s)");
-        ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(offer.getAvailabilityStarts()));
-        ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(offer.getAvailabilityEnds()));
+
+        if(offer instanceof OfferModelWithDate) {
+            ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
+            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+        }
 
         ArrayList<UserModel> residents = new ArrayList<>();
-        residents.add(offer.getOwner());
         residents.addAll(offer.getResident());
 
         ResidentsAdapter residentsAdapter = new ResidentsAdapter(getActivity(), residents);
@@ -71,11 +74,7 @@ public class OfferDetailFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), UserDetailActivity.class);
-                if (position == 0) {
-                    intent.putExtra("user", offer.getOwner());
-                } else {
-                    intent.putExtra("user", offer.getResident().get(position - 1));
-                }
+                intent.putExtra("user", offer.getResident().get(position));
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }

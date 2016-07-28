@@ -41,13 +41,12 @@ public class LoginActivity extends Activity {
     private SharedPreferences sharedPreferences;
     private RestService restService;
 
-    private String givenName;
-    private String familyName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve login button and shared preferences
         logInButton = (Button) findViewById(R.id.connectButton);
@@ -70,9 +69,10 @@ public class LoginActivity extends Activity {
 
         //If the token exist, launch the main activity
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            NavigationDrawerView.setHeaderInformations(sharedPreferences.getString("givenName", "") + " " + sharedPreferences.getString("familyName", ""), sharedPreferences.getString("email", ""));
+            retrieveUserProfile();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
-            //retrieveUserProfile();
         }
     }
 
@@ -195,9 +195,10 @@ public class LoginActivity extends Activity {
                 if(response.isSuccessful()) {
                     Appartoo.LOGGED_USER_PROFILE = response.body();
 
-                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName()).apply();
-                    sharedPreferences.edit().putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName()).apply();
-                    sharedPreferences.edit().putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()).apply();
+                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                            .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
+                            .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge())).apply();
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                 }
@@ -205,15 +206,6 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
-
-                givenName = sharedPreferences.getString("givenName", "");
-                familyName = sharedPreferences.getString("familyName", "");
-                mail = sharedPreferences.getString("email", "");
-
-                if(!givenName.equals("") && !familyName.equals("") && !mail.equals("")) {
-                   NavigationDrawerView.setHeaderInformations(givenName + " " + familyName, mail);
-                }
-
                 t.printStackTrace();
             }
         });

@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/background_light"
-    tools:context="mobile.appartoo.activity.LoginActivity"
-    android:gravity="center">
-
-    <TextView
-        style="@style/TitleSalmon"
-        android:text="@string/garantor_configure_profile"
-        android:gravity="center"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-
-    <LinearLayout
-        android:layout_margin="20dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_above="@+id/continueButton"
-        android:layout_below="@+id/textView">
-        <ImageView
-            android:layout_marginBottom="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:src="@drawable/plus"
-            android:id="@+id/addGarantorButton"/>
-        <ListView
+        android:layout_height="match_parent">
+        <TextView
+            style="@style/TitleSalmon"
+            android:text="@string/garantor_configure_profile"
+            android:gravity="center"
+            android:layout_marginTop="40dp"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            style="@style/ButtonSalmon"
+            android:id="@+id/continueButton"
+            android:layout_margin="16dp"
+            android:text="@string/go_further"
+            android:onClick="nextView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_square_salmon" />
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/garantorList">
-        </ListView>
-    </LinearLayout>
-    <Button
-        style="@style/ButtonSalmon"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:text="@string/go_further"
-        android:id="@+id/continueButton"
-        android:onClick="nextView"
-        android:prompt="@string/contract"
-        android:background="@drawable/rounded_square_salmon"
-        android:layout_alignParentBottom="true" />
-
-</RelativeLayout>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_above="@+id/continueButton"
+            android:layout_below="@+id/textView">
+            <ImageView
+                android:layout_marginBottom="10dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:src="@drawable/plus"
+                android:id="@+id/addGarantorButton"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/garantorList"
+                tools:listitem="@layout/list_item_guarantor">
+            </ListView>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

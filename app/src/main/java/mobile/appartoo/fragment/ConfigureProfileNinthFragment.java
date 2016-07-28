@@ -26,7 +26,7 @@ public class ConfigureProfileNinthFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ((EditText) getActivity().findViewById(R.id.contractConfigureProfile)).setOnClickListener(new View.OnClickListener() {
+        ((EditText) getActivity().findViewById(R.id.signUpConfigureContract)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
@@ -35,7 +35,7 @@ public class ConfigureProfileNinthFragment extends Fragment {
                 selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((EditText) getActivity().findViewById(R.id.contractConfigureProfile)).setText(items[which]);
+                        ((EditText) getActivity().findViewById(R.id.signUpConfigureContract)).setText(items[which]);
                     }
                 });
 

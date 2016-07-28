@@ -17,9 +17,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -37,9 +34,11 @@ import mobile.appartoo.fragment.SignUpFourthFragment;
 import mobile.appartoo.fragment.SignUpSecondFragment;
 import mobile.appartoo.fragment.SignUpThirdFragment;
 import mobile.appartoo.model.SignUpModel;
+import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.utils.TokenReceiver;
+import mobile.appartoo.view.NavigationDrawerView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +68,8 @@ public class SignUpActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retreive the resources
         pager = (ViewPager) findViewById(R.id.signup_pager);
@@ -105,7 +106,6 @@ public class SignUpActivity extends FragmentActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         restService = retrofit.create(RestService.class);
-        signUpButton = (Button) findViewById(R.id.buttonFinishSignUp);
 
         super.onStart();
     }
@@ -117,72 +117,6 @@ public class SignUpActivity extends FragmentActivity {
         } else {
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
-    }
-
-    public void finishSignUp(View v){
-        signUpButton = (Button) v;
-
-        newUser = getSignUpModel();
-        if(getSignUpModel() != null){
-
-            signUpButton.setEnabled(false);
-            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
-
-            //Handle the server response
-            callback.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    //If the login is successful
-                    if(response.isSuccessful()) {
-                        try {
-                            String responseBody = IOUtils.toString(response.body().charStream());
-                            System.out.println(responseBody.toString());
-                            logUser();
-
-                        } catch (IOException e) {
-                            Toast.makeText(getApplicationContext(), "Erreur, identification impossible.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        System.out.println(response.code());
-                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
-                    signUpButton.setEnabled(true);
-                }
-            });
-        }
-    }
-
-    private void logUser() {
-        System.out.println("Logging user...");
-        Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
-
-        newCallback.enqueue(new Callback<TokenReceiver>() {
-            @Override
-            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
-                if(response.isSuccessful()) {
-                    Appartoo.TOKEN = response.body().getToken();
-                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
-                    startActivity(new Intent(SignUpActivity.this, ConfigureProfileActivity.class));
-                } else {
-                    finish();
-                    Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
-                }
-                signUpButton.setEnabled(true);
-            }
-
-            @Override
-            public void onFailure(Call<TokenReceiver> call, Throwable t) {
-                finish();
-                Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
-                signUpButton.setEnabled(true);
-            }
-        });
     }
 
     /**
@@ -268,6 +202,113 @@ public class SignUpActivity extends FragmentActivity {
         } else {
             pager.setCurrentItem(pager.getCurrentItem()+1);
         }
+    }
+
+    public void finishSignUp(View v){
+        signUpButton = (Button) v;
+
+        newUser = getSignUpModel();
+        if(getSignUpModel() != null){
+
+            signUpButton.setEnabled(false);
+            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
+
+            //Handle the server response
+            callback.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    signUpButton.setEnabled(true);
+                    //If the login is successful
+                    if(response.isSuccessful()) {
+                        logUser();
+                    } else if(response.code() == 402) {
+                        Toast.makeText(getApplicationContext(), "L'utilisateur existe déjà.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("finishSignUp response code " + response.code());
+                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                    System.out.println("finishSignUp Failure");
+                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                    signUpButton.setEnabled(true);
+                }
+            });
+        }
+    }
+
+    private void logUser() {
+        System.out.println("Logging user...");
+        Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
+
+        newCallback.enqueue(new Callback<TokenReceiver>() {
+            @Override
+            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
+                if(response.isSuccessful()) {
+                    Appartoo.TOKEN = response.body().getToken();
+                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                    retrieveUserProfile();
+                } else {
+                    finish();
+                    System.out.println("logUser response code " + response.code());
+                    Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenReceiver> call, Throwable t) {
+                finish();
+                System.out.println("logUser Failure");
+                Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void retrieveUserProfile(){
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+
+        //Handle the server response
+        callback.enqueue(new Callback<UserWithProfileModel>() {
+            @Override
+            public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+
+                //If the login is successful
+                if(response.isSuccessful()) {
+                    Appartoo.LOGGED_USER_PROFILE = response.body();
+
+                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                            .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
+                            .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge())).apply();
+
+                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+
+                    launchActivityWithoutHistory(SignUpProfileActivity.class);
+                } else {
+                    System.out.println("retrieveUserProfile response code " + response.code());
+                    launchActivityWithoutHistory(MainActivity.class);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+                System.out.println("retrieveUserProfile Failure");
+                launchActivityWithoutHistory(MainActivity.class);
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    private void launchActivityWithoutHistory(Class activityClass){
+        Intent intent = new Intent(SignUpActivity.this, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     /**

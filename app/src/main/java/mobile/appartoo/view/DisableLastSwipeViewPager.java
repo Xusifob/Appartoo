@@ -18,8 +18,6 @@ public class DisableLastSwipeViewPager extends ViewPager {
         super(context, attrs);
     }
 
-
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         if(getCurrentItem() == getChildCount()-1) {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="72dp">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:paddingLeft="16dp">
         <TextView
             style="@style/Paragraph"
             android:id="@+id/garantorFullName"
@@ -30,9 +31,12 @@
             android:text="1000€"/>
     </RelativeLayout>
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_margin="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:id="@+id/deleteGarantor"
@@ -40,14 +44,16 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/delete" />
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_margin="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:id="@+id/modifyGarantor"
         android:layout_toLeftOf="@+id/deleteGarantor"
-        android:layout_marginRight="5dp"
         android:layout_centerVertical="true"
         android:src="@drawable/edit"/>
 </RelativeLayout>

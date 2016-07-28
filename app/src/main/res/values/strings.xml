@@ -24,6 +24,7 @@
     <string name="non_smoker">Non fumeur</string>
     <string name="student">Etudiant</string>
     <string name="birthdate">Date de naissance</string>
+    <string name="description">Description</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -53,7 +54,7 @@
 
     <!-- ACTIVITIES STRINGS -->
     <string name="title_activity_login">Connexion</string>
-    <string name="title_activity_signup">Inscription</string>
+    <string name="title_activity_sign_up">Inscription</string>
 
     <!-- USER MODIFY PROFILE STRINGS -->
     <string name="lastname">Nom</string>
@@ -78,11 +79,11 @@
     <!-- USER CONFIGURE PROFILE STRINGS -->
     <string name="what_are_you_looking_for">Que recherchez-vous ?</string>
     <string name="looking_for_a_shared_flat">Je cherche une colocation</string>
-    <string name="looking_for_a_roomate">Je cherche un colocataire</string>
+    <string name="looking_for_a_flatmate">Je cherche un colocataire</string>
     <string name="rent_my_flat">Je veux louer mon appartement</string>
     <string name="situation_configure_profile">Quelle est votre situation ?</string>
     <string name="company_configure_profile">Quelle est votre entreprise ?</string>
-    <string name="company">Entreprise</string>
+    <string name="society">Entreprise</string>
     <string name="function_configure_profile">Quelle est votre fonction ?</string>
     <string name="function">Fonction</string>
     <string name="contract_configure_profile">Quelle est votre contrat ?</string>

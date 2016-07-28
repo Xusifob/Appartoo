@@ -8,4 +8,5 @@
     android:background="@android:color/background_light"
     tools:context="mobile.appartoo.activity.LoginActivity"
     android:gravity="center"
-    android:id="@+id/signup_pager"/>
+    android:id="@+id/signup_pager"
+    android:fitsSystemWindows="true"/>

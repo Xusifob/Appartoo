@@ -1,90 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/background_light"
-    tools:context="mobile.appartoo.activity.LoginActivity"
-    android:gravity="center">
-
-    <TextView
-        style="@style/TitleSalmon"
-        android:text="@string/what_are_you_looking_for"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
-
-    <LinearLayout
+    android:fillViewport="true">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:onClick="toggleView"
-        android:background="@drawable/toggle_rounded_bordered_square"
-        android:tag="0">
+        android:layout_height="match_parent">
         <TextView
-            style="@style/Paragraph"
-            android:textColor="@color/colorSalmon"
-            android:padding="5dp"
-            android:text="@string/looking_for_a_shared_flat"/>
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:onClick="toggleView"
-        android:background="@drawable/toggle_rounded_bordered_square"
-        android:tag="1">
-        <TextView
-            style="@style/Paragraph"
-            android:textColor="@color/colorSalmon"
-            android:padding="5dp"
-            android:text="@string/looking_for_a_roomate"/>
-        </LinearLayout>
+            style="@style/TitleSalmon"
+            android:text="@string/what_are_you_looking_for"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:onClick="toggleView"
-            android:background="@drawable/toggle_rounded_bordered_square"
-            android:tag="2">
-            <TextView
-                style="@style/Paragraph"
-                android:textColor="@color/colorSalmon"
-                android:padding="5dp"
-                android:text="@string/rent_my_flat"/>
+            android:layout_centerInParent="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:onClick="toggleView"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:tag="0"
+                android:id="@+id/signUpConfigureSearchSharedFlat">
+                <TextView
+                    style="@style/Paragraph"
+                    android:textColor="@color/colorSalmon"
+                    android:padding="5dp"
+                    android:text="@string/looking_for_a_shared_flat"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:onClick="toggleView"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:id="@+id/signUpConfigureSearchFlatmate"
+                android:tag="1">
+                <TextView
+                    style="@style/Paragraph"
+                    android:textColor="@color/colorSalmon"
+                    android:padding="5dp"
+                    android:text="@string/looking_for_a_flatmate"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:onClick="toggleView"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:id="@+id/signUpConfigureShareFlat"
+                android:tag="2">
+                <TextView
+                    style="@style/Paragraph"
+                    android:textColor="@color/colorSalmon"
+                    android:padding="5dp"
+                    android:text="@string/rent_my_flat"/>
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-    <Button
-        style="@style/ButtonSalmon"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/go_further"
-        android:onClick="nextView"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/rounded_square_salmon" />
-</RelativeLayout>
+        <Button
+            style="@style/ButtonSalmon"
+            android:layout_margin="16dp"
+            android:text="@string/go_further"
+            android:onClick="nextView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_square_salmon" />
+    </RelativeLayout>
+</ScrollView>

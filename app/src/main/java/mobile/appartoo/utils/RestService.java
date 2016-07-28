@@ -3,6 +3,9 @@ package mobile.appartoo.utils;
 import java.util.ArrayList;
 
 import mobile.appartoo.model.OfferModel;
+import mobile.appartoo.model.OfferModelWithDate;
+import mobile.appartoo.model.OfferModelWithDetailledDate;
+import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -11,6 +14,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Url;
 
 /**
@@ -26,7 +30,7 @@ public interface RestService {
     Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
 
     @GET("/offers")
-    Call<ServerResponse<ArrayList<OfferModel>>> getOffers();
+    Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers();
 
     @GET("/me")
     Call<UserWithProfileModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);
@@ -35,5 +39,8 @@ public interface RestService {
     Call<ResponseBody> searchOffer();
 
     @GET
-    Call<ResponseBody> getUserOffers(@Url String url);
+    Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
+
+    @PUT
+    Call<ProfileUpdateModel> updateUserProfile(@Url String url);
 }

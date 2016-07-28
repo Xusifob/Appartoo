@@ -23,8 +23,6 @@ public class OfferModel implements Parcelable {
     private Boolean acceptAnimal;
     private Integer price;
     private Integer rooms;
-    private Date availabilityEnds;
-    private Date availabilityStarts;
     private UserModel owner;
     private AddressModel address;
     private ArrayList<ImageModel> images;
@@ -46,8 +44,6 @@ public class OfferModel implements Parcelable {
         acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         price = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         rooms = (Integer) in.readValue(INTEGER_CLASS_LOADER);
-        availabilityEnds = (Date) in.readSerializable();
-        availabilityStarts = (Date) in.readSerializable();
         owner = in.readParcelable(USERMODEL_CLASS_LOADER);
         address = in.readParcelable(ADDRESSMODEL_CLASS_LOADER);
         images = in.readArrayList(IMAGEMODEL_CLASS_LOADER);
@@ -65,8 +61,6 @@ public class OfferModel implements Parcelable {
         dest.writeValue(acceptAnimal);
         dest.writeValue(price);
         dest.writeValue(rooms);
-        dest.writeSerializable(availabilityEnds);
-        dest.writeSerializable(availabilityStarts);
         dest.writeParcelable(owner, flags);
         dest.writeParcelable(address, flags);
         dest.writeList(images);
@@ -96,22 +90,6 @@ public class OfferModel implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Date getAvailabilityEnds() {
-        return availabilityEnds;
-    }
-
-    public void setAvailabilityEnds(Date availabilityEnds) {
-        this.availabilityEnds = availabilityEnds;
-    }
-
-    public Date getAvailabilityStarts() {
-        return availabilityStarts;
-    }
-
-    public void setAvailabilityStarts(Date availabilityStarts) {
-        this.availabilityStarts = availabilityStarts;
     }
 
     public String getDescription() {
@@ -214,8 +192,6 @@ public class OfferModel implements Parcelable {
     public String toString() {
         return "OfferModel{" +
                 "id='" + id + '\'' +
-                ", availabilityEnds=" + availabilityEnds +
-                ", availabilityStarts=" + availabilityStarts +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +

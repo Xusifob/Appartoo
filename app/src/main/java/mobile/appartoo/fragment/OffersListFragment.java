@@ -18,6 +18,7 @@ import mobile.appartoo.R;
 import mobile.appartoo.activity.OfferDetailActivity;
 import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
+import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.utils.ServerResponse;
@@ -113,11 +114,11 @@ public class OffersListFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ServerResponse<ArrayList<OfferModel>>> callback = restService.getOffers();
+        Call<ServerResponse<ArrayList<OfferModelWithDate>>> callback = restService.getOffers();
 
-        callback.enqueue(new Callback<ServerResponse<ArrayList<OfferModel>>>(){
+        callback.enqueue(new Callback<ServerResponse<ArrayList<OfferModelWithDate>>>(){
             @Override
-            public void onResponse(Call<ServerResponse<ArrayList<OfferModel>>> call, Response<ServerResponse<ArrayList<OfferModel>>> response) {
+            public void onResponse(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Response<ServerResponse<ArrayList<OfferModelWithDate>>> response) {
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
@@ -136,7 +137,7 @@ public class OffersListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ServerResponse<ArrayList<OfferModel>>> call, Throwable t) {
+            public void onFailure(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Throwable t) {
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 } else {

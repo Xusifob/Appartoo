@@ -27,6 +27,7 @@
             android:text="User"/>
         <TextView
             style="@style/Paragraph"
+            android:id="@+id/profileInfos"
             android:text="Student, 22 years"/>
         <View style="@style/Separator"
             android:layout_margin="40dp"/>

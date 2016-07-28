@@ -1,85 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/background_light"
-    tools:context="mobile.appartoo.activity.LoginActivity"
-    android:gravity="center">
+    android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            style="@style/TitleSalmon"
+            android:text="@string/gender_signup"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"/>
 
-    <TextView
-        style="@style/TitleSalmon"
-        android:text="@string/gender_signup"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true">
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:layout_marginRight="10dp"
+                android:onClick="toggleView"
+                android:id="@+id/signUpConfigureMan"
+                android:tag="man">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/male"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="2dp"
+                    android:textColor="@color/colorSalmon"
+                    android:text="@string/man" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:layout_marginRight="10dp"
+                android:onClick="toggleView"
+                android:id="@+id/signUpConfigureWoman"
+                android:tag="woman">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/female"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:padding="2dp"
+                    android:textColor="@color/colorSalmon"
+                    android:text="@string/woman" />
+            </RelativeLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerInParent="true">
-        <RelativeLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:clickable="true"
-            android:background="@drawable/toggle_rounded_bordered_square"
-            android:layout_marginRight="10dp"
-            android:onClick="toggleView"
-            android:id="@+id/signUpMan"
-            android:tag="man">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:layout_centerInParent="true"
-                android:src="@drawable/male"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:padding="2dp"
-                android:textColor="@color/colorSalmon"
-                android:text="@string/man" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:clickable="true"
-            android:background="@drawable/toggle_rounded_bordered_square"
-            android:layout_marginRight="10dp"
-            android:onClick="toggleView"
-            android:id="@+id/signUpWoman"
-            android:tag="woman">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:layout_centerInParent="true"
-                android:src="@drawable/female"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:padding="2dp"
-                android:textColor="@color/colorSalmon"
-                android:text="@string/woman" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <Button
-        style="@style/ButtonSalmon"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/go_further"
-        android:onClick="nextView"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/rounded_square_salmon" />
-</RelativeLayout>
+        <Button
+            style="@style/ButtonSalmon"
+            android:layout_margin="16dp"
+            android:text="@string/go_further"
+            android:onClick="nextView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_square_salmon" />
+    </RelativeLayout>
+</ScrollView>
