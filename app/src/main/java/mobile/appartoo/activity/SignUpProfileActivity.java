@@ -14,29 +14,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.text.ParseException;
-
 import mobile.appartoo.R;
-import mobile.appartoo.fragment.ConfigureProfileEighthFragment;
-import mobile.appartoo.fragment.ConfigureProfileEleventhFragment;
-import mobile.appartoo.fragment.ConfigureProfileFifthFragment;
-import mobile.appartoo.fragment.ConfigureProfileFirstFragment;
-import mobile.appartoo.fragment.ConfigureProfileFourthFragment;
-import mobile.appartoo.fragment.ConfigureProfileNinthFragment;
-import mobile.appartoo.fragment.ConfigureProfileSecondFragment;
-import mobile.appartoo.fragment.ConfigureProfileSeventhFragment;
-import mobile.appartoo.fragment.ConfigureProfileSixthFragment;
-import mobile.appartoo.fragment.ConfigureProfileTenthFragment;
-import mobile.appartoo.fragment.ConfigureProfileThirdFragment;
-import mobile.appartoo.fragment.ConfigureProfileThirteenthFragment;
-import mobile.appartoo.fragment.ConfigureProfileTwelfthFragment;
+import mobile.appartoo.fragment.SignUpProfileEighthFragment;
+import mobile.appartoo.fragment.SignUpProfileEleventhFragment;
+import mobile.appartoo.fragment.SignUpProfileFifthFragment;
+import mobile.appartoo.fragment.SignUpProfileFirstFragment;
+import mobile.appartoo.fragment.SignUpProfileFourthFragment;
+import mobile.appartoo.fragment.SignUpProfileNinthFragment;
+import mobile.appartoo.fragment.SignUpProfileSecondFragment;
+import mobile.appartoo.fragment.SignUpProfileSeventhFragment;
+import mobile.appartoo.fragment.SignUpProfileSixthFragment;
+import mobile.appartoo.fragment.SignUpProfileTenthFragment;
+import mobile.appartoo.fragment.SignUpProfileThirdFragment;
+import mobile.appartoo.fragment.SignUpProfileThirteenthFragment;
+import mobile.appartoo.fragment.SignUpProfileTwelfthFragment;
 import mobile.appartoo.model.ProfileUpdateModel;
-import mobile.appartoo.model.SignUpModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.view.DisableLastSwipeViewPager;
-import mobile.appartoo.view.NavigationDrawerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +49,7 @@ public class SignUpProfileActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_profile);
 
@@ -65,7 +62,6 @@ public class SignUpProfileActivity extends FragmentActivity {
         sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
 
         pager = (DisableLastSwipeViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -104,19 +100,38 @@ public class SignUpProfileActivity extends FragmentActivity {
      */
     public void nextView(View v){
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
+            startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
         } else if(pager.getCurrentItem() == NUM_PAGES - 2) {
+            v.setEnabled(false);
             updateUserProfile();
-            pager.setCurrentItem(pager.getCurrentItem()+1);
         } else {
             pager.setCurrentItem(pager.getCurrentItem()+1);
         }
     }
 
     private void updateUserProfile(){
+        System.out.println("Updating user profile");
         ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
-        if(profileUpdateModel != null) {
+        if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
             System.out.println(profileUpdateModel.toString());
+            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+
+            callback.enqueue(new Callback<ProfileUpdateModel>() {
+                @Override
+                public void onResponse(Call<ProfileUpdateModel> call, Response<ProfileUpdateModel> response) {
+                    if(response.isSuccessful()) {
+                        pager.setCurrentItem(NUM_PAGES-1);
+                    } else {
+                        System.out.println(response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfileUpdateModel> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
         }
 
     }
@@ -127,8 +142,8 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         String society = ((EditText) findViewById(R.id.signUpConfigureSociety)).getText().toString();
         String function = ((EditText) findViewById(R.id.signUpConfigureFunction)).getText().toString();
-        String contract = ((EditText) findViewById(R.id.signUpConfigureContract)).getText().toString();
-        String incomeStr = ((EditText) findViewById(R.id.signUpConfigureContract)).getText().toString();
+        String contract = findViewById(R.id.signUpConfigureContract).getTag().toString();
+        String incomeStr = ((EditText) findViewById(R.id.signUpConfigureIncome)).getText().toString();
         String description = ((EditText) findViewById(R.id.signUpConfigureDescription)).getText().toString();
 
         Double income = null;
@@ -141,10 +156,10 @@ public class SignUpProfileActivity extends FragmentActivity {
             }
         }
 
-        if(!society.replaceAll("\\s+","").equals("")) updateModel.setSociety(society);
-        if(!function.replaceAll("\\s+","").equals("")) updateModel.setFunction(function);
-        if(!contract.replaceAll("\\s+","").equals("")) updateModel.setContract(contract);
-        if(!description.replaceAll("\\s+","").equals("")) updateModel.setDescription(description);
+        if(!society.replaceAll("\\s+","").equals("")) updateModel.setSociety(society.trim());
+        if(!function.replaceAll("\\s+","").equals("")) updateModel.setFunction(function.trim());
+        if(!contract.replaceAll("\\s+","").equals("")) updateModel.setContract(contract.trim());
+        if(!description.replaceAll("\\s+","").equals("")) updateModel.setDescription(description.trim());
         if(income != null) updateModel.setIncome(income);
 
         return updateModel;
@@ -165,12 +180,11 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         if(man) updateModel.setGender("Male");
         if(woman) updateModel.setGender("Female");
-        if(single) updateModel.setRelationshipStatus("Célibataire");
-        if(inRelationship) updateModel.setRelationshipStatus("En couple");
+        if(single) updateModel.setInRelationship(false);
+        if(inRelationship) updateModel.setInRelationship(true);
         if(isSmoker) updateModel.setSmoker(true);
         if(isNotSmoker) updateModel.setSmoker(false);
         if(student) updateModel.setContract("student");
-        if(worker) updateModel.setContract("worker");
     }
 
     /**
@@ -203,20 +217,20 @@ public class SignUpProfileActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             switch(position) {
-                case 0: return new ConfigureProfileFirstFragment();
-                case 1: return new ConfigureProfileSecondFragment();
-                case 2: return new ConfigureProfileThirdFragment();
-                case 3: return new ConfigureProfileFourthFragment();
-                case 4: return new ConfigureProfileFifthFragment();
-                case 5: return new ConfigureProfileSixthFragment();
-                case 6: return new ConfigureProfileSeventhFragment();
-                case 7: return new ConfigureProfileEighthFragment();
-                case 8: return new ConfigureProfileNinthFragment();
-                case 9: return new ConfigureProfileTenthFragment();
-                case 10: return new ConfigureProfileEleventhFragment();
-                case 11: return new ConfigureProfileTwelfthFragment();
-                case 12: return new ConfigureProfileThirteenthFragment();
-                default: return new ConfigureProfileFirstFragment();
+                case 0: return new SignUpProfileFirstFragment();
+                case 1: return new SignUpProfileSecondFragment();
+                case 2: return new SignUpProfileThirdFragment();
+                case 3: return new SignUpProfileFourthFragment();
+                case 4: return new SignUpProfileFifthFragment();
+                case 5: return new SignUpProfileSixthFragment();
+                case 6: return new SignUpProfileSeventhFragment();
+                case 7: return new SignUpProfileEighthFragment();
+                case 8: return new SignUpProfileNinthFragment();
+                case 9: return new SignUpProfileTenthFragment();
+                case 10: return new SignUpProfileEleventhFragment();
+                case 11: return new SignUpProfileTwelfthFragment();
+                case 12: return new SignUpProfileThirteenthFragment();
+                default: return new SignUpProfileFirstFragment();
             }
         }
 

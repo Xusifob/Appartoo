@@ -32,6 +32,10 @@ public class UserWithProfileModel extends UserModel {
     private static final ClassLoader SIMPLEUSERMODEL_CLASS_LOADER = SimpleUserModel.class.getClassLoader();
     private static final ClassLoader NATIONALITYMODEL_CLASS_LOADER = NationalityModel.class.getClassLoader();
 
+    public UserWithProfileModel() {
+        super();
+    }
+
     protected UserWithProfileModel(Parcel in) {
         super(in);
         relationshipStatus = in.readString();

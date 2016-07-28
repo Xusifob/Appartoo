@@ -37,6 +37,8 @@ public class UserModel implements Parcelable {
     private static final ClassLoader IMAGEMODEL_CLASS_LOADER = ImageModel.class.getClassLoader();
     private static final ClassLoader ADDRESSMODEL_CLASS_LOADER = AddressModel.class.getClassLoader();
 
+    public UserModel() {}
+
     protected UserModel(Parcel in) {
         id = in.readString();
         society = in.readString();

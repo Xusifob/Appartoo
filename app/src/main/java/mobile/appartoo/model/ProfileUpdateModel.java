@@ -39,10 +39,9 @@ public class ProfileUpdateModel implements Parcelable {
     private Boolean acceptAnimal;
 
     private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
-    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
     private static final ClassLoader DOUBLE_CLASS_LOADER = Double.class.getClassLoader();
 
-    public ProfileUpdateModel(){};
+    public ProfileUpdateModel(){}
 
     protected ProfileUpdateModel(Parcel in) {
         relationshipStatus = in.readString();

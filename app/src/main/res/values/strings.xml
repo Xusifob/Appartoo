@@ -89,8 +89,11 @@
     <string name="contract_configure_profile">Quelle est votre contrat ?</string>
     <string name="contract">Contrat</string>
     <string-array name="contracts">
-        <item name="cdd">CDD</item>
-        <item name="cdi">CDI</item>
+        <item name="student">Etudiant</item>
+        <item name="salary">Salarié</item>
+        <item name="freelance">Freelance</item>
+        <item name="retired">Retraité</item>
+        <item name="unemployed">Sans emploi</item>
     </string-array>
     <string name="income_configure_profile">Quelle est votre revenu mensuel ?</string>
     <string name="income">Revenu</string>

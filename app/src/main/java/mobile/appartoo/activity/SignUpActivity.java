@@ -198,7 +198,7 @@ public class SignUpActivity extends FragmentActivity {
      */
     public void nextView(View v){
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
-            finish();
+            finishSignUp(v);
         } else {
             pager.setCurrentItem(pager.getCurrentItem()+1);
         }

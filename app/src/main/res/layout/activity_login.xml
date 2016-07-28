@@ -1,94 +1,112 @@
-<RelativeLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorSalmon"
     android:id="@+id/loginView"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:layout_marginTop="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/logo"
-        android:id="@+id/appartooLogo"/>
-    <EditText
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="25dp"
-        android:id="@+id/logInMail"
-        android:padding="5dp"
-        android:textColor="@color/colorBlack"
-        android:inputType="textEmailAddress"
-        android:hint="@string/mail"
-        android:background="@drawable/rounded_square"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:layout_below="@+id/appartooLogo"/>
-    <EditText
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:textColor="@color/colorBlack"
-        android:inputType="textPassword"
-        android:id="@+id/logInPassword"
-        android:hint="@string/password"
-        android:background="@drawable/rounded_square"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:layout_below="@+id/logInMail"/>
-
-    <Button
-        style="@style/ButtonGreen"
-        android:layout_below="@+id/logInPassword"
-        android:layout_marginLeft="20dp"
-        android:id="@+id/connectButton"
-        android:onClick="logIn"
-        android:layout_marginRight="20dp"
-        android:text="@string/connect"/>
-
-    <TextView
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:onClick="signUp"
-        android:text="@string/signup"
-        android:layout_below="@+id/connectButton"
-        android:layout_centerHorizontal="true"/>
-
     <LinearLayout
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/rounded_square_blue"
-        android:id="@+id/signUp"
-        android:layout_alignParentBottom="true">
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1">
         <ImageView
-            android:layout_margin="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/facebook_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            android:id="@+id/appartooLogo"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@id/header"
+        android:layout_weight="1">
+        <EditText
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/logInMail"
+            android:padding="8dp"
+            android:textColor="@color/colorBlack"
+            android:inputType="textEmailAddress"
+            android:hint="@string/mail"
+            android:background="@drawable/rounded_square"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+        <EditText
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:padding="8dp"
+            android:textColor="@color/colorBlack"
+            android:inputType="textPassword"
+            android:id="@+id/logInPassword"
+            android:hint="@string/password"
+            android:background="@drawable/rounded_square"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+        <Button
+            style="@style/ButtonGreen"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/connectButton"
+            android:onClick="logIn"
+            android:text="@string/connect"/>
+
         <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
-            android:text="@string/connect_with_fb"/>
-
+            android:onClick="signUp"
+            android:text="@string/signup" />
     </LinearLayout>
-</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/rounded_square_blue"
+            android:id="@+id/signUp">
+            <ImageView
+                android:layout_margin="8dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/facebook_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:text="@string/connect_with_fb"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

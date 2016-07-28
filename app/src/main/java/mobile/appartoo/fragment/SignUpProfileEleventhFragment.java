@@ -21,7 +21,7 @@ import mobile.appartoo.model.GarantorModel;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class ConfigureProfileEleventhFragment extends Fragment {
+public class SignUpProfileEleventhFragment extends Fragment {
 
     ArrayList<GarantorModel> garantorModels;
     GarantorsAdapter garantorsAdapter;
@@ -30,7 +30,7 @@ public class ConfigureProfileEleventhFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page11, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sign_up_profile_page11, container, false);
 
         garantorModels = new ArrayList<>();
         garantorsListView = (ListView) rootView.findViewById(R.id.garantorList);

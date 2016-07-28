@@ -1,6 +1,5 @@
 package mobile.appartoo.fragment;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,11 +11,10 @@ import mobile.appartoo.R;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class ConfigureProfileThirteenthFragment extends Fragment {
-
+public class SignUpProfileSecondFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page13, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sign_up_profile_page02, container, false);
         return rootView;
     }
 }

@@ -14,11 +14,15 @@ import mobile.appartoo.R;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class ConfigureProfileNinthFragment extends Fragment {
+public class SignUpProfileNinthFragment extends Fragment {
+
+    private EditText contract;
+    private final String[] values = {"student", "salary", "freelance", "retired", "unemployed"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page09, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sign_up_profile_page09, container, false);
+        contract = (EditText) rootView.findViewById(R.id.signUpConfigureContract);
         return rootView;
     }
 
@@ -26,16 +30,18 @@ public class ConfigureProfileNinthFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ((EditText) getActivity().findViewById(R.id.signUpConfigureContract)).setOnClickListener(new View.OnClickListener() {
+        contract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
+
                 final String[] items = getResources().getStringArray(R.array.contracts);
 
                 selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((EditText) getActivity().findViewById(R.id.signUpConfigureContract)).setText(items[which]);
+                        contract.setText(items[which]);
+                        contract.setTag(values[which]);
                     }
                 });
 

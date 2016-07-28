@@ -9,6 +9,7 @@ import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -42,5 +43,5 @@ public interface RestService {
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
 
     @PUT
-    Call<ProfileUpdateModel> updateUserProfile(@Url String url);
+    Call<ProfileUpdateModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body ProfileUpdateModel updateModel);
 }

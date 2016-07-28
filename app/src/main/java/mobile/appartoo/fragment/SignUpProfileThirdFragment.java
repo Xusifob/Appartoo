@@ -11,10 +11,10 @@ import mobile.appartoo.R;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class ConfigureProfileTenthFragment extends Fragment {
+public class SignUpProfileThirdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_configure_profile_page10, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sign_up_profile_page03, container, false);
         return rootView;
     }
 }
