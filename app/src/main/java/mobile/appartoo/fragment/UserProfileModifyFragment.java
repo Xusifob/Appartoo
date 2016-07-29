@@ -13,9 +13,10 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import mobile.appartoo.R;
-import mobile.appartoo.model.ProfileUpdateModel;
+import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.view.NavigationDrawerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +46,7 @@ public class UserProfileModifyFragment extends Fragment {
 
     private RestService restService;
     private SharedPreferences sharedPreferences;
+    private NavigationDrawerView navigationDrawerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class UserProfileModifyFragment extends Fragment {
         isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
         saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
 
+
         System.out.println(Appartoo.LOGGED_USER_PROFILE.getInRelationship());
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -78,6 +81,7 @@ public class UserProfileModifyFragment extends Fragment {
                 .build();
 
         restService = retrofit.create(RestService.class);
+        navigationDrawerView = (NavigationDrawerView) getActivity().findViewById(R.id.navigationDrawer);
         sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         if (container != null) {
@@ -99,8 +103,8 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
     private void populateView(){
-        userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
-        userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
+        userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
+        userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
         userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));
 
         if(Appartoo.LOGGED_USER_PROFILE.getTelephone() != null) userPhone.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getTelephone()));
@@ -130,18 +134,26 @@ public class UserProfileModifyFragment extends Fragment {
 
     private void updateUserProfile(){
         System.out.println("Updating user profile");
-        ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
+        final UserWithProfileModel profileUpdateModel = getProfileUpdateModel();
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            System.out.println(profileUpdateModel.toString());
-            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
 
-            callback.enqueue(new Callback<ProfileUpdateModel>() {
+            callback.enqueue(new Callback<UserWithProfileModel>() {
                 @Override
-                public void onResponse(Call<ProfileUpdateModel> call, Response<ProfileUpdateModel> response) {
+                public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+                    saveSettings.setEnabled(true);
+
                     if(response.isSuccessful()) {
                         Toast.makeText(getActivity().getApplicationContext(), "Votre profil a été mis à jour avec succès.", Toast.LENGTH_SHORT).show();
+
+                        if(!profileUpdateModel.getGivenName().equals(Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                                || !profileUpdateModel.getFamilyName().equals(Appartoo.LOGGED_USER_PROFILE.getFamilyName())) {
+                            NavigationDrawerView.setHeaderInformations(profileUpdateModel.getGivenName() + " " + profileUpdateModel.getFamilyName(), userMail.getText().toString());
+                            navigationDrawerView.updateHeader();
+                        }
+
                         updateUserLoggedModel();
                     } else {
                         System.out.println(response.code());
@@ -149,8 +161,9 @@ public class UserProfileModifyFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ProfileUpdateModel> call, Throwable t) {
+                public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
                     t.printStackTrace();
+                    saveSettings.setEnabled(true);
                 }
             });
         }
@@ -175,8 +188,8 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
 
-    private ProfileUpdateModel getProfileUpdateModel(){
-        ProfileUpdateModel updateModel = new ProfileUpdateModel();
+    private UserWithProfileModel getProfileUpdateModel(){
+        UserWithProfileModel updateModel = new UserWithProfileModel();
         updateModel.setSmoker(isSmoker.isChecked());
         updateModel.setCook(isCook.isChecked());
         updateModel.setMusician(isMusician.isChecked());
@@ -190,7 +203,7 @@ public class UserProfileModifyFragment extends Fragment {
         updateModel.setMessy(!isOrdinate.isChecked());
         updateModel.setManiac(isManiac.isChecked());
         updateModel.setGivenName(userFirstName.getText().toString().trim());
-        updateModel.setFamilyName(userFirstName.getText().toString().trim());
+        updateModel.setFamilyName(userLastName.getText().toString().trim());
         updateModel.setTelephone(userPhone.getText().toString().trim());
         return updateModel;
     }

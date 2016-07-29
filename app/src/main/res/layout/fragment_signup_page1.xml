@@ -38,7 +38,7 @@
             android:text="@string/go_further"
             android:onClick="nextView"
             android:layout_margin="16dp"
-            android:background="@drawable/rounded_square_salmon"
+            android:background="@drawable/square_salmon"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </ScrollView>

@@ -24,7 +24,7 @@
             android:onClick="nextView"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_square_salmon" />
+            android:background="@drawable/square_salmon" />
 
         <LinearLayout
             android:layout_marginTop="16dp"

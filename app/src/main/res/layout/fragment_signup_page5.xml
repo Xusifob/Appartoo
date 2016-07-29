@@ -44,7 +44,7 @@
             style="@style/ButtonSalmon"
             android:text="@string/finish_signup"
             android:onClick="nextView"
-            android:background="@drawable/rounded_square_salmon"
+            android:background="@drawable/square_salmon"
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"/>
     </RelativeLayout>

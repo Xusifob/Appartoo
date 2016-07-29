@@ -30,7 +30,7 @@
                 style="@style/ButtonSalmon"
                 android:text="@string/configure_profile"
                 android:onClick="nextView"
-                android:background="@drawable/rounded_square_salmon" />
+                android:background="@drawable/square_salmon" />
         </LinearLayout>
 
         <Button
@@ -40,6 +40,6 @@
             android:onClick="goToMainActivity"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_square_salmon" />
+            android:background="@drawable/square_salmon" />
     </RelativeLayout>
 </ScrollView>

@@ -53,5 +53,5 @@
         android:layout_height="40dp"
         android:text="Enregistrer mon annonce"
         android:id="@+id/saveProfileSettings"
-        android:background="@drawable/rounded_square_salmon" />
+        android:background="@drawable/square_salmon" />
 </LinearLayout>

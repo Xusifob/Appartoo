@@ -10,8 +10,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import mobile.appartoo.R;
 import mobile.appartoo.view.NavigationDrawerView;
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //Define the action to do according to the selected menu
         switch (item.getItemId()) {
             case ID_MENU_ADD:
-                startActivity(new Intent(MainActivity.this, AddOfferOrDemandActivity.class));
+                startActivity(new Intent(MainActivity.this, AddOfferActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="mobile.appartoo.fragment.UserProfileSettingsFragment">
+    tools:context="mobile.appartoo.fragment.UserProfileSettingsFragment"
+    android:fitsSystemWindows="true">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -75,8 +76,8 @@
                 android:inputType="textPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/userProfileModifyLastName"
-                android:hint="@string/lastname"
+                android:id="@+id/userProfileModifyFirstName"
+                android:hint="@string/firstName"
                 android:layout_weight="1"/>
             <View
                 android:layout_width="16dp"
@@ -86,8 +87,8 @@
                 android:inputType="textPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/userProfileModifyFirstName"
-                android:hint="@string/firstName"
+                android:id="@+id/userProfileModifyLastName"
+                android:hint="@string/lastname"
                 android:layout_weight="1"/>
         </LinearLayout>
         <EditText
@@ -413,7 +414,7 @@
             android:layout_height="40dp"
             android:text="Enregistrer mes informations"
             android:id="@+id/userProfileModifySaveSettings"
-            android:background="@drawable/rounded_square_salmon" />
+            android:background="@drawable/square_salmon" />
         <LinearLayout
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"

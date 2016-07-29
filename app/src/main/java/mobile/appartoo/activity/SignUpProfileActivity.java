@@ -1,8 +1,6 @@
 package mobile.appartoo.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,7 +26,6 @@ import mobile.appartoo.fragment.SignUpProfileNinthFragment;
 import mobile.appartoo.fragment.SignUpProfileThirdFragment;
 import mobile.appartoo.fragment.SignUpProfileTwelfthFragment;
 import mobile.appartoo.fragment.SignUpProfileEleventhFragment;
-import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
@@ -111,15 +108,15 @@ public class SignUpProfileActivity extends FragmentActivity {
     }
 
     private void updateUserProfile(){
-        final ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
+        final UserWithProfileModel profileUpdateModel = getProfileUpdateModel();
         updateProfile.setEnabled(false);
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
-            callback.enqueue(new Callback<ProfileUpdateModel>() {
+            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+            callback.enqueue(new Callback<UserWithProfileModel>() {
                 @Override
-                public void onResponse(Call<ProfileUpdateModel> call, Response<ProfileUpdateModel> response) {
+                public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
                     if(response.isSuccessful()) {
 
                         updateUserLoggedModel(profileUpdateModel);
@@ -133,7 +130,7 @@ public class SignUpProfileActivity extends FragmentActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ProfileUpdateModel> call, Throwable t) {
+                public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
                     t.printStackTrace();
                 }
             });
@@ -142,8 +139,8 @@ public class SignUpProfileActivity extends FragmentActivity {
         }
     }
 
-    private ProfileUpdateModel getProfileUpdateModel(){
-        ProfileUpdateModel updateModel = new ProfileUpdateModel();
+    private UserWithProfileModel getProfileUpdateModel(){
+        UserWithProfileModel updateModel = new UserWithProfileModel();
         setToggleViewsInformations(updateModel);
 
         String society = ((EditText) findViewById(R.id.signUpConfigureSociety)).getText().toString();
@@ -171,7 +168,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         return updateModel;
     }
 
-    private void setToggleViewsInformations(ProfileUpdateModel updateModel){
+    private void setToggleViewsInformations(UserWithProfileModel updateModel){
         boolean man = findViewById(R.id.signUpConfigureMan).isSelected();
         boolean woman = findViewById(R.id.signUpConfigureWoman).isSelected();
         boolean single = findViewById(R.id.signUpConfigureSingle).isSelected();
@@ -205,7 +202,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         v.setSelected(true);
     }
 
-    private void updateUserLoggedModel(ProfileUpdateModel updateModel){
+    private void updateUserLoggedModel(UserWithProfileModel updateModel){
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             Appartoo.LOGGED_USER_PROFILE.setGender(updateModel.getGender());
             Appartoo.LOGGED_USER_PROFILE.setInRelationship(updateModel.getInRelationship());

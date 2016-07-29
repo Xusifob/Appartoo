@@ -67,9 +67,10 @@
         <activity
             android:name=".activity.UserProfileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activity.AddOfferOrDemandActivity"
+            android:name=".activity.AddOfferActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity

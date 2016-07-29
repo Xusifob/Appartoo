@@ -2,10 +2,8 @@ package mobile.appartoo.utils;
 
 import java.util.ArrayList;
 
-import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.model.OfferModelWithDetailledDate;
-import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,5 +41,5 @@ public interface RestService {
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
 
     @PUT
-    Call<ProfileUpdateModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body ProfileUpdateModel updateModel);
+    Call<UserWithProfileModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body UserWithProfileModel updateModel);
 }

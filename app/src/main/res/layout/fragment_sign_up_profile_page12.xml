@@ -30,6 +30,6 @@
             android:text="@string/go_to_offer_list"
             android:layout_alignParentBottom="true"
             android:onClick="nextView"
-            android:background="@drawable/rounded_square_salmon" />
+            android:background="@drawable/square_salmon" />
     </RelativeLayout>
 </ScrollView>
