@@ -9,30 +9,27 @@
         android:layout_height="match_parent">
         <TextView
             style="@style/TitleSalmon"
-            android:text="@string/presentation_configure_profile"
-            android:gravity="center"
-            android:hint="@string/description"
+            android:text="@string/congratulations"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="40dp"/>
 
-        <EditText
-            android:layout_margin="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            android:gravity="bottom|center_horizontal"
-            android:ellipsize="start"
-            android:hint="@string/description"
-            android:inputType="textMultiLine"
-            android:id="@+id/signUpConfigureDescription"/>
+        <TextView
+            style="@style/Paragraph"
+            android:gravity="center"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/colorSalmon"
+            android:text="@string/end_of_configuration"
+            android:layout_centerInParent="true"/>
+
         <Button
             style="@style/ButtonSalmon"
             android:layout_margin="16dp"
-            android:text="@string/go_further"
-            android:onClick="nextView"
+            android:text="@string/go_to_offer_list"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:onClick="nextView"
             android:background="@drawable/rounded_square_salmon" />
     </RelativeLayout>
 </ScrollView>

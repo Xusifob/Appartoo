@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
         <TextView
             style="@style/TitleSalmon"
-            android:text="@string/company_configure_profile"
+            android:text="@string/function_configure_profile"
             android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -17,13 +17,13 @@
 
         <EditText
             android:layout_margin="20dp"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:id="@+id/signUpConfigureSociety"
-            android:hint="@string/society"/>
+            android:singleLine="true"
+            android:id="@+id/signUpConfigureFunction"
+            android:hint="@string/function"/>
 
         <Button
             style="@style/ButtonSalmon"

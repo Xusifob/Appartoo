@@ -30,16 +30,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <TextView
-                style="@style/Paragraph"
-                android:padding="10dp"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/Paragraph"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/worker"
+                    android:layout_weight="1"/>
+                <Switch
+                    style="@style/NoTextSwitch"
+                    android:id="@+id/userProfileModifyIsWorker"/>
+            </LinearLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <View
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/worker"/>
-            <Switch
-                style="@style/NoTextSwitch"
-                android:id="@+id/userProfileModifyWorker"/>
+                android:layout_weight="1"/>
         </LinearLayout>
         <TextView
             style="@style/ProfileSection"
@@ -47,7 +65,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
             <EditText
                 android:singleLine="true"
                 android:inputType="textPersonName"
@@ -56,6 +78,9 @@
                 android:id="@+id/userProfileModifyLastName"
                 android:hint="@string/lastname"
                 android:layout_weight="1"/>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
             <EditText
                 android:singleLine="true"
                 android:inputType="textPersonName"
@@ -71,6 +96,10 @@
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:id="@+id/userProfileModifyPhone"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:hint="@string/phone"/>
         <EditText
             android:singleLine="true"
@@ -78,184 +107,337 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/userProfileModifyMail"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:focusable="false"
             android:hint="@string/mail"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/inRelationship"
-                    android:layout_weight="1"/>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:id="@+id/userProfileModifyInRelationship"/>
-            </LinearLayout>
-            <LinearLayout
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/smoker"
-                    android:layout_weight="1"/>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:id="@+id/userProfileModifyIsSmoker"/>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
         <TextView
             style="@style/ProfileSection"
             android:text="@string/personnal_infos"/>
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TableRow
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/generous"
-                    android:layout_weight="1"/>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:id="@+id/userProfileModifyIsGenerous"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/musician"/>
+                    android:text="@string/musician"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsMusician" />
-            </TableRow>
-            <TableRow
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsMusician"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/organized"
-                    android:layout_weight="1"/>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsMessy" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsOrdinate"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/traveller"/>
+                    android:text="@string/traveller"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsTraveller" />
-            </TableRow>
-            <TableRow
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsTraveller"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/maniac"
-                    android:layout_weight="1"/>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsManiac" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsManiac"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/cook"/>
+                    android:text="@string/cook"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsCook" />
-            </TableRow>
-            <TableRow
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsCook"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/party_goer"
-                    android:layout_weight="1" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsPartyGoer" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsPartyGoer"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/layabout" />
+                    android:text="@string/layabout"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsLayabout" />
-            </TableRow>
-            <TableRow
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsLayabout"/>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/spendthrift"
-                    android:layout_weight="1" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true" />
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsSpendthrift" />
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsSpendthrift"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/nerdy"/>
+                    android:text="@string/nerdy"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
                 <Switch
                     style="@style/NoTextSwitch"
-                    android:id="@+id/userProfileModifyIsGeek" />
-            </TableRow>
-        </TableLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/userProfileModifyIsGeek"/>
+            </RelativeLayout>
+        </LinearLayout>
         <Button
             style="@style/ButtonSalmon"
-            android:layout_margin="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_height="40dp"
             android:text="Enregistrer mes informations"
-            android:id="@+id/saveProfileSettings"
+            android:id="@+id/userProfileModifySaveSettings"
             android:background="@drawable/rounded_square_salmon" />
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/rounded_square_blue"
+            android:id="@+id/signUp">
+            <ImageView
+                android:layout_margin="8dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/facebook_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:text="@string/connect_with_fb"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

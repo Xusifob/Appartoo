@@ -1,55 +1,46 @@
 package mobile.appartoo.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.widget.ImageView;
 
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.HomeFragment;
+import mobile.appartoo.fragment.LogInFragment;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
-import mobile.appartoo.utils.ServerResponse;
-import mobile.appartoo.utils.TokenReceiver;
 import mobile.appartoo.view.NavigationDrawerView;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
-    private Button logInButton;
-    private String mail;
-    private String password;
     private SharedPreferences sharedPreferences;
     private RestService restService;
+    private FragmentManager fragmentManager;
+    private HomeFragment homeFragment;
+    private LogInFragment logInFragment;
+    private ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve login button and shared preferences
-        logInButton = (Button) findViewById(R.id.connectButton);
+        logo = (ImageView) findViewById(R.id.appartooLogo);
         sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
     }
 
@@ -67,111 +58,36 @@ public class LoginActivity extends Activity {
                 .build();
         restService = retrofit.create(RestService.class);
 
+        fragmentManager = getSupportFragmentManager();
+        homeFragment = new HomeFragment();
+        logInFragment = new LogInFragment();
+
         //If the token exist, launch the main activity
-        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-            NavigationDrawerView.setHeaderInformations(sharedPreferences.getString("givenName", "") + " " + sharedPreferences.getString("familyName", ""), sharedPreferences.getString("email", ""));
-            retrieveUserProfile();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
-    }
+        Thread welcomeThread = new Thread() {
 
-    /**
-     * Check if the login form is valid
-     * @return true if the form is correctly filled, false if not
-     */
-    private boolean isFormValid(){
-        //Get the mail and password typed
-        mail = ((EditText) findViewById(R.id.logInMail)).getText().toString();
-        password = ((EditText) findViewById(R.id.logInPassword)).getText().toString();
+            @Override
+            public void run() {
+                try {
+                    super.run();
+                    sleep(4000);
+                } catch (Exception e) {
 
-        //Check that the mail and the password aren't null
-        if(mail != null && password != null && !mail.equals("") && !password.equals("")){
-
-            //If the mail has a proper form, return true
-            if(isEmailValid(mail)){
-                return true;
-
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    /**
-     * Check if the string is an email
-     * @param email
-     * @return true if the string is an email, false if not
-     */
-    public static boolean isEmailValid(String email) {
-        //Regex defining an email
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-
-        //Return the match result of the regex
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    /**
-     * Launch the login action
-     * @param v - the button that launched the login
-     */
-    public void logIn(View v){
-        //If the form is valid
-        if(isFormValid()){
-
-            //Disable the login button
-            logInButton.setEnabled(false);
-
-            Call<TokenReceiver> callback = restService.postLogIn(mail, password);
-
-            //Handle the server response
-            callback.enqueue(new Callback<TokenReceiver>() {
-                @Override
-                public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
-
-                    //If the login is successful
-                    if(response.isSuccessful()) {
-                        //Retrieve the user token
-                        Appartoo.TOKEN = response.body().getToken();
-
-                        //Stock the token in shared preferences
-                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
-
-                        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-                            retrieveUserProfile();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        }
-
-                    //If the user didn't send the right credentials
-                    } else if(response.code() == 401){
-                        Toast.makeText(getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
-                    //If the server isn't responding
+                } finally {
+                    if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                        NavigationDrawerView.setHeaderInformations(sharedPreferences.getString("givenName", "") + " " + sharedPreferences.getString("familyName", ""), sharedPreferences.getString("email", ""));
+                        retrieveUserProfile();
                     } else {
-                        System.out.println(response.code());
-                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
+
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                .replace(R.id.logInFragments, logInFragment)
+                                .addToBackStack(null)
+                                .commit();
                     }
-
-                    logInButton.setEnabled(true);
                 }
-
-                @Override
-                public void onFailure(Call<TokenReceiver> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
-                    logInButton.setEnabled(true);
-                }
-            });
-
-        //If the form isn't valid, prevent the user.
-        } else {
-            Toast.makeText(getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
-        }
+            }
+        };
+        welcomeThread.start();
     }
 
     /**
@@ -202,13 +118,17 @@ public class LoginActivity extends Activity {
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                 }
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
 
             @Override
             public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+
                 t.printStackTrace();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
 }
-

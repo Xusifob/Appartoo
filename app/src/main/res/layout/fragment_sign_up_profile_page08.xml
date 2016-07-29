@@ -9,11 +9,12 @@
         android:layout_height="match_parent">
         <TextView
             style="@style/TitleSalmon"
-            android:text="@string/function_configure_profile"
+            android:text="@string/contract_configure_profile"
             android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="40dp"
+            android:id="@+id/textView" />
 
         <EditText
             android:layout_margin="20dp"
@@ -21,9 +22,11 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:hint="@string/contract"
+            android:tag=""
             android:singleLine="true"
-            android:id="@+id/signUpConfigureFunction"
-            android:hint="@string/function"/>
+            android:focusable="false"
+            android:id="@+id/signUpConfigureContract"/>
 
         <Button
             style="@style/ButtonSalmon"

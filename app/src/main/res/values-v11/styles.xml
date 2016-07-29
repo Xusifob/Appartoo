@@ -47,7 +47,9 @@
     <style name="ProfileSection" parent="Paragraph">
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/colorLightGray</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">16dp</item>
     </style>
 
     <style name="NoTextSwitch">

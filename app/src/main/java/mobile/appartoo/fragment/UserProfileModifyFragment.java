@@ -7,14 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import mobile.appartoo.R;
-import mobile.appartoo.model.UserWithProfileModel;
+import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
-import mobile.appartoo.view.NavigationDrawerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,8 +38,11 @@ public class UserProfileModifyFragment extends Fragment {
     private Switch isGeek;
     private Switch isTraveller;
     private Switch isGenerous;
-    private Switch isMessy;
+    private Switch isOrdinate;
     private Switch isManiac;
+    private Switch isWorker;
+    private Button saveSettings;
+
     private RestService restService;
     private SharedPreferences sharedPreferences;
 
@@ -50,18 +54,31 @@ public class UserProfileModifyFragment extends Fragment {
         userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
         userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);
         userMail = (EditText) view.findViewById(R.id.userProfileModifyMail);
-        isSmoker = ((Switch) view.findViewById(R.id.userProfileModifyIsSmoker));
-        isCook = ((Switch) view.findViewById(R.id.userProfileModifyIsCook));
-        isMusician = ((Switch) view.findViewById(R.id.userProfileModifyIsMusician));
-        isSpendthrift = ((Switch) view.findViewById(R.id.userProfileModifyIsSpendthrift));
-        isPartyGoer = ((Switch) view.findViewById(R.id.userProfileModifyIsPartyGoer));
-        isLayabout = ((Switch) view.findViewById(R.id.userProfileModifyIsLayabout));
-        inRelationship = ((Switch) view.findViewById(R.id.userProfileModifyInRelationship));
-        isGeek = ((Switch) view.findViewById(R.id.userProfileModifyIsGeek));
-        isTraveller = ((Switch) view.findViewById(R.id.userProfileModifyIsTraveller));
-        isGenerous = ((Switch) view.findViewById(R.id.userProfileModifyIsGenerous));
-        isMessy = ((Switch) view.findViewById(R.id.userProfileModifyIsMessy));
-        isManiac = ((Switch) view.findViewById(R.id.userProfileModifyIsManiac));
+        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
+        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
+        isCook = (Switch) view.findViewById(R.id.userProfileModifyIsCook);
+        isMusician = (Switch) view.findViewById(R.id.userProfileModifyIsMusician);
+        isSpendthrift = (Switch) view.findViewById(R.id.userProfileModifyIsSpendthrift);
+        isPartyGoer = (Switch) view.findViewById(R.id.userProfileModifyIsPartyGoer);
+        isLayabout = (Switch) view.findViewById(R.id.userProfileModifyIsLayabout);
+        inRelationship = (Switch) view.findViewById(R.id.userProfileModifyInRelationship);
+        isGeek = (Switch) view.findViewById(R.id.userProfileModifyIsGeek);
+        isTraveller = (Switch) view.findViewById(R.id.userProfileModifyIsTraveller);
+        isGenerous = (Switch) view.findViewById(R.id.userProfileModifyIsGenerous);
+        isOrdinate = (Switch) view.findViewById(R.id.userProfileModifyIsOrdinate);
+        isManiac = (Switch) view.findViewById(R.id.userProfileModifyIsManiac);
+        isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
+        saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
+
+        System.out.println(Appartoo.LOGGED_USER_PROFILE.getInRelationship());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        restService = retrofit.create(RestService.class);
+        sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         if (container != null) {
             container.removeAllViews();
@@ -84,9 +101,10 @@ public class UserProfileModifyFragment extends Fragment {
     private void populateView(){
         userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
-        userPhone.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getTelephone()));
         userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));
 
+        if(Appartoo.LOGGED_USER_PROFILE.getTelephone() != null) userPhone.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getTelephone()));
+        if(Appartoo.LOGGED_USER_PROFILE.getContract() != null && (Appartoo.LOGGED_USER_PROFILE.getContract().equals("salary") || Appartoo.LOGGED_USER_PROFILE.getContract().equals("freelance"))) isWorker.setChecked(true);
         if(Appartoo.LOGGED_USER_PROFILE.getSmoker() != null) isSmoker.setChecked(Appartoo.LOGGED_USER_PROFILE.getSmoker());
         if(Appartoo.LOGGED_USER_PROFILE.getCook() != null) isCook.setChecked(Appartoo.LOGGED_USER_PROFILE.getCook());
         if(Appartoo.LOGGED_USER_PROFILE.getMusician() != null) isMusician.setChecked(Appartoo.LOGGED_USER_PROFILE.getMusician());
@@ -97,7 +115,84 @@ public class UserProfileModifyFragment extends Fragment {
         if(Appartoo.LOGGED_USER_PROFILE.getGeek() != null) isGeek.setChecked(Appartoo.LOGGED_USER_PROFILE.getGeek());
         if(Appartoo.LOGGED_USER_PROFILE.getTraveller() != null) isTraveller.setChecked(Appartoo.LOGGED_USER_PROFILE.getTraveller());
         if(Appartoo.LOGGED_USER_PROFILE.getGenerous() != null) isGenerous.setChecked(Appartoo.LOGGED_USER_PROFILE.getGenerous());
-        if(Appartoo.LOGGED_USER_PROFILE.getMessy() != null) isMessy.setChecked(Appartoo.LOGGED_USER_PROFILE.getMessy());
+        if(Appartoo.LOGGED_USER_PROFILE.getMessy() != null) isOrdinate.setChecked(Appartoo.LOGGED_USER_PROFILE.getMessy());
         if(Appartoo.LOGGED_USER_PROFILE.getManiac() != null) isManiac.setChecked(Appartoo.LOGGED_USER_PROFILE.getManiac());
+
+
+        saveSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveSettings.setEnabled(false);
+                updateUserProfile();
+            }
+        });
     }
+
+    private void updateUserProfile(){
+        System.out.println("Updating user profile");
+        ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
+
+        if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
+
+            System.out.println(profileUpdateModel.toString());
+            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+
+            callback.enqueue(new Callback<ProfileUpdateModel>() {
+                @Override
+                public void onResponse(Call<ProfileUpdateModel> call, Response<ProfileUpdateModel> response) {
+                    if(response.isSuccessful()) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Votre profil a été mis à jour avec succès.", Toast.LENGTH_SHORT).show();
+                        updateUserLoggedModel();
+                    } else {
+                        System.out.println(response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfileUpdateModel> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    private void updateUserLoggedModel(){
+        Appartoo.LOGGED_USER_PROFILE.setSmoker(isSmoker.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setCook(isCook.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setMusician(isMusician.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setSpendthrift(isSpendthrift.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setPartyGoer(isPartyGoer.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setLayabout(isLayabout.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setInRelationship(inRelationship.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setGeek(isGeek.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setTraveller(isTraveller.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setGenerous(isGenerous.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setMessy(isOrdinate.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setManiac(isManiac.isChecked());
+        Appartoo.LOGGED_USER_PROFILE.setGivenName(userFirstName.getText().toString().trim());
+        Appartoo.LOGGED_USER_PROFILE.setFamilyName(userFirstName.getText().toString().trim());
+        Appartoo.LOGGED_USER_PROFILE.setTelephone(userPhone.getText().toString().trim());
+    }
+
+
+    private ProfileUpdateModel getProfileUpdateModel(){
+        ProfileUpdateModel updateModel = new ProfileUpdateModel();
+        updateModel.setSmoker(isSmoker.isChecked());
+        updateModel.setCook(isCook.isChecked());
+        updateModel.setMusician(isMusician.isChecked());
+        updateModel.setSpendthrift(isSpendthrift.isChecked());
+        updateModel.setPartyGoer(isPartyGoer.isChecked());
+        updateModel.setLayabout(isLayabout.isChecked());
+        updateModel.setInRelationship(inRelationship.isChecked());
+        updateModel.setGeek(isGeek.isChecked());
+        updateModel.setTraveller(isTraveller.isChecked());
+        updateModel.setGenerous(isGenerous.isChecked());
+        updateModel.setMessy(!isOrdinate.isChecked());
+        updateModel.setManiac(isManiac.isChecked());
+        updateModel.setGivenName(userFirstName.getText().toString().trim());
+        updateModel.setFamilyName(userFirstName.getText().toString().trim());
+        updateModel.setTelephone(userPhone.getText().toString().trim());
+        return updateModel;
+    }
+
 }

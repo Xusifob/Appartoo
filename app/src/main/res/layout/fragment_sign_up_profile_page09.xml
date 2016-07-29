@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
         <TextView
             style="@style/TitleSalmon"
-            android:text="@string/contract_configure_profile"
+            android:text="@string/income_configure_profile"
             android:gravity="center"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -18,15 +18,14 @@
 
         <EditText
             android:layout_margin="20dp"
+            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:inputType="numberDecimal"
             android:gravity="center"
-            android:hint="@string/contract"
-            android:tag=""
-            android:singleLine="true"
-            android:focusable="false"
-            android:id="@+id/signUpConfigureContract"/>
+            android:hint="@string/income"
+            android:id="@+id/signUpConfigureIncome" />
 
         <Button
             style="@style/ButtonSalmon"

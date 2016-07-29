@@ -10,24 +10,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import mobile.appartoo.R;
-import mobile.appartoo.fragment.SignUpProfileEighthFragment;
-import mobile.appartoo.fragment.SignUpProfileEleventhFragment;
+import mobile.appartoo.fragment.SignUpProfileSeventhFragment;
+import mobile.appartoo.fragment.SignUpProfileTenthFragment;
 import mobile.appartoo.fragment.SignUpProfileFifthFragment;
 import mobile.appartoo.fragment.SignUpProfileFirstFragment;
 import mobile.appartoo.fragment.SignUpProfileFourthFragment;
-import mobile.appartoo.fragment.SignUpProfileNinthFragment;
+import mobile.appartoo.fragment.SignUpProfileEighthFragment;
 import mobile.appartoo.fragment.SignUpProfileSecondFragment;
-import mobile.appartoo.fragment.SignUpProfileSeventhFragment;
 import mobile.appartoo.fragment.SignUpProfileSixthFragment;
-import mobile.appartoo.fragment.SignUpProfileTenthFragment;
+import mobile.appartoo.fragment.SignUpProfileNinthFragment;
 import mobile.appartoo.fragment.SignUpProfileThirdFragment;
-import mobile.appartoo.fragment.SignUpProfileThirteenthFragment;
 import mobile.appartoo.fragment.SignUpProfileTwelfthFragment;
+import mobile.appartoo.fragment.SignUpProfileEleventhFragment;
 import mobile.appartoo.model.ProfileUpdateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
@@ -41,11 +41,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpProfileActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 13;
+    private static final int NUM_PAGES = 12;
     private DisableLastSwipeViewPager pager;
     private PagerAdapter pagerAdapter;
     private RestService restService;
-    private SharedPreferences sharedPreferences;
+    private Button updateProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,6 @@ public class SignUpProfileActivity extends FragmentActivity {
                 .build();
 
         restService = retrofit.create(RestService.class);
-        sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
@@ -98,12 +97,13 @@ public class SignUpProfileActivity extends FragmentActivity {
      * Switch to the next fragment
      * @param v - the button to switch to the next view
      */
+
     public void nextView(View v){
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
             startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
         } else if(pager.getCurrentItem() == NUM_PAGES - 2) {
-            v.setEnabled(false);
+            updateProfile = (Button) v;
             updateUserProfile();
         } else {
             pager.setCurrentItem(pager.getCurrentItem()+1);
@@ -111,19 +111,24 @@ public class SignUpProfileActivity extends FragmentActivity {
     }
 
     private void updateUserProfile(){
-        System.out.println("Updating user profile");
-        ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
-        if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
-            System.out.println(profileUpdateModel.toString());
-            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+        final ProfileUpdateModel profileUpdateModel = getProfileUpdateModel();
+        updateProfile.setEnabled(false);
 
+        if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
+
+            Call<ProfileUpdateModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
             callback.enqueue(new Callback<ProfileUpdateModel>() {
                 @Override
                 public void onResponse(Call<ProfileUpdateModel> call, Response<ProfileUpdateModel> response) {
                     if(response.isSuccessful()) {
+
+                        updateUserLoggedModel(profileUpdateModel);
                         pager.setCurrentItem(NUM_PAGES-1);
+                        updateProfile.setEnabled(true);
+
                     } else {
                         System.out.println(response.code());
+                        updateProfile.setEnabled(true);
                     }
                 }
 
@@ -132,8 +137,9 @@ public class SignUpProfileActivity extends FragmentActivity {
                     t.printStackTrace();
                 }
             });
+        } else {
+            updateProfile.setEnabled(true);
         }
-
     }
 
     private ProfileUpdateModel getProfileUpdateModel(){
@@ -172,11 +178,6 @@ public class SignUpProfileActivity extends FragmentActivity {
         boolean inRelationship = findViewById(R.id.signUpConfigureInRelationship).isSelected();
         boolean isSmoker = findViewById(R.id.signUpConfigureIsSmoker).isSelected();
         boolean isNotSmoker = findViewById(R.id.signUpConfigureIsNotSmoker).isSelected();
-        boolean student = findViewById(R.id.signUpConfigureStudent).isSelected();
-        boolean worker = findViewById(R.id.signUpConfigureWorker).isSelected();
-//        boolean searchFlatmate = findViewById(R.id.signUpConfigureSearchFlatmate).isSelected();
-//        boolean searchSharedFlat = findViewById(R.id.signUpConfigureSearchSharedFlat).isSelected();
-//        boolean shareFlat = findViewById(R.id.signUpConfigureShareFlat).isSelected();
 
         if(man) updateModel.setGender("Male");
         if(woman) updateModel.setGender("Female");
@@ -184,7 +185,6 @@ public class SignUpProfileActivity extends FragmentActivity {
         if(inRelationship) updateModel.setInRelationship(true);
         if(isSmoker) updateModel.setSmoker(true);
         if(isNotSmoker) updateModel.setSmoker(false);
-        if(student) updateModel.setContract("student");
     }
 
     /**
@@ -203,6 +203,19 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         //Set the clicked button as selected
         v.setSelected(true);
+    }
+
+    private void updateUserLoggedModel(ProfileUpdateModel updateModel){
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            Appartoo.LOGGED_USER_PROFILE.setGender(updateModel.getGender());
+            Appartoo.LOGGED_USER_PROFILE.setInRelationship(updateModel.getInRelationship());
+            Appartoo.LOGGED_USER_PROFILE.setSmoker(updateModel.getSmoker());
+            Appartoo.LOGGED_USER_PROFILE.setSociety(updateModel.getSociety());
+            Appartoo.LOGGED_USER_PROFILE.setFunction(updateModel.getFunction());
+            Appartoo.LOGGED_USER_PROFILE.setContract(updateModel.getContract());
+            Appartoo.LOGGED_USER_PROFILE.setDescription(updateModel.getDescription());
+            Appartoo.LOGGED_USER_PROFILE.setIncome(updateModel.getIncome());
+        }
     }
 
     /**
@@ -229,7 +242,6 @@ public class SignUpProfileActivity extends FragmentActivity {
                 case 9: return new SignUpProfileTenthFragment();
                 case 10: return new SignUpProfileEleventhFragment();
                 case 11: return new SignUpProfileTwelfthFragment();
-                case 12: return new SignUpProfileThirteenthFragment();
                 default: return new SignUpProfileFirstFragment();
             }
         }
