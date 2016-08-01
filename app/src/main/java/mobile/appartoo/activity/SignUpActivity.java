@@ -95,7 +95,7 @@ public class SignUpActivity extends FragmentActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateBirthDate();
+                ((EditText) findViewById(R.id.signUpBirthdate)).setText(dateFormat.format(calendar.getTime()));
             }
 
         };
@@ -117,13 +117,6 @@ public class SignUpActivity extends FragmentActivity {
         } else {
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
-    }
-
-    /**
-     * Update the edit text object that shows the selected date
-     */
-    private void updateBirthDate(){
-        ((EditText) findViewById(R.id.signUpBirthdate)).setText(dateFormat.format(calendar.getTime()));
     }
 
     /**

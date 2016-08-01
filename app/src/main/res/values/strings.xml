@@ -105,4 +105,10 @@
 
     <string name="demo_min_label">Min</string>
     <string name="demo_max_label">Max</string>
+
+    <!-- ADD OFFER STRINGS -->
+    <string name="accept_smokers">"J'accepte les fumeurs"</string>
+    <string name="dont_accept_smokers">"Je n'accepte pas de fumeur"</string>
+    <string name="accept_animals">"J'accepte les animaux"</string>
+    <string name="dont_accept_animals">"Je n'accepte pas d'animal"</string>
 </resources>

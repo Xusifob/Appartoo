@@ -34,6 +34,8 @@ public class OfferModel implements Parcelable {
     private static final ClassLoader ADDRESSMODEL_CLASS_LOADER = AddressModel.class.getClassLoader();
     private static final ClassLoader IMAGEMODEL_CLASS_LOADER = ImageModel.class.getClassLoader();
 
+    public OfferModel() {};
+
     protected OfferModel(Parcel in) {
         id = in.readString();
         description = in.readString();

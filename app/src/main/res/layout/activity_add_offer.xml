@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light">
 
 
     <LinearLayout
@@ -18,7 +19,6 @@
             android:layout_width="match_parent"
             android:minHeight="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:navigationIcon="@android:drawable/ic_delete"
             app:titleTextColor="@color/colorWhite">
         </android.support.v7.widget.Toolbar>
 
@@ -27,12 +27,13 @@
             android:layout_height="match_parent"
             android:id="@+id/mainFragments">
             <fragment
-                android:name="mobile.appartoo.fragment.AddOfferFragment"
-                android:id="@+id/offerListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:name="mobile.appartoo.fragment.AddOfferFragment"
+                android:id="@+id/addOfferFragment"
                 tools:layout="@layout/fragment_add_offer" />
         </FrameLayout>
+
     </LinearLayout>
 
     <mobile.appartoo.view.NavigationDrawerView

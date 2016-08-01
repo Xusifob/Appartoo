@@ -75,7 +75,6 @@ public class SearchOfferFragment extends Fragment implements GoogleApiClient.OnC
     @Override
     public void onStart(){
         super.onStart();
-        super.onStart();
         googleApiClient.connect();
         places = new ArrayList<>();
 

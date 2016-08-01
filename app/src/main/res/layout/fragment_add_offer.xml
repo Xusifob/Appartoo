@@ -1,57 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RadioButton
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:layout_weight="1"/>
-        <RadioButton
-            android:layout_width="wrap_content"
+            android:hint="Titre de l'annonce"
+            android:layout_margin="4dp"
+            android:id="@+id/addOfferTitle"
+            android:singleLine="true"/>
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sous-location"
-            android:layout_weight="1"/>
-        <RadioButton
-            android:layout_width="wrap_content"
+            android:hint="Type d'annonce"
+            android:layout_margin="4dp"
+            android:id="@+id/addOfferKeyword"
+            android:singleLine="true"/>
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Colocation"
-            android:layout_weight="1"/>
+            android:hint="Adresse"
+            android:layout_margin="4dp"
+            android:id="@+id/addOfferAddress"
+            android:drawableLeft="@drawable/marker_gray"
+            android:singleLine="true"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="4dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Début"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:drawableLeft="@drawable/clock"
+                android:id="@+id/addOfferAvailabilityStarts"
+                android:drawablePadding="4dp"/>
+            <View
+                android:layout_width="8dp"
+                android:layout_height="0dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Fin"
+                android:focusable="false"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/clock"
+                android:id="@+id/addOfferAvailabilityEnds"
+                android:drawablePadding="4dp"/>
+        </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Prix (par mois)"
+            android:inputType="numberDecimal"
+            android:layout_margin="4dp"
+            android:id="@+id/addOfferPrice"
+            android:drawableLeft="@drawable/euro"
+            android:drawablePadding="4dp"
+            android:singleLine="true"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de chambres disponibles"
+            android:inputType="number"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/bed_gray"
+            android:drawablePadding="4dp"
+            android:id="@+id/addOfferRooms"
+            android:singleLine="true"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Téléphone"
+            android:inputType="number"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/phone_gray"
+            android:drawablePadding="4dp"
+            android:id="@+id/addOfferPhone"
+            android:singleLine="true"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Description de l'annonce"
+            android:inputType="textMultiLine"
+            android:gravity="bottom"
+            android:id="@+id/addOfferDescription"
+            android:layout_margin="4dp"/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:onClick="toggleView"
+                android:id="@+id/addOfferAllowSmoker">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textColor="@color/colorSalmon"
+                    android:id="@+id/addOfferTextSmoker"
+                    android:text="@string/dont_accept_smokers" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/addOfferTextSmoker"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:tag="false"
+                    android:id="@+id/addOfferImageSmoker"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/is_not_smoker" />
+            </RelativeLayout>
+            <View
+                android:layout_width="24dp"
+                android:layout_height="0dp"/>
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:background="@drawable/toggle_rounded_bordered_square"
+                android:onClick="toggleView"
+                android:id="@+id/addOfferAcceptAnimals">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:textColor="@color/colorSalmon"
+                    android:id="@+id/addOfferTextAnimals"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/dont_accept_animals" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:tag="false"
+                    android:layout_above="@+id/addOfferTextAnimals"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/addOfferImageAnimals"
+                    android:src="@drawable/dont_accept_animals" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <Button
+            style="@style/ButtonSalmon"
+            android:id="@+id/addOfferSaveButton"
+            android:text="Enregistrer mon annonce"
+            android:background="@drawable/square_salmon"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="4dp"/>
     </LinearLayout>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Titre de l'annonce"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ville ou adresse"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Loyer/mois"/>
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Masquer le numéro de téléphone dans l'annonce."/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Téléphone"/>
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-    <Button
-        style="@style/ButtonSalmon"
-        android:layout_margin="20dp"
-        android:layout_height="40dp"
-        android:text="Enregistrer mon annonce"
-        android:id="@+id/saveProfileSettings"
-        android:background="@drawable/square_salmon" />
-</LinearLayout>
+</ScrollView>

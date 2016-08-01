@@ -1,10 +1,12 @@
 package mobile.appartoo.model;
 
+import android.location.Geocoder;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +30,8 @@ public class AddressModel implements Parcelable{
 
     private static final ClassLoader DOUBLE_CLASS_LOADER = Double.class.getClassLoader();
     private static final ClassLoader ADDRESSCOUNTRYMODEL_CLASS_LOADER = AddressCountryModel.class.getClassLoader();
+
+    public AddressModel () {};
 
     protected AddressModel(Parcel in) {
         id = in.readString();

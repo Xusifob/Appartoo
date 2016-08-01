@@ -2,8 +2,10 @@ package mobile.appartoo.utils;
 
 import java.util.ArrayList;
 
+import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.model.OfferModelWithDetailledDate;
+import mobile.appartoo.model.OfferToCreateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -27,6 +29,9 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/register")
     Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
+
+    @POST("/offer/create")
+    Call<OfferToCreateModel> addOffer(@Header("Authorization") String bearerToken, @Body OfferToCreateModel offerModel);
 
     @GET("/offers")
     Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers();

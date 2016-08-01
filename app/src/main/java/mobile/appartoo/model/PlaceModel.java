@@ -9,11 +9,13 @@ public class PlaceModel {
     String primaryText;
     String secondaryText;
     String fullText;
+    String placeId;
 
     public PlaceModel(AutocompletePrediction autocompletePrediction) {
         this.primaryText = autocompletePrediction.getPrimaryText(null).toString();
         this.secondaryText = autocompletePrediction.getSecondaryText(null).toString();
         this.fullText = autocompletePrediction.getFullText(null).toString();
+        this.placeId = autocompletePrediction.getPlaceId();
     }
 
     public String getPrimaryText() {
@@ -30,6 +32,22 @@ public class PlaceModel {
 
     public void setSecondaryText(String secondaryText) {
         this.secondaryText = secondaryText;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getFullText() {
+        return fullText;
+    }
+
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
     }
 
     @Override

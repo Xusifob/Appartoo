@@ -72,9 +72,6 @@ public class UserProfileModifyFragment extends Fragment {
         isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
         saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
 
-
-        System.out.println(Appartoo.LOGGED_USER_PROFILE.getInRelationship());
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -121,7 +118,6 @@ public class UserProfileModifyFragment extends Fragment {
         if(Appartoo.LOGGED_USER_PROFILE.getGenerous() != null) isGenerous.setChecked(Appartoo.LOGGED_USER_PROFILE.getGenerous());
         if(Appartoo.LOGGED_USER_PROFILE.getMessy() != null) isOrdinate.setChecked(Appartoo.LOGGED_USER_PROFILE.getMessy());
         if(Appartoo.LOGGED_USER_PROFILE.getManiac() != null) isManiac.setChecked(Appartoo.LOGGED_USER_PROFILE.getManiac());
-
 
         saveSettings.setOnClickListener(new View.OnClickListener() {
             @Override

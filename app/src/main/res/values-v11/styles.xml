@@ -53,8 +53,8 @@
     </style>
 
     <style name="NoTextSwitch">
-        <item name="android:textOn"></item>
-        <item name="android:textOff"></item>
+        <item name="android:textOn"/>
+        <item name="android:textOff"/>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:thumbTextPadding">5dp</item>
