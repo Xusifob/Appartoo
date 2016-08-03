@@ -291,7 +291,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                                     offerModel.setAddressLocality(component.getLong_name());
                                 if (component.getTypes().contains("country"))
                                     offerModel.setCountry(component.getLong_name());
-                                if(component.getTypes().contains("administrative_area_level_2"))
+                                if(component.getTypes().contains("administrative_area_level_2") && offerModel.getAddressRegion() == null)
                                     offerModel.setAddressRegion(component.getLong_name());
                                 if (component.getTypes().contains("administrative_area_level_1"))
                                     offerModel.setAddressRegion(component.getLong_name());

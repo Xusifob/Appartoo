@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fillViewport="true">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:tag="dumbFocusView"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,8 +33,9 @@
             android:hint="Adresse"
             android:layout_margin="4dp"
             android:id="@+id/addOfferAddress"
+            android:drawableStart="@drawable/marker_gray"
             android:drawableLeft="@drawable/marker_gray"
-            android:singleLine="true"/>
+            android:singleLine="true" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +47,7 @@
                 android:hint="Début"
                 android:layout_weight="1"
                 android:focusable="false"
+                android:drawableStart="@drawable/clock"
                 android:drawableLeft="@drawable/clock"
                 android:id="@+id/addOfferAvailabilityStarts"
                 android:drawablePadding="4dp"/>
@@ -55,6 +60,7 @@
                 android:hint="Fin"
                 android:focusable="false"
                 android:layout_weight="1"
+                android:drawableStart="@drawable/clock"
                 android:drawableLeft="@drawable/clock"
                 android:id="@+id/addOfferAvailabilityEnds"
                 android:drawablePadding="4dp"/>
@@ -66,6 +72,7 @@
             android:inputType="numberDecimal"
             android:layout_margin="4dp"
             android:id="@+id/addOfferPrice"
+            android:drawableStart="@drawable/euro"
             android:drawableLeft="@drawable/euro"
             android:drawablePadding="4dp"
             android:singleLine="true"/>
@@ -75,6 +82,7 @@
             android:hint="Nombre de chambres disponibles"
             android:inputType="number"
             android:layout_margin="4dp"
+            android:drawableStart="@drawable/bed_gray"
             android:drawableLeft="@drawable/bed_gray"
             android:drawablePadding="4dp"
             android:id="@+id/addOfferRooms"
@@ -83,22 +91,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Téléphone"
-            android:inputType="number"
+            android:inputType="phone"
             android:layout_margin="4dp"
+            android:drawableStart="@drawable/phone_gray"
             android:drawableLeft="@drawable/phone_gray"
             android:drawablePadding="4dp"
             android:id="@+id/addOfferPhone"
             android:singleLine="true"/>
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:hint="Description de l'annonce"
+            android:isScrollContainer="true"
             android:inputType="textMultiLine"
             android:gravity="bottom"
             android:id="@+id/addOfferDescription"
             android:layout_margin="4dp"/>
         <LinearLayout
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
@@ -173,7 +183,6 @@
             android:id="@+id/addOfferSaveButton"
             android:text="Enregistrer mon annonce"
             android:background="@drawable/square_salmon"
-            android:layout_alignParentBottom="true"
             android:layout_margin="4dp"/>
     </LinearLayout>
 </ScrollView>

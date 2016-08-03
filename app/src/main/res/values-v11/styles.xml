@@ -8,11 +8,13 @@
         <item name="actionBarStyle">@style/ActionBar</item>
         <item name="colorPrimary">@color/colorSalmon</item>
         <item name="colorPrimaryDark">@color/colorLightAlpha</item>
+        <item name="android:clipToPadding">false</item>
         <item name="windowActionBarOverlay">false</item>
     </style>
 
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="windowActionBarOverlay">false</item>
+        <item name="android:clipToPadding">false</item>
         <item name="icon">@drawable/ic_launcher</item>
         <item name="homeAsUpIndicator">@drawable/ic_drawer</item>
         <item name="background">@color/colorSalmon</item>

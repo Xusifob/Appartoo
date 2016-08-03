@@ -72,7 +72,8 @@ public class OffersAdapter extends BaseAdapter {
             holder.city.setText("Ville inconnue");
         }
         holder.keyword.setText(offerModel.getKeyword());
-        holder.rooms.setText(Integer.toString(offerModel.getRooms()));
+        //TODO uncomment
+//        holder.rooms.setText(Integer.toString(offerModel.getRooms()));
         holder.price.setText(Integer.toString(offerModel.getPrice()) + " €");
 
         return convertView;
