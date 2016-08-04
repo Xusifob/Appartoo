@@ -50,6 +50,7 @@ import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.GeocoderResponse;
 import mobile.appartoo.utils.GoogleMapsService;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.TextValidator;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,6 +91,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+        places = new ArrayList<>();
+        placesAdapter = new PlacesAdapter(getActivity(), 0, places);
 
         placesAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.addOfferAddress);
         googleApiClient = new GoogleApiClient
@@ -111,34 +114,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
     public void onStart(){
         super.onStart();
 
-        //Build a retrofit request
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        restService = retrofit.create(RestService.class);
-
-        Retrofit geocodingRetrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        googleGeocodingService = geocodingRetrofit.create(GoogleMapsService.class);
-
-        availabilityStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePicker(v);
-            }
-        });
-
-        availabilityEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePicker(v);
-            }
-        });
+        googleApiClient.connect();
+        placesAutocomplete.setAdapter(placesAdapter);
 
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,21 +125,12 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             }
         });
 
+        setRetrofitRequests();
+        setDateListeners();
+        setPlacesAutocompleteListeners();
+    }
 
-        googleApiClient.connect();
-        places = new ArrayList<>();
-
-        placesAdapter = new PlacesAdapter(getActivity(), 0, places);
-        placesAutocomplete.setAdapter(placesAdapter);
-
-        placesAutocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedPlace = places.get(position);
-
-            }
-        });
-
+    private void setPlacesAutocompleteListeners(){
         placesAutocomplete.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -192,6 +160,47 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                                 Toast.makeText(getActivity(), "Impossible de prédire un endroit", Toast.LENGTH_SHORT).show();
                             }
                         });
+            }
+        });
+
+        placesAutocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPlace = places.get(position);
+
+            }
+        });
+    }
+
+    private void setRetrofitRequests() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        restService = retrofit.create(RestService.class);
+
+        Retrofit geocodingRetrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        googleGeocodingService = geocodingRetrofit.create(GoogleMapsService.class);
+
+    }
+
+    private void setDateListeners() {
+        availabilityStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker(v);
+            }
+        });
+
+        availabilityEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker(v);
             }
         });
     }
@@ -256,10 +265,9 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             boolean acceptAnimals = Boolean.valueOf(rootView.findViewById(R.id.addOfferImageAnimals).getTag().toString());
             boolean acceptSmoker = Boolean.valueOf(rootView.findViewById(R.id.addOfferImageSmoker).getTag().toString());
 
-            if(!name.replaceAll("\\s+","").equals("")) offerModel.setOffer_name(name.trim()); else return null;
-            if(!description.replaceAll("\\s+","").equals("")) offerModel.setDescription(description.trim()); else return null;
-            if(!phone.replaceAll("\\s+","").equals("")) offerModel.setPhone(phone.trim()); else return null;
-            if(!keyword.replaceAll("\\s+","").equals("")) offerModel.setKeyword(keyword.trim()); else return null;
+            if(!TextValidator.haveText(new String[] {price, rooms, name, description, phone, keyword})) {
+                return null;
+            }
 
             try {
                 offerModel.setStart(dateFormat.parse(availabilityStartsStr));
@@ -268,11 +276,14 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                 return null;
             }
 
-            if(!price.replaceAll("\\s+","").equals("")) offerModel.setPrice(Integer.valueOf(price)); else return null;
-            if(!rooms.replaceAll("\\s+","").equals("")) offerModel.setRooms(Integer.valueOf(rooms)); else return null;
-
+            offerModel.setOffer_name(name.trim());
+            offerModel.setPrice(Integer.valueOf(price));
+            offerModel.setRooms(Integer.valueOf(rooms));
             offerModel.setAcceptAnimal(acceptAnimals);
             offerModel.setSmoker(acceptSmoker);
+            offerModel.setDescription(description.trim());
+            offerModel.setPhone(phone.trim());
+            offerModel.setKeyword(keyword.trim());
 
             return offerModel;
         }

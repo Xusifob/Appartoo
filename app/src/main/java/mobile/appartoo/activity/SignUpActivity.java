@@ -37,6 +37,7 @@ import mobile.appartoo.model.SignUpModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.TextValidator;
 import mobile.appartoo.utils.TokenReceiver;
 import mobile.appartoo.view.NavigationDrawerView;
 import okhttp3.ResponseBody;
@@ -141,15 +142,13 @@ public class SignUpActivity extends FragmentActivity {
         String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
 
         //Check the edit text input
-        if(firstName.replaceAll("\\s+","").equals("") || lastName.replaceAll("\\s+","").equals("") ||
-                password.replaceAll("\\s+","").equals("") || password_confirm.replaceAll("\\s+","").equals("") ||
-                birthdate.replaceAll("\\s+","").equals("") || email.replaceAll("\\s+","").equals("")) {
+        if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, birthdate, email})) {
             Toast.makeText(getApplicationContext(), "Vous devez entrer toutes les informations du formulaires pour finir l'inscription.", Toast.LENGTH_LONG).show();
             return null;
         }
 
         //Check if mail is valid
-        if(!isEmailValid(email)) {
+        if(!TextValidator.isEmail(email)) {
             Toast.makeText(getApplicationContext(), "Veuillez entrer une adresse électronique correcte.", Toast.LENGTH_LONG).show();
             return null;
         }
@@ -168,21 +167,6 @@ public class SignUpActivity extends FragmentActivity {
 
 
         return new SignUpModel(email, password, firstName, lastName, birthdate);
-    }
-
-    /**
-     * Check if the string is an email
-     * @param email
-     * @return true if the string is an email, false if not
-     */
-    public static boolean isEmailValid(String email) {
-        //Regex defining an email
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-
-        //Return the match result of the regex
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
     /**

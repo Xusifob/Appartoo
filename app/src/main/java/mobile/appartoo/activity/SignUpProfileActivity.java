@@ -29,6 +29,7 @@ import mobile.appartoo.fragment.SignUpProfileEleventhFragment;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.TextValidator;
 import mobile.appartoo.view.DisableLastSwipeViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -149,21 +150,11 @@ public class SignUpProfileActivity extends FragmentActivity {
         String incomeStr = ((EditText) findViewById(R.id.signUpConfigureIncome)).getText().toString();
         String description = ((EditText) findViewById(R.id.signUpConfigureDescription)).getText().toString();
 
-        Double income = null;
-        if(!incomeStr.replaceAll("\\s+","").equals("")) {
-            try {
-                income = Double.valueOf(incomeStr);
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Salaire non reconnu", Toast.LENGTH_SHORT).show();
-                return null;
-            }
-        }
-
-        if(!society.replaceAll("\\s+","").equals("")) updateModel.setSociety(society.trim());
-        if(!function.replaceAll("\\s+","").equals("")) updateModel.setFunction(function.trim());
-        if(!contract.replaceAll("\\s+","").equals("")) updateModel.setContract(contract.trim());
-        if(!description.replaceAll("\\s+","").equals("")) updateModel.setDescription(description.trim());
-        if(income != null) updateModel.setIncome(income);
+        if(TextValidator.haveText(society)) updateModel.setSociety(society.trim());
+        if(TextValidator.haveText(function)) updateModel.setFunction(function.trim());
+        if(TextValidator.haveText(contract)) updateModel.setContract(contract.trim());
+        if(TextValidator.haveText(description)) updateModel.setDescription(description.trim());
+        if(TextValidator.haveText(incomeStr)) updateModel.setIncome(Double.valueOf(incomeStr));
 
         return updateModel;
     }

@@ -93,6 +93,19 @@ public class OffersListFragment extends Fragment {
         super.onStart();
     }
 
+    public void refreshOffers() {
+        swipeRefreshLayout.setRefreshing(true);
+        offersListView.post(new Runnable() {
+
+            @Override
+            public void run() {
+                offersListView.setSelection(0);
+            }
+        });
+        offerPage = 1;
+        getOffers(offerPage);
+
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -105,9 +118,7 @@ public class OffersListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-                offerPage = 1;
-                getOffers(offerPage);
+                refreshOffers();
             }
         });
 

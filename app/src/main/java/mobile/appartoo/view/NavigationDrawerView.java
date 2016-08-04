@@ -3,10 +3,12 @@ package mobile.appartoo.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -65,11 +67,21 @@ public class NavigationDrawerView extends NavigationView {
 
     private void setMenuActions() {
 
+        if(context instanceof MainActivity) {
+            setCheckableItem(getMenu().findItem(R.id.drawer_offers));
+        } else if(context instanceof UserProfileActivity) {
+            setCheckableItem(getMenu().findItem(R.id.drawer_profile));
+        } else if(context instanceof SearchActivity) {
+            setCheckableItem(getMenu().findItem(R.id.drawer_search));
+        }
+
         setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
 
-                item.setChecked(false);
+                item.setCheckable(false);
 
                 if (drawerLayout != null) {
                     drawerLayout.closeDrawer(Gravity.LEFT);
@@ -109,5 +121,10 @@ public class NavigationDrawerView extends NavigationView {
 
             }
         });
+    }
+
+    public void setCheckableItem(MenuItem item) {
+        item.setChecked(true);
+        item.setCheckable(false);
     }
 }

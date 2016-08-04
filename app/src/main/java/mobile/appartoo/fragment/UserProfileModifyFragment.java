@@ -52,25 +52,7 @@ public class UserProfileModifyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_modify, container, false);
 
-        userLastName = (EditText) view.findViewById(R.id.userProfileModifyLastName);
-        userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
-        userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);
-        userMail = (EditText) view.findViewById(R.id.userProfileModifyMail);
-        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
-        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
-        isCook = (Switch) view.findViewById(R.id.userProfileModifyIsCook);
-        isMusician = (Switch) view.findViewById(R.id.userProfileModifyIsMusician);
-        isSpendthrift = (Switch) view.findViewById(R.id.userProfileModifyIsSpendthrift);
-        isPartyGoer = (Switch) view.findViewById(R.id.userProfileModifyIsPartyGoer);
-        isLayabout = (Switch) view.findViewById(R.id.userProfileModifyIsLayabout);
-        inRelationship = (Switch) view.findViewById(R.id.userProfileModifyInRelationship);
-        isGeek = (Switch) view.findViewById(R.id.userProfileModifyIsGeek);
-        isTraveller = (Switch) view.findViewById(R.id.userProfileModifyIsTraveller);
-        isGenerous = (Switch) view.findViewById(R.id.userProfileModifyIsGenerous);
-        isOrdinate = (Switch) view.findViewById(R.id.userProfileModifyIsOrdinate);
-        isManiac = (Switch) view.findViewById(R.id.userProfileModifyIsManiac);
-        isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
-        saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
+        defineInteractionsVariables(view);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
@@ -100,6 +82,8 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
     private void populateView(){
+        System.out.println(Appartoo.LOGGED_USER_PROFILE.getFamilyName());
+        System.out.println(Appartoo.LOGGED_USER_PROFILE.getGivenName());
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
         userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
         userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));
@@ -144,8 +128,7 @@ public class UserProfileModifyFragment extends Fragment {
                     if(response.isSuccessful()) {
                         Toast.makeText(getActivity().getApplicationContext(), "Votre profil a été mis à jour avec succès.", Toast.LENGTH_SHORT).show();
 
-                        if(!profileUpdateModel.getGivenName().equals(Appartoo.LOGGED_USER_PROFILE.getGivenName())
-                                || !profileUpdateModel.getFamilyName().equals(Appartoo.LOGGED_USER_PROFILE.getFamilyName())) {
+                        if(!profileUpdateModel.getGivenName().equals(Appartoo.LOGGED_USER_PROFILE.getGivenName()) || !profileUpdateModel.getFamilyName().equals(Appartoo.LOGGED_USER_PROFILE.getFamilyName())) {
                             NavigationDrawerView.setHeaderInformations(profileUpdateModel.getGivenName() + " " + profileUpdateModel.getFamilyName(), userMail.getText().toString());
                             navigationDrawerView.updateHeader();
                         }
@@ -179,7 +162,7 @@ public class UserProfileModifyFragment extends Fragment {
         Appartoo.LOGGED_USER_PROFILE.setMessy(isOrdinate.isChecked());
         Appartoo.LOGGED_USER_PROFILE.setManiac(isManiac.isChecked());
         Appartoo.LOGGED_USER_PROFILE.setGivenName(userFirstName.getText().toString().trim());
-        Appartoo.LOGGED_USER_PROFILE.setFamilyName(userFirstName.getText().toString().trim());
+        Appartoo.LOGGED_USER_PROFILE.setFamilyName(userLastName.getText().toString().trim());
         Appartoo.LOGGED_USER_PROFILE.setTelephone(userPhone.getText().toString().trim());
     }
 
@@ -202,6 +185,28 @@ public class UserProfileModifyFragment extends Fragment {
         updateModel.setFamilyName(userLastName.getText().toString().trim());
         updateModel.setTelephone(userPhone.getText().toString().trim());
         return updateModel;
+    }
+
+    private void defineInteractionsVariables(View view){
+        userLastName = (EditText) view.findViewById(R.id.userProfileModifyLastName);
+        userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
+        userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);
+        userMail = (EditText) view.findViewById(R.id.userProfileModifyMail);
+        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
+        isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
+        isCook = (Switch) view.findViewById(R.id.userProfileModifyIsCook);
+        isMusician = (Switch) view.findViewById(R.id.userProfileModifyIsMusician);
+        isSpendthrift = (Switch) view.findViewById(R.id.userProfileModifyIsSpendthrift);
+        isPartyGoer = (Switch) view.findViewById(R.id.userProfileModifyIsPartyGoer);
+        isLayabout = (Switch) view.findViewById(R.id.userProfileModifyIsLayabout);
+        inRelationship = (Switch) view.findViewById(R.id.userProfileModifyInRelationship);
+        isGeek = (Switch) view.findViewById(R.id.userProfileModifyIsGeek);
+        isTraveller = (Switch) view.findViewById(R.id.userProfileModifyIsTraveller);
+        isGenerous = (Switch) view.findViewById(R.id.userProfileModifyIsGenerous);
+        isOrdinate = (Switch) view.findViewById(R.id.userProfileModifyIsOrdinate);
+        isManiac = (Switch) view.findViewById(R.id.userProfileModifyIsManiac);
+        isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
+        saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
     }
 
 }

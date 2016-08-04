@@ -12,11 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import mobile.appartoo.R;
+import mobile.appartoo.fragment.OffersListFragment;
 import mobile.appartoo.view.NavigationDrawerView;
 
 public class MainActivity extends AppCompatActivity {
 
     private final int ID_MENU_ADD = 1;
+    private final int ID_MENU_REFRESH = 2;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationDrawerView navigationView;
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, ID_MENU_ADD, Menu.NONE, "Add").setIcon(R.drawable.add_offer).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, ID_MENU_REFRESH, Menu.NONE, "Refresh").setIcon(R.drawable.refresh).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, ID_MENU_ADD, Menu.NONE, "Add").setIcon(R.drawable.plus).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -70,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
             case ID_MENU_ADD:
                 startActivity(new Intent(MainActivity.this, AddOfferActivity.class));
                 return true;
+            case ID_MENU_REFRESH:
+                OffersListFragment offersListFragment = (OffersListFragment) getSupportFragmentManager().findFragmentById(R.id.offerListFragment);
+                offersListFragment.refreshOffers();
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -21,6 +21,7 @@ import mobile.appartoo.activity.MainActivity;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
+import mobile.appartoo.utils.TextValidator;
 import mobile.appartoo.utils.TokenReceiver;
 import mobile.appartoo.view.NavigationDrawerView;
 import retrofit2.Call;
@@ -73,65 +74,62 @@ public class LogInFragment extends Fragment {
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logInButton.setEnabled(false);
-                logIn();
+                mail = mailEdit.getText().toString();
+                password = passwordEdit.getText().toString();
+
+                if (isFormValid()) {
+                    logInButton.setEnabled(false);
+                    logIn();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     public void logIn() {
-        //If the form is valid
-        mail = mailEdit.getText().toString();
-        password = passwordEdit.getText().toString();
 
-        if (isFormValid()) {
+        //Disable the login button
+        logInButton.setEnabled(false);
 
-            //Disable the login button
-            logInButton.setEnabled(false);
+        Call<TokenReceiver> callback = restService.postLogIn(mail, password);
 
-            Call<TokenReceiver> callback = restService.postLogIn(mail, password);
+        //Handle the server response
+        callback.enqueue(new Callback<TokenReceiver>() {
+            @Override
+            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
 
-            //Handle the server response
-            callback.enqueue(new Callback<TokenReceiver>() {
-                @Override
-                public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
+                //If the login is successful
+                if (response.isSuccessful()) {
+                    //Retrieve the user token
+                    Appartoo.TOKEN = response.body().getToken();
 
-                    //If the login is successful
-                    if (response.isSuccessful()) {
-                        //Retrieve the user token
-                        Appartoo.TOKEN = response.body().getToken();
+                    //Stock the token in shared preferences
+                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
 
-                        //Stock the token in shared preferences
-                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
-
-                        if (Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-                            retrieveUserProfile();
-                        }
-
-                        //If the user didn't send the right credentials
-                    } else if (response.code() == 401) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
-                        //If the server isn't responding
-                    } else {
-                        System.out.println(response.code());
-                        Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
+                    if (Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                        retrieveUserProfile();
                     }
 
-                    logInButton.setEnabled(true);
+                    //If the user didn't send the right credentials
+                } else if (response.code() == 401) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
+                    //If the server isn't responding
+                } else {
+                    System.out.println(response.code());
+                    Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
                 }
 
-                @Override
-                public void onFailure(Call<TokenReceiver> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
-                    logInButton.setEnabled(true);
-                }
-            });
+                logInButton.setEnabled(true);
+            }
 
-            //If the form isn't valid, prevent the user.
-        } else {
-            Toast.makeText(getActivity().getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFailure(Call<TokenReceiver> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
+                logInButton.setEnabled(true);
+            }
+        });
     }
 
     /**
@@ -140,35 +138,12 @@ public class LogInFragment extends Fragment {
      */
     private boolean isFormValid(){
         //Check that the mail and the password aren't null
-        if(mail != null && password != null && !mail.equals("") && !password.equals("")){
-
-            //If the mail has a proper form, return true
-            if(isEmailValid(mail)){
-                return true;
-
-            } else {
-                return false;
-            }
+        if(TextValidator.haveText(mail) && TextValidator.haveText(password)){
+            return TextValidator.isEmail(mail);
         } else {
             return false;
         }
     }
-
-    /**
-     * Check if the string is an email
-     * @param email
-     * @return true if the string is an email, false if not
-     */
-    public static boolean isEmailValid(String email) {
-        //Regex defining an email
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-
-        //Return the match result of the regex
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
 
     private void retrieveUserProfile(){
         Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
