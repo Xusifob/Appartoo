@@ -1,5 +1,8 @@
 package mobile.appartoo.utils;
 
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -38,7 +41,7 @@ public interface RestService {
     Call<ResponseBody> addOffer(@Header("Authorization") String bearerToken, @FieldMap Map<String, String> updateModel);
 
     @GET("/offers")
-    Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers();
+    Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);
 
     @GET("/me")
     Call<UserWithProfileModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);

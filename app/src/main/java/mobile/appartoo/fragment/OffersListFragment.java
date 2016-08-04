@@ -8,8 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,7 +41,10 @@ public class OffersListFragment extends Fragment {
 
     private ArrayList<OfferModel> offersList;
     private OffersAdapter offersAdapter;
-    private ProgressDialog progress;
+    private View progressBar;
+    private ProgressBar moreOfferProgress;
+    private String nextPage;
+    private int offerPage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,21 +53,26 @@ public class OffersListFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (ListView) view.findViewById(R.id.offersList);
 
+        progressBar = inflater.inflate(R.layout.progress_bar_list_view, container, false);
+        moreOfferProgress = (ProgressBar) progressBar.findViewById(R.id.footerListBar);
+
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
-        progress = new ProgressDialog(getActivity());
 
         if (container != null) {
             container.removeAllViews();
         }
+
+        offerPage = 1;
 
         return view;
     }
 
     @Override
     public void onStart() {
-        progress.setTitle(getResources().getString(R.string.progress_bar_title));
-        progress.setMessage(getResources().getString(R.string.progress_bar_description));
+        moreOfferProgress.setIndeterminate(true);
+
+        offersListView.addFooterView(progressBar);
 
         offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,7 +87,7 @@ public class OffersListFragment extends Fragment {
         offersListView.setAdapter(offersAdapter);
 
         if(offersAdapter.getCount() == 0) {
-            getOffers();
+            getOffers(offerPage);
         }
 
         super.onStart();
@@ -96,17 +106,30 @@ public class OffersListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                getOffers();
+                offerPage = 1;
+                getOffers(offerPage);
+            }
+        });
+
+        offersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                System.out.println(firstVisibleItem + " " + visibleItemCount + " " + totalItemCount);
+                if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null && moreOfferProgress.getVisibility() != View.VISIBLE) {
+                    moreOfferProgress.setVisibility(View.VISIBLE);
+                    offerPage++;
+                    getOffers(offerPage);
+                }
             }
         });
     }
 
-    private void getOffers(){
-        if(!swipeRefreshLayout.isRefreshing()){
-            progress.show();
-        }
-
-
+    private void getOffers(int page){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
@@ -114,35 +137,45 @@ public class OffersListFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ServerResponse<ArrayList<OfferModelWithDate>>> callback = restService.getOffers();
+        Call<ServerResponse<ArrayList<OfferModelWithDate>>> callback = restService.getOffers(page);
 
         callback.enqueue(new Callback<ServerResponse<ArrayList<OfferModelWithDate>>>(){
             @Override
             public void onResponse(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Response<ServerResponse<ArrayList<OfferModelWithDate>>> response) {
 
+                if(response.isSuccessful()) {
+                    if(swipeRefreshLayout.isRefreshing()) {
+                        offersList.clear();
+                    }
+                    offersList.addAll(response.body().getData());
+                    offersAdapter.notifyDataSetChanged();
+                    nextPage = response.body().getNextPage();
+
+                } else {
+                    System.out.println(response.code());
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (Exception e){
+
+                    }
+                    Toast.makeText(getActivity(), "Erreur de connection", Toast.LENGTH_SHORT).show();
+                }
+
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
-                    progress.dismiss();
-                }
-
-                if(response.isSuccessful()) {
-                    offersList.clear();
-                    offersList.addAll(response.body().getData());
-                    offersAdapter.notifyDataSetChanged();
-                } else {
-                    System.out.println(response.code());
-                    Toast.makeText(getActivity(), "Erreur de connection", Toast.LENGTH_SHORT).show();
+                    moreOfferProgress.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Throwable t) {
+                moreOfferProgress.setVisibility(View.GONE);
+
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    progress.dismiss();
                 }
+
                 t.printStackTrace();
                 Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
             }
@@ -152,27 +185,5 @@ public class OffersListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
     }
-
-
-//    public String loadJSONFromAsset() {
-//        String json = null;
-//        try {
-//
-//            InputStream is = getActivity().getAssets().open("data.json");
-//            int size = is.available();
-//            byte[] buffer = new byte[size];
-//            is.read(buffer);
-//            is.close();
-//            json = new String(buffer, "UTF-8");
-//
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//            return null;
-//        }
-//        return json;
-//
-//    }
 }

@@ -62,8 +62,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
-    private EditText availaibilityStart;
-    private EditText availaibilityEnd;
+    private EditText availabilityStart;
+    private EditText availabilityEnd;
     private GoogleApiClient googleApiClient;
     private Button addOfferButton;
     private Calendar calendar;
@@ -81,8 +81,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_offer, container, false);
 
-        availaibilityStart = (EditText) rootView.findViewById(R.id.addOfferAvailabilityStarts);
-        availaibilityEnd = (EditText) rootView.findViewById(R.id.addOfferAvailabilityEnds);
+        availabilityStart = (EditText) rootView.findViewById(R.id.addOfferAvailabilityStarts);
+        availabilityEnd = (EditText) rootView.findViewById(R.id.addOfferAvailabilityEnds);
         addOfferButton = (Button) rootView.findViewById(R.id.addOfferSaveButton);
 
         places = new ArrayList<>();
@@ -126,14 +126,14 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         googleGeocodingService = geocodingRetrofit.create(GoogleMapsService.class);
 
-        availaibilityStart.setOnClickListener(new View.OnClickListener() {
+        availabilityStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDatePicker(v);
             }
         });
 
-        availaibilityEnd.setOnClickListener(new View.OnClickListener() {
+        availabilityEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDatePicker(v);
@@ -247,8 +247,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
             String name = ((EditText) rootView.findViewById(R.id.addOfferTitle)).getText().toString();
             String keyword = ((EditText) rootView.findViewById(R.id.addOfferKeyword)).getText().toString();
-            String availibityStartsStr = availaibilityStart.getText().toString();
-            String availibityEndsStr = availaibilityEnd.getText().toString();
+            String availabilityStartsStr = availabilityStart.getText().toString();
+            String availabilityEndsStr = availabilityEnd.getText().toString();
             String price = ((EditText) rootView.findViewById(R.id.addOfferPrice)).getText().toString();
             String rooms = ((EditText) rootView.findViewById(R.id.addOfferRooms)).getText().toString();
             String phone = ((EditText) rootView.findViewById(R.id.addOfferPhone)).getText().toString();
@@ -262,8 +262,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             if(!keyword.replaceAll("\\s+","").equals("")) offerModel.setKeyword(keyword.trim()); else return null;
 
             try {
-                offerModel.setStart(dateFormat.parse(availibityStartsStr));
-                offerModel.setEnd(dateFormat.parse(availibityEndsStr));
+                offerModel.setStart(dateFormat.parse(availabilityStartsStr));
+                offerModel.setEnd(dateFormat.parse(availabilityEndsStr));
             } catch (Exception e){
                 return null;
             }
@@ -304,18 +304,19 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                             offerModel.setName("No name");
                             offerModel.setStreetAddress(selectedPlace.getPrimaryText());
                             offerModel.setPlaceId(selectedPlace.getPlaceId());
+
                             sendOfferToServer(offerModel);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<GeocoderResponse> call, Throwable t) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Impossible de définir l'addresse.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Impossible de définir l'addresse. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
                     }
                 });
 
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Impossible de définir l'addresse.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Veuillez sélectionner une addresse.", Toast.LENGTH_SHORT).show();
             }
         }
 

@@ -6,9 +6,11 @@
     android:layout_height="match_parent">
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:id="@+id/offersList"
         android:divider="@color/colorLightGray"
         android:dividerHeight="8dp"
-        tools:listitem="@layout/list_item_offers"/>
+        android:footerDividersEnabled="false"
+        tools:listitem="@layout/list_item_offers" />
+
 </android.support.v4.widget.SwipeRefreshLayout>
