@@ -26,7 +26,7 @@ import mobile.appartoo.view.NonScrollableListView;
 /**
  * Created by alexandre on 16-07-13.
  */
-public class OfferDetailFragment extends Fragment {
+public class OfferDetailsFragment extends Fragment {
 
     private SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
     private NonScrollableListView residentList;

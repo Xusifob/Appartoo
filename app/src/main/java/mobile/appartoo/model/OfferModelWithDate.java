@@ -10,8 +10,11 @@ import java.util.Date;
  */
 public class OfferModelWithDate extends OfferModel implements Parcelable {
 
+    private UserModel owner;
     private Date availabilityEnds;
     private Date availabilityStarts;
+
+    private static final ClassLoader USERMODEL_CLASS_LOADER = UserModel.class.getClassLoader();
 
     public OfferModelWithDate() {
         super();
@@ -19,6 +22,7 @@ public class OfferModelWithDate extends OfferModel implements Parcelable {
 
     protected OfferModelWithDate(Parcel in) {
         super(in);
+        owner = in.readParcelable(USERMODEL_CLASS_LOADER);
         availabilityEnds = (Date) in.readSerializable();
         availabilityStarts = (Date) in.readSerializable();
     }
@@ -26,6 +30,7 @@ public class OfferModelWithDate extends OfferModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeParcelable(owner, flags);
         dest.writeSerializable(availabilityEnds);
         dest.writeSerializable(availabilityStarts);
     }
@@ -61,5 +66,13 @@ public class OfferModelWithDate extends OfferModel implements Parcelable {
 
     public void setAvailabilityStarts(Date availabilityStarts) {
         this.availabilityStarts = availabilityStarts;
+    }
+
+    public UserModel getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserModel owner) {
+        this.owner = owner;
     }
 }

@@ -47,8 +47,9 @@ android:fitsSystemWindows="true">
 <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/offerDetailScrollView"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:id="@+id/offerDetailsScrollView"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_marginBottom="40dp">
     <fragment
         android:name="mobile.appartoo.fragment.UserDetailFragment"
         android:id="@+id/userDetailFragment"
@@ -56,4 +57,9 @@ android:fitsSystemWindows="true">
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_user_detail"/>
 </android.support.v4.widget.NestedScrollView>
+    <Button
+        style="@style/ButtonSalmon"
+        android:text="@string/action_send_message"
+        android:id="@+id/offerDetailSendMessage"
+        android:layout_gravity="bottom"/>
 </android.support.design.widget.CoordinatorLayout>

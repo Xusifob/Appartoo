@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.OfferModel;
+import mobile.appartoo.model.OfferModelWithDate;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -65,7 +66,10 @@ public class OffersAdapter extends BaseAdapter {
 
         OfferModel offerModel = offerModels.get(position);
 
-        holder.owner.setText(offerModel.getOwner().getGivenName());
+        if(offerModel instanceof OfferModelWithDate) {
+            holder.owner.setText(((OfferModelWithDate) offerModel).getOwner().getGivenName());
+        }
+
         try {
             holder.city.setText(String.valueOf(offerModel.getAddress().getCity()));
         } catch (Exception e) {

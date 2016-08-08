@@ -47,15 +47,18 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         }
 
         ImageView imageView = new ImageView(context);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OfferImagesActivity.class);
-                intent.putExtra("resources", resources);
-                intent.putExtra("currentImage", position);
-                context.startActivity(intent);
-            }
-        });
+
+        if(!(context instanceof OfferImagesActivity)){
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, OfferImagesActivity.class);
+                    intent.putExtra("resources", resources);
+                    intent.putExtra("currentImage", position);
+                    context.startActivity(intent);
+                }
+            });
+        }
         imageView.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
         container.addView(imageView);
         return imageView;

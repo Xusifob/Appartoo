@@ -1,9 +1,7 @@
 package mobile.appartoo.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,26 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
-import mobile.appartoo.activity.OfferDetailActivity;
+import mobile.appartoo.activity.OfferDetailsActivity;
 import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDetailledDate;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.RestService;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +37,8 @@ public class UserProfileOffersFragment extends Fragment {
     private ListView offersListView;
     private ArrayList<OfferModel> offersList;
     private OffersAdapter offersAdapter;
-    private ProgressDialog progress;
+    private View progressBar;
+    private ProgressBar moreOfferProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +49,9 @@ public class UserProfileOffersFragment extends Fragment {
 
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
-        progress = new ProgressDialog(getActivity());
+
+        progressBar = inflater.inflate(R.layout.progress_bar_list_view, container, false);
+        moreOfferProgress = (ProgressBar) progressBar.findViewById(R.id.footerListBar);
 
         if (container != null) {
             container.removeAllViews();
@@ -66,20 +62,19 @@ public class UserProfileOffersFragment extends Fragment {
 
     @Override
     public void onStart() {
-        progress.setTitle(getResources().getString(R.string.progress_bar_title));
-        progress.setMessage(getResources().getString(R.string.progress_bar_description));
+        moreOfferProgress.setIndeterminate(true);
 
+        offersListView.setAdapter(offersAdapter);
+        offersListView.addFooterView(progressBar);
         offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
+                Intent intent = new Intent(getActivity(), OfferDetailsActivity.class);
                 intent.putExtra("offer", offersList.get(position));
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }
         });
-
-        offersListView.setAdapter(offersAdapter);
 
         if(offersAdapter.getCount() == 0) {
             if(Appartoo.LOGGED_USER_PROFILE != null) {
@@ -110,10 +105,6 @@ public class UserProfileOffersFragment extends Fragment {
     }
 
     private void getOffers(){
-        if(!swipeRefreshLayout.isRefreshing()){
-            progress.show();
-        }
-
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyy-MM-dd HH:mm:ss.SSSSSS")
                 .create();
@@ -130,12 +121,6 @@ public class UserProfileOffersFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<OfferModelWithDetailledDate>> call, Response<ArrayList<OfferModelWithDetailledDate>> response) {
 
-                if(swipeRefreshLayout.isRefreshing()){
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    progress.dismiss();
-                }
-
                 if(response.isSuccessful()) {
                     System.out.println(response.body().size());
 
@@ -146,17 +131,24 @@ public class UserProfileOffersFragment extends Fragment {
                     System.out.println(response.code());
                     Toast.makeText(getActivity(), "Erreur de connection.", Toast.LENGTH_SHORT).show();
                 }
+
+                if(swipeRefreshLayout.isRefreshing()){
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    moreOfferProgress.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onFailure(Call<ArrayList<OfferModelWithDetailledDate>> call, Throwable t) {
-                t.printStackTrace();
+
+                moreOfferProgress.setVisibility(View.GONE);
+
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    progress.dismiss();
                 }
 
+                t.printStackTrace();
                 if(t instanceof IllegalStateException) {
                     Toast.makeText(getActivity(), "Vous n'avez proposé aucune annonce.", Toast.LENGTH_SHORT).show();
                 } else {

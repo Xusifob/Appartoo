@@ -3,10 +3,13 @@ package mobile.appartoo.activity;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,36 +18,43 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import mobile.appartoo.R;
+import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.WorkaroundMapFragment;
 import mobile.appartoo.model.OfferModel;
 
 /**
  * Created by alexandre on 16-07-06.
  */
-public class OfferDetailActivity  extends AppCompatActivity implements OnMapReadyCallback {
+public class OfferDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+
+    private int[] resources = {R.drawable.flat, R.drawable.flat2};
     private NestedScrollView scrollView;
     private Toolbar toolbar;
     private SupportMapFragment mapFragment;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private OfferModel offer;
+    private ViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offer_detail);
+        setContentView(R.layout.activity_offer_details);
 
         //Retrieve the drawer element
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        appBarLayout = (AppBarLayout) findViewById(R.id.offerDetailAppBar);
+        appBarLayout = (AppBarLayout) findViewById(R.id.offerDetailsAppBar);
 
+        viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
         offer = getIntent().getParcelableExtra("offer");
 
         //Retrieve the others elements
-        scrollView = (NestedScrollView) findViewById(R.id.offerDetailScrollView);
+        scrollView = (NestedScrollView) findViewById(R.id.offerDetailsScrollView);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -54,6 +64,9 @@ public class OfferDetailActivity  extends AppCompatActivity implements OnMapRead
     @Override
     public void onStart(){
         super.onStart();
+
+        ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, resources , true);
+        viewPager.setAdapter(imagesAdapter);
 
         //Define the drawer
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

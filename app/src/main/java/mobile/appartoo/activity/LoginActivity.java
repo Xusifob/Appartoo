@@ -29,7 +29,6 @@ public class LoginActivity extends FragmentActivity {
     private FragmentManager fragmentManager;
     private HomeFragment homeFragment;
     private LogInFragment logInFragment;
-    private ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class LoginActivity extends FragmentActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve login button and shared preferences
-        logo = (ImageView) findViewById(R.id.appartooLogo);
         sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
     }
 

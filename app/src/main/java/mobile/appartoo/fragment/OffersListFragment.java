@@ -1,6 +1,5 @@
 package mobile.appartoo.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
-import mobile.appartoo.activity.OfferDetailActivity;
+import mobile.appartoo.activity.OfferDetailsActivity;
 import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
@@ -71,13 +70,12 @@ public class OffersListFragment extends Fragment {
     @Override
     public void onStart() {
         moreOfferProgress.setIndeterminate(true);
-
         offersListView.addFooterView(progressBar);
 
         offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), OfferDetailActivity.class);
+                Intent intent = new Intent(getActivity(), OfferDetailsActivity.class);
                 intent.putExtra("offer", offersList.get(position));
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
@@ -110,10 +108,6 @@ public class OffersListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if(savedInstanceState != null) {
-
-        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
