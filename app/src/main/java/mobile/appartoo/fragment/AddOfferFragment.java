@@ -1,6 +1,7 @@
 package mobile.appartoo.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
     private EditText availabilityStart;
     private EditText availabilityEnd;
+    private EditText keyword;
     private GoogleApiClient googleApiClient;
     private Button addOfferButton;
     private Calendar calendar;
@@ -84,6 +86,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         availabilityStart = (EditText) rootView.findViewById(R.id.addOfferAvailabilityStarts);
         availabilityEnd = (EditText) rootView.findViewById(R.id.addOfferAvailabilityEnds);
+        keyword = (EditText) rootView.findViewById(R.id.addOfferKeyword);
+
         addOfferButton = (Button) rootView.findViewById(R.id.addOfferSaveButton);
 
         places = new ArrayList<>();
@@ -122,6 +126,23 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             public void onClick(View v) {
                 addOfferButton.setEnabled(false);
                 new AsyncOffer().execute();
+            }
+        });
+
+        keyword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
+
+                final String[] items = getResources().getStringArray(R.array.keywords);
+
+                selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        keyword.setText(items[which]);
+                    }
+                });
+                selectContractDialog.show();
             }
         });
 
@@ -244,10 +265,10 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         @Override
         public void onPostExecute(OfferToCreateModel offerModel){
-            if(offerModel == null) {
-                addOfferButton.setEnabled(true);
-            } else {
+            if(offerModel != null) {
                 setAddress(offerModel);
+            } else {
+                addOfferButton.setEnabled(true);
             }
         }
 
@@ -266,13 +287,20 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             boolean acceptSmoker = Boolean.valueOf(rootView.findViewById(R.id.addOfferImageSmoker).getTag().toString());
 
             if(!TextValidator.haveText(new String[] {price, rooms, name, description, phone, keyword})) {
+                Toast.makeText(getActivity().getApplicationContext(), "Vous devez renseigner tous les champs.", Toast.LENGTH_SHORT).show();
                 return null;
             }
 
             try {
                 offerModel.setStart(dateFormat.parse(availabilityStartsStr));
                 offerModel.setEnd(dateFormat.parse(availabilityEndsStr));
+
+                if(offerModel.getStart().compareTo(offerModel.getEnd()) >= 0){
+                    Toast.makeText(getActivity().getApplicationContext(), "Les dates que vous avez entré ne sont pas valides.", Toast.LENGTH_SHORT).show();
+                    return null;
+                }
             } catch (Exception e){
+                Toast.makeText(getActivity().getApplicationContext(), "Les dates que vous avez entré ne sont pas valides.", Toast.LENGTH_SHORT).show();
                 return null;
             }
 

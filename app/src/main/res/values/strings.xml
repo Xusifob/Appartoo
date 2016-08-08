@@ -47,10 +47,11 @@
     <string name="drawer_offers">Parcourir les offres</string>
     <string name="drawer_search">Recherche</string>
     <string name="drawer_logout">Se déconnecter</string>
+    <string name="drawer_messages">Mes messages</string>
 
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>
-    <string name="my_offers">Mes offres</string>
+    <string name="my_offers">Mes annonces</string>
 
     <!-- ACTIVITIES STRINGS -->
     <string name="title_activity_login">Connexion</string>
@@ -105,6 +106,13 @@
 
     <string name="demo_min_label">Min</string>
     <string name="demo_max_label">Max</string>
+
+
+    <string-array name="keywords">
+        <item name="location">Location</item>
+        <item name="sublocation">Sous-location</item>
+        <item name="shareflat">Colocation</item>
+    </string-array>
 
     <!-- ADD OFFER STRINGS -->
     <string name="accept_smokers">"J'accepte les fumeurs"</string>

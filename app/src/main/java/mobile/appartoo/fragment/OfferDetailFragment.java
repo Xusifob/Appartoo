@@ -19,6 +19,7 @@ import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.ResidentsAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
+import mobile.appartoo.model.OfferModelWithDetailledDate;
 import mobile.appartoo.model.UserModel;
 import mobile.appartoo.view.NonScrollableListView;
 
@@ -38,15 +39,12 @@ public class OfferDetailFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_offer_detail, container, false);
         residentList = (NonScrollableListView) view.findViewById(R.id.offerResidentList);
-        imagesPager = (ViewPager) view.findViewById(R.id.offerFlatImagesPager);
         return view;
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(getActivity(), resources, true);
-        imagesPager.setAdapter(imagesAdapter);
         offer = getActivity().getIntent().getParcelableExtra("offer");
         populateView();
     }
@@ -61,6 +59,9 @@ public class OfferDetailFragment extends Fragment {
         if(offer instanceof OfferModelWithDate) {
             ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
             ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+        } else if (offer instanceof OfferModelWithDetailledDate) {
+            ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
+            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
         }
 
         ArrayList<UserModel> residents = new ArrayList<>();

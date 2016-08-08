@@ -1,13 +1,12 @@
 package mobile.appartoo.activity;
 
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ScrollView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,18 +18,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import mobile.appartoo.R;
 import mobile.appartoo.adapter.WorkaroundMapFragment;
 import mobile.appartoo.model.OfferModel;
-import mobile.appartoo.view.NavigationDrawerView;
 
 /**
  * Created by alexandre on 16-07-06.
  */
 public class OfferDetailActivity  extends AppCompatActivity implements OnMapReadyCallback {
 
-    private ScrollView scrollView;
-    private DrawerLayout drawerLayout;
-    private NavigationDrawerView navigationView;
+    private NestedScrollView scrollView;
     private Toolbar toolbar;
     private SupportMapFragment mapFragment;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private OfferModel offer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,18 @@ public class OfferDetailActivity  extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_offer_detail);
 
         //Retrieve the drawer element
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        appBarLayout = (AppBarLayout) findViewById(R.id.offerDetailAppBar);
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        offer = getIntent().getParcelableExtra("offer");
 
         //Retrieve the others elements
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView = (NestedScrollView) findViewById(R.id.offerDetailScrollView);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     @Override
@@ -55,18 +56,31 @@ public class OfferDetailActivity  extends AppCompatActivity implements OnMapRead
         super.onStart();
 
         //Define the drawer
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Appartoo");
-        navigationView.setDrawerLayout(drawerLayout);
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle("Détail de l'annonce");
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbarLayout.setTitle("");
+                    isShow = false;
+                }
+            }
+        });
+
+        toolbar.setNavigationIcon(R.drawable.left_arrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
-                }
+                finish();
             }
         });
 
@@ -82,8 +96,9 @@ public class OfferDetailActivity  extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        OfferModel offer = getIntent().getParcelableExtra("offer");
-
+        if(offer == null) {
+            offer = getIntent().getParcelableExtra("offer");
+        }
         //Define the latitude and longitude to use with the map fragment
         LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());
 

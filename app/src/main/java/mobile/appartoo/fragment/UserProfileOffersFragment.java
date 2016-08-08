@@ -156,7 +156,12 @@ public class UserProfileOffersFragment extends Fragment {
                 } else {
                     progress.dismiss();
                 }
-                Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
+
+                if(t instanceof IllegalStateException) {
+                    Toast.makeText(getActivity(), "Vous n'avez proposé aucune annonce.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

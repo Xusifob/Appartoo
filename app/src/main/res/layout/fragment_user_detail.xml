@@ -1,192 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/background_light"
+    android:padding="8dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.percent.PercentRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/userProfilePicLayout">
-            <ImageView
-                app:layout_widthPercent="100%"
-                app:layout_aspectRatio="100%"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:id="@+id/userProfilePic"
-                android:layout_alignParentTop="true"
-                android:minHeight="100dp"
-                android:background="@color/colorGray"
-                android:src="@drawable/portrait"/>
-        </android.support.percent.PercentRelativeLayout>
-        <RelativeLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="-40dp"
-            android:layout_below="@+id/userProfilePicLayout"
-            android:id="@+id/userFacebookLayout">
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/shadow"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/round_clicked"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/facebook_blue"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_centerHorizontal="true"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="-40dp"
-            android:layout_below="@+id/userProfilePicLayout"
-            android:layout_toLeftOf="@+id/userFacebookLayout"
-            android:id="@+id/userPhoneLayout">
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/shadow"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/round_clicked"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/phone"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="-40dp"
-            android:layout_below="@+id/userProfilePicLayout"
-            android:layout_toLeftOf="@+id/userPhoneLayout"
-            android:id="@+id/userMessageLayout">
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/shadow"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/round_clicked"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"/>
-            <ImageView
-
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/message"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userProfilePicLayout"
+            android:orientation="horizontal"
+            android:id="@+id/userDetailContacts"
+            android:padding="8dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/rounded_bordered_square_light_gray">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/message_yellow"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Message"/>
+            </LinearLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/rounded_bordered_square_light_gray">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/phone_green"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Message"/>
+            </LinearLayout>
+            <View
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/rounded_bordered_square_light_gray">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/facebook_blue"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Message"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userDetailContacts"
             android:orientation="vertical"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp">
+            android:padding="6dp">
             <TextView
                 style="@style/Paragraph"
                 android:textStyle="bold"
                 android:text="Wade Wilson"
-                android:id="@+id/userName"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"/>
+                android:padding="2dp"
+                android:id="@+id/userName" />
             <TextView
                 style="@style/Paragraph"
+                android:padding="2dp"
                 android:text="Mercenary, Solo"
                 android:id="@+id/userContractAndSociety" />
             <TextView
                 style="@style/Paragraph"
+                android:padding="2dp"
                 android:text="30 ans"
                 android:id="@+id/userAge" />
         </LinearLayout>
     </RelativeLayout>
     <View
-        style="@style/Separator"/>
+        android:layout_margin="8dp"
+        style="@style/Separator" />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_gravity="center">
+        android:padding="8dp">
 
-        <ImageView
-            style="@style/Image"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/indifferent_with_smoking"
-            android:id="@+id/residentIsSmoker"/>
-        <ImageView
-            style="@style/Image"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/student"
-            android:id="@+id/residentContract"/>
-        <ImageView
-            style="@style/Image"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/alone"
-            android:id="@+id/residentIsSingle"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="right">
+            <ImageView
+                style="@style/Image"
+                android:src="@drawable/indifferent_with_smoking"
+                android:id="@+id/residentIsSmoker"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                style="@style/Image"
+                android:src="@drawable/student"
+                android:id="@+id/residentContract"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="left">
+            <ImageView
+                style="@style/Image"
+                android:src="@drawable/alone"
+                android:id="@+id/residentIsSingle"/>
+        </LinearLayout>
     </LinearLayout>
     <View
-        style="@style/Separator" />
+        style="@style/Separator"
+        android:layout_margin="8dp"/>
     <TextView
         style="@style/Paragraph"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:padding="8dp"
         android:text="Blah blah blah"
         android:id="@+id/userDescription" />
     <View
-        style="@style/Separator" />
+        style="@style/Separator"
+        android:layout_margin="8dp" />
     <ImageView
+        android:layout_margin="8dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:adjustViewBounds="true"
@@ -195,8 +169,8 @@
         android:src="@drawable/thumb"/>
     <TextView
         style="@style/Paragraph"
+        android:paddingBottom="8dp"
         android:text="456"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"/>
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

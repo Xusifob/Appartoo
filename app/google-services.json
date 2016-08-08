@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "409387170438",
+    "firebase_url": "https://stable-century-136413.firebaseio.com",
+    "project_id": "stable-century-136413",
+    "storage_bucket": "stable-century-136413.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409387170438:android:c25354f1607029a6",
+        "android_client_info": {
+          "package_name": "mobile.appartoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409387170438-5bg409f3vpo7uv36rcpdoter3bdbv6m2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzO_gR2HPrA2BMhm6-8jIycw4mKJv4bjE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -120,7 +120,6 @@
             android:layout_height="0dp"/>
         <Button
             style="@style/ButtonGreen"
-            android:onClick="searchOffers"
             android:background="@color/colorGreen"
             android:text="Rechercher"
             android:layout_weight="1"/>

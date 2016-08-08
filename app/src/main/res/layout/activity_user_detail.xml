@@ -1,64 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/colorWhite"
+android:fitsSystemWindows="true">
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/userDetailAppBar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@id/drawerLayout">
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:fitsSystemWindows="true">
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/collapsingToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:contentScrim="?attr/colorPrimary"
+        app:expandedTitleMarginStart="48dp"
+        app:expandedTitleMarginEnd="64dp">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
+        <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:fitsSystemWindows="true">
+            <ImageView
+                android:id="@+id/image"
+                app:layout_widthPercent="100%"
+                app:layout_aspectRatio="100%"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                android:src="@drawable/portrait"/>
+        </android.support.percent.PercentRelativeLayout>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:paddingTop="25dp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:minHeight="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:navigationIcon="@android:drawable/ic_delete"
-                app:titleTextColor="@color/colorWhite">
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize">
-            <Button
-                style="@style/ButtonSalmon"
-                android:text="@string/action_send_message"
-                android:id="@+id/sendMessageButton"
-                android:layout_alignParentBottom="true"/>
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollView"
-                android:layout_above="@+id/sendMessageButton">
-                <fragment
-                    android:name="mobile.appartoo.fragment.UserDetailFragment"
-                    android:id="@+id/userDetailFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:layout="@layout/fragment_user_detail"/>
-            </ScrollView>
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_collapseMode="pin" />
+    </android.support.design.widget.CollapsingToolbarLayout>
+</android.support.design.widget.AppBarLayout>
 
-        </RelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
-    <mobile.appartoo.view.NavigationDrawerView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|start"
-        android:id="@+id/navigationDrawer"
-        app:headerLayout="@layout/navigation_drawer_header"
-        app:menu="@menu/drawer"/>
-</android.support.v4.widget.DrawerLayout>
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/offerDetailScrollView"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <fragment
+        android:name="mobile.appartoo.fragment.UserDetailFragment"
+        android:id="@+id/userDetailFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_user_detail"/>
+</android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

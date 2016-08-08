@@ -44,8 +44,6 @@ public class SearchOfferFragment extends Fragment implements GoogleApiClient.OnC
     private GoogleApiClient googleApiClient;
     private PlacesAdapter placesAdapter;
     private ArrayList<PlaceModel> places;
-    private Button buttonMoreOptions;
-    private View viewMoreOptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,8 +53,6 @@ public class SearchOfferFragment extends Fragment implements GoogleApiClient.OnC
             container.removeAllViews();
         }
 
-        buttonMoreOptions = (Button) view.findViewById(R.id.buttonMoreOptions);
-        viewMoreOptions = view.findViewById(R.id.viewMoreOptions);
         rangeSeekBar = (RangeSeekBar) view.findViewById(R.id.searchOfferPrice);
         searchPlace = (AutoCompleteTextView) view.findViewById(R.id.searchPlace);
         minValue = (TextView) view.findViewById(R.id.searchRangeMinValue);
@@ -123,17 +119,6 @@ public class SearchOfferFragment extends Fragment implements GoogleApiClient.OnC
                     maxValue.setText(Integer.toString(max));
                 }
                 return rangeSeekBar.onTouchEvent(event);
-            }
-        });
-
-        buttonMoreOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(viewMoreOptions.getVisibility() == View.GONE) {
-                    viewMoreOptions.setVisibility(View.VISIBLE);
-                } else {
-                    viewMoreOptions.setVisibility(View.GONE);
-                }
             }
         });
     }

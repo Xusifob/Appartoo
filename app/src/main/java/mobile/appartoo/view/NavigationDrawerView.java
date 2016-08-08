@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
 import mobile.appartoo.activity.MainActivity;
+import mobile.appartoo.activity.MessagesActivity;
 import mobile.appartoo.activity.SearchActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 
@@ -73,6 +75,8 @@ public class NavigationDrawerView extends NavigationView {
             setCheckableItem(getMenu().findItem(R.id.drawer_profile));
         } else if(context instanceof SearchActivity) {
             setCheckableItem(getMenu().findItem(R.id.drawer_search));
+        } else if(context instanceof MessagesActivity) {
+            setCheckableItem(getMenu().findItem(R.id.drawer_messages));
         }
 
         setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -103,6 +107,12 @@ public class NavigationDrawerView extends NavigationView {
                     case R.id.drawer_search:
                         if(!(context instanceof SearchActivity)) {
                             Intent intent = new Intent(context, SearchActivity.class);
+                            context.startActivity(intent);
+                        }
+                        return true;
+                    case R.id.drawer_messages:
+                        if(!(context instanceof MessagesActivity)) {
+                            Intent intent = new Intent(context, MessagesActivity.class);
                             context.startActivity(intent);
                         }
                         return true;
