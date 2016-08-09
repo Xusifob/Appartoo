@@ -27,6 +27,8 @@
                         android:id="@+id/offerDetailsImages"
                         android:fitsSystemWindows="true">
                         <android.support.v4.view.ViewPager
+                            android:layout_height="0dp"
+                            android:layout_width="0dp"
                             app:layout_widthPercent="100%"
                             app:layout_aspectRatio="100%"
                             android:background="@color/colorGray"
@@ -66,6 +68,8 @@
                     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
                         class="mobile.appartoo.adapter.WorkaroundMapFragment"
+                        android:layout_height="0dp"
+                        android:layout_width="0dp"
                         app:layout_widthPercent="100%"
                         app:layout_aspectRatio="178%"
                         android:id="@+id/map"

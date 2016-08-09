@@ -25,13 +25,23 @@
     <string name="student">Etudiant</string>
     <string name="birthdate">Date de naissance</string>
     <string name="description">Description</string>
+    <string name="title">Titre</string>
+    <string name="city">Ville</string>
+    <string name="keyword_and_price">Type et prix</string>
+    <string name="start">Début</string>
+    <string name="rooms">Chambres</string>
+    <string name="end">Fin</string>
+    <string name="message">Message</string>
+    <string name="fullname">Firstname Lastname</string>
+    <string name="year_age">ans</string>
+    <string name="euro">€</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
     <string name="warning_condition">En continuant vous acceptez les conditions d\'utilisation.</string>
     <string name="see_condition"><u>Voir les conditions.</u></string>
     <string name="go_further">Continuer</string>
-    <string name="start">Commencer</string>
+    <string name="begin">Commencer</string>
     <string name="ask_informations">Entrez vos informations</string>
     <string name="confirm_password_signup">Confirmez le mot de passe</string>
     <string name="gender_signup">Quel est votre sexe ?</string>
@@ -46,7 +56,7 @@
     <string name="drawer_profile">Mon profil</string>
     <string name="drawer_offers">Parcourir les offres</string>
     <string name="drawer_search">Recherche</string>
-    <string name="drawer_logout">Se déconnecter</string>
+    <string name="drawer_logout">Déconnexion</string>
     <string name="drawer_messages">Mes messages</string>
 
     <!-- USER PROFILE STRINGS -->
@@ -76,6 +86,16 @@
     <string name="situation">Activité</string>
     <string name="important_infos">Informations importantes</string>
     <string name="personnal_infos">A propos de vous</string>
+    <string name="save_infos">Enregistrer mes informations</string>
+    <string name="facebook">Facebook</string>
+    <string name="keyword">Type</string>
+    <string name="from">Du</string>
+    <string name="to">Au</string>
+    <string name="address">Adresse</string>
+    <string name="keywords">Mots-clés</string>
+    <string name="euro_per_month">"€/mois"</string>
+    <string name="unknown_city">Ville non reconnue</string>
+    <string name="room_or_rooms">"chambre(s)"</string>
 
     <!-- USER CONFIGURE PROFILE STRINGS -->
     <string name="what_are_you_looking_for">Que recherchez-vous ?</string>
@@ -114,9 +134,64 @@
         <item name="shareflat">Colocation</item>
     </string-array>
 
+    <!-- SEARCH OFFER STRINGS -->
+    <string name="more_options">"Plus d'options"</string>
+    <string name="search">Rechercher</string>
+    <string name="where_are_you_searching">Où recherchez-vous ?</string>
+    <string name="zero">0</string>
+    <string name="two_thousands">2000</string>
+
     <!-- ADD OFFER STRINGS -->
     <string name="accept_smokers">"J'accepte les fumeurs"</string>
     <string name="dont_accept_smokers">"Je n'accepte pas de fumeur"</string>
     <string name="accept_animals">"J'accepte les animaux"</string>
     <string name="dont_accept_animals">"Je n'accepte pas d'animal"</string>
+    <string name="save_my_offer">Enregistrer mon annonce</string>
+    <string name="offer_title">"Titre de l'annonce"</string>
+    <string name="offer_keyword">"Type de l'annonce"</string>
+    <string name="price_per_month">Prix (par mois)</string>
+    <string name="rooms_available">Nombre de chambres disponibles</string>
+    <string name="offer_description">"Description de l'annonce"</string>
+
+    <!-- IMAGES DESCRIPTIONS -->
+    <string name="user_profile_picture">Image de profil</string>
+    <string name="application_logo">Logo Appartoo</string>
+    <string name="facebook_logo">Logo Facebook</string>
+    <string name="send_message_icon">"Icône d'envoi de message"</string>
+    <string name="money_icon">"Icône d'argent"</string>
+    <string name="male_icon">"Icône d'homme"</string>
+    <string name="female_icon">Icône de femme</string>
+    <string name="single_icon">Icône de célibataire</string>
+    <string name="in_relationship_icon">Icône en couple</string>
+    <string name="smoker_icon">Icône de fumeur</string>
+    <string name="non_smoker_icon">Icône de non fumeur</string>
+    <string name="add_garantor_icon">Ajouter un garant</string>
+    <string name="phone_icon">Icône de téléphone</string>
+    <string name="student_icon">"Icône d'étudiant"</string>
+    <string name="delete_garantor_icon">Supprimer un garant</string>
+    <string name="modify_garantor_icon">Modifier un garant</string>
+    <string name="offer_image">"Image de l'annonce"</string>
+    <string name="rooms_icon">Icône de lit</string>
+    <string name="marker_icon">Icône de lieu</string>
+    <string name="accept_animals_icon">"Icône d'ami des animaux"</string>
+    <string name="score_icon">Icône de score</string>
+
+    <!-- TOAST MESSAGES -->
+    <string name="error_missing_info_sign_up">"Veuillez entrer toutes les informations pour compléter l'inscription."</string>
+    <string name="error_mail">"Veuillez entrer une adresse email valide."</string>
+    <string name="error_password_not_identical">"Les mots de passe que vous avez entré ne correspondent pas entre eux."</string>
+    <string name="error_retrieve_user_profile">"Impossible de récupérer vos informations de profil, veuillez réessayer plus tard."</string>
+    <string name="error_login_empty">"Veuillez entrer correctement vos identifiants."</string>
+    <string name="error_login_password">"Mauvais login ou mot de passe."</string>
+    <string name="error_predicate_place">"Impossible de trouver un endroit."</string>
+    <string name="error_missing_info_add_offer">"Veuillez entrer toutes les informations pour mettre l'annonce en ligne."</string>
+    <string name="error_dates_add_offer">"Veuillez entrer des dates valides."</string>
+    <string name="error_address_unselected">"Veuillez sélectionner une adresse."</string>
+    <string name="error_identify_address">"Impossible d'identifier votre adresse, veuillez réessayer plus tard."</string>
+    <string name="connection_error">"Erreur de connexion au serveur, veuillez réessayer plus tard."</string>
+    <string name="no_offer_found">"Vous n'avez mis aucune annonce en ligne."</string>
+    <string name="user_already_exists">"L'utilisateur existe déjà."</string>
+    <string name="success_sign_up">"Votre inscription a été finalisée avec succès !"</string>
+    <string name="success_add_offer">"Votre annonce a été mise en ligne avec succès !"</string>
+    <string name="success_update_user_profile">"Votre profil a été enregistré avec succès !"</string>
 </resources>

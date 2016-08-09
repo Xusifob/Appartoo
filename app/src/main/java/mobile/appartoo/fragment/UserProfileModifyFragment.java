@@ -126,7 +126,7 @@ public class UserProfileModifyFragment extends Fragment {
                     saveSettings.setEnabled(true);
 
                     if(response.isSuccessful()) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Votre profil a été mis à jour avec succès.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.success_update_user_profile, Toast.LENGTH_SHORT).show();
 
                         if(!profileUpdateModel.getGivenName().equals(Appartoo.LOGGED_USER_PROFILE.getGivenName()) || !profileUpdateModel.getFamilyName().equals(Appartoo.LOGGED_USER_PROFILE.getFamilyName())) {
                             NavigationDrawerView.setHeaderInformations(profileUpdateModel.getGivenName() + " " + profileUpdateModel.getFamilyName(), userMail.getText().toString());

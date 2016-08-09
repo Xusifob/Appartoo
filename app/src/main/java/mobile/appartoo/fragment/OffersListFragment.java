@@ -163,7 +163,7 @@ public class OffersListFragment extends Fragment {
                     } catch (Exception e){
 
                     }
-                    Toast.makeText(getActivity(), "Erreur de connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
 
                 if(swipeRefreshLayout.isRefreshing()){
@@ -182,7 +182,7 @@ public class OffersListFragment extends Fragment {
                 }
 
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.connection_error, Toast.LENGTH_SHORT).show();
             }
         });
     }

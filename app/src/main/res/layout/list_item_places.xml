@@ -2,37 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="8dp">
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/marker_gray"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom">
-            <TextView
-                style="@style/Paragraph"
-                android:text="Some place "
-                android:id="@+id/autocompletePlacePrimary"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textStyle="bold"/>
-            <TextView
-                style="@style/Paragraph"
-                android:textSize="14dp"
-                android:text="Some address"
-                android:id="@+id/autocompletePlaceSecondary"
-                android:ellipsize="end"
-                android:singleLine="true" />
-        </LinearLayout>
+        android:layout_margin="4dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/marker_icon"
+        android:src="@drawable/marker_gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom">
+        <TextView
+            style="@style/Paragraph"
+            android:text="@string/address"
+            android:id="@+id/autocompletePlacePrimary"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textStyle="bold"/>
+        <TextView
+            style="@style/Paragraph"
+            android:textSize="14sp"
+            android:text="@string/city"
+            android:id="@+id/autocompletePlaceSecondary"
+            android:ellipsize="end"
+            android:singleLine="true" />
     </LinearLayout>
+
 </LinearLayout>

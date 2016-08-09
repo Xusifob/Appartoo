@@ -16,6 +16,7 @@
                 android:id="@+id/offerFlatImage"
                 android:adjustViewBounds="true"
                 android:minHeight="100dp"
+                android:contentDescription="@string/offer_image"
                 android:scaleType="fitCenter"
                 android:src="@drawable/flat2"/>
             <TextView
@@ -28,7 +29,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:textSize="18sp"
-                android:text="price"
+                android:text="@string/euro"
                 android:textColor="@color/colorWhite"
                 android:id="@+id/offerPrice"/>
         </android.support.percent.PercentRelativeLayout>
@@ -42,16 +43,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:gravity="center_vertical"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  >
         <TextView
             style="@style/Paragraph"
-            android:text="Keyword"
+            android:text="@string/keyword"
             android:id="@+id/offerKeyword"/>
 
             <TextView
                 style="@style/Paragraph"
-                android:text="City"
+                android:text="@string/city"
                 android:id="@+id/offerCity"/>
         </LinearLayout>
         <ImageView
@@ -59,18 +61,20 @@
             android:layout_height="40dp"
             android:layout_margin="16dp"
             android:id="@+id/offerOwnerImage"
-            android:layout_alignParentRight="true"
+            android:contentDescription="@string/user_profile_picture"
+            android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
             android:src="@drawable/default_profile_picture"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="center_vertical|right"
-                android:layout_toLeftOf="@id/offerOwnerImage">
+                android:gravity="center_vertical|end"
+                android:layout_toLeftOf="@id/offerOwnerImage"
+                android:layout_toStartOf="@id/offerOwnerImage">
                 <TextView
                     style="@style/Paragraph"
-                    android:text="Owner"
+                    android:text="@string/firstName"
                     android:textStyle="bold"
                     android:id="@+id/offerOwner"/>
                 <LinearLayout
@@ -78,12 +82,13 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textStyle="bold"
-                        android:textSize="14dp"
-                        android:text="0"
+                        android:textSize="14sp"
+                        android:text="@string/zero"
                         android:id="@+id/offerRooms"
                         android:textColor="@color/colorSalmon"/>
                     <ImageView
@@ -91,6 +96,7 @@
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true"
+                        android:contentDescription="@string/rooms_icon"
                         android:src="@drawable/bed" />
                 </LinearLayout>
             </LinearLayout>

@@ -8,12 +8,14 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/offerFlatImage">
             <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="0dp"
                 app:layout_widthPercent="100%"
                 app:layout_aspectRatio="200%"
                 android:gravity="bottom|center_horizontal"
@@ -21,6 +23,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:contentDescription="@string/user_profile_picture"
                     android:src="@drawable/default_profile_picture"/>
             </LinearLayout>
         </android.support.percent.PercentRelativeLayout>
@@ -36,22 +39,25 @@
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_weight="1">
                 <TextView
                     style="@style/Paragraph"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/worker"
-                    android:layout_weight="1"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/worker" />
                 <Switch
                     style="@style/NoTextSwitch"
+                    android:layout_gravity="end"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsWorker"/>
-            </LinearLayout>
+            </RelativeLayout>
             <View
                 android:layout_width="16dp"
                 android:layout_height="0dp"/>
@@ -133,11 +139,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/inRelationship"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyInRelationship"/>
             </RelativeLayout>
             <View
@@ -154,11 +161,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/smoker"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsSmoker"/>
             </RelativeLayout>
         </LinearLayout>
@@ -184,11 +191,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/generous"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsGenerous"/>
             </RelativeLayout>
             <View
@@ -205,11 +212,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/musician"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsMusician"/>
             </RelativeLayout>
         </LinearLayout>
@@ -232,11 +239,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/organized"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsOrdinate"/>
             </RelativeLayout>
             <View
@@ -253,11 +260,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/traveller"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsTraveller"/>
             </RelativeLayout>
         </LinearLayout>
@@ -280,11 +287,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/maniac"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsManiac"/>
             </RelativeLayout>
             <View
@@ -301,11 +308,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cook"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsCook"/>
             </RelativeLayout>
         </LinearLayout>
@@ -328,11 +335,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/party_goer"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsPartyGoer"/>
             </RelativeLayout>
             <View
@@ -349,11 +356,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/layabout"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsLayabout"/>
             </RelativeLayout>
         </LinearLayout>
@@ -376,11 +383,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/spendthrift"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true" />
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"   />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsSpendthrift"/>
             </RelativeLayout>
             <View
@@ -397,11 +404,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/nerdy"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_alignParentLeft="true" android:layout_alignParentStart="true"  />
                 <Switch
                     style="@style/NoTextSwitch"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
                     android:id="@+id/userProfileModifyIsGeek"/>
             </RelativeLayout>
         </LinearLayout>
@@ -412,7 +419,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_height="40dp"
-            android:text="Enregistrer mes informations"
+            android:text="@string/save_infos"
             android:id="@+id/userProfileModifySaveSettings"
             android:background="@drawable/square_salmon" />
         <LinearLayout

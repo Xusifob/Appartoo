@@ -2,6 +2,7 @@ package mobile.appartoo.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class GarantorsAdapter extends BaseAdapter {
 
         final GarantorModel garantorModel = garantorModels.get(position);
         holder.fullname.setText(garantorModel.getFirstname() + " " + garantorModel.getLastname());
-        holder.income.setText(Float.toString(garantorModel.getIncome()) +  " " + "€/mois");
+        holder.income.setText(Float.toString(garantorModel.getIncome()) +  " " + context.getString(R.string.euro_per_month));
         holder.mail.setText(garantorModel.getMail());
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

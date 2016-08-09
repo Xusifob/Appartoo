@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.UserDetailActivity;
@@ -50,15 +52,15 @@ public class OfferDetailsFragment extends Fragment {
         ((TextView) getActivity().findViewById(R.id.offerCity)).setText(offer.getAddress().getCity());
         ((TextView) getActivity().findViewById(R.id.offerDescription)).setText(offer.getDescription());
         ((TextView) getActivity().findViewById(R.id.offerTitle)).setText(offer.getName());
-        ((TextView) getActivity().findViewById(R.id.offerKeyword)).setText(offer.getKeyword() + " " + Integer.toString(offer.getPrice()) + "€");
-        ((TextView) getActivity().findViewById(R.id.offerRooms)).setText(Integer.toString(offer.getRooms()) + " chambre(s)");
+        ((TextView) getActivity().findViewById(R.id.offerKeyword)).setText(offer.getKeyword() + " " + NumberFormat.getInstance().format(offer.getPrice()) + " " + getString(R.string.euro));
+        ((TextView) getActivity().findViewById(R.id.offerRooms)).setText(String.valueOf(offer.getRooms()) + " " + getString(R.string.room_or_rooms));
 
         if(offer instanceof OfferModelWithDate) {
-            ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
-            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+            ((TextView) getActivity().findViewById(R.id.offerStart)).setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
+            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
         } else if (offer instanceof OfferModelWithDetailledDate) {
-            ((TextView) getActivity().findViewById(R.id.offerStart)).setText("Début : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
-            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText("Fin : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
+            ((TextView) getActivity().findViewById(R.id.offerStart)).setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
+            ((TextView) getActivity().findViewById(R.id.offerEnd)).setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
         }
 
         ArrayList<UserModel> residents = new ArrayList<>();

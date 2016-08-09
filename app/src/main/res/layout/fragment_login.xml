@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/header"
-        android:layout_alignParentTop="true"
         android:layout_weight="2">
         <ImageView
             android:layout_width="wrap_content"
@@ -20,6 +19,7 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/logo"
+            android:contentDescription="@string/application_logo"
             android:id="@+id/appartooLogo"/>
     </LinearLayout>
     <LinearLayout
@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_below="@id/header"
         android:layout_weight="1">
         <EditText
             android:layout_marginLeft="16dp"
@@ -98,6 +97,7 @@
                 android:layout_height="24dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/facebook_logo"
                 android:src="@drawable/facebook_white"/>
             <TextView
                 android:layout_width="wrap_content"

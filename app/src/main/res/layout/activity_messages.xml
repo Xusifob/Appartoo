@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:minHeight="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                android:navigationIcon="@android:drawable/ic_delete"
                 app:titleTextColor="@color/colorWhite">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -48,7 +47,7 @@
     <mobile.appartoo.view.NavigationDrawerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="left|start"
+        android:layout_gravity="start"
         android:id="@+id/navigationDrawer"
         app:headerLayout="@layout/navigation_drawer_header"
         app:menu="@menu/drawer"/>

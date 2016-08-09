@@ -6,7 +6,7 @@
     android:fillViewport="true">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             style="@style/TitleSalmon"
             android:text="@string/gender_signup"
@@ -25,7 +25,8 @@
                 android:layout_height="100dp"
                 android:clickable="true"
                 android:background="@drawable/toggle_rounded_bordered_square"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:onClick="toggleView"
                 android:id="@+id/signUpConfigureMan"
                 android:tag="man">
@@ -35,6 +36,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:layout_centerInParent="true"
+                    android:contentDescription="@string/male_icon"
                     android:src="@drawable/male"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,7 +52,6 @@
                 android:layout_height="100dp"
                 android:clickable="true"
                 android:background="@drawable/toggle_rounded_bordered_square"
-                android:layout_marginRight="10dp"
                 android:onClick="toggleView"
                 android:id="@+id/signUpConfigureWoman"
                 android:tag="woman">
@@ -59,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
+                    android:contentDescription="@string/female_icon"
                     android:layout_centerInParent="true"
                     android:src="@drawable/female"/>
                 <TextView

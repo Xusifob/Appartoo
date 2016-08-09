@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="72dp">
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingLeft="16dp">
+        android:layout_centerVertical="true">
         <TextView
             style="@style/Paragraph"
             android:id="@+id/garantorFullName"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="Eric Lapointe"/>
+            android:text="@string/fullname"/>
         <TextView
             android:layout_width="wrap_content"
             android:textColor="@color/colorGray"
             android:layout_height="wrap_content"
             android:layout_below="@id/garantorFullName"
             android:id="@+id/garantorMail"
-            android:layout_alignParentLeft="true"
-            android:text="eric.lapointe@laposte.fr"/>
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:text="@string/mail"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorGray"
             android:layout_below="@id/garantorMail"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
             android:id="@+id/garantorIncome"
-            android:text="1000€"/>
+            android:text="@string/two_thousands"/>
     </RelativeLayout>
     <ImageView
         android:layout_width="40dp"
@@ -41,7 +45,8 @@
         android:scaleType="centerCrop"
         android:id="@+id/deleteGarantor"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:contentDescription="@string/delete_garantor_icon"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
         android:src="@drawable/delete" />
     <ImageView
         android:layout_width="40dp"
@@ -53,7 +58,9 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:id="@+id/modifyGarantor"
+        android:contentDescription="@string/modify_garantor_icon"
         android:layout_toLeftOf="@+id/deleteGarantor"
+        android:layout_toStartOf="@+id/deleteGarantor"
         android:layout_centerVertical="true"
         android:src="@drawable/edit"/>
 </RelativeLayout>

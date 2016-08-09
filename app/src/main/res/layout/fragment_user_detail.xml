@@ -29,11 +29,12 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@string/send_message_icon"
                     android:src="@drawable/message_yellow"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Message"/>
+                    android:text="@string/message"/>
             </LinearLayout>
             <View
                 android:layout_width="16dp"
@@ -51,11 +52,12 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@string/phone_icon"
                     android:src="@drawable/phone_green"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Message"/>
+                    android:text="@string/phone"/>
             </LinearLayout>
             <View
                 android:layout_width="16dp"
@@ -73,11 +75,12 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@string/facebook_logo"
                     android:src="@drawable/facebook_blue"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Message"/>
+                    android:text="@string/facebook"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -90,18 +93,18 @@
             <TextView
                 style="@style/Paragraph"
                 android:textStyle="bold"
-                android:text="Wade Wilson"
+                android:text="@string/fullname"
                 android:padding="2dp"
                 android:id="@+id/userName" />
             <TextView
                 style="@style/Paragraph"
                 android:padding="2dp"
-                android:text="Mercenary, Solo"
+                android:text="@string/contract"
                 android:id="@+id/userContractAndSociety" />
             <TextView
                 style="@style/Paragraph"
                 android:padding="2dp"
-                android:text="30 ans"
+                android:text="@string/age"
                 android:id="@+id/userAge" />
         </LinearLayout>
     </RelativeLayout>
@@ -112,6 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:baselineAligned="false"
         android:padding="8dp">
 
         <LinearLayout
@@ -119,9 +123,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="right">
+            android:gravity="end">
             <ImageView
                 style="@style/Image"
+                android:contentDescription="@string/smoker_icon"
                 android:src="@drawable/indifferent_with_smoking"
                 android:id="@+id/residentIsSmoker"/>
         </LinearLayout>
@@ -133,6 +138,7 @@
             android:gravity="center">
             <ImageView
                 style="@style/Image"
+                android:contentDescription="@string/student_icon"
                 android:src="@drawable/student"
                 android:id="@+id/residentContract"/>
         </LinearLayout>
@@ -141,9 +147,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="left">
+            android:gravity="start">
             <ImageView
                 style="@style/Image"
+                android:contentDescription="@string/single_icon"
                 android:src="@drawable/alone"
                 android:id="@+id/residentIsSingle"/>
         </LinearLayout>
@@ -154,7 +161,7 @@
     <TextView
         style="@style/Paragraph"
         android:padding="8dp"
-        android:text="Blah blah blah"
+        android:text="@string/description"
         android:id="@+id/userDescription" />
     <View
         style="@style/Separator"
@@ -165,12 +172,13 @@
         android:layout_height="60dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/score_icon"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/thumb"/>
     <TextView
         style="@style/Paragraph"
         android:paddingBottom="8dp"
-        android:text="456"
+        android:text="@string/zero"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

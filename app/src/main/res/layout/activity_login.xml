@@ -1,21 +1,16 @@
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/logInFragments"
     android:background="@color/colorSalmon"
-    android:id="@+id/loginView"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <FrameLayout
+    android:fitsSystemWindows="true">
+    <fragment
+        android:name="mobile.appartoo.fragment.HomeFragment"
+        android:id="@+id/offerListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/logInFragments">
-        <fragment
-            android:name="mobile.appartoo.fragment.HomeFragment"
-            android:id="@+id/offerListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_home" />
-    </FrameLayout>
-</LinearLayout>
+        tools:layout="@layout/fragment_home" />
+</FrameLayout>

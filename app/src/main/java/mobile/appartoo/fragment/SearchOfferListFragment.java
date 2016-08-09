@@ -93,12 +93,12 @@ public class SearchOfferListFragment extends Fragment {
                         System.out.println(offers.size());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity(), "Erreur dans le chargement des offres.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     System.out.println(response.code());
                     System.out.println("Est-ce que le serveur est en ligne ?");
-                    Toast.makeText(getActivity(), "Erreur de connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
             }
 

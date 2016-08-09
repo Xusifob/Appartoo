@@ -39,7 +39,7 @@ public class UserDetailFragment extends Fragment {
         }
 
         ((TextView) getActivity().findViewById(R.id.userContractAndSociety)).setText(job);
-        ((TextView) getActivity().findViewById(R.id.userAge)).setText(Integer.toString(user.getAge()) + " " + getResources().getString(R.string.age));
+        ((TextView) getActivity().findViewById(R.id.userAge)).setText(Integer.toString(user.getAge()) + " " + getResources().getString(R.string.year_age));
         ((TextView) getActivity().findViewById(R.id.userDescription)).setText(user.getDescription());
 
         if(user.getSmoker() != null && user.getSmoker() == true) {

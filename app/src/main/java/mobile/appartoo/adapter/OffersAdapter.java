@@ -21,10 +21,12 @@ public class OffersAdapter extends BaseAdapter {
 
     private ArrayList<OfferModel> offerModels;
     private LayoutInflater layoutInflater;
+    private Context context;
 
     public OffersAdapter(Context context, ArrayList<OfferModel> om) {
-        offerModels = om;
-        layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.offerModels = om;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -73,19 +75,13 @@ public class OffersAdapter extends BaseAdapter {
         try {
             holder.city.setText(String.valueOf(offerModel.getAddress().getCity()));
         } catch (Exception e) {
-            holder.city.setText("Ville inconnue");
+            holder.city.setText(R.string.unknown_city);
         }
         holder.keyword.setText(offerModel.getKeyword());
         holder.rooms.setText(Integer.toString(offerModel.getRooms()));
-        holder.price.setText(Integer.toString(offerModel.getPrice()) + " €");
+        holder.price.setText(Integer.toString(offerModel.getPrice()) + " " + context.getString(R.string.euro));
 
         return convertView;
-    }
-
-    public void updateOfferList(ArrayList<OfferModel> offers) {
-        offerModels.clear();
-        offerModels.addAll(offers);
-        notifyDataSetChanged();
     }
 
     static class ViewHolder {

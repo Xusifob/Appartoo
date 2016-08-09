@@ -15,6 +15,7 @@
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:contentDescription="@string/user_profile_picture"
             android:id="@+id/drawerUserProfilePic"
             android:src="@drawable/default_profile_picture"/>
         <LinearLayout
@@ -30,11 +31,11 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"
-                android:text="Alexandria Marchal Wilson"/>
+                android:text="@string/fullname"/>
             <TextView
                 style="@style/Paragraph"
                 android:textSize="14sp"
-                android:text="wmarchal@millet.com"
+                android:text="@string/mail"
                 android:textColor="@color/colorWhite"
                 android:id="@+id/drawerUserEmail"/>
         </LinearLayout>

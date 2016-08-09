@@ -128,7 +128,7 @@ public class UserProfileOffersFragment extends Fragment {
                     offersAdapter.notifyDataSetChanged();
                 } else {
                     System.out.println(response.code());
-                    Toast.makeText(getActivity(), "Erreur de connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
 
                 if(swipeRefreshLayout.isRefreshing()){
@@ -149,9 +149,9 @@ public class UserProfileOffersFragment extends Fragment {
 
                 t.printStackTrace();
                 if(t instanceof IllegalStateException) {
-                    Toast.makeText(getActivity(), "Vous n'avez proposé aucune annonce.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.no_offer_found, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Erreur de connection avec le serveur", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });

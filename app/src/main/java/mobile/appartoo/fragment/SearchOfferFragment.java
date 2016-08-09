@@ -102,7 +102,7 @@ public class SearchOfferFragment extends Fragment implements GoogleApiClient.OnC
 
                             @Override
                             public void onFailure(@NonNull Status status) {
-                                Toast.makeText(getActivity(), "Impossible de prédire un endroit", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.error_predicate_place, Toast.LENGTH_SHORT).show();
                             }
                         });
             }

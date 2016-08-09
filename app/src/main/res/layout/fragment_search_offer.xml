@@ -16,7 +16,7 @@
         android:drawableLeft="@drawable/marker_red"
         android:drawableStart="@drawable/marker_red"
         android:drawablePadding="4dp"
-        android:hint="Où recherchez-vous ?" />
+        android:hint="@string/where_are_you_searching" />
         <EditText
             android:layout_margin="4dp"
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:drawableLeft="@drawable/key_yellow"
             android:drawableStart="@drawable/key_yellow"
             android:drawablePadding="4dp"
-            android:hint="Mots-clés" />
+            android:hint="@string/keywords" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Du"
+                android:hint="@string/from"
                 android:layout_weight="1"
                 android:focusable="false"
                 android:drawableStart="@drawable/clock"
@@ -54,7 +54,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Au"
+                android:hint="@string/to"
                 android:focusable="false"
                 android:layout_weight="1"
                 android:drawableStart="@drawable/clock"
@@ -74,19 +74,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/money_icon"
                 android:src="@drawable/euro_green"/>
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:gravity="center|right"
+                android:gravity="center|end"
                 android:id="@+id/searchRangeMinValue"
-                android:text="0"/>
+                android:text="@string/zero"/>
             <org.florescu.android.rangeseekbar.RangeSeekBar
                 android:id="@+id/searchOfferPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:barHeight="2dp"
@@ -97,10 +99,10 @@
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:gravity="center|left"
+                android:textSize="12sp"
+                android:gravity="center|start"
                 android:id="@+id/searchRangeMaxValue"
-                android:text="2000"/>
+                android:text="@string/two_thousands"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -113,7 +115,7 @@
         <Button
             style="@style/ButtonSalmon"
             android:id="@+id/buttonMoreOptions"
-            android:text="Plus d'options"
+            android:text="@string/more_options"
             android:layout_weight="1"/>
         <View
             android:layout_width="16dp"
@@ -121,7 +123,7 @@
         <Button
             style="@style/ButtonGreen"
             android:background="@color/colorGreen"
-            android:text="Rechercher"
+            android:text="@string/search"
             android:layout_weight="1"/>
     </LinearLayout>
 </LinearLayout>

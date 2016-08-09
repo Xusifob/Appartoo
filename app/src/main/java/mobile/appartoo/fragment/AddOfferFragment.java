@@ -177,7 +177,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
                             @Override
                             public void onFailure(@NonNull Status status) {
-                                Toast.makeText(getActivity(), "Impossible de prédire un endroit", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), R.string.error_predicate_place, Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -286,7 +286,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             boolean acceptSmoker = Boolean.valueOf(rootView.findViewById(R.id.addOfferImageSmoker).getTag().toString());
 
             if(!TextValidator.haveText(new String[] {price, rooms, name, description, phone, keyword})) {
-                Toast.makeText(getActivity().getApplicationContext(), "Vous devez renseigner tous les champs.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.error_missing_info_add_offer, Toast.LENGTH_SHORT).show();
                 return null;
             }
 
@@ -295,11 +295,11 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                 offerModel.setEnd(dateFormat.parse(availabilityEndsStr));
 
                 if(offerModel.getStart().compareTo(offerModel.getEnd()) >= 0){
-                    Toast.makeText(getActivity().getApplicationContext(), "Les dates que vous avez entré ne sont pas valides.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
                     return null;
                 }
             } catch (Exception e){
-                Toast.makeText(getActivity().getApplicationContext(), "Les dates que vous avez entré ne sont pas valides.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
                 return null;
             }
 
@@ -349,12 +349,12 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
                     @Override
                     public void onFailure(Call<GeocoderResponse> call, Throwable t) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Impossible de définir l'addresse. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.error_identify_address, Toast.LENGTH_SHORT).show();
                     }
                 });
 
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Veuillez sélectionner une addresse.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.error_address_unselected, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -376,7 +376,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                         addOfferButton.setEnabled(true);
 
                         if(response.isSuccessful()){
-                            Toast.makeText(getActivity().getApplicationContext(), "Votre annonce a été ajoutée avec succès", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(),R.string.success_add_offer, Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else {
                             try {
@@ -391,7 +391,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         t.printStackTrace();
-                        Toast.makeText(getActivity().getApplicationContext(), "Erreur de connexion au serveur.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                         addOfferButton.setEnabled(true);
                     }
                 });

@@ -11,12 +11,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/offerFlatImage">
         <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_widthPercent="100%"
             app:layout_aspectRatio="200%"
             android:gravity="bottom|center_horizontal">
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/user_profile_picture"
                 android:src="@drawable/default_profile_picture"/>
         </LinearLayout>
     </android.support.percent.PercentRelativeLayout>
@@ -24,11 +29,11 @@
             style="@style/Paragraph"
             android:textStyle="bold"
             android:id="@+id/profileName"
-            android:text="User"/>
+            android:text="@string/fullname"/>
         <TextView
             style="@style/Paragraph"
             android:id="@+id/profileInfos"
-            android:text="Student, 22 years"/>
+            android:text="age"/>
         <View style="@style/Separator"
             android:layout_margin="40dp"/>
         <TextView

@@ -138,19 +138,19 @@ public class SignUpActivity extends FragmentActivity {
 
         //Check the edit text input
         if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, birthdate, email})) {
-            Toast.makeText(getApplicationContext(), "Vous devez entrer toutes les informations du formulaires pour finir l'inscription.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_missing_info_sign_up, Toast.LENGTH_LONG).show();
             return null;
         }
 
         //Check if mail is valid
         if(!TextValidator.isEmail(email)) {
-            Toast.makeText(getApplicationContext(), "Veuillez entrer une adresse électronique correcte.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_mail, Toast.LENGTH_LONG).show();
             return null;
         }
 
         //Check if password is valid
         if(!password.equals(password_confirm)) {
-            Toast.makeText(getApplicationContext(), "Les mots de passes doivent être identiques.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_password_not_identical, Toast.LENGTH_LONG).show();
             return null;
         }
 
@@ -194,10 +194,10 @@ public class SignUpActivity extends FragmentActivity {
                     if(response.isSuccessful()) {
                         logUser();
                     } else if(response.code() == 402) {
-                        Toast.makeText(getApplicationContext(), "L'utilisateur existe déjà.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
                     } else {
                         System.out.println("finishSignUp response code " + response.code());
-                        Toast.makeText(getApplicationContext(), "Erreur de connection au serveur. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -205,7 +205,7 @@ public class SignUpActivity extends FragmentActivity {
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     t.printStackTrace();
                     System.out.println("finishSignUp Failure");
-                    Toast.makeText(getApplicationContext(), "Erreur de connection avec le serveur. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     signUpButton.setEnabled(true);
                 }
             });
@@ -226,7 +226,7 @@ public class SignUpActivity extends FragmentActivity {
                 } else {
                     finish();
                     System.out.println("logUser response code " + response.code());
-                    Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -234,7 +234,7 @@ public class SignUpActivity extends FragmentActivity {
             public void onFailure(Call<TokenReceiver> call, Throwable t) {
                 finish();
                 System.out.println("logUser Failure");
-                Toast.makeText(getApplicationContext(), "Votre inscription a été finalisée avec succès !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
             }
         });
     }

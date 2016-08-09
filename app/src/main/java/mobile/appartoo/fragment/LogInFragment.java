@@ -77,7 +77,7 @@ public class LogInFragment extends Fragment {
                     logInButton.setEnabled(false);
                     logIn();
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Veuillez entrer correctement vos identifiants.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_login_empty, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -109,11 +109,11 @@ public class LogInFragment extends Fragment {
 
                     //If the user didn't send the right credentials
                 } else if (response.code() == 401) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Mauvais login ou mot de passe.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_login_password, Toast.LENGTH_SHORT).show();
                     //If the server isn't responding
                 } else {
                     System.out.println(response.code());
-                    Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection au serveur.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
 
                 logInButton.setEnabled(true);
@@ -122,7 +122,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onFailure(Call<TokenReceiver> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity().getApplicationContext(), "Erreur de connection avec le serveur.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 logInButton.setEnabled(true);
             }
         });

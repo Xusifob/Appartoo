@@ -6,7 +6,7 @@
     android:fillViewport="true">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             style="@style/TitleSalmon"
             android:gravity="center"
@@ -30,8 +30,7 @@
                 android:onClick="openDatePicker"
                 android:focusable="false"
                 android:inputType="datetime"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:gravity="center"/>
         </LinearLayout>
 
         <Button

@@ -75,14 +75,14 @@ public class UserProfileMainFragment extends Fragment {
         }
 
         if(!age.equals("")) {
-            userInfos.setText(age + " ans");
+            userInfos.setText(age + " " + getString(R.string.year_age));
         }
     }
 
     public void populateView() {
         System.out.println("Populating view...");
         userName.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " ans");
+        userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
     }
 
     private void getUserProfile(){
@@ -107,14 +107,14 @@ public class UserProfileMainFragment extends Fragment {
 
                 } else {
                     response.code();
-                    Toast.makeText(getActivity(), "Impossible de récuperer vos informations", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.error_retrieve_user_profile, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "Impossible de récuperer vos informations", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.error_retrieve_user_profile, Toast.LENGTH_SHORT).show();
             }
         });
     }

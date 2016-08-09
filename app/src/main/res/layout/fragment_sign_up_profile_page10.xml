@@ -6,7 +6,7 @@
     android:fillViewport="true">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             style="@style/TitleSalmon"
             android:text="@string/garantor_configure_profile"
@@ -41,6 +41,7 @@
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:src="@drawable/plus"
+                android:contentDescription="@string/add_garantor_icon"
                 android:id="@+id/addGarantorButton"/>
             <ListView
                 android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:fillViewport="true">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             style="@style/TitleSalmon"
             android:gravity="center"
@@ -28,8 +28,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="@string/password"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:gravity="center"/>
             <EditText
                 android:singleLine="true"
                 android:id="@+id/signUpPasswordConfirm"
@@ -37,8 +36,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password_signup"
                 android:inputType="textPassword"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:gravity="center"/>
         </LinearLayout>
         <Button
             style="@style/ButtonSalmon"

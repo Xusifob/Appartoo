@@ -36,6 +36,7 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_gravity="bottom"
+            android:contentDescription="@string/send_message_icon"
             android:padding="12dp"
             android:src="@drawable/send_message" />
     </LinearLayout>
