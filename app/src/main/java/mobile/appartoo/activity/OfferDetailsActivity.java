@@ -52,7 +52,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         //Retrieve the others elements
         scrollView = (NestedScrollView) findViewById(R.id.offerDetailsScrollView);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }

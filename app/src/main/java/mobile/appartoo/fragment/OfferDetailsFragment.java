@@ -29,9 +29,7 @@ public class OfferDetailsFragment extends Fragment {
 
     private SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
     private NonScrollableListView residentList;
-    private ViewPager imagesPager;
     private OfferModel offer;
-    private int[] resources = {R.drawable.flat, R.drawable.flat2};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +43,7 @@ public class OfferDetailsFragment extends Fragment {
     public void onStart(){
         super.onStart();
         offer = getActivity().getIntent().getParcelableExtra("offer");
-//        populateView();
+        populateView();
     }
 
     private void populateView() {
