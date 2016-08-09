@@ -115,86 +115,76 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_weight="1"
-            android:layout_margin="12dp"
-            android:baselineAligned="false">
-            <android.support.percent.PercentRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_height="0dp"
-                    android:layout_width="0dp"
-                    app:layout_widthPercent="50%"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center">
-                    <RelativeLayout
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/toggle_rounded_bordered_square"
-                        android:onClick="toggleView"
-                        android:id="@+id/addOfferAllowSmoker">
+            android:layout_margin="12dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/toggle_rounded_bordered_square"
+                    android:onClick="toggleView"
+                    android:id="@+id/addOfferAllowSmoker">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:gravity="center"
-                            android:padding="2dp"
-                            android:textColor="@color/colorSalmon"
-                            android:id="@+id/addOfferTextSmoker"
-                            android:text="@string/dont_accept_smokers" />
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:tag="false"
-                            android:id="@+id/addOfferImageSmoker"
-                            android:layout_centerInParent="true"
-                            android:contentDescription="@string/non_smoker"
-                            android:src="@drawable/is_not_smoker" />
-                    </RelativeLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_height="0dp"
-                    android:layout_width="0dp"
-                    app:layout_widthPercent="50%"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center">
-                    <RelativeLayout
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:background="@drawable/toggle_rounded_bordered_square"
-                        android:onClick="toggleView"
-                        android:id="@+id/addOfferAcceptAnimals">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:padding="2dp"
-                            android:textColor="@color/colorSalmon"
-                            android:id="@+id/addOfferTextAnimals"
-                            android:layout_alignParentBottom="true"
-                            android:text="@string/dont_accept_animals" />
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
-                            android:tag="false"
-                            android:layout_above="@+id/addOfferTextAnimals"
-                            android:layout_centerInParent="true"
-                            android:contentDescription="@string/dont_accept_animals"
-                            android:id="@+id/addOfferImageAnimals"
-                            android:src="@drawable/dont_accept_animals" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </android.support.percent.PercentRelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textColor="@color/colorSalmon"
+                        android:id="@+id/addOfferTextSmoker"
+                        android:text="@string/dont_accept_smokers" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/addOfferTextSmoker"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:tag="false"
+                        android:id="@+id/addOfferImageSmoker"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/is_not_smoker" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:clickable="true"
+                    android:background="@drawable/toggle_rounded_bordered_square"
+                    android:onClick="toggleView"
+                    android:id="@+id/addOfferAcceptAnimals">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:textColor="@color/colorSalmon"
+                        android:id="@+id/addOfferTextAnimals"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/dont_accept_animals" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:tag="false"
+                        android:layout_above="@+id/addOfferTextAnimals"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/addOfferImageAnimals"
+                        android:src="@drawable/dont_accept_animals" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <Button
