@@ -3,13 +3,11 @@ package mobile.appartoo.activity;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import mobile.appartoo.R;
-import mobile.appartoo.adapter.WorkaroundMapFragment;
 
 /**
  * Created by alexandre on 16-07-06.

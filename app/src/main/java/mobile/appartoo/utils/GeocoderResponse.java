@@ -1,7 +1,5 @@
 package mobile.appartoo.utils;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 import mobile.appartoo.model.AddressInformationsModel;

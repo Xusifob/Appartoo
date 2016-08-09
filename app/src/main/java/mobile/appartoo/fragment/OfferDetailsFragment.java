@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.UserDetailActivity;
-import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.ResidentsAdapter;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
@@ -46,7 +45,7 @@ public class OfferDetailsFragment extends Fragment {
     public void onStart(){
         super.onStart();
         offer = getActivity().getIntent().getParcelableExtra("offer");
-        populateView();
+//        populateView();
     }
 
     private void populateView() {

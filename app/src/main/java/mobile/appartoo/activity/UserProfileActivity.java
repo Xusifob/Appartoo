@@ -1,7 +1,5 @@
 package mobile.appartoo.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -10,25 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.UserProfileMainFragment;
 import mobile.appartoo.fragment.UserProfileModifyFragment;
 import mobile.appartoo.fragment.UserProfileOffersFragment;
 import mobile.appartoo.fragment.UserProfileSettingsFragment;
-import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.RestService;
 import mobile.appartoo.view.NavigationDrawerView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-15.

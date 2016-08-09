@@ -17,15 +17,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import mobile.appartoo.R;
 import mobile.appartoo.fragment.SignUpFifthFragment;

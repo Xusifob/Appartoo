@@ -21,7 +21,7 @@ public class OfferImagesActivity extends Activity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        //Retreive the resources
+        //Retrieve the resources
         resources = getIntent().getIntArrayExtra("resources");
         currentItem = getIntent().getIntExtra("currentImage", 0);
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
@@ -32,7 +32,7 @@ public class OfferImagesActivity extends Activity {
         super.onStart();
 
         //Add the pictures to the view pager
-        viewPager.setAdapter(new ImageViewPagerAdapter(this, resources, false));
+        viewPager.setAdapter(new ImageViewPagerAdapter(this, resources));
         viewPager.setCurrentItem(currentItem);
     }
 }

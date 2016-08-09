@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by alexandre on 16-07-05.

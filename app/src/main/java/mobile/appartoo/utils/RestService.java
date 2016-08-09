@@ -1,15 +1,12 @@
 package mobile.appartoo.utils;
 
-import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.model.OfferModelWithDetailledDate;
-import mobile.appartoo.model.OfferToCreateModel;
 import mobile.appartoo.model.UserWithProfileModel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

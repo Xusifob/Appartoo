@@ -1,7 +1,5 @@
 package mobile.appartoo.utils;
 
-import android.text.TextWatcher;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
