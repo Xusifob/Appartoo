@@ -6,8 +6,11 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 
 import mobile.appartoo.R;
+import mobile.appartoo.model.UserModel;
+import mobile.appartoo.utils.ImageReceiver;
 
 /**
  * Created by alexandre on 16-07-06.
@@ -17,6 +20,8 @@ public class UserDetailActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private UserModel userModel;
+    private ImageView userProfilePic;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public class UserDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.userDetailAppBar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        userProfilePic = (ImageView) findViewById(R.id.userDetailProfilePic);
+        userModel = getIntent().getParcelableExtra("user");
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
@@ -35,6 +42,7 @@ public class UserDetailActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
+        ImageReceiver.getSquaredPicture(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl());
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
             boolean isShow = false;

@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.ImageReceiver;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.view.NavigationDrawerView;
 import retrofit2.Call;
@@ -43,7 +45,7 @@ public class UserProfileModifyFragment extends Fragment {
     private Switch isManiac;
     private Switch isWorker;
     private Button saveSettings;
-
+    private ImageView userProfilePic;
     private RestService restService;
     private SharedPreferences sharedPreferences;
     private NavigationDrawerView navigationDrawerView;
@@ -84,6 +86,8 @@ public class UserProfileModifyFragment extends Fragment {
     private void populateView(){
         System.out.println(Appartoo.LOGGED_USER_PROFILE.getFamilyName());
         System.out.println(Appartoo.LOGGED_USER_PROFILE.getGivenName());
+
+        ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl());
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
         userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
         userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));
@@ -188,6 +192,7 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
     private void defineInteractionsVariables(View view){
+        userProfilePic = (ImageView) view.findViewById(R.id.userProfileModifyProfilePic);
         userLastName = (EditText) view.findViewById(R.id.userProfileModifyLastName);
         userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
         userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);

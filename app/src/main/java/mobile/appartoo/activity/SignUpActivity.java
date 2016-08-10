@@ -189,13 +189,14 @@ public class SignUpActivity extends FragmentActivity {
             callback.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    signUpButton.setEnabled(true);
                     //If the login is successful
                     if(response.isSuccessful()) {
                         logUser();
                     } else if(response.code() == 402) {
+                        signUpButton.setEnabled(true);
                         Toast.makeText(getApplicationContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
                     } else {
+                        signUpButton.setEnabled(true);
                         System.out.println("finishSignUp response code " + response.code());
                         Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     }

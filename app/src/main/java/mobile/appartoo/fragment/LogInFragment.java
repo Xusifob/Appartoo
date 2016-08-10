@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import mobile.appartoo.R;
 import mobile.appartoo.activity.MainActivity;
 import mobile.appartoo.model.UserWithProfileModel;
@@ -64,7 +66,6 @@ public class LogInFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         restService = retrofit.create(RestService.class);
-
         sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +116,6 @@ public class LogInFragment extends Fragment {
                     System.out.println(response.code());
                     Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
-
-                logInButton.setEnabled(true);
             }
 
             @Override
@@ -157,7 +156,7 @@ public class LogInFragment extends Fragment {
                             .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
                             .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge())).apply();
-
+                    
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                 }
                 getActivity().startActivity(new Intent(getActivity(), MainActivity.class));

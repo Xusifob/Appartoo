@@ -9,7 +9,10 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
@@ -17,14 +20,17 @@ import mobile.appartoo.activity.MainActivity;
 import mobile.appartoo.activity.MessagesActivity;
 import mobile.appartoo.activity.SearchActivity;
 import mobile.appartoo.activity.UserProfileActivity;
+import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.ImageReceiver;
 
 /**
  * Created by alexandre on 16-07-13.
  */
 public class NavigationDrawerView extends NavigationView {
 
-    private Context context;
     private DrawerLayout drawerLayout;
+    private Context context;
+    private ImageView profilePicture;
     private static String userName;
     private static String userMail;
 
@@ -62,6 +68,11 @@ public class NavigationDrawerView extends NavigationView {
             ((TextView) header.findViewById(R.id.drawerUserName)).setText(userName);
             ((TextView) header.findViewById(R.id.drawerUserEmail)).setText(userMail);
         }
+
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
+            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl());
+        }
     }
 
     private void setMenuActions() {
@@ -72,8 +83,6 @@ public class NavigationDrawerView extends NavigationView {
             setCheckableItem(getMenu().findItem(R.id.drawer_profile));
         } else if(context instanceof SearchActivity) {
             setCheckableItem(getMenu().findItem(R.id.drawer_search));
-        } else if(context instanceof MessagesActivity) {
-            setCheckableItem(getMenu().findItem(R.id.drawer_messages));
         }
 
         setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -104,12 +113,6 @@ public class NavigationDrawerView extends NavigationView {
                     case R.id.drawer_search:
                         if(!(context instanceof SearchActivity)) {
                             Intent intent = new Intent(context, SearchActivity.class);
-                            context.startActivity(intent);
-                        }
-                        return true;
-                    case R.id.drawer_messages:
-                        if(!(context instanceof MessagesActivity)) {
-                            Intent intent = new Intent(context, MessagesActivity.class);
                             context.startActivity(intent);
                         }
                         return true;

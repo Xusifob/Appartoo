@@ -26,8 +26,6 @@ import mobile.appartoo.model.OfferModel;
  */
 public class OfferDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-
-    private int[] resources = {R.drawable.flat, R.drawable.flat2};
     private NestedScrollView scrollView;
     private Toolbar toolbar;
     private SupportMapFragment mapFragment;
@@ -61,7 +59,8 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     public void onStart(){
         super.onStart();
 
-        ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, resources);
+
+        ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, offer.getImages());
         viewPager.setAdapter(imagesAdapter);
 
         //Define the drawer

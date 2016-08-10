@@ -10,10 +10,6 @@
             android:icon="@drawable/search"
             android:title="@string/drawer_search"/>
         <item
-            android:id="@+id/drawer_messages"
-            android:icon="@drawable/message_drawer"
-            android:title="@string/drawer_messages"/>
-        <item
             android:id="@+id/drawer_profile"
             android:icon="@drawable/profile"
             android:title="@string/drawer_profile"/>

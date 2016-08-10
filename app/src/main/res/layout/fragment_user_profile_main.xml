@@ -16,11 +16,10 @@
             app:layout_widthPercent="100%"
             app:layout_aspectRatio="200%"
             android:gravity="bottom|center_horizontal">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:id="@+id/userProfileMainProfilePic"
                 android:contentDescription="@string/user_profile_picture"
                 android:src="@drawable/default_profile_picture"/>
         </LinearLayout>

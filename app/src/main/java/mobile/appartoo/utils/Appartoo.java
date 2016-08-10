@@ -1,12 +1,27 @@
 package mobile.appartoo.utils;
 
+import android.app.Application;
 import mobile.appartoo.model.UserWithProfileModel;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by alexandre on 16-07-06.
  */
-public abstract class Appartoo {
-    public static final String SERVER_URL = "http://49016af6.ngrok.io";
+public class Appartoo extends Application{
+
+    public static final String SERVER_URL = "https://12fe1080.ngrok.io";
     public static String TOKEN = "";
     public static UserWithProfileModel LOGGED_USER_PROFILE;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
+        Picasso built = builder.build();
+        Picasso.setSingletonInstance(built);
+
+    }
 }

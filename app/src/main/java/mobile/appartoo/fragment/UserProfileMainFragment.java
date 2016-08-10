@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
+import mobile.appartoo.utils.ImageReceiver;
 import mobile.appartoo.utils.RestService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class UserProfileMainFragment extends Fragment {
 
+    private ImageView userProfilePic;
     private TextView userName;
     private TextView userInfos;
     private SharedPreferences sharedPreferences;
@@ -41,6 +44,7 @@ public class UserProfileMainFragment extends Fragment {
 
         userName = (TextView) view.findViewById(R.id.profileName);
         userInfos = (TextView) view.findViewById(R.id.profileInfos);
+        userProfilePic = (ImageView) view.findViewById(R.id.userProfileMainProfilePic);
         sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
         return view;
@@ -80,7 +84,7 @@ public class UserProfileMainFragment extends Fragment {
     }
 
     public void populateView() {
-        System.out.println("Populating view...");
+        ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl());
         userName.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
         userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
     }

@@ -78,6 +78,17 @@ public class UserProfileActivity extends AppCompatActivity {
     public void onBackPressed(){
         if(!mainFragment.isVisible()) {
             fragmentManager.beginTransaction().replace(R.id.userProfileFrame, mainFragment).commit();
+            toolbar.setNavigationIcon(R.drawable.ic_drawer);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    } else {
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                    }
+                }
+            });
         } else {
             super.onBackPressed();
         }
@@ -96,6 +107,13 @@ public class UserProfileActivity extends AppCompatActivity {
             } else if (v.getTag().equals("my_offers")) {
                 fragmentManager.beginTransaction().replace(R.id.userProfileFrame, offersFragment).commit();
             }
+            toolbar.setNavigationIcon(R.drawable.left_arrow);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         }
     }
 }

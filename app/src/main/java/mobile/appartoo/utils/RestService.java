@@ -47,6 +47,9 @@ public interface RestService {
     Call<ResponseBody> searchOffer();
 
     @GET
+    Call<ResponseBody> getPicture(@Url String url);
+
+    @GET
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
 
     @PUT

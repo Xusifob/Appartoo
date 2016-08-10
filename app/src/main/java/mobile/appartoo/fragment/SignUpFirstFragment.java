@@ -18,6 +18,4 @@ public class SignUpFirstFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_signup_page1, container, false);
         return rootView;
     }
-
-
 }

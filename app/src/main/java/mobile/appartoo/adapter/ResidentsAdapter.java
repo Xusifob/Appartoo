@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;
+import mobile.appartoo.utils.ImageReceiver;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -22,10 +23,12 @@ public class ResidentsAdapter extends BaseAdapter {
     private ArrayList<UserModel> userModels;
     private LayoutInflater layoutInflater;
     private Boolean acceptAnimals;
+    private Context context;
 
     public ResidentsAdapter(Context context, ArrayList<UserModel> om) {
-        userModels = om;
-        layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.userModels = om;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     public void setAcceptAnimals(Boolean acceptAnimals){
@@ -59,6 +62,7 @@ public class ResidentsAdapter extends BaseAdapter {
             holder.isSmoker = (ImageView) convertView.findViewById(R.id.residentIsSmoker);
             holder.acceptAnimals = (ImageView) convertView.findViewById(R.id.residentAcceptsAnimals);
             holder.isSingle = (ImageView) convertView.findViewById(R.id.residentIsSingle);
+            holder.residentImageThumbail = (ImageView) convertView.findViewById(R.id.residentThumbnail);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -92,6 +96,8 @@ public class ResidentsAdapter extends BaseAdapter {
         if(userModel.getInRelationship() != null && userModel.getInRelationship() == true){
             holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
         }
+
+        ImageReceiver.getPicture(context, holder.residentImageThumbail, userModel.getImage().getThumbnail().getContentUrl());
     }
 
     static class ViewHolder {
@@ -100,5 +106,6 @@ public class ResidentsAdapter extends BaseAdapter {
         ImageView isSmoker;
         ImageView acceptAnimals;
         ImageView isSingle;
+        ImageView residentImageThumbail;
     }
 }

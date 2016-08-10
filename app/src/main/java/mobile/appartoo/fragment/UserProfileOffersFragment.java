@@ -2,6 +2,7 @@ package mobile.appartoo.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 
 import mobile.appartoo.R;
+import mobile.appartoo.activity.AddOfferActivity;
 import mobile.appartoo.activity.OfferDetailsActivity;
 import mobile.appartoo.adapter.OffersAdapter;
 import mobile.appartoo.model.OfferModel;
@@ -38,6 +40,7 @@ public class UserProfileOffersFragment extends Fragment {
     private OffersAdapter offersAdapter;
     private View progressBar;
     private ProgressBar moreOfferProgress;
+    private FloatingActionButton addOfferButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class UserProfileOffersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (ListView) view.findViewById(R.id.offersList);
+        addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListAddOfferButton);
 
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
@@ -88,6 +92,13 @@ public class UserProfileOffersFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        addOfferButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), AddOfferActivity.class));
+            }
+        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
