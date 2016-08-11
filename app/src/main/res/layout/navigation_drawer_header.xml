@@ -18,7 +18,7 @@
             android:layout_height="64dp"
             android:contentDescription="@string/user_profile_picture"
             android:id="@+id/drawerUserProfilePic"
-            android:src="@drawable/default_profile_picture"
+            android:background="@drawable/circle_light_gray"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/colorWhite"/>
         <LinearLayout

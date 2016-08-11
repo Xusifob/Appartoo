@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -12,12 +13,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import mobile.appartoo.R;
 import mobile.appartoo.activity.LoginActivity;
 import mobile.appartoo.activity.MainActivity;
-import mobile.appartoo.activity.MessagesActivity;
 import mobile.appartoo.activity.SearchActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 import mobile.appartoo.utils.Appartoo;
@@ -69,9 +67,14 @@ public class NavigationDrawerView extends NavigationView {
             ((TextView) header.findViewById(R.id.drawerUserEmail)).setText(userMail);
         }
 
-        if(Appartoo.LOGGED_USER_PROFILE != null) {
-            profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
-            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl());
+        profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
+
+        if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail() != null) {
+            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), true);
+        } else if (Appartoo.LOGGED_USER_PROFILE != null && !Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
+            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+        } else {
+            profilePicture.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
         }
     }
 

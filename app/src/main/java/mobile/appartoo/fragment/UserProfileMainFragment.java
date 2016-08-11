@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,11 @@ public class UserProfileMainFragment extends Fragment {
     }
 
     public void populateView() {
-        ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl());
+        if(!Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
+            ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+        } else {
+            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
+        }
         userName.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
         userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
     }

@@ -1,15 +1,25 @@
 package mobile.appartoo.fragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +28,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +44,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -41,6 +55,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import mobile.appartoo.R;
+import mobile.appartoo.adapter.ImageGridViewAdapter;
 import mobile.appartoo.adapter.PlacesAdapter;
 import mobile.appartoo.model.AddressComponent;
 import mobile.appartoo.model.AddressInformationsModel;
@@ -51,6 +66,8 @@ import mobile.appartoo.utils.GeocoderResponse;
 import mobile.appartoo.utils.GoogleMapsService;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.utils.TextValidator;
+import mobile.appartoo.view.ExpandableHeightGridView;
+import mobile.appartoo.view.GridImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,9 +80,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private EditText availabilityStart;
     private EditText availabilityEnd;
     private EditText keyword;
+    private View pictureFromCamera;
+    private View pictureFromGallery;
+    private ExpandableHeightGridView pictureContainer;
     private GoogleApiClient googleApiClient;
     private Button addOfferButton;
     private Calendar calendar;
@@ -73,11 +95,12 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
     private RestService restService;
     private GoogleMapsService googleGeocodingService;
     private View rootView;
-    private Geocoder geocoder;
     private AutoCompleteTextView placesAutocomplete;
     private PlacesAdapter placesAdapter;
     private ArrayList<PlaceModel> places;
+    private ArrayList<GridImageView> images;
     private PlaceModel selectedPlace;
+    private ImageGridViewAdapter picturesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,11 +109,14 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
         availabilityStart = (EditText) rootView.findViewById(R.id.addOfferAvailabilityStarts);
         availabilityEnd = (EditText) rootView.findViewById(R.id.addOfferAvailabilityEnds);
         keyword = (EditText) rootView.findViewById(R.id.addOfferKeyword);
-
         addOfferButton = (Button) rootView.findViewById(R.id.addOfferSaveButton);
+        pictureContainer = (ExpandableHeightGridView) rootView.findViewById(R.id.pictureContainer);
+        pictureFromCamera = rootView.findViewById(R.id.pictureFromCamera);
+        pictureFromGallery = rootView.findViewById(R.id.pictureFromGallery);
 
+        images = new ArrayList<>();
         places = new ArrayList<>();
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        picturesAdapter = new ImageGridViewAdapter(images);
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
@@ -125,6 +151,19 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             public void onClick(View v) {
                 addOfferButton.setEnabled(false);
                 new AsyncOffer().execute();
+            }
+        });
+
+        pictureContainer.setExpanded(true);
+        pictureContainer.setAdapter(picturesAdapter);
+
+        pictureFromCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         });
 
@@ -254,6 +293,40 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            GridImageView pic = new GridImageView(getActivity());
+
+            if (imageBitmap.getWidth() >= imageBitmap.getHeight()){
+
+                imageBitmap = Bitmap.createBitmap(
+                        imageBitmap,
+                        imageBitmap.getWidth()/2 - imageBitmap.getHeight()/2,
+                        0,
+                        imageBitmap.getHeight(),
+                        imageBitmap.getHeight()
+                );
+
+            }else{
+
+                imageBitmap = Bitmap.createBitmap(
+                        imageBitmap,
+                        0,
+                        imageBitmap.getHeight()/2 - imageBitmap.getWidth()/2,
+                        imageBitmap.getWidth(),
+                        imageBitmap.getWidth()
+                );
+            }
+
+            pic.setImageBitmap(imageBitmap);
+            images.add(0, pic);
+            picturesAdapter.notifyDataSetChanged();
+        }
+    }
 
     private class AsyncOffer extends AsyncTask<Void, Void, OfferToCreateModel> {
 

@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso;
  */
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "https://12fe1080.ngrok.io";
+    public static final String SERVER_URL = "https://11c11169.ngrok.io";
     public static String TOKEN = "";
     public static UserWithProfileModel LOGGED_USER_PROFILE;
 
@@ -21,6 +21,8 @@ public class Appartoo extends Application{
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
         Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
 
     }

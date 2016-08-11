@@ -1,5 +1,7 @@
 package mobile.appartoo.utils;
 
+import android.support.annotation.NonNull;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public class TextValidator {
 
-    public static boolean isEmail(String email) {
+    public static boolean isEmail(@NonNull String email) {
         //Regex defining an email
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 
@@ -18,13 +20,13 @@ public class TextValidator {
         return matcher.matches();
     }
 
-    public static boolean haveText(String stringToVerify){
+    public static boolean haveText(@NonNull String stringToVerify){
         return !stringToVerify.replaceAll("\\s", "").equals("");
     }
 
     public static boolean haveText(String[] stringsToVerify){
         for(int i = 0 ; i < stringsToVerify.length ; i++) {
-            if(stringsToVerify[i].replaceAll("\\s", "").equals("")) {
+            if(stringsToVerify[i] != null && stringsToVerify[i].replaceAll("\\s", "").equals("")) {
                 return false;
             }
         }

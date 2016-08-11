@@ -1,16 +1,13 @@
 package mobile.appartoo.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -89,12 +86,23 @@ public class OffersAdapter extends BaseAdapter {
             holder.owner.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName());
         }
 
+        System.out.println(offerModel.getImages().size());
         if(offerModel.getImages().size() > 0) {
-            ImageReceiver.getPicture(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl());
+            ImageReceiver.getPicture(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), true);
+            convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.GONE);
+        } else {
+            holder.flatImage.setImageDrawable(null);
+            convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
 
         if(offerModel instanceof OfferModelWithDate) {
-            ImageReceiver.getPicture(context, holder.ownerImageThumbnail, ((OfferModelWithDate) offerModel).getOwner().getImage().getThumbnail().getContentUrl());
+            if(((OfferModelWithDate) offerModel).getOwner().getImage().getThumbnail() != null) {
+                ImageReceiver.getPicture(context, holder.ownerImageThumbnail, ((OfferModelWithDate) offerModel).getOwner().getImage().getThumbnail().getContentUrl(), true);
+            } else if (((OfferModelWithDate) offerModel).getOwner().getImage().getContentUrl().equals("images/profile.png")){
+                ImageReceiver.getPicture(context, holder.ownerImageThumbnail, ((OfferModelWithDate) offerModel).getOwner().getImage().getContentUrl(), true);
+            } else {
+                holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
+            }
         }
 
         try {

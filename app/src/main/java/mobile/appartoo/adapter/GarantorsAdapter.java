@@ -102,7 +102,7 @@ public class GarantorsAdapter extends BaseAdapter {
                     }
                 });
 
-                selectContractDialog.setNegativeButton("Annuler", null);
+                selectContractDialog.setNegativeButton(R.string.cancel, null);
                 selectContractDialog.show();
             }
         });

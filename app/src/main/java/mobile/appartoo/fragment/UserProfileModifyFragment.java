@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,12 @@ public class UserProfileModifyFragment extends Fragment {
         System.out.println(Appartoo.LOGGED_USER_PROFILE.getFamilyName());
         System.out.println(Appartoo.LOGGED_USER_PROFILE.getGivenName());
 
-        ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl());
+        if(!Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
+            ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+        } else {
+            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
+        }
+
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
         userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
         userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));

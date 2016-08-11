@@ -51,6 +51,11 @@ public class ZoomableImageView extends ImageView {
         sharedConstructing(context);
     }
 
+    public ZoomableImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        sharedConstructing(context);
+    }
+
     private void sharedConstructing(Context context) {
         super.setClickable(true);
         this.context = context;

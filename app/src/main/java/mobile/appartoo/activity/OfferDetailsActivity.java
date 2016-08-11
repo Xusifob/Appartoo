@@ -3,6 +3,7 @@ package mobile.appartoo.activity;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +17,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import mobile.appartoo.R;
 import mobile.appartoo.adapter.ImageViewPagerAdapter;
 import mobile.appartoo.adapter.WorkaroundMapFragment;
+import mobile.appartoo.model.ImageModel;
 import mobile.appartoo.model.OfferModel;
 
 /**
@@ -60,8 +64,12 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         super.onStart();
 
 
-        ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, offer.getImages());
-        viewPager.setAdapter(imagesAdapter);
+        if(offer.getImages().size() > 0) {
+            ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, offer.getImages());
+            viewPager.setAdapter(imagesAdapter);
+        } else {
+            findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
+        }
 
         //Define the drawer
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

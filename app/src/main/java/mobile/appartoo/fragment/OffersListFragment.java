@@ -136,7 +136,6 @@ public class OffersListFragment extends Fragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                System.out.println(firstVisibleItem + " " + visibleItemCount + " " + totalItemCount);
                 if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null && moreOfferProgress.getVisibility() != View.VISIBLE) {
                     moreOfferProgress.setVisibility(View.VISIBLE);
                     offerPage++;

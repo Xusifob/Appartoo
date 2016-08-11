@@ -45,7 +45,7 @@ public class SignUpProfileEighthFragment extends Fragment {
                     }
                 });
 
-                selectContractDialog.setNegativeButton("Annuler", null);
+                selectContractDialog.setNegativeButton(R.string.cancel, null);
                 selectContractDialog.show();
             }
         });

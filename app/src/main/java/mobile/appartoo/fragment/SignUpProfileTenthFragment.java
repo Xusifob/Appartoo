@@ -65,7 +65,7 @@ public class SignUpProfileTenthFragment extends Fragment {
                     garantorsAdapter.notifyDataSetChanged();
                 }
             });
-            selectContractDialog.setNegativeButton("Annuler", null);
+            selectContractDialog.setNegativeButton(R.string.cancel, null);
             selectContractDialog.show();
             }
         });

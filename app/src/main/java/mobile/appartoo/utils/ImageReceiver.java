@@ -2,11 +2,16 @@ package mobile.appartoo.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 /**
@@ -15,48 +20,20 @@ import com.squareup.picasso.Transformation;
 public class ImageReceiver {
 
 
-    public static void getPicture(final Context context, final ImageView imageView, String url){
+    public static void getPicture(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, boolean squarePicture){
         final String imageUrl = Appartoo.SERVER_URL + "/upload/" + url;
 
-        System.out.println("Retrieving flat picture");
-        Picasso.with(context)
+        System.out.println(imageUrl);
+
+        RequestCreator requestCreator = Picasso.with(context)
                 .load(imageUrl)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(imageView, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
+                .networkPolicy(NetworkPolicy.OFFLINE);
 
-                    }
+        if(squarePicture) {
+            requestCreator.transform(new CropSquareTransformation());
+        }
 
-                    @Override
-                    public void onError() {
-                        //Try again online if cache failed
-                        Picasso.with(context)
-                                .load(imageUrl)
-                                .into(imageView, new com.squareup.picasso.Callback() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Log.v("Picasso","Could not fetch image");
-                                    }
-                                });
-                    }
-                });
-    }
-
-    public static void getSquaredPicture(final Context context, final ImageView imageView, String url){
-        final String imageUrl = Appartoo.SERVER_URL + "/upload/" + url;
-
-        System.out.println("Retrieving flat picture");
-        Picasso.with(context)
-                .load(imageUrl)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .transform(new CropSquareTransformation())
-                .into(imageView, new com.squareup.picasso.Callback() {
+        requestCreator.into(imageView, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
 

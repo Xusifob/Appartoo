@@ -35,6 +35,9 @@
     <string name="fullname">Firstname Lastname</string>
     <string name="year_age">ans</string>
     <string name="euro">€</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="no_picture">Aucune image</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -152,6 +155,12 @@
     <string name="price_per_month">Prix (par mois)</string>
     <string name="rooms_available">Nombre de chambres disponibles</string>
     <string name="offer_description">"Description de l'annonce"</string>
+    <string name="take_a_picture">Prendre une photo</string>
+    <string name="choose_from_gallery">Choisir une image</string>
+    <string-array name="picture_actions">
+        <item name="with_camera">Prendre une photo avec la caméra</item>
+        <item name="from_gallery">Choisir une photo depuis la gallerie</item>
+    </string-array>
 
     <!-- IMAGES DESCRIPTIONS -->
     <string name="user_profile_picture">Image de profil</string>

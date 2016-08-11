@@ -35,7 +35,7 @@ android:fitsSystemWindows="true">
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 android:contentDescription="@string/user_profile_picture"
-                android:src="@drawable/portrait"/>
+                android:background="@color/colorLightGray"/>
         </android.support.percent.PercentRelativeLayout>
 
         <android.support.v7.widget.Toolbar

@@ -21,7 +21,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/userProfileMainProfilePic"
                 android:contentDescription="@string/user_profile_picture"
-                android:src="@drawable/default_profile_picture"/>
+                android:background="@drawable/circle_light_gray"/>
         </LinearLayout>
     </android.support.percent.PercentRelativeLayout>
         <TextView
