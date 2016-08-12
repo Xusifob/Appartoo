@@ -1,5 +1,6 @@
 package mobile.appartoo.fragment;
 
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -39,7 +40,6 @@ public class OffersListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
 
-
     private ArrayList<OfferModel> offersList;
     private OffersAdapter offersAdapter;
     private View progressBar;
@@ -65,8 +65,6 @@ public class OffersListFragment extends Fragment {
         if (container != null) {
             container.removeAllViews();
         }
-
-
 
         offerPage = 1;
 
@@ -136,10 +134,11 @@ public class OffersListFragment extends Fragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null && moreOfferProgress.getVisibility() != View.VISIBLE) {
-                    moreOfferProgress.setVisibility(View.VISIBLE);
+                if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null) {
                     offerPage++;
                     getOffers(offerPage);
+                } else if(nextPage == null) {
+                    moreOfferProgress.setVisibility(View.GONE);
                 }
             }
         });
@@ -179,14 +178,11 @@ public class OffersListFragment extends Fragment {
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    moreOfferProgress.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Throwable t) {
-                moreOfferProgress.setVisibility(View.GONE);
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);

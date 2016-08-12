@@ -4,10 +4,8 @@ package mobile.appartoo.view;
  * Created by alexandre on 16-08-11.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.GridView;
 

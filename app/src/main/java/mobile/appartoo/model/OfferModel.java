@@ -22,6 +22,7 @@ public class OfferModel implements Parcelable {
     private Boolean acceptAnimal;
     private Integer price;
     private Integer rooms;
+    private UserModel owner;
     private AddressModel address;
     private ArrayList<ImageModel> images;
     private ArrayList<UserModel> resident;
@@ -44,6 +45,7 @@ public class OfferModel implements Parcelable {
         acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         price = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         rooms = (Integer) in.readValue(INTEGER_CLASS_LOADER);
+        owner = in.readParcelable(USERMODEL_CLASS_LOADER);
         address = in.readParcelable(ADDRESSMODEL_CLASS_LOADER);
         images = in.readArrayList(IMAGEMODEL_CLASS_LOADER);
         resident = in.readArrayList(USERMODEL_CLASS_LOADER);
@@ -60,6 +62,7 @@ public class OfferModel implements Parcelable {
         dest.writeValue(acceptAnimal);
         dest.writeValue(price);
         dest.writeValue(rooms);
+        dest.writeParcelable(owner, flags);
         dest.writeParcelable(address, flags);
         dest.writeList(images);
         dest.writeList(resident);
@@ -178,6 +181,14 @@ public class OfferModel implements Parcelable {
         this.resident = resident;
     }
 
+    public UserModel getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserModel owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "OfferModel{" +
@@ -192,6 +203,7 @@ public class OfferModel implements Parcelable {
                 ", isSmoker=" + isSmoker +
                 ", acceptAnimal=" + acceptAnimal +
                 ", keyword='" + keyword + '\'' +
+                ", owner='" + owner + '\'' +
                 ", resident=" + resident +
                 '}';
     }

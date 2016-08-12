@@ -1,10 +1,12 @@
 package mobile.appartoo.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -17,10 +19,13 @@ import mobile.appartoo.view.GridImageView;
  * Created by alexandre on 16-08-10.
  */
 public class ImageGridViewAdapter extends BaseAdapter {
+
     // references to our images
     private ArrayList<GridImageView> images;
+    private Context context;
 
-    public ImageGridViewAdapter(ArrayList<GridImageView> images){
+    public ImageGridViewAdapter(Context context, ArrayList<GridImageView> images){
+        this.context = context;
         this.images = images;
     }
 
@@ -40,7 +45,7 @@ public class ImageGridViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
         return images.get(position);
     }
 }

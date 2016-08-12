@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 
 /**
  * Created by alexandre on 16-07-06.
@@ -42,7 +42,7 @@ public class UserDetailActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
-        ImageReceiver.getPicture(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), true);
+        ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), true);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
             boolean isShow = false;

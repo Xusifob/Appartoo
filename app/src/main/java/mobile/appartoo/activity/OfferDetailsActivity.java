@@ -49,7 +49,10 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         appBarLayout = (AppBarLayout) findViewById(R.id.offerDetailsAppBar);
 
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
+
+        System.out.println("GET OFFER");
         offer = getIntent().getParcelableExtra("offer");
+        System.out.println("DONE");
 
         //Retrieve the others elements
         scrollView = (NestedScrollView) findViewById(R.id.offerDetailsScrollView);
@@ -111,10 +114,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        if(offer == null) {
-            offer = getIntent().getParcelableExtra("offer");
-        }
         //Define the latitude and longitude to use with the map fragment
         LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());
 

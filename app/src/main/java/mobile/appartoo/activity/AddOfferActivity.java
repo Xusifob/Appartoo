@@ -16,9 +16,7 @@ import mobile.appartoo.view.NavigationDrawerView;
 
 public class AddOfferActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private NavigationDrawerView navigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,9 +26,7 @@ public class AddOfferActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve the drawer elements
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
     }
 
     @Override
@@ -40,19 +36,16 @@ public class AddOfferActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Ajoutez une offre");
 
-        navigationView.setDrawerLayout(drawerLayout);
 
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
+        toolbar.setNavigationIcon(R.drawable.left_arrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
-                }
+                finish();
             }
         });
+
+
     }
 
     public void toggleView(View v) {

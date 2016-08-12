@@ -19,7 +19,7 @@ import mobile.appartoo.activity.MainActivity;
 import mobile.appartoo.activity.SearchActivity;
 import mobile.appartoo.activity.UserProfileActivity;
 import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 
 /**
  * Created by alexandre on 16-07-13.
@@ -28,7 +28,7 @@ public class NavigationDrawerView extends NavigationView {
 
     private DrawerLayout drawerLayout;
     private Context context;
-    private ImageView profilePicture;
+    private static ImageView profilePicture;
     private static String userName;
     private static String userMail;
 
@@ -70,9 +70,9 @@ public class NavigationDrawerView extends NavigationView {
         profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
 
         if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail() != null) {
-            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), true);
         } else if (Appartoo.LOGGED_USER_PROFILE != null && !Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
-            ImageReceiver.getPicture(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
         } else {
             profilePicture.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
         }

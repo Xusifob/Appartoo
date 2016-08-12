@@ -16,7 +16,7 @@ import android.widget.Toast;
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserWithProfileModel;
 import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 import mobile.appartoo.utils.RestService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,6 +64,7 @@ public class UserProfileMainFragment extends Fragment {
         if(Appartoo.LOGGED_USER_PROFILE == null) {
             populateWithLocalInfos();
             getUserProfile();
+            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
         } else {
             populateView();
         }
@@ -86,7 +87,7 @@ public class UserProfileMainFragment extends Fragment {
 
     public void populateView() {
         if(!Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
-            ImageReceiver.getPicture(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
         } else {
             userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
         }
@@ -96,7 +97,7 @@ public class UserProfileMainFragment extends Fragment {
 
     private void getUserProfile(){
 
-        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response
         callback.enqueue(new Callback<UserWithProfileModel>() {

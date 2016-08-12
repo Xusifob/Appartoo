@@ -1,25 +1,19 @@
 package mobile.appartoo.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +22,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -59,16 +50,21 @@ import mobile.appartoo.adapter.ImageGridViewAdapter;
 import mobile.appartoo.adapter.PlacesAdapter;
 import mobile.appartoo.model.AddressComponent;
 import mobile.appartoo.model.AddressInformationsModel;
+import mobile.appartoo.model.ImageModel;
+import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferToCreateModel;
 import mobile.appartoo.model.PlaceModel;
 import mobile.appartoo.utils.Appartoo;
 import mobile.appartoo.utils.GeocoderResponse;
 import mobile.appartoo.utils.GoogleMapsService;
+import mobile.appartoo.utils.ImageManager;
 import mobile.appartoo.utils.RestService;
 import mobile.appartoo.utils.TextValidator;
 import mobile.appartoo.view.ExpandableHeightGridView;
 import mobile.appartoo.view.GridImageView;
-import okhttp3.ResponseBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,8 +75,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by alexandre on 16-07-20.
  */
 public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
-
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private EditText availabilityStart;
     private EditText availabilityEnd;
@@ -99,6 +93,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
     private PlacesAdapter placesAdapter;
     private ArrayList<PlaceModel> places;
     private ArrayList<GridImageView> images;
+    private ArrayList<File> files;
     private PlaceModel selectedPlace;
     private ImageGridViewAdapter picturesAdapter;
 
@@ -116,7 +111,8 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         images = new ArrayList<>();
         places = new ArrayList<>();
-        picturesAdapter = new ImageGridViewAdapter(images);
+        files = new ArrayList<>();
+        picturesAdapter = new ImageGridViewAdapter(getActivity(), images);
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
@@ -156,14 +152,45 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
         pictureContainer.setExpanded(true);
         pictureContainer.setAdapter(picturesAdapter);
+        pictureContainer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final int position = i;
+                android.app.AlertDialog.Builder removePictureDialog = new android.app.AlertDialog.Builder(getActivity());
+
+                removePictureDialog.setTitle("Retirer l'image ?");
+                removePictureDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        images.remove(position);
+                        files.remove(position);
+                        picturesAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                removePictureDialog.setNegativeButton("Non", null);
+                removePictureDialog.show();
+
+                return true;
+            }
+        });
 
         pictureFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(ImageManager.getTempFile(getActivity())) );
+                startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
+            }
+        });
+
+        pictureFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), ImageManager.REQUEST_PICK_IMAGE);
             }
         });
 
@@ -296,35 +323,29 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            GridImageView pic = new GridImageView(getActivity());
-
-            if (imageBitmap.getWidth() >= imageBitmap.getHeight()){
-
-                imageBitmap = Bitmap.createBitmap(
-                        imageBitmap,
-                        imageBitmap.getWidth()/2 - imageBitmap.getHeight()/2,
-                        0,
-                        imageBitmap.getHeight(),
-                        imageBitmap.getHeight()
-                );
-
-            }else{
-
-                imageBitmap = Bitmap.createBitmap(
-                        imageBitmap,
-                        0,
-                        imageBitmap.getHeight()/2 - imageBitmap.getWidth()/2,
-                        imageBitmap.getWidth(),
-                        imageBitmap.getWidth()
-                );
+        if(resultCode == Activity.RESULT_OK) {
+            Bitmap imageBitmap;
+            if (requestCode == ImageManager.REQUEST_IMAGE_CAPTURE) {
+               imageBitmap = ImageManager.getPictureFromCamera(getActivity());
+            } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {
+                imageBitmap = ImageManager.getPictureFromGallery(data, getActivity());
+            } else {
+                imageBitmap = null;
             }
 
-            pic.setImageBitmap(imageBitmap);
-            images.add(0, pic);
-            picturesAdapter.notifyDataSetChanged();
+            if(imageBitmap != null) {
+                GridImageView pic = new GridImageView(getActivity());
+                pic.setImageBitmap(ImageManager.transformSquare(imageBitmap));
+
+                images.add(0, pic);
+                files.add(ImageManager.transformFile(imageBitmap, getActivity()));
+
+                if(images.size() < 4) {
+                    pictureContainer.setNumColumns(images.size());
+                }
+
+                picturesAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -359,7 +380,12 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
             boolean acceptSmoker = Boolean.valueOf(rootView.findViewById(R.id.addOfferImageSmoker).getTag().toString());
 
             if(!TextValidator.haveText(new String[] {price, rooms, name, description, phone, keyword})) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.error_missing_info_add_offer, Toast.LENGTH_SHORT).show();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.error_missing_info_add_offer, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 return null;
             }
 
@@ -368,11 +394,21 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                 offerModel.setEnd(dateFormat.parse(availabilityEndsStr));
 
                 if(offerModel.getStart().compareTo(offerModel.getEnd()) >= 0){
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     return null;
                 }
             } catch (Exception e){
-                Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity().getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 return null;
             }
 
@@ -442,15 +478,16 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                 }
 
                 System.out.println(offerModelMap.toString());
-                Call<ResponseBody> callback = restService.addOffer("Bearer (" + Appartoo.TOKEN + ")", offerModelMap);
-                callback.enqueue(new Callback<ResponseBody>() {
+                Call<OfferModel> callback = restService.addOffer("Bearer " + Appartoo.TOKEN, offerModelMap);
+                callback.enqueue(new Callback<OfferModel>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
                         addOfferButton.setEnabled(true);
 
                         if(response.isSuccessful()){
+                            String offerId = response.body().getId();
+                            sendImagesToServer(offerId);
                             Toast.makeText(getActivity().getApplicationContext(),R.string.success_add_offer, Toast.LENGTH_SHORT).show();
-                            getActivity().finish();
                         } else {
                             try {
                                 System.out.println(response.code());
@@ -462,7 +499,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<OfferModel> call, Throwable t) {
                         t.printStackTrace();
                         Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                         addOfferButton.setEnabled(true);
@@ -472,5 +509,43 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                 addOfferButton.setEnabled(true);
             }
         }
+
+        private void sendImagesToServer(final String offerId) {
+            String url = offerId + "/images";
+
+            File file = files.remove(0);
+
+            System.out.println(file.getName());
+
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part body =  MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            Call<ImageModel> callback = restService.addImageToServer(url, "Bearer " + Appartoo.TOKEN, body);
+
+            callback.enqueue(new Callback<ImageModel>() {
+                @Override
+                public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+                    if(!response.isSuccessful()){
+                        System.out.println(response.code());
+                        try {
+                            System.out.println(response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if(files.size() > 0) {
+                        sendImagesToServer(offerId);
+                    } else {
+                        getActivity().finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageModel> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
     }
 }

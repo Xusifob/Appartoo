@@ -113,7 +113,7 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer (" + Appartoo.TOKEN + ")", profileUpdateModel);
+            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
             callback.enqueue(new Callback<UserWithProfileModel>() {
                 @Override
                 public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {

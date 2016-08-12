@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import mobile.appartoo.R;
 import mobile.appartoo.model.UserModel;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -98,9 +98,9 @@ public class ResidentsAdapter extends BaseAdapter {
         }
 
         if(userModel.getImage().getThumbnail() != null) {
-            ImageReceiver.getPicture(context, holder.residentImageThumbail, userModel.getImage().getThumbnail().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getThumbnail().getContentUrl(), true);
         } else if (!userModel.getImage().getContentUrl().equals("images/profile.png")){
-            ImageReceiver.getPicture(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), true);
         } else {
             holder.residentImageThumbail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
         }

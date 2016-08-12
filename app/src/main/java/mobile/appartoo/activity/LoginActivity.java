@@ -97,7 +97,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private void retrieveUserProfile(){
-        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response
         callback.enqueue(new Callback<UserWithProfileModel>() {

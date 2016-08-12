@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private final int ID_MENU_REFRESH = 2;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private NavigationDrawerView navigationView;
+    private NavigationDrawerView navigationDrawerView;
 
 
     @Override
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
+        navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Appartoo");
-        navigationView.setDrawerLayout(drawerLayout);
+        navigationDrawerView.setDrawerLayout(drawerLayout);
 
         toolbar.setNavigationIcon(R.drawable.ic_drawer);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -57,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        navigationDrawerView.updateHeader();
     }
 
     @Override

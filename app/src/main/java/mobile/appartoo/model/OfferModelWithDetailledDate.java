@@ -10,8 +10,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OfferModelWithDetailledDate extends OfferModel implements Parcelable {
 
-    @SerializedName("owner")
-    private Integer ownerId;
     private DetailledDateModel availabilityEnds;
     private DetailledDateModel availabilityStarts;
 
@@ -19,7 +17,6 @@ public class OfferModelWithDetailledDate extends OfferModel implements Parcelabl
 
     protected OfferModelWithDetailledDate(Parcel in) {
         super(in);
-        ownerId = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         availabilityEnds = in.readParcelable(DetailledDateModel.class.getClassLoader());
         availabilityStarts = in.readParcelable(DetailledDateModel.class.getClassLoader());
     }
@@ -27,7 +24,6 @@ public class OfferModelWithDetailledDate extends OfferModel implements Parcelabl
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeValue(ownerId);
         dest.writeParcelable(availabilityEnds, flags);
         dest.writeParcelable(availabilityStarts, flags);
     }
@@ -63,13 +59,5 @@ public class OfferModelWithDetailledDate extends OfferModel implements Parcelabl
 
     public void setAvailabilityStarts(DetailledDateModel availabilityStarts) {
         this.availabilityStarts = availabilityStarts;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
     }
 }

@@ -5,9 +5,12 @@ import android.support.annotation.IntRange;
 import java.util.ArrayList;
 import java.util.Map;
 
+import mobile.appartoo.model.ImageModel;
+import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.model.OfferModelWithDetailledDate;
 import mobile.appartoo.model.UserWithProfileModel;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,8 +19,10 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -35,7 +40,11 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST("/offer/create")
-    Call<ResponseBody> addOffer(@Header("Authorization") String bearerToken, @FieldMap Map<String, String> updateModel);
+    Call<OfferModel> addOffer(@Header("Authorization") String bearerToken, @FieldMap Map<String, String> updateModel);
+
+    @Multipart
+    @POST
+    Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
 
     @GET("/offers")
     Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);
@@ -45,9 +54,6 @@ public interface RestService {
 
     @GET("/search/offer")
     Call<ResponseBody> searchOffer();
-
-    @GET
-    Call<ResponseBody> getPicture(@Url String url);
 
     @GET
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);

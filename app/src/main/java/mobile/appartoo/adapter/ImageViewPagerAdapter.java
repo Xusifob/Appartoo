@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import mobile.appartoo.activity.OfferDetailsActivity;
 import mobile.appartoo.activity.OfferImagesActivity;
 import mobile.appartoo.model.ImageModel;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 import uk.co.senab.photoview.PhotoView;
 
 /**
@@ -44,7 +44,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
         if(context instanceof OfferDetailsActivity) {
             ImageView imageView = new ImageView(context);
-            ImageReceiver.getPicture(context, imageView, pictures.get(position).getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), true);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -59,7 +59,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
             return imageView;
         } else {
             PhotoView imageView = new PhotoView(context);
-            ImageReceiver.getPicture(context, imageView, pictures.get(position).getContentUrl(), false);
+            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), false);
             container.addView(imageView);
             return imageView;
         }

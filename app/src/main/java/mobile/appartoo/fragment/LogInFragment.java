@@ -110,9 +110,11 @@ public class LogInFragment extends Fragment {
 
                     //If the user didn't send the right credentials
                 } else if (response.code() == 401) {
+                    logInButton.setEnabled(true);
                     Toast.makeText(getActivity().getApplicationContext(), R.string.error_login_password, Toast.LENGTH_SHORT).show();
                     //If the server isn't responding
                 } else {
+                    logInButton.setEnabled(true);
                     System.out.println(response.code());
                     Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
@@ -141,7 +143,7 @@ public class LogInFragment extends Fragment {
     }
 
     private void retrieveUserProfile(){
-        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer (" + Appartoo.TOKEN + ")");
+        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response
         callback.enqueue(new Callback<UserWithProfileModel>() {

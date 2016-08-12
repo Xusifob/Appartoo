@@ -28,9 +28,26 @@
                     android:background="@drawable/circle_light_gray"/>
             </LinearLayout>
         </android.support.percent.PercentRelativeLayout>
-        <TextView
-            style="@style/ProfileSection"
-            android:text="@string/situation"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/situation"
+                android:layout_marginBottom="1dp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,9 +84,26 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         </LinearLayout>
-        <TextView
-            style="@style/ProfileSection"
-            android:text="@string/important_infos"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/important_infos"
+                android:layout_marginBottom="1dp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -170,9 +204,26 @@
                     android:id="@+id/userProfileModifyIsSmoker"/>
             </RelativeLayout>
         </LinearLayout>
-        <TextView
-            style="@style/ProfileSection"
-            android:text="@string/personnal_infos"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/personnal_infos"
+                android:layout_marginBottom="1dp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

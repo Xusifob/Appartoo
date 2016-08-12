@@ -40,7 +40,7 @@
                 android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:src="@drawable/plus"
+                android:src="@drawable/plus_salmon"
                 android:contentDescription="@string/add_garantor_icon"
                 android:id="@+id/addGarantorButton"/>
             <ListView

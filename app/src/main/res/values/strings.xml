@@ -157,6 +157,7 @@
     <string name="offer_description">"Description de l'annonce"</string>
     <string name="take_a_picture">Prendre une photo</string>
     <string name="choose_from_gallery">Choisir une image</string>
+    <string name="unable_to_load_picture">Impossible de charger votre image.</string>
     <string-array name="picture_actions">
         <item name="with_camera">Prendre une photo avec la caméra</item>
         <item name="from_gallery">Choisir une photo depuis la gallerie</item>

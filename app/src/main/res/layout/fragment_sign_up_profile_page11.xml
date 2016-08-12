@@ -29,7 +29,7 @@
         <Button
             style="@style/ButtonSalmon"
             android:layout_margin="16dp"
-            android:text="@string/go_further"
+            android:text="@string/finish_configuration"
             android:onClick="nextView"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"

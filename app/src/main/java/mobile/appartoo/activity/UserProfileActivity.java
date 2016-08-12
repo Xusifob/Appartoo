@@ -1,6 +1,7 @@
 package mobile.appartoo.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,19 +30,35 @@ public class UserProfileActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private NavigationDrawerView navigationView;
+    private NavigationDrawerView navigationDrawerView;
+    private Fragment currentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        mainFragment = new UserProfileMainFragment();
+        modifyFragment = new UserProfileModifyFragment();
+        settingsFragment = new UserProfileSettingsFragment();
+        offersFragment = new UserProfileOffersFragment();
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            System.out.println("RESTORING FRAGMENT");
+            currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "currentFragment");
+            fragmentManager.beginTransaction().replace(R.id.userProfileFrame, currentFragment).commit();
+        } else {
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
+        }
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        navigationView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
+        navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
     }
 
     @Override
@@ -51,27 +68,29 @@ public class UserProfileActivity extends AppCompatActivity {
         //Define the drawer
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Appartoo");
-        navigationView.setDrawerLayout(drawerLayout);
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
+        navigationDrawerView.setDrawerLayout(drawerLayout);
+
+        if(settingsFragment.isVisible() || modifyFragment.isVisible() || offersFragment.isVisible()) {
+            toolbar.setNavigationIcon(R.drawable.left_arrow);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
                 }
-            }
-        });
-
-        //Define the fragments
-        fragmentManager = getSupportFragmentManager();
-        mainFragment = new UserProfileMainFragment();
-        modifyFragment = new UserProfileModifyFragment();
-        settingsFragment = new UserProfileSettingsFragment();
-        offersFragment = new UserProfileOffersFragment();
-
-        fragmentManager.beginTransaction().add(R.id.userProfileFrame, mainFragment).commit();
+            });
+        } else {
+            toolbar.setNavigationIcon(R.drawable.ic_drawer);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    } else {
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -115,5 +134,23 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(settingsFragment.isVisible()) {
+            getSupportFragmentManager().putFragment(outState, "currentFragment", settingsFragment);
+        } else if (modifyFragment.isVisible()) {
+            getSupportFragmentManager().putFragment(outState, "currentFragment", modifyFragment);
+        } else if (offersFragment.isVisible()){
+            getSupportFragmentManager().putFragment(outState, "currentFragment", offersFragment);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        navigationDrawerView.updateHeader();
     }
 }

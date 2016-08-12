@@ -15,7 +15,7 @@ import mobile.appartoo.R;
 import mobile.appartoo.model.OfferModel;
 import mobile.appartoo.model.OfferModelWithDate;
 import mobile.appartoo.utils.Appartoo;
-import mobile.appartoo.utils.ImageReceiver;
+import mobile.appartoo.utils.ImageManager;
 import mobile.appartoo.utils.RestService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -80,29 +80,22 @@ public class OffersAdapter extends BaseAdapter {
 
         OfferModel offerModel = offerModels.get(position);
 
-        if(offerModel instanceof OfferModelWithDate) {
-            holder.owner.setText(((OfferModelWithDate) offerModel).getOwner().getGivenName());
-        } else {
-            holder.owner.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName());
-        }
+        holder.owner.setText(offerModel.getOwner().getGivenName());
 
-        System.out.println(offerModel.getImages().size());
         if(offerModel.getImages().size() > 0) {
-            ImageReceiver.getPicture(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), true);
             convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.GONE);
         } else {
             holder.flatImage.setImageDrawable(null);
             convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
 
-        if(offerModel instanceof OfferModelWithDate) {
-            if(((OfferModelWithDate) offerModel).getOwner().getImage().getThumbnail() != null) {
-                ImageReceiver.getPicture(context, holder.ownerImageThumbnail, ((OfferModelWithDate) offerModel).getOwner().getImage().getThumbnail().getContentUrl(), true);
-            } else if (((OfferModelWithDate) offerModel).getOwner().getImage().getContentUrl().equals("images/profile.png")){
-                ImageReceiver.getPicture(context, holder.ownerImageThumbnail, ((OfferModelWithDate) offerModel).getOwner().getImage().getContentUrl(), true);
-            } else {
-                holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
-            }
+        if(offerModel.getOwner().getImage().getThumbnail() != null) {
+            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getThumbnail().getContentUrl(), true);
+        } else if (!offerModel.getOwner().getImage().getContentUrl().equals("images/profile.png")){
+            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), true);
+        } else {
+            holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
         }
 
         try {
