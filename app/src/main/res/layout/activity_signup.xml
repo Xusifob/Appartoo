@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@color/colorWhite"
-    tools:context="mobile.appartoo.activity.LoginActivity"
+    tools:context="com.appartoo.activity.LoginActivity"
     android:gravity="center"
     android:id="@+id/signup_pager"
     android:fitsSystemWindows="true"/>

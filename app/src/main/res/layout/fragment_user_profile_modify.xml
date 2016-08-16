@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mobile.appartoo.fragment.UserProfileSettingsFragment"
+    tools:context="com.appartoo.fragment.UserProfileSettingsFragment"
     android:fillViewport="true">
     <LinearLayout
         android:orientation="vertical"
@@ -44,9 +44,8 @@
                 android:textColor="@color/colorSalmon"
                 android:background="@color/colorWhite"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:text="@string/situation"
-                android:layout_marginBottom="1dp"/>
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,9 +99,8 @@
                 android:textColor="@color/colorSalmon"
                 android:background="@color/colorWhite"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:text="@string/important_infos"
-                android:layout_marginBottom="1dp"/>
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -220,9 +218,8 @@
                 android:textColor="@color/colorSalmon"
                 android:background="@color/colorWhite"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:text="@string/personnal_infos"
-                android:layout_marginBottom="1dp"/>
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

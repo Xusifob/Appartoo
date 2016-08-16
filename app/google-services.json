@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "409387170438",
-    "firebase_url": "https://stable-century-136413.firebaseio.com",
-    "project_id": "stable-century-136413",
-    "storage_bucket": "stable-century-136413.appspot.com"
+    "project_number": "612928775",
+    "firebase_url": "https://appartoo.firebaseio.com",
+    "project_id": "project-2701274179780792961",
+    "storage_bucket": "project-2701274179780792961.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:409387170438:android:c25354f1607029a6",
+        "mobilesdk_app_id": "1:612928775:android:0b3a1e3cd6c6627f",
         "android_client_info": {
-          "package_name": "mobile.appartoo"
+          "package_name": "com.appartoo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "409387170438-5bg409f3vpo7uv36rcpdoter3bdbv6m2.apps.googleusercontent.com",
+          "client_id": "612928775-jkhfdrftgo8ccrg69pjuqud5ps6pt7v6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzO_gR2HPrA2BMhm6-8jIycw4mKJv4bjE"
+          "current_key": "AIzaSyDGZz_BgHqRkbd6x1eerwrgTWNbmR3rQZE"
         }
       ],
       "services": {

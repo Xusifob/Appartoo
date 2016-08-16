@@ -33,7 +33,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="mobile.appartoo.fragment.AddOfferFragment"
+            android:name="com.appartoo.fragment.AddOfferFragment"
             android:id="@+id/addOfferFragment"
             tools:layout="@layout/fragment_add_offer" />
     </FrameLayout>

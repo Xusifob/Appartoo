@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mobile.appartoo.activity.OfferImagesActivity"
+    tools:context="com.appartoo.activity.OfferImagesActivity"
     android:background="@color/colorBlack">
-    <android.support.v4.view.ViewPager
+    <com.appartoo.view.ImageZoomViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/offerFlatImagesPager">
-    </android.support.v4.view.ViewPager>
+    </com.appartoo.view.ImageZoomViewPager>
 </RelativeLayout>

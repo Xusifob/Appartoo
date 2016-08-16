@@ -70,7 +70,7 @@
     <View
         style="@style/Separator"
         android:layout_margin="8dp"/>
-    <mobile.appartoo.view.NonScrollableListView
+    <com.appartoo.view.NonScrollableListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -79,6 +79,7 @@
         tools:listitem="@layout/list_item_users" />
     <View
         style="@style/Separator"
+        android:id="@+id/offerDetailsResidentsSeparator"
         android:layout_margin="8dp"/>
     <TextView
         style="@style/Paragraph"

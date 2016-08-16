@@ -37,14 +37,14 @@
                 android:id="@+id/mainFragments"
                 android:layout_marginTop="?attr/actionBarSize">
                 <fragment
-                    android:name="mobile.appartoo.fragment.OffersListFragment"
+                    android:name="com.appartoo.fragment.OffersListFragment"
                     android:id="@+id/offerListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:layout="@layout/fragment_offers_list" />
             </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
-    <mobile.appartoo.view.NavigationDrawerView
+    <com.appartoo.view.NavigationDrawerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

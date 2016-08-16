@@ -185,6 +185,7 @@
     <string name="marker_icon">Icône de lieu</string>
     <string name="accept_animals_icon">"Icône d'ami des animaux"</string>
     <string name="score_icon">Icône de score</string>
+    <string name="my_messages">Mes messages</string>
 
     <!-- TOAST MESSAGES -->
     <string name="error_missing_info_sign_up">"Veuillez entrer toutes les informations pour compléter l'inscription."</string>

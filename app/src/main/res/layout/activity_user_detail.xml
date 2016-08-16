@@ -54,7 +54,7 @@ android:fitsSystemWindows="true">
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_marginBottom="40dp">
     <fragment
-        android:name="mobile.appartoo.fragment.UserDetailFragment"
+        android:name="com.appartoo.fragment.UserDetailFragment"
         android:id="@+id/userDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

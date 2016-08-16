@@ -17,6 +17,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:layout_collapseMode="pin"
                     app:contentScrim="?attr/colorPrimary"
                     app:expandedTitleMarginStart="48dp"
                     app:expandedTitleMarginEnd="64dp">
@@ -64,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/offerDetailsScrollView"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_marginBottom="40dp">
             <LinearLayout
@@ -71,7 +73,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <fragment
-                    android:name="mobile.appartoo.fragment.OfferDetailsFragment"
+                    android:name="com.appartoo.fragment.OfferDetailsFragment"
                     android:id="@+id/offerListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,11 +85,11 @@
                     android:id="@+id/offerFlatImage">
                     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
-                        class="mobile.appartoo.adapter.WorkaroundMapFragment"
+                        class="com.appartoo.adapter.WorkaroundMapFragment"
                         android:layout_height="0dp"
                         android:layout_width="0dp"
                         app:layout_widthPercent="100%"
-                        app:layout_aspectRatio="178%"
+                        app:layout_aspectRatio="133%"
                         android:id="@+id/map"
                         tools:context=".MapsActivity"
                         android:name="com.google.android.gms.maps.SupportMapFragment" />

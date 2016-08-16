@@ -11,7 +11,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "mobile.appartoo"
+        applicationId "com.appartoo"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

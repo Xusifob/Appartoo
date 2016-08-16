@@ -13,6 +13,7 @@
     <color name="colorDarkGray">#4c4c4c</color>
     <color name="colorGray">#808080</color>
     <color name="colorLightGray">#C3C3C3</color>
+    <color name="colorSubLightGray">#E8E8E8</color>
     <color name="colorBlack">#000000</color>
     <color name="colorLightAlpha">#2c000000</color>
     <color name="colorAlpha">#80000000</color>
