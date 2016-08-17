@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.appartoo.R;
 import com.appartoo.adapter.ImageViewPagerAdapter;
-import com.appartoo.adapter.WorkaroundMapFragment;
+import com.appartoo.fragment.WorkaroundMapFragment;
 import com.appartoo.model.OfferModel;
 
 /**

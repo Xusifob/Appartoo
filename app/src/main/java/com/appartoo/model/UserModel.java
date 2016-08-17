@@ -7,11 +7,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by alexandre on 16-07-22.
  */
 public class UserModel implements Parcelable {
+
     @SerializedName("@id")
     private String id;
     private String society;
@@ -221,6 +224,17 @@ public class UserModel implements Parcelable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Integer getIdNumber(){
+        Pattern p = Pattern.compile("([0-9]*)$");
+        Matcher m = p.matcher(this.id);
+
+        if(m.find()){
+            return Integer.valueOf(m.group(0).trim());
+        }
+
+        return null;
     }
 
     public int getAge() {

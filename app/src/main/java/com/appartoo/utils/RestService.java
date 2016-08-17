@@ -5,11 +5,13 @@ import android.support.annotation.IntRange;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.ImageModel;
 import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.OfferModelWithDetailledDate;
-import com.appartoo.model.UserWithProfileModel;
+import com.appartoo.model.UserProfileModel;
+
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -46,11 +48,15 @@ public interface RestService {
     @POST
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
 
+
+    @GET
+    Call<UserProfileModel> getUserProfile(@Url String url);
+
     @GET("/offers")
     Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);
 
     @GET("/me")
-    Call<UserWithProfileModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);
+    Call<CompleteUserModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);
 
     @GET("/search/offer")
     Call<ResponseBody> searchOffer();
@@ -59,5 +65,5 @@ public interface RestService {
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
 
     @PUT
-    Call<UserWithProfileModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body UserWithProfileModel updateModel);
+    Call<CompleteUserModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body CompleteUserModel updateModel);
 }

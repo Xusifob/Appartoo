@@ -1,4 +1,4 @@
-package com.appartoo.adapter;
+package com.appartoo.fragment;
 
 /**
  * Created by alexandre on 16-07-07.

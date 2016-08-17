@@ -5,7 +5,7 @@ import android.os.Parcel;
 /**
  * Created by alexandre on 16-07-22.
  */
-public class UserWithProfileModel extends UserModel {
+public class UserProfileModel extends UserModel {
 
     private String relationshipStatus;
     private String honorificPrefix;
@@ -24,19 +24,17 @@ public class UserWithProfileModel extends UserModel {
     private Boolean acceptAnimal;
     private Boolean emailChecked;
     private Integer percentCompleteProfile;
-    private SimpleUserModel user;
     private NationalityModel nationality;
 
     private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
     private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
-    private static final ClassLoader SIMPLEUSERMODEL_CLASS_LOADER = SimpleUserModel.class.getClassLoader();
     private static final ClassLoader NATIONALITYMODEL_CLASS_LOADER = NationalityModel.class.getClassLoader();
 
-    public UserWithProfileModel() {
+    public UserProfileModel() {
         super();
     }
 
-    protected UserWithProfileModel(Parcel in) {
+    protected UserProfileModel(Parcel in) {
         super(in);
         relationshipStatus = in.readString();
         honorificPrefix = in.readString();
@@ -55,7 +53,6 @@ public class UserWithProfileModel extends UserModel {
         acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         emailChecked = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         percentCompleteProfile = (Integer) in.readValue(INTEGER_CLASS_LOADER);
-        user = in.readParcelable(SIMPLEUSERMODEL_CLASS_LOADER);
         nationality = in.readParcelable(NATIONALITYMODEL_CLASS_LOADER);
     }
 
@@ -79,7 +76,6 @@ public class UserWithProfileModel extends UserModel {
         dest.writeValue(acceptAnimal);
         dest.writeValue(emailChecked);
         dest.writeValue(percentCompleteProfile);
-        dest.writeParcelable(user, flags);
         dest.writeParcelable(nationality, flags);
     }
 
@@ -88,15 +84,15 @@ public class UserWithProfileModel extends UserModel {
         return 0;
     }
 
-    public static final Creator<UserWithProfileModel> CREATOR = new Creator<UserWithProfileModel>() {
+    public static final Creator<UserProfileModel> CREATOR = new Creator<UserProfileModel>() {
         @Override
-        public UserWithProfileModel createFromParcel(Parcel in) {
-            return new UserWithProfileModel(in);
+        public UserProfileModel createFromParcel(Parcel in) {
+            return new UserProfileModel(in);
         }
 
         @Override
-        public UserWithProfileModel[] newArray(int size) {
-            return new UserWithProfileModel[size];
+        public UserProfileModel[] newArray(int size) {
+            return new UserProfileModel[size];
         }
     };
 
@@ -204,14 +200,6 @@ public class UserWithProfileModel extends UserModel {
         this.relationshipStatus = relationshipStatus;
     }
 
-    public SimpleUserModel getUser() {
-        return user;
-    }
-
-    public void setUser(SimpleUserModel user) {
-        this.user = user;
-    }
-
     public Boolean getEmailChecked() {
         return emailChecked;
     }
@@ -254,7 +242,7 @@ public class UserWithProfileModel extends UserModel {
 
     @Override
     public String toString() {
-        return "UserWithProfileModel{" +
+        return "CompleteUserModel{" +
                 "isCook=" + isCook +
                 ", isMusician=" + isMusician +
                 ", isSpendthrift=" + isSpendthrift +
@@ -268,7 +256,6 @@ public class UserWithProfileModel extends UserModel {
                 ", isManiac=" + isManiac +
                 ", acceptAnimal=" + acceptAnimal +
                 ", relationshipStatus='" + relationshipStatus + '\'' +
-                ", user=" + user +
                 ", emailChecked=" + emailChecked +
                 ", percentCompleteProfile=" + percentCompleteProfile +
                 ", honorificPrefix='" + honorificPrefix + '\'' +

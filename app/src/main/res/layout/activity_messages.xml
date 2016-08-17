@@ -1,54 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerLayout"
-    android:background="@color/colorWhite">
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/offerDetailsAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:paddingTop="25dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="@color/colorWhite">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/offerDetailsAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:paddingTop="25dp"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:minHeight="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:titleTextColor="@color/colorWhite">
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
-
-        <FrameLayout
+        android:id="@+id/messagesFragments"
+        android:layout_marginTop="?attr/actionBarSize">
+        <fragment
+            android:name="com.appartoo.fragment.MessagesListFragment"
+            android:id="@+id/offerListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/messagesFragments"
-            android:layout_marginTop="?attr/actionBarSize">
-            <fragment
-                android:name="com.appartoo.fragment.MessageFragment"
-                android:id="@+id/offerListFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/fragment_message" />
-        </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
-    <com.appartoo.view.NavigationDrawerView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:id="@+id/navigationDrawer"
-        app:headerLayout="@layout/navigation_drawer_header"
-        app:menu="@menu/drawer"/>
-</android.support.v4.widget.DrawerLayout>
+            tools:layout="@layout/fragment_messages_list" />
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

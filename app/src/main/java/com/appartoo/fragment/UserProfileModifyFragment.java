@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import com.appartoo.R;
 import com.appartoo.model.ImageModel;
-import com.appartoo.model.UserWithProfileModel;
+import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
@@ -190,15 +190,15 @@ public class UserProfileModifyFragment extends Fragment {
 
     private void updateUserProfile(){
         System.out.println("Updating user profile");
-        final UserWithProfileModel profileUpdateModel = getProfileUpdateModel();
+        final CompleteUserModel profileUpdateModel = getProfileUpdateModel();
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
 
-            callback.enqueue(new Callback<UserWithProfileModel>() {
+            callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
-                public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+                public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {
 
                     if(response.isSuccessful()) {
 
@@ -222,7 +222,7 @@ public class UserProfileModifyFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+                public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                     t.printStackTrace();
                     saveSettings.setEnabled(true);
                 }
@@ -282,8 +282,8 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
 
-    private UserWithProfileModel getProfileUpdateModel(){
-        UserWithProfileModel updateModel = new UserWithProfileModel();
+    private CompleteUserModel getProfileUpdateModel(){
+        CompleteUserModel updateModel = new CompleteUserModel();
         updateModel.setSmoker(isSmoker.isChecked());
         updateModel.setCook(isCook.isChecked());
         updateModel.setMusician(isMusician.isChecked());

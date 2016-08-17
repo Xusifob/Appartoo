@@ -85,7 +85,7 @@
                     android:id="@+id/offerFlatImage">
                     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
-                        class="com.appartoo.adapter.WorkaroundMapFragment"
+                        class="com.appartoo.fragment.WorkaroundMapFragment"
                         android:layout_height="0dp"
                         android:layout_width="0dp"
                         app:layout_widthPercent="100%"

@@ -25,7 +25,7 @@ import com.appartoo.fragment.SignUpProfileSixthFragment;
 import com.appartoo.fragment.SignUpProfileTenthFragment;
 import com.appartoo.fragment.SignUpProfileThirdFragment;
 import com.appartoo.fragment.SignUpProfileTwelfthFragment;
-import com.appartoo.model.UserWithProfileModel;
+import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
@@ -108,15 +108,15 @@ public class SignUpProfileActivity extends FragmentActivity {
     }
 
     private void updateUserProfile(){
-        final UserWithProfileModel profileUpdateModel = getProfileUpdateModel();
+        final CompleteUserModel profileUpdateModel = getProfileUpdateModel();
         updateProfile.setEnabled(false);
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<UserWithProfileModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
-            callback.enqueue(new Callback<UserWithProfileModel>() {
+            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
-                public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+                public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {
                     if(response.isSuccessful()) {
 
                         updateUserLoggedModel(profileUpdateModel);
@@ -130,7 +130,7 @@ public class SignUpProfileActivity extends FragmentActivity {
                 }
 
                 @Override
-                public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+                public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                     t.printStackTrace();
                 }
             });
@@ -139,8 +139,8 @@ public class SignUpProfileActivity extends FragmentActivity {
         }
     }
 
-    private UserWithProfileModel getProfileUpdateModel(){
-        UserWithProfileModel updateModel = new UserWithProfileModel();
+    private CompleteUserModel getProfileUpdateModel(){
+        CompleteUserModel updateModel = new CompleteUserModel();
         setToggleViewsInformations(updateModel);
 
         String society = ((EditText) findViewById(R.id.signUpConfigureSociety)).getText().toString();
@@ -158,7 +158,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         return updateModel;
     }
 
-    private void setToggleViewsInformations(UserWithProfileModel updateModel){
+    private void setToggleViewsInformations(CompleteUserModel updateModel){
         boolean man = findViewById(R.id.signUpConfigureMan).isSelected();
         boolean woman = findViewById(R.id.signUpConfigureWoman).isSelected();
         boolean single = findViewById(R.id.signUpConfigureSingle).isSelected();
@@ -192,7 +192,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         v.setSelected(true);
     }
 
-    private void updateUserLoggedModel(UserWithProfileModel updateModel){
+    private void updateUserLoggedModel(CompleteUserModel updateModel){
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             Appartoo.LOGGED_USER_PROFILE.setGender(updateModel.getGender());
             Appartoo.LOGGED_USER_PROFILE.setInRelationship(updateModel.getInRelationship());

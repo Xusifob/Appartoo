@@ -27,17 +27,11 @@ public class OffersAdapter extends BaseAdapter {
     private ArrayList<OfferModel> offerModels;
     private LayoutInflater layoutInflater;
     private Context context;
-    private RestService restService;
 
     public OffersAdapter(Context context, ArrayList<OfferModel> om) {
         this.context = context;
         this.offerModels = om;
         this.layoutInflater = LayoutInflater.from(context);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        restService = retrofit.create(RestService.class);
     }
 
     @Override

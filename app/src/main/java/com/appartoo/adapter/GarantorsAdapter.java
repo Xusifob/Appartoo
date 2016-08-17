@@ -22,7 +22,6 @@ public class GarantorsAdapter extends BaseAdapter {
 
     private ArrayList<GarantorModel> garantorModels;
     private LayoutInflater layoutInflater;
-    private Boolean acceptAnimals;
     private Context context;
 
     public GarantorsAdapter(Context context, ArrayList<GarantorModel> rm) {
@@ -109,7 +108,7 @@ public class GarantorsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder {
+    private static class ViewHolder {
         TextView fullname;
         TextView income;
         TextView mail;

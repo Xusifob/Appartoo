@@ -28,8 +28,8 @@ import com.appartoo.fragment.SignUpFirstFragment;
 import com.appartoo.fragment.SignUpFourthFragment;
 import com.appartoo.fragment.SignUpSecondFragment;
 import com.appartoo.fragment.SignUpThirdFragment;
+import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.SignUpModel;
-import com.appartoo.model.UserWithProfileModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
@@ -70,8 +70,8 @@ public class SignUpActivity extends FragmentActivity {
         //Retreive the resources
         pager = (ViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-        jsonFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        jsonFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         pager.setAdapter(pagerAdapter);
     }
 
@@ -241,12 +241,12 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     private void retrieveUserProfile(){
-        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
+        Call<CompleteUserModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response
-        callback.enqueue(new Callback<UserWithProfileModel>() {
+        callback.enqueue(new Callback<CompleteUserModel>() {
             @Override
-            public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+            public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {
 
                 //If the login is successful
                 if(response.isSuccessful()) {
@@ -268,7 +268,7 @@ public class SignUpActivity extends FragmentActivity {
             }
 
             @Override
-            public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+            public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                 System.out.println("retrieveUserProfile Failure");
                 launchActivityWithoutHistory(MainActivity.class);
                 t.printStackTrace();

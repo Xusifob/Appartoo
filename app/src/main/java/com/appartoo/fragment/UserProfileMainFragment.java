@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.model.UserWithProfileModel;
+import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
@@ -104,13 +104,13 @@ public class UserProfileMainFragment extends Fragment {
 
     private void getUserProfile(){
 
-        Call<UserWithProfileModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
+        Call<CompleteUserModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response
-        callback.enqueue(new Callback<UserWithProfileModel>() {
+        callback.enqueue(new Callback<CompleteUserModel>() {
 
             @Override
-            public void onResponse(Call<UserWithProfileModel> call, Response<UserWithProfileModel> response) {
+            public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {
                 //If the login is successful
                 if(response.isSuccessful()) {
                     Appartoo.LOGGED_USER_PROFILE = response.body();
@@ -129,7 +129,7 @@ public class UserProfileMainFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<UserWithProfileModel> call, Throwable t) {
+            public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                 t.printStackTrace();
                 Toast.makeText(getActivity(), R.string.error_retrieve_user_profile, Toast.LENGTH_SHORT).show();
             }

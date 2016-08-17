@@ -1,7 +1,7 @@
 package com.appartoo.utils;
 
 import android.app.Application;
-import com.appartoo.model.UserWithProfileModel;
+import com.appartoo.model.CompleteUserModel;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -10,9 +10,9 @@ import com.squareup.picasso.Picasso;
  */
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "http://233db7e6.ngrok.io";
+    public static final String SERVER_URL = "http://7a6d30af.ngrok.io";
     public static String TOKEN = "";
-    public static UserWithProfileModel LOGGED_USER_PROFILE;
+    public static CompleteUserModel LOGGED_USER_PROFILE;
 
     @Override
     public void onCreate() {
