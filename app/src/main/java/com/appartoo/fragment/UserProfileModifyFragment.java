@@ -151,13 +151,9 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
     private void populateView(){
-        System.out.println(Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        System.out.println(Appartoo.LOGGED_USER_PROFILE.getGivenName());
 
-        if (!Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png") && userProfilePic.getDrawable() == null) {
-            ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
-        } else if(userProfilePic.getDrawable() == null) {
-            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
+        if (userProfilePic.getDrawable() == null) {
+            ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         }
 
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));

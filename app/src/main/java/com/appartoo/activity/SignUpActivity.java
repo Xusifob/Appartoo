@@ -129,12 +129,12 @@ public class SignUpActivity extends FragmentActivity {
      */
     private SignUpModel getSignUpModel(){
         //Retrieve the form inputs
-        String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString();
-        String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString();
-        String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
-        String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString();
-        String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString();
+        String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString().trim();
+        String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString().trim();
+        String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString().trim();
+        String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString().trim();
         String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
+        String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
 
         //Check the edit text input
         if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, birthdate, email})) {

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/messageList"
+        android:divider="@android:color/transparent"
         android:layout_above="@+id/messageSeparator"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal"
+        tools:listitem="@layout/list_item_message">
     </ListView>
     <View
         android:layout_width="match_parent"
@@ -28,6 +33,7 @@
             android:isScrollContainer="true"
             android:inputType="textMultiLine"
             android:gravity="bottom"
+            android:id="@+id/conversationNewMessage"
             android:maxLines="5"
             android:layout_weight="1" />
         <ImageView
@@ -36,6 +42,7 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:layout_gravity="bottom"
+            android:id="@+id/conversationSendMessage"
             android:contentDescription="@string/send_message_icon"
             android:padding="12dp"
             android:src="@drawable/send_message" />

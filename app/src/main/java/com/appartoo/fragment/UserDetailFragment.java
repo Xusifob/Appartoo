@@ -52,7 +52,7 @@ public class UserDetailFragment extends Fragment {
             ((ImageView) getActivity().findViewById(R.id.residentIsSingle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.couple, null));
         }
 
-        if(user.getContract().equals("worker")) {
+        if(user.getContract() != null && user.getContract().equals("worker")) {
             ((ImageView) getActivity().findViewById(R.id.residentContract)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.worker, null));
         }
     }

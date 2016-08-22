@@ -3,15 +3,24 @@ package com.appartoo.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,6 +44,9 @@ public class ImageManager {
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_PICK_IMAGE = 2;
+
+    public static final String TRANFORM_SQUARE = "square";
+    public static final String TRANFORM_CIRCLE = "circle";
 
     public static Bitmap getPictureFromGallery(Intent data, Activity activity){
         Bitmap imageBitmap;
@@ -176,16 +188,15 @@ public class ImageManager {
         return imageFile;
     }
 
-    public static void downloadPictureIntoView(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, boolean squarePicture){
+    public static void downloadPictureIntoView(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, String transformation){
         final String imageUrl = Appartoo.SERVER_URL + "/upload/" + url;
 
         RequestCreator requestCreator = Picasso.with(context)
                 .load(imageUrl)
                 .networkPolicy(NetworkPolicy.OFFLINE);
 
-        if(squarePicture) {
-            requestCreator.transform(new CropSquareTransformation());
-        }
+        if(transformation == TRANFORM_SQUARE) requestCreator.transform(new CropSquareTransformation());
+        else if (transformation == TRANFORM_CIRCLE) requestCreator.transform(new CircleTransformation());
 
         requestCreator.into(imageView, new com.squareup.picasso.Callback() {
                     @Override
@@ -214,8 +225,47 @@ public class ImageManager {
                 });
     }
 
+    public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
+        Bitmap sBmp;
+
+        if (bmp.getWidth() != radius || bmp.getHeight() != radius) {
+            float smallest = Math.min(bmp.getWidth(), bmp.getHeight());
+            float factor = smallest / radius;
+            sBmp = Bitmap.createScaledBitmap(bmp, (int) (bmp.getWidth() / factor), (int) (bmp.getHeight() / factor), false);
+        } else {
+            sBmp = bmp;
+        }
+
+        Bitmap output = Bitmap.createBitmap(radius, radius,
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, radius + 5, radius + 5);
+
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawCircle(radius / 2,
+                radius / 2, radius / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(sBmp, rect, rect, paint);
+
+        return output;
+    }
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
     private static class CropSquareTransformation implements Transformation {
-        @Override public Bitmap transform(Bitmap source) {
+        @Override
+        public Bitmap transform(Bitmap source) {
             int size = Math.min(source.getWidth(), source.getHeight());
             int x = (source.getWidth() - size) / 2;
             int y = (source.getHeight() - size) / 2;
@@ -226,6 +276,44 @@ public class ImageManager {
             return result;
         }
 
-        @Override public String key() { return "square()"; }
+        @Override
+        public String key() {
+            return "square";
+        }
+    }
+
+    public static class CircleTransformation implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap,
+                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
     }
 }

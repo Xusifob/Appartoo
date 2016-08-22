@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
@@ -75,19 +76,19 @@ public class NavigationDrawerView extends NavigationView {
         profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
 
         if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else if (Appartoo.LOGGED_USER_PROFILE != null && !Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
-            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             String profilePicUrlThumb = sharedPreferences.getString("profilePicUrlThumbnail", null);
             String profilePicUrl = sharedPreferences.getString("profilePicUrl", null);
 
             if(profilePicUrlThumb != null) {
-                ImageManager.downloadPictureIntoView(context, profilePicture, profilePicUrlThumb, true);
-            } else if(profilePicUrl != null && !profilePicUrl.equals("images/profile.png")) {
-                ImageManager.downloadPictureIntoView(context, profilePicture, profilePicUrl, true);
+                ImageManager.downloadPictureIntoView(context, profilePicture, profilePicUrlThumb, ImageManager.TRANFORM_SQUARE);
+            } else if(profilePicUrl != null) {
+                ImageManager.downloadPictureIntoView(context, profilePicture, profilePicUrl, ImageManager.TRANFORM_SQUARE);
             } else {
-                profilePicture.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
+                profilePicture.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.default_profile_picture));
             }
         }
     }

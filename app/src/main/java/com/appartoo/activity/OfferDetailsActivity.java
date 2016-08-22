@@ -1,14 +1,20 @@
 package com.appartoo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import com.appartoo.utils.ImageManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,6 +27,8 @@ import com.appartoo.adapter.ImageViewPagerAdapter;
 import com.appartoo.fragment.WorkaroundMapFragment;
 import com.appartoo.model.OfferModel;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by alexandre on 16-07-06.
  */
@@ -32,6 +40,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private OfferModel offer;
+    private ImageButton offerDetailOwnerPicture;
     private ViewPager viewPager;
 
     @Override
@@ -45,7 +54,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         appBarLayout = (AppBarLayout) findViewById(R.id.offerDetailsAppBar);
 
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
-
+        offerDetailOwnerPicture = (ImageButton) findViewById(R.id.offerDetailOwnerPicture);
         offer = getIntent().getParcelableExtra("offer");
 
         //Retrieve the others elements
@@ -104,18 +113,38 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 scrollView.requestDisallowInterceptTouchEvent(true);
             }
         });
+
+        if(offer.getOwner().getImage().getThumbnail() != null) {
+            ImageManager.downloadPictureIntoView(getApplicationContext(), offerDetailOwnerPicture, offer.getOwner().getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_CIRCLE);
+        } else if (offer.getOwner().getImage() != null) {
+            ImageManager.downloadPictureIntoView(getApplicationContext(), offerDetailOwnerPicture, offer.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_CIRCLE);
+        } else {
+            offerDetailOwnerPicture.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.default_profile_picture));
+        }
+
+        offerDetailOwnerPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OfferDetailsActivity.this, UserDetailActivity.class);
+                intent.putExtra("user", offer.getOwner());
+                startActivity(intent);
+                overridePendingTransition(R.anim.left_in, R.anim.left_out);
+            }
+        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //Define the latitude and longitude to use with the map fragment
-        LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());
+        if (offer.getAddress() != null){
+            LatLng offerFlat = new LatLng(offer.getAddress().getLatitude(), offer.getAddress().getLongitude());
 
-        //Add the marker to the map
-        googleMap.addMarker(new MarkerOptions().position(offerFlat).title(offer.getName()));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(offerFlat, 15));
-        googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            //Add the marker to the map
+            googleMap.addMarker(new MarkerOptions().position(offerFlat).title(offer.getName()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(offerFlat, 15));
+            googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+        }
     }
 
     @Override

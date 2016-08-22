@@ -26,22 +26,21 @@
             android:orientation="horizontal">
             <TextView
                 style="@style/Paragraph"
-                android:text="@string/firstName"
-                android:id="@+id/conversationUserName"/>
+                android:singleLine="true"
+                android:id="@+id/conversationName"/>
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/conversationSnippet"
-            android:textColor="@color/colorGray"
-            android:text="snippet"/>
+            android:singleLine="true"
+            android:textColor="@color/colorGray" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/conversationLastMessageHour"
-        android:text="00:00"
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
         android:paddingRight="8dp"

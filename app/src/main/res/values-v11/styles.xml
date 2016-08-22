@@ -54,6 +54,8 @@
         <item name="android:paddingLeft">16dp</item>
     </style>
 
+    <!---->
+
     <style name="NoTextSwitch">
         <item name="android:textOn"/>
         <item name="android:textOff"/>

@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso;
  */
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "http://7a6d30af.ngrok.io";
+    public static final String SERVER_URL = "https://8c38d468.ngrok.io";
     public static String TOKEN = "";
     public static CompleteUserModel LOGGED_USER_PROFILE;
 

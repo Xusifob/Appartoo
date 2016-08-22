@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         //Define the action to do according to the selected menu
         switch (item.getItemId()) {
             case ID_MENU_MESSAGES:
-                startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                startActivity(new Intent(MainActivity.this, MessagesListActivity.class));
                 return true;
             case ID_MENU_REFRESH:
                 OffersListFragment offersListFragment = (OffersListFragment) getSupportFragmentManager().findFragmentById(R.id.offerListFragment);

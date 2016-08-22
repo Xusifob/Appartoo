@@ -38,6 +38,7 @@
     <string name="cancel">Annuler</string>
     <string name="ok">OK</string>
     <string name="no_picture">Aucune image</string>
+    <string name="proposed_by">Proposé par : </string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>

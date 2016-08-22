@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,21 +84,15 @@ public class UserProfileMainFragment extends Fragment {
             userInfos.setText(age + " " + getString(R.string.year_age));
         }
 
-        System.out.println("YOOOOOOOOOOO");
-        System.out.println(profilePicUrl);
-        if(profilePicUrl != null && !profilePicUrl.equals("images/profile.png")) {
-            ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, profilePicUrl, true);
-        } else {
-            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
-        }
+        if(profilePicUrl != null) ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, profilePicUrl, ImageManager.TRANFORM_SQUARE);
+        else userProfilePic.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.default_profile_picture));
     }
 
     public void populateView() {
-        if(!Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
-            ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), true);
-        } else {
-            userProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.default_profile_picture, null));
-        }
+        if (Appartoo.LOGGED_USER_PROFILE.getImage() != null) ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+        else userProfilePic.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.default_profile_picture));
+
+
         userName.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
         userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
     }

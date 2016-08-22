@@ -19,13 +19,28 @@
                 app:layout_widthPercent="100%"
                 app:layout_aspectRatio="200%"
                 android:gravity="bottom|center_horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="10dp">
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:contentDescription="@string/user_profile_picture"
                     android:id="@+id/userProfileModifyProfilePic"
-                    android:background="@drawable/circle_light_gray"/>
+                    android:background="@drawable/circle_light_gray"
+                    android:layout_alignParentBottom="true"/>
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:padding="8dp"
+                        android:contentDescription="@string/user_profile_picture"
+                        android:background="@drawable/circle_green_with_border"
+                        android:src="@drawable/camera_white"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"/>
+                </RelativeLayout>
             </LinearLayout>
         </android.support.percent.PercentRelativeLayout>
         <LinearLayout

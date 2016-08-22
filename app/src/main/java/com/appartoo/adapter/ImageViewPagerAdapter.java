@@ -44,7 +44,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
         if(context instanceof OfferDetailsActivity) {
             ImageView imageView = new ImageView(context);
-            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), ImageManager.TRANFORM_SQUARE);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -59,7 +59,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
             return imageView;
         } else {
             PhotoView imageView = new PhotoView(context);
-            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), false);
+            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), ImageManager.TRANFORM_SQUARE);
             container.addView(imageView);
             return imageView;
         }

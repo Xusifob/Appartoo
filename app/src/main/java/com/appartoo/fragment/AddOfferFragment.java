@@ -243,6 +243,7 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
                             @Override
                             public void onFailure(@NonNull Status status) {
+                                System.out.println(status.getStatusMessage());
                                 Toast.makeText(getActivity(), R.string.error_predicate_place, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -427,27 +428,31 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
                     @Override
                     public void onResponse(Call<GeocoderResponse> call, Response<GeocoderResponse> response) {
                         if (response.isSuccessful()) {
-                            AddressInformationsModel addressInformations = response.body().getResults().get(0);
-                            for (AddressComponent component : addressInformations.getAddress_components()) {
-                                if (component.getTypes().contains("locality"))
-                                    offerModel.setAddressLocality(component.getLong_name());
-                                if (component.getTypes().contains("country"))
-                                    offerModel.setCountry(component.getLong_name());
-                                if(component.getTypes().contains("administrative_area_level_2") && offerModel.getAddressRegion() == null)
-                                    offerModel.setAddressRegion(component.getLong_name());
-                                if (component.getTypes().contains("administrative_area_level_1"))
-                                    offerModel.setAddressRegion(component.getLong_name());
-                                if (component.getTypes().contains("postal_code"))
-                                    offerModel.setPostalCode(component.getLong_name());
-                            }
-                            offerModel.setLatitude(addressInformations.getLatitude());
-                            offerModel.setLongitude(addressInformations.getLongitude());
-                            offerModel.setFormattedAddress(addressInformations.getFormatted_address());
-                            offerModel.setName("No name");
-                            offerModel.setStreetAddress(selectedPlace.getPrimaryText());
-                            offerModel.setPlaceId(selectedPlace.getPlaceId());
+                            if(response.body().getResults().size() > 0) {
+                                AddressInformationsModel addressInformations = response.body().getResults().get(0);
+                                for (AddressComponent component : addressInformations.getAddress_components()) {
+                                    if (component.getTypes().contains("locality"))
+                                        offerModel.setAddressLocality(component.getLong_name());
+                                    if (component.getTypes().contains("country"))
+                                        offerModel.setCountry(component.getLong_name());
+                                    if (component.getTypes().contains("administrative_area_level_2") && offerModel.getAddressRegion() == null)
+                                        offerModel.setAddressRegion(component.getLong_name());
+                                    if (component.getTypes().contains("administrative_area_level_1"))
+                                        offerModel.setAddressRegion(component.getLong_name());
+                                    if (component.getTypes().contains("postal_code"))
+                                        offerModel.setPostalCode(component.getLong_name());
+                                }
+                                offerModel.setLatitude(addressInformations.getLatitude());
+                                offerModel.setLongitude(addressInformations.getLongitude());
+                                offerModel.setFormattedAddress(addressInformations.getFormatted_address());
+                                offerModel.setName("No name");
+                                offerModel.setStreetAddress(selectedPlace.getPrimaryText());
+                                offerModel.setPlaceId(selectedPlace.getPlaceId());
 
-                            sendOfferToServer(offerModel);
+                                sendOfferToServer(offerModel);
+                            } else {
+                                Toast.makeText(getContext(), R.string.error_predicate_place, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
@@ -480,7 +485,9 @@ public class AddOfferFragment extends Fragment implements GoogleApiClient.OnConn
 
                         if(response.isSuccessful()){
                             String offerId = response.body().getId();
-                            sendImagesToServer(offerId);
+                            if(files.size() > 0) {
+                                sendImagesToServer(offerId);
+                            }
                             Toast.makeText(getActivity().getApplicationContext(),R.string.success_add_offer, Toast.LENGTH_SHORT).show();
                         } else {
                             addOfferButton.setEnabled(true);

@@ -66,7 +66,7 @@ public class LoginActivity extends FragmentActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(4000);
+                    sleep(0);
                 } catch (Exception e) {
 
                 } finally {

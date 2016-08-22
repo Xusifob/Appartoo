@@ -42,7 +42,7 @@ public class UserDetailActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
-        ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), true);
+        ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
             boolean isShow = false;

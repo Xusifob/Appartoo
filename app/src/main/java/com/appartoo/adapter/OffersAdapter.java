@@ -76,7 +76,7 @@ public class OffersAdapter extends BaseAdapter {
         holder.owner.setText(offerModel.getOwner().getGivenName());
 
         if(offerModel.getImages().size() > 0) {
-            ImageManager.downloadPictureIntoView(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
             convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.GONE);
         } else {
             holder.flatImage.setImageDrawable(null);
@@ -84,9 +84,9 @@ public class OffersAdapter extends BaseAdapter {
         }
 
         if(offerModel.getOwner().getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getThumbnail().getContentUrl(), true);
-        } else if (!offerModel.getOwner().getImage().getContentUrl().equals("images/profile.png")){
-            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), true);
+            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+        } else if (offerModel.getOwner().getImage() != null){
+            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
         }
