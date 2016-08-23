@@ -23,12 +23,13 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import com.appartoo.R;
-import com.appartoo.fragment.SignUpFifthFragment;
-import com.appartoo.fragment.SignUpFirstFragment;
-import com.appartoo.fragment.SignUpFourthFragment;
-import com.appartoo.fragment.SignUpSecondFragment;
-import com.appartoo.fragment.SignUpThirdFragment;
+import com.appartoo.fragment.signup.SignUpFifthFragment;
+import com.appartoo.fragment.signup.SignUpFirstFragment;
+import com.appartoo.fragment.signup.SignUpFourthFragment;
+import com.appartoo.fragment.signup.SignUpSecondFragment;
+import com.appartoo.fragment.signup.SignUpThirdFragment;
 import com.appartoo.model.CompleteUserModel;
+import com.appartoo.model.ImageModel;
 import com.appartoo.model.SignUpModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
@@ -115,6 +116,14 @@ public class SignUpActivity extends FragmentActivity {
         }
     }
 
+    public void previousView(View v){
+        if(pager.getCurrentItem() == 0) {
+            finish();
+        } else {
+            pager.setCurrentItem(pager.getCurrentItem()-1);
+        }
+    }
+
     /**
      * Open a dialog to pick a date easily
      * @param v
@@ -183,15 +192,17 @@ public class SignUpActivity extends FragmentActivity {
         if(getSignUpModel() != null){
 
             signUpButton.setEnabled(false);
-            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
+            Call<TokenReceiver> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
 
             //Handle the server response
-            callback.enqueue(new Callback<ResponseBody>() {
+            callback.enqueue(new Callback<TokenReceiver>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
                     //If the login is successful
                     if(response.isSuccessful()) {
-                        logUser();
+                        Appartoo.TOKEN = response.body().getToken();
+                        sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                        retrieveUserProfile();
                     } else if(response.code() == 402) {
                         signUpButton.setEnabled(true);
                         Toast.makeText(getApplicationContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
@@ -203,7 +214,7 @@ public class SignUpActivity extends FragmentActivity {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<TokenReceiver> call, Throwable t) {
                     t.printStackTrace();
                     System.out.println("finishSignUp Failure");
                     Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
@@ -211,33 +222,6 @@ public class SignUpActivity extends FragmentActivity {
                 }
             });
         }
-    }
-
-    private void logUser() {
-        System.out.println("Logging user...");
-        Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
-
-        newCallback.enqueue(new Callback<TokenReceiver>() {
-            @Override
-            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
-                if(response.isSuccessful()) {
-                    Appartoo.TOKEN = response.body().getToken();
-                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
-                    retrieveUserProfile();
-                } else {
-                    finish();
-                    System.out.println("logUser response code " + response.code());
-                    Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TokenReceiver> call, Throwable t) {
-                finish();
-                System.out.println("logUser Failure");
-                Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void retrieveUserProfile(){
@@ -262,7 +246,16 @@ public class SignUpActivity extends FragmentActivity {
 
                     launchActivityWithoutHistory(SignUpProfileActivity.class);
                 } else {
+
                     System.out.println("retrieveUserProfile response code " + response.code());
+                    sharedPreferences.edit().putString("givenName", newUser.getGivenName())
+                            .putString("familyName", newUser.getFamilyName())
+                            .putString("email", newUser.getEmail())
+                            .putString("age", String.valueOf(newUser.getAge()))
+                            .putString("profilePicUrl", "images/profile.png").apply();
+
+                    NavigationDrawerView.setHeaderInformations(newUser.getGivenName() + " " + newUser.getFamilyName(), newUser.getEmail());
+
                     launchActivityWithoutHistory(MainActivity.class);
                 }
             }

@@ -59,7 +59,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
             return imageView;
         } else {
             PhotoView imageView = new PhotoView(context);
-            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), ImageManager.TRANFORM_SQUARE);
+            ImageManager.downloadPictureIntoView(context, imageView, pictures.get(position).getContentUrl(), null);
             container.addView(imageView);
             return imageView;
         }

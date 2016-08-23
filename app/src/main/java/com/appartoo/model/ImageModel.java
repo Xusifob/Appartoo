@@ -16,6 +16,9 @@ public class ImageModel implements Parcelable {
     private String contentUrl;
     private ImageModel thumbnail;
 
+    public ImageModel() {}
+
+
     protected ImageModel(Parcel in) {
         id = in.readString();
         caption = in.readString();

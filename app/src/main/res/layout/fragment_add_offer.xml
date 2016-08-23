@@ -10,6 +10,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:text="@string/offer_description"
+                android:layout_marginBottom="2dp"/>
+        </LinearLayout>
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -184,6 +203,70 @@
                         android:src="@drawable/dont_accept_animals" />
                 </RelativeLayout>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:text="@string/add_residents"
+                android:layout_marginBottom="2dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+
+            android:background="@drawable/rounded_bordered_square_light_gray"
+            android:id="@+id/addResident">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/camera"
+                android:padding="4dp"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSalmon"
+                android:gravity="center"
+                android:text="@string/take_a_picture"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSalmon"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorSalmon"
+                android:background="@color/colorWhite"
+                android:textSize="20sp"
+                android:text="@string/add_photos"
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
 
         <com.appartoo.view.ExpandableHeightGridView

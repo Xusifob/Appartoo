@@ -36,7 +36,7 @@
             android:id="@+id/userProfileFrame"
             android:layout_marginTop="?attr/actionBarSize">
             <fragment
-                android:name="com.appartoo.fragment.UserProfileMainFragment"
+                android:name="com.appartoo.fragment.userprofile.UserProfileMainFragment"
                 android:id="@+id/userProfileMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

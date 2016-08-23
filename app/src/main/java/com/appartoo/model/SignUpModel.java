@@ -1,5 +1,11 @@
 package com.appartoo.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by alexandre on 16-07-20.
  */
@@ -56,5 +62,22 @@ public class SignUpModel {
 
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public int getAge() {
+        SimpleDateFormat jsonFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+        Calendar now = Calendar.getInstance();
+        Calendar birthdate = Calendar.getInstance();
+        try {
+            birthdate.setTime(jsonFormat.parse(this.birthdate));
+        } catch (ParseException e) {
+            return -1;
+        }
+
+        int age = now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+        if (birthdate.get(Calendar.DAY_OF_YEAR) > now.get(Calendar.DAY_OF_YEAR)) {
+            age -= 1;
+        }
+        return age;
     }
 }

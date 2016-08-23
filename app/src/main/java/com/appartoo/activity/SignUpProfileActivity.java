@@ -11,20 +11,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import com.appartoo.R;
-import com.appartoo.fragment.SignUpProfileEighthFragment;
-import com.appartoo.fragment.SignUpProfileEleventhFragment;
-import com.appartoo.fragment.SignUpProfileFifthFragment;
-import com.appartoo.fragment.SignUpProfileFirstFragment;
-import com.appartoo.fragment.SignUpProfileFourthFragment;
-import com.appartoo.fragment.SignUpProfileNinthFragment;
-import com.appartoo.fragment.SignUpProfileSecondFragment;
-import com.appartoo.fragment.SignUpProfileSeventhFragment;
-import com.appartoo.fragment.SignUpProfileSixthFragment;
-import com.appartoo.fragment.SignUpProfileTenthFragment;
-import com.appartoo.fragment.SignUpProfileThirdFragment;
-import com.appartoo.fragment.SignUpProfileTwelfthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileEighthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileEleventhFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileFifthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileFirstFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileFourthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileNinthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileSecondFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileSeventhFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileSixthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileTenthFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileThirdFragment;
+import com.appartoo.fragment.signupprofile.SignUpProfileTwelfthFragment;
 import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
@@ -76,7 +75,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         if(pager.getCurrentItem() == 0) {
             startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
-        } else if (pager.getCurrentItem() < 9){
+        } else if (pager.getCurrentItem() < NUM_PAGES-1){
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
     }
@@ -105,6 +104,10 @@ public class SignUpProfileActivity extends FragmentActivity {
         } else {
             pager.setCurrentItem(pager.getCurrentItem()+1);
         }
+    }
+
+    public void previousView(View v){
+        pager.setCurrentItem(pager.getCurrentItem()-1);
     }
 
     private void updateUserProfile(){

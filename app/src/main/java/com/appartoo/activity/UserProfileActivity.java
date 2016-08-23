@@ -11,10 +11,10 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.appartoo.R;
-import com.appartoo.fragment.UserProfileMainFragment;
-import com.appartoo.fragment.UserProfileModifyFragment;
-import com.appartoo.fragment.UserProfileOffersFragment;
-import com.appartoo.fragment.UserProfileSettingsFragment;
+import com.appartoo.fragment.userprofile.UserProfileMainFragment;
+import com.appartoo.fragment.userprofile.UserProfileModifyFragment;
+import com.appartoo.fragment.userprofile.UserProfileOffersFragment;
+import com.appartoo.fragment.userprofile.UserProfileSettingsFragment;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.view.NavigationDrawerView;
 

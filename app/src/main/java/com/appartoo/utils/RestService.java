@@ -38,7 +38,7 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST("/register")
-    Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
+    Call<TokenReceiver> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
 
     @FormUrlEncoded
     @POST("/offer/create")
@@ -47,10 +47,6 @@ public interface RestService {
     @Multipart
     @POST
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
-
-
-    @GET
-    Call<UserProfileModel> getUserProfile(@Url String url);
 
     @GET("/offers")
     Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pageTitle">
+            <ImageView
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:padding="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/left_arrow_salmon"
+                android:onClick="previousView"/>
+            <TextView
+                style="@style/TitleSalmon"
+                android:text="@string/add_offer_title"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginStart="54dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginRight="54dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_below="@+id/pageTitle"
+            android:layout_above="@+id/nextPageButton">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/offer_title"
+                android:layout_margin="4dp"
+                android:gravity="center_horizontal"
+                android:id="@+id/addOfferTitle"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <Button
+            style="@style/ButtonSalmon"
+            android:layout_margin="16dp"
+            android:text="@string/go_further"
+            android:id="@+id/nextPageButton"
+            android:onClick="nextView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/square_salmon" />
+    </RelativeLayout>
+</ScrollView>

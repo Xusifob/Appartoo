@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pageTitle">
+            <ImageView
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:padding="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/left_arrow_salmon"
+                android:onClick="previousView"/>
+            <TextView
+                style="@style/TitleSalmon"
+                android:text="@string/add_offer_specs"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="54dp"
+                android:layout_marginStart="54dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginRight="54dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_below="@+id/pageTitle"
+            android:layout_above="@+id/nextPageButton">
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/toggle_rounded_bordered_square"
+                        android:onClick="toggleView"
+                        android:id="@+id/addOfferAllowSmoker">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:textColor="@color/colorSalmon"
+                            android:id="@+id/addOfferTextSmoker"
+                            android:text="@string/dont_accept_smokers" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/addOfferTextSmoker"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:tag="false"
+                            android:id="@+id/addOfferImageSmoker"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/is_not_smoker" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <RelativeLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:background="@drawable/toggle_rounded_bordered_square"
+                        android:onClick="toggleView"
+                        android:id="@+id/addOfferAcceptAnimals">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:textColor="@color/colorSalmon"
+                            android:id="@+id/addOfferTextAnimals"
+                            android:layout_alignParentBottom="true"
+                            android:text="@string/dont_accept_animals" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:tag="false"
+                            android:layout_above="@+id/addOfferTextAnimals"
+                            android:layout_centerInParent="true"
+                            android:id="@+id/addOfferImageAnimals"
+                            android:src="@drawable/dont_accept_animals" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            style="@style/ButtonSalmon"
+            android:layout_margin="16dp"
+            android:text="@string/go_further"
+            android:id="@+id/nextPageButton"
+            android:onClick="nextView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/square_salmon" />
+    </RelativeLayout>
+</ScrollView>
