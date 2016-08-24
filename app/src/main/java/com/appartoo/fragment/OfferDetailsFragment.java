@@ -83,7 +83,7 @@ public class OfferDetailsFragment extends Fragment {
             offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
         } else if (offer instanceof OfferModelWithDetailledDate) {
             offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
-            offerStart.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
+            offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
         }
 
         ArrayList<UserModel> residents = new ArrayList<>();

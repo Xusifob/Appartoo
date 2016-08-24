@@ -35,7 +35,7 @@
                         android:layout_height="34dp"
                         android:padding="8dp"
                         android:contentDescription="@string/user_profile_picture"
-                        android:background="@drawable/circle_green_with_border"
+                        android:background="@drawable/circle_salmon_with_border"
                         android:src="@drawable/camera_white"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"

@@ -101,7 +101,6 @@ public class UserProfileModifyFragment extends Fragment {
                 final String[] items = getResources().getStringArray(R.array.picture_actions);
 
                 android.app.AlertDialog.Builder choosePictureDialog = new android.app.AlertDialog.Builder(getActivity());
-                choosePictureDialog.setTitle("Ajouter un garant");
                 choosePictureDialog.setNegativeButton(R.string.cancel, null);
 
                 choosePictureDialog.setItems(items, new DialogInterface.OnClickListener() {

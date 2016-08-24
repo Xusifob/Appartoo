@@ -376,7 +376,6 @@ public class AddOfferActivity extends AppCompatActivity {
                 }
 
                 System.out.println(offerModelMap.toString());
-                sendImagesToServer("");
                 Call<OfferModel> callback = restService.addOffer("Bearer " + Appartoo.TOKEN, offerModelMap);
                 callback.enqueue(new Callback<OfferModel>() {
                     @Override
@@ -384,6 +383,8 @@ public class AddOfferActivity extends AppCompatActivity {
 
                         if(response.isSuccessful()){
                             String offerId = response.body().getId();
+                            System.out.println(response.body().toString());
+                            System.out.println(offerId);
                             if(files.size() > 0) {
                                 sendImagesToServer(offerId);
                             }
@@ -413,20 +414,18 @@ public class AddOfferActivity extends AppCompatActivity {
 
         private void sendImagesToServer(final String offerId) {
             String url = offerId + "/images";
-
             File file = files.remove(0);
+
+            System.out.println(url);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
-                System.out.println(bitmap.getHeight());
-                System.out.println(bitmap.getWidth());
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-            System.out.println(file.getName());
 
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part body =  MultipartBody.Part.createFormData("file", file.getName(), requestFile);

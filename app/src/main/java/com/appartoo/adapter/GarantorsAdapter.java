@@ -95,7 +95,6 @@ public class GarantorsAdapter extends BaseAdapter {
                         garantorModel.setLastname(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
                         garantorModel.setMail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
                         garantorModel.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString()));
-
                         notifyDataSetChanged();
                     }
                 });

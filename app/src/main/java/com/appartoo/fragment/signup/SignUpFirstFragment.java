@@ -12,10 +12,12 @@ import com.appartoo.R;
  * Created by alexandre on 16-07-12.
  */
 public class SignUpFirstFragment extends Fragment {
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_signup_page1, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_signup_page1, container, false);
+
         return rootView;
     }
 }

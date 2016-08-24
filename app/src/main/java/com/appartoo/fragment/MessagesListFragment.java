@@ -68,19 +68,13 @@ public class MessagesListFragment extends Fragment{
 
                 ConversationModel conversationModel = userConversations.get(i);
 
-                String convName = "";
-                if(conversationModel.getOffer() != null){
-                    convName = conversationModel.getOffer().get("name");
-                } else {
-                    for (String participant : conversationModel.getParticipants().values()){
-                        convName += participant + ", ";
-                    }
-                    convName = convName.substring(0, convName.length() - 2);
-                }
-
                 Intent intent = new Intent(getActivity().getApplicationContext(), MessageActivity.class);
-                intent.putExtra("conversationName", convName);
+
+                intent.putExtra("conversationName", conversationModel.getConversationName());
                 intent.putExtra("conversationId", conversationModel.getId());
+                intent.putExtra("conversationType", conversationModel.getType());
+                intent.putExtra("conversationOwner", conversationModel.getOwner());
+                intent.putExtra("conversationOffer", conversationModel.getOffer());
                 startActivity(intent);
             }
         });
@@ -88,8 +82,8 @@ public class MessagesListFragment extends Fragment{
         databaseReference.getRoot().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 GenericTypeIndicator<HashMap<String, String>> hashMapType = new GenericTypeIndicator<HashMap<String, String>>() {};
-                GenericTypeIndicator<ConversationModel> convType = new GenericTypeIndicator<ConversationModel>() {};
 
                 HashMap<String, String> conversations = dataSnapshot
                         .child("profiles/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString() + "/conversations")
@@ -100,16 +94,13 @@ public class MessagesListFragment extends Fragment{
                 if(conversations != null) {
                     for (String conversationId : conversations.values()) {
                         if(dataSnapshot.child("conversations/").child(conversationId).getValue(true) != null) {
-                            String json = dataSnapshot.child("conversations/")
-                                    .child(conversationId)
-                                    .getValue(true)
-                                    .toString()
-                                    .replace("={", ":{")
-                                    .replace("=", ":\"")
-                                    .replaceAll("([^}]), ", "$1\", ")
-                                    .replaceAll("([^}])\\}", "$1\"}");
 
-                            ConversationModel conversationModel = new Gson().fromJson(json, ConversationModel.class);
+                            HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.child("conversations/")
+                                    .child(conversationId)
+                                    .getValue(true);
+
+                            Gson gson = new Gson();
+                            ConversationModel conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
                             conversationModel.setId(conversationId);
 
                             if (conversationModel != null) {

@@ -42,13 +42,16 @@
             android:layout_margin="20dp">
             <EditText
                 android:singleLine="true"
-                android:id="@+id/signUpMail"
+                android:id="@+id/signUpBirthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/mail"
-                android:gravity="center" />
+                android:hint="@string/birthdate"
+                android:onClick="openDatePicker"
+                android:focusable="false"
+                android:inputType="datetime"
+                android:gravity="center"/>
         </LinearLayout>
+
         <Button
             style="@style/ButtonSalmon"
             android:text="@string/go_further"

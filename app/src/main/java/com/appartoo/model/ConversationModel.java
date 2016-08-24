@@ -1,5 +1,6 @@
 package com.appartoo.model;
 
+import com.appartoo.utils.Appartoo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.text.SimpleDateFormat;
@@ -148,6 +149,8 @@ public class ConversationModel {
     }
 
     public String getLastMessageFormattedDate(){
+        if(lastMessageTime == null) return "";
+
         Long timestamp = lastMessageTime;
 
         if(String.valueOf(timestamp).length() > 10) {
@@ -167,6 +170,34 @@ public class ConversationModel {
             return timeFormatString.format(messageTime.getTime());
         } else {
             return dateTimeFormatString.format(messageTime.getTime());
+        }
+    }
+
+    public String getConversationName(){
+
+        String convName = "";
+        switch (type) {
+            case 0:
+                for (String participant : participants.keySet()){
+                    if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                        convName += participants.get(participant) + ", ";
+                    }
+                }
+                convName = convName.substring(0, convName.length() - 2);
+                return convName;
+            case 1:
+                for (String participant : participants.keySet()){
+                    if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                        convName += participants.get(participant) + ", ";
+                    }
+                }
+                convName = convName.substring(0, convName.length() - 2);
+                convName += " (" + offer.get("name") + ")";
+                return convName;
+            case 2:
+                return offer.get("name");
+            default:
+                return null;
         }
     }
 

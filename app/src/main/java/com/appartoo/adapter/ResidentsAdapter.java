@@ -97,9 +97,7 @@ public class ResidentsAdapter extends BaseAdapter {
             holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
         }
 
-        if(userModel.getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-        } else if (userModel.getImage() != null){
+        if (userModel.getImage() != null){
             ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             holder.residentImageThumbail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));

@@ -83,9 +83,7 @@ public class OffersAdapter extends BaseAdapter {
             convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
 
-        if(offerModel.getOwner().getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-        } else if (offerModel.getOwner().getImage() != null){
+        if (offerModel.getOwner().getImage() != null){
             ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));

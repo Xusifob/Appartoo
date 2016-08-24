@@ -14,7 +14,6 @@ public class ImageModel implements Parcelable {
     private String id;
     private String caption;
     private String contentUrl;
-    private ImageModel thumbnail;
 
     public ImageModel() {}
 
@@ -23,7 +22,6 @@ public class ImageModel implements Parcelable {
         id = in.readString();
         caption = in.readString();
         contentUrl = in.readString();
-        thumbnail = in.readParcelable(ImageModel.class.getClassLoader());
     }
 
     @Override
@@ -31,7 +29,6 @@ public class ImageModel implements Parcelable {
         dest.writeString(id);
         dest.writeString(caption);
         dest.writeString(contentUrl);
-        dest.writeParcelable(thumbnail, flags);
     }
 
     @Override
@@ -75,30 +72,10 @@ public class ImageModel implements Parcelable {
         this.contentUrl = contentUrl;
     }
 
-    public ImageModel getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(ImageModel thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
     @Override
     public String toString(){
-        String str;
-
-        if(thumbnail != null) {
-            str = "ImageModel: {id: " + id + ", " +
-                    "caption: " + caption + ", " +
-                    "contentUrl: " + contentUrl + ", " +
-                    "thumbnail: " + thumbnail.toString() + "}";
-        } else {
-            str = "ImageModel: {id: " + id + ", " +
-                    "caption: " + caption + ", " +
-                    "contentUrl: " + contentUrl + ", " +
-                    "thumbnail: null}";
-        }
-
-        return str;
+        return "ImageModel: {id: " + id + ", " +
+                "caption: " + caption + ", " +
+                "contentUrl: " + contentUrl + ", ";
     }
 }

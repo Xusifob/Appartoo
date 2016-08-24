@@ -84,20 +84,8 @@ public class ConversationsAdapter extends BaseAdapter {
         ConversationModel conversation = conversationModels.get(i);
 
         MessageModel lastMessage = conversation.getLastMessage();
-
         holder.lastMessageHour.setText(conversation.getLastMessageFormattedDate());
-
-        String convName = "";
-        if(conversation.getOffer() != null){
-            convName = conversation.getOffer().get("name");
-        } else {
-            for (String participant : conversation.getParticipants().values()){
-                convName += participant + ", ";
-            }
-            convName = convName.substring(0, convName.length() - 2);
-        }
-
-        holder.name.setText(convName);
+        holder.name.setText(conversation.getConversationName());
 
         if(lastMessage != null) holder.snippet.setText(lastMessage.getMessage()); else holder.snippet.setText("");
         if(holder.userPicture.getDrawable() == null) holder.userPicture.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.default_profile_picture));

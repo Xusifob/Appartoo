@@ -6,6 +6,7 @@
 
     <!-- GENERAL STRINGS -->
     <string name="action_settings">Réglages</string>
+    <string name="apply_to_offer">"Postuler à l'annonce"</string>
     <string name="action_send_message">Envoyer un message</string>
     <string name="age">ans</string>
     <string name="connection_failed">La connexion au serveur a échouée.</string>
@@ -62,6 +63,10 @@
     <string name="drawer_search">Recherche</string>
     <string name="drawer_logout">Déconnexion</string>
     <string name="drawer_messages">Mes messages</string>
+
+    <!-- MESSAGES OPTIONS MENU STRINGS -->
+    <string name="candidate_accept">Accepter le candidat</string>
+    <string name="candidate_refuse">Refuser le candidat</string>
 
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>

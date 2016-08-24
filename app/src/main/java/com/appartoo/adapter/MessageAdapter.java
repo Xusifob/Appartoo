@@ -22,6 +22,7 @@ import com.appartoo.model.ConversationModel;
 import com.appartoo.model.MessageModel;
 import com.appartoo.model.UserModel;
 import com.appartoo.model.UserProfileModel;
+import com.appartoo.utils.DateManager;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 
@@ -67,6 +68,11 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
+    @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
         if (convertView == null) {
@@ -92,14 +98,14 @@ public class MessageAdapter extends BaseAdapter {
         if(isMe) {
             holder.myMessage.setText(messageModel.getMessage());
             holder.myPicture.setBackgroundResource(R.drawable.circle_light_gray);
-            holder.myMessageHour.setText(messageModel.getFormattedDate());
+            holder.myMessageHour.setText(DateManager.getFormattedDate(messageModel.getCreatedTime()));
             holder.myMessageContainer.setVisibility(View.VISIBLE);
             holder.othersPicture.setBackgroundResource(R.color.colorTransparent);
             holder.othersMessageContainer.setVisibility(View.GONE);
         } else {
             holder.othersMessage.setText(messageModel.getMessage());
             holder.othersPicture.setBackgroundResource(R.drawable.circle_light_gray);
-            holder.othersMessageHour.setText(messageModel.getFormattedDate());
+            holder.othersMessageHour.setText(DateManager.getFormattedDate(messageModel.getCreatedTime()));
             holder.othersMessageContainer.setVisibility(View.VISIBLE);
             holder.myPicture.setBackgroundResource(R.color.colorTransparent);
             holder.myMessageContainer.setVisibility(View.GONE);

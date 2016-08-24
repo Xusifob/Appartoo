@@ -1,9 +1,12 @@
 package com.appartoo.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,6 +54,9 @@ public class MessageFragment extends Fragment{
     private ImageView sendMessage;
     private ConversationModel conversationModel;
     private EditText messageEdit;
+    private String conversationName;
+    private String conversationOwner;
+    private HashMap<String, String> conversationOffer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +68,9 @@ public class MessageFragment extends Fragment{
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         conversationId = getActivity().getIntent().getStringExtra("conversationId");
+        conversationName = getActivity().getIntent().getStringExtra("conversationName");
+        conversationOwner = getActivity().getIntent().getStringExtra("conversationOwner");
+        conversationOffer = (HashMap<String, String>) getActivity().getIntent().getSerializableExtra("conversationOffer");
 
         messages = new ArrayList<>();
         messageAdapter = new MessageAdapter(getActivity().getApplicationContext(), messages, Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString());
@@ -74,9 +83,18 @@ public class MessageFragment extends Fragment{
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(getActivity() instanceof MessageActivity){
+            ((MessageActivity) getActivity()).setToolbarTitle(conversationName);
+        }
+    }
+
+    @Override
     public void onStart(){
         super.onStart();
 
+        messageList.setOnItemClickListener(null);
         messageList.setAdapter(messageAdapter);
 
         databaseReference.getRoot()
@@ -84,15 +102,13 @@ public class MessageFragment extends Fragment{
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String json = dataSnapshot
-                                .getValue(true)
-                                .toString()
-                                .replace("={", ":{")
-                                .replace("=", ":\"")
-                                .replaceAll("([^}]), ", "$1\", ")
-                                .replaceAll("([^}])\\}", "$1\"}");
 
-                        messages.add(new Gson().fromJson(json, MessageModel.class));
+                        HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
+
+                        Gson gson = new Gson();
+                        MessageModel message = gson.fromJson(gson.toJson(gson.toJsonTree(json)), MessageModel.class);
+
+                        messages.add(message);
                         messageAdapter.notifyDataSetChanged();
                     }
 
@@ -123,15 +139,15 @@ public class MessageFragment extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getValue(true) != null) {
-                            String json = dataSnapshot
-                                    .getValue(true)
-                                    .toString()
-                                    .replace("={", ":{")
-                                    .replace("=", ":\"")
-                                    .replaceAll("([^}]), ", "$1\", ")
-                                    .replaceAll("([^}])\\}", "$1\"}");
+                            System.out.println(dataSnapshot.getValue(true).toString());
+                            HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
+                            Gson gson = new Gson();
+                            conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
+                            conversationModel.setId(conversationId);
 
-                            conversationModel = new Gson().fromJson(json, ConversationModel.class);
+                            if(getActivity() instanceof MessageActivity){
+                                ((MessageActivity) getActivity()).setConversationModel(conversationModel);
+                            }
                         }
                     }
 

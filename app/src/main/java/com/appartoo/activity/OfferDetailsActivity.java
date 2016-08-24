@@ -11,10 +11,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.appartoo.utils.Appartoo;
+import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
+import com.appartoo.utils.RestService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,7 +31,14 @@ import com.appartoo.adapter.ImageViewPagerAdapter;
 import com.appartoo.fragment.WorkaroundMapFragment;
 import com.appartoo.model.OfferModel;
 
+import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-06.
@@ -42,6 +53,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private OfferModel offer;
     private ImageButton offerDetailOwnerPicture;
     private ViewPager viewPager;
+    private Button offerDetailSendMessageButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
         offerDetailOwnerPicture = (ImageButton) findViewById(R.id.offerDetailOwnerPicture);
+        offerDetailSendMessageButton = (Button) findViewById(R.id.offerDetailSendMessage);
         offer = getIntent().getParcelableExtra("offer");
 
         //Retrieve the others elements
@@ -76,6 +89,13 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         } else {
             findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
+
+        offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applyToOffer();
+            }
+        });
 
         //Define the drawer
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -114,9 +134,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
-        if(offer.getOwner().getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(getApplicationContext(), offerDetailOwnerPicture, offer.getOwner().getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_CIRCLE);
-        } else if (offer.getOwner().getImage() != null) {
+        if (offer.getOwner().getImage() != null) {
             ImageManager.downloadPictureIntoView(getApplicationContext(), offerDetailOwnerPicture, offer.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_CIRCLE);
         } else {
             offerDetailOwnerPicture.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.default_profile_picture));
@@ -129,6 +147,38 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 intent.putExtra("user", offer.getOwner());
                 startActivity(intent);
                 overridePendingTransition(R.anim.left_in, R.anim.left_out);
+            }
+        });
+    }
+
+    private void applyToOffer(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RestService restService = retrofit.create(RestService.class);
+
+        Call<ConversationIdReceiver> callback = restService.applyToOffer("Bearer " + Appartoo.TOKEN, offer.getOwner().getIdNumber().toString());
+        callback.enqueue(new Callback<ConversationIdReceiver>() {
+            @Override
+            public void onResponse(Call<ConversationIdReceiver> call, Response<ConversationIdReceiver> response) {
+                if(response.isSuccessful()){
+                    Intent intent = new Intent(OfferDetailsActivity.this, MessageActivity.class);
+                    intent.putExtra("conversationId", response.body().getIdConversation());
+                    startActivity(intent);
+                } else {
+                    System.out.println(response.code());
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

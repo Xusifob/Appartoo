@@ -7,8 +7,12 @@
             android:title="@string/drawer_offers"/>
         <item
             android:id="@+id/drawer_search"
-            android:icon="@drawable/search"
+            android:icon="@drawable/search_drawer"
             android:title="@string/drawer_search"/>
+        <item
+            android:id="@+id/drawer_message"
+            android:icon="@drawable/message_drawer"
+            android:title="@string/drawer_messages"/>
         <item
             android:id="@+id/drawer_profile"
             android:icon="@drawable/profile"

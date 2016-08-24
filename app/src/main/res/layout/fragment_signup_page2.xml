@@ -39,25 +39,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
-            android:layout_margin="16dp">
+            android:layout_margin="20dp">
             <EditText
                 android:singleLine="true"
-                android:id="@+id/signupFirstName"
+                android:id="@+id/signUpMail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/firstName"
-                android:gravity="center"
-                android:layout_weight="1"/>
-            <EditText
-                android:singleLine="true"
-                android:id="@+id/signupLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/lastname"
-                android:inputType="textPersonName"
-                android:gravity="center"
-                android:layout_weight="1"/>
+                android:inputType="textEmailAddress"
+                android:hint="@string/mail"
+                android:gravity="center" />
         </LinearLayout>
         <Button
             style="@style/ButtonSalmon"

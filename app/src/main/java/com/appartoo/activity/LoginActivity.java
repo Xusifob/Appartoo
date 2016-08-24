@@ -113,9 +113,6 @@ public class LoginActivity extends FragmentActivity {
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
                             .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()))
                             .putString("profilePicUrl", Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl()).apply();
-                    if(Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail() != null) {
-                        sharedPreferences.edit().putString("profilePicUrlThumbnail", Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl()).apply();
-                    }
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                 }

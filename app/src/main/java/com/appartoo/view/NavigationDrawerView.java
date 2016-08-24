@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.appartoo.R;
 import com.appartoo.activity.LoginActivity;
 import com.appartoo.activity.MainActivity;
+import com.appartoo.activity.MessagesListActivity;
 import com.appartoo.activity.SearchActivity;
 import com.appartoo.activity.UserProfileActivity;
 import com.appartoo.utils.Appartoo;
@@ -75,9 +76,7 @@ public class NavigationDrawerView extends NavigationView {
 
         profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
 
-        if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail() != null) {
-            ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getThumbnail().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-        } else if (Appartoo.LOGGED_USER_PROFILE != null && !Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl().equals("images/profile.png")) {
+        if (Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getImage() != null) {
             ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             String profilePicUrlThumb = sharedPreferences.getString("profilePicUrlThumbnail", null);
@@ -101,6 +100,8 @@ public class NavigationDrawerView extends NavigationView {
             setCheckableItem(getMenu().findItem(R.id.drawer_profile));
         } else if(context instanceof SearchActivity) {
             setCheckableItem(getMenu().findItem(R.id.drawer_search));
+        } else if(context instanceof MessagesListActivity) {
+            setCheckableItem(getMenu().findItem(R.id.drawer_message));
         }
 
         setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -134,8 +135,22 @@ public class NavigationDrawerView extends NavigationView {
                             context.startActivity(intent);
                         }
                         return true;
+                    case R.id.drawer_message:
+                        if(!(context instanceof SearchActivity)) {
+                            Intent intent = new Intent(context, MessagesListActivity.class);
+                            context.startActivity(intent);
+                        }
+                        return true;
                     case R.id.drawer_logout:
-                        context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE).edit().remove("token").apply();
+                        context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE).edit()
+                                .remove("token")
+                                .remove("familyName")
+                                .remove("email")
+                                .remove("age")
+                                .remove("profilePicUrl").apply();
+
+                        Appartoo.LOGGED_USER_PROFILE = null;
+                        Appartoo.TOKEN = null;
 
                         ((Activity) context).finish();
                         Intent intent = new Intent(context, LoginActivity.class);

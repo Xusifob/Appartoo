@@ -23,7 +23,7 @@
                 android:onClick="previousView"/>
             <TextView
                 style="@style/TitleSalmon"
-                android:text="@string/ask_informations"
+                android:text="@string/join_appartoo"
                 android:gravity="center"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
@@ -33,36 +33,30 @@
                 android:layout_marginEnd="54dp"
                 android:layout_marginRight="54dp"/>
         </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_centerInParent="true"
-            android:layout_margin="20dp">
-            <EditText
-                android:singleLine="true"
-                android:id="@+id/signUpPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/password"
-                android:gravity="center"/>
-            <EditText
-                android:singleLine="true"
-                android:id="@+id/signUpPasswordConfirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/confirm_password_signup"
-                android:inputType="textPassword"
-                android:gravity="center"/>
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_centerInParent="true">
+            <TextView
+                style="@style/Paragraph"
+                android:gravity="center"
+                android:textColor="@color/colorSalmon"
+                android:text="@string/warning_condition"/>
+            <TextView
+                style="@style/Paragraph"
+                android:text="@string/see_condition"
+                android:textColor="@color/colorBlueFb"/>
         </LinearLayout>
+
         <Button
             style="@style/ButtonSalmon"
             android:text="@string/finish_signup"
             android:onClick="nextView"
+            android:layout_margin="16dp"
             android:background="@drawable/square_salmon"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"/>
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </ScrollView>

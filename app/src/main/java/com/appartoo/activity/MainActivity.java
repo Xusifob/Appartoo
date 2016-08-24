@@ -12,13 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.appartoo.R;
-import com.appartoo.fragment.OffersListFragment;
 import com.appartoo.view.NavigationDrawerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int ID_MENU_MESSAGES = 1;
-    private final int ID_MENU_REFRESH = 2;
+    private final int ID_MENU_SEARCH = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
@@ -67,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, ID_MENU_REFRESH, Menu.NONE, "Refresh").setIcon(R.drawable.refresh).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        menu.add(Menu.NONE, ID_MENU_MESSAGES, Menu.NONE, "Messages").setIcon(R.drawable.speech).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, ID_MENU_SEARCH, Menu.NONE, "Search").setIcon(R.drawable.search_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -76,12 +73,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //Define the action to do according to the selected menu
         switch (item.getItemId()) {
-            case ID_MENU_MESSAGES:
-                startActivity(new Intent(MainActivity.this, MessagesListActivity.class));
+            case ID_MENU_SEARCH:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 return true;
-            case ID_MENU_REFRESH:
-                OffersListFragment offersListFragment = (OffersListFragment) getSupportFragmentManager().findFragmentById(R.id.offerListFragment);
-                offersListFragment.refreshOffers();
             default:
                 return super.onOptionsItemSelected(item);
         }

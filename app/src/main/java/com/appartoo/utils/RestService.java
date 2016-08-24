@@ -38,11 +38,19 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST("/register")
-    Call<TokenReceiver> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
+    Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName, @Field("birthDate") String birthDate);
 
     @FormUrlEncoded
     @POST("/offer/create")
     Call<OfferModel> addOffer(@Header("Authorization") String bearerToken, @FieldMap Map<String, String> updateModel);
+
+    @FormUrlEncoded
+    @POST("/organization/create")
+    Call<ConversationIdReceiver> applyToOffer(@Header("Authorization") String bearerToken, @Field("profileId") String ownerProfileId);
+
+    @FormUrlEncoded
+    @POST
+    Call<ResponseBody> acceptCandidateToOffer(@Url String url, @Header("Authorization") String bearerToken, @Field("profile_id") String ownerProfileId, @Field("conversationId") String conversationId);
 
     @Multipart
     @POST

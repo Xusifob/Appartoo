@@ -55,7 +55,7 @@
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:layout_collapseMode="pin"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorGreen"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 
@@ -99,7 +99,7 @@
         app:layout_anchorGravity="bottom|right|end"/>
     <Button
         style="@style/ButtonSalmon"
-        android:text="@string/action_send_message"
+        android:text="@string/apply_to_offer"
         android:id="@+id/offerDetailSendMessage"
         android:layout_gravity="bottom"/>
 </android.support.design.widget.CoordinatorLayout>
