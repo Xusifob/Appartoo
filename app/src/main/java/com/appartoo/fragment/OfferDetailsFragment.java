@@ -86,9 +86,9 @@ public class OfferDetailsFragment extends Fragment {
             if(((OfferModelWithDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
             else offerEnd.setText(endNotInformed);
         } else if (offer instanceof OfferModelWithDetailledDate) {
-            if(((OfferModelWithDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
+            if(((OfferModelWithDetailledDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
             else offerStart.setText(startNotInformed);
-            if(((OfferModelWithDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
+            if(((OfferModelWithDetailledDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
             else offerEnd.setText(endNotInformed);
         }
 

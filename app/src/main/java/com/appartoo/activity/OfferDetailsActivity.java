@@ -199,7 +199,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void applyToOffer(){
-        progressDialog = ProgressDialog.show(this, "Ajout du participant", "Veuillez patienter...", true);
+        progressDialog = ProgressDialog.show(this, "Création de la conversation", "Veuillez patienter...", true);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)

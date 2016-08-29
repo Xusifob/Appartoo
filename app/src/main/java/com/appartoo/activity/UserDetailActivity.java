@@ -143,7 +143,7 @@ public class UserDetailActivity extends AppCompatActivity {
         callback.enqueue(new Callback<ConversationIdReceiver>() {
             @Override
             public void onResponse(Call<ConversationIdReceiver> call, Response<ConversationIdReceiver> response) {
-                sendMessageButton.setEnabled(false);
+                sendMessageButton.setEnabled(true);
                 progressDialog.dismiss();
                 if(response.isSuccessful()){
                     Intent intent = new Intent(UserDetailActivity.this, MessageActivity.class);
@@ -162,7 +162,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
-                sendMessageButton.setEnabled(false);
+                sendMessageButton.setEnabled(true);
                 progressDialog.dismiss();
                 if(t instanceof SocketTimeoutException) {
                     Toast.makeText(getApplicationContext(), "La conversation a bien été créée", Toast.LENGTH_SHORT).show();
