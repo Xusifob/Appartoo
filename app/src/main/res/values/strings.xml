@@ -40,6 +40,9 @@
     <string name="ok">OK</string>
     <string name="no_picture">Aucune image</string>
     <string name="proposed_by">Proposé par : </string>
+    <string name="viewed">Vu</string>
+    <string name="viewed_by">Vu par</string>
+    <string name="everybody">Tout le monde</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -56,7 +59,7 @@
     <string name="configure_profile">Configurer mon profil</string>
     <string name="congratulations">Félicitations !</string>
     <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
-
+    <string name="not_informed">Non renseigné</string>
     <!-- NAVIGATION DRAWER STRINGS -->
     <string name="drawer_profile">Mon profil</string>
     <string name="drawer_offers">Parcourir les offres</string>
@@ -65,8 +68,14 @@
     <string name="drawer_messages">Mes messages</string>
 
     <!-- MESSAGES OPTIONS MENU STRINGS -->
+    <string name="confirm_accept_candidate">Êtes-vous sûr de vouloir accepter ce candidat ?</string>
+    <string name="confirm_refuse_candidate">Êtes-vous sûr de vouloir refuser ce candidat ?</string>
     <string name="candidate_accept">Accepter le candidat</string>
+    <string name="candidate_accepted">La candidature a bien été acceptée</string>
     <string name="candidate_refuse">Refuser le candidat</string>
+    <string name="candidate_refused">La candidature a bien été refusée</string>
+    <string name="conversation_disabled">Conversation désactivée</string>
+
 
     <!-- USER PROFILE STRINGS -->
     <string name="modify_profile">Modifier mon profil</string>
@@ -105,6 +114,8 @@
     <string name="euro_per_month">"€/mois"</string>
     <string name="unknown_city">Ville non reconnue</string>
     <string name="room_or_rooms">"chambre(s)"</string>
+    <string name="no_description">(Aucune description)</string>
+    <string name="no_job_refered">(Aucun emploi renseigné)</string>
 
     <!-- USER CONFIGURE PROFILE STRINGS -->
     <string name="what_are_you_looking_for">Que recherchez-vous ?</string>
@@ -119,11 +130,8 @@
     <string name="contract_configure_profile">Quelle est votre contrat ?</string>
     <string name="contract">Contrat</string>
     <string-array name="contracts">
-        <item name="student">Etudiant</item>
-        <item name="salary">Salarié</item>
-        <item name="freelance">Freelance</item>
-        <item name="retired">Retraité</item>
-        <item name="unemployed">Sans emploi</item>
+        <item name="CDI">CDI</item>
+        <item name="CDD">CDD</item>
     </string-array>
     <string name="income_configure_profile">Quelle est votre revenu mensuel ?</string>
     <string name="income">Revenu</string>

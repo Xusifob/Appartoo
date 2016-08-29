@@ -14,6 +14,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appartoo.R;
+import com.appartoo.adapter.PlacesAdapter;
+import com.appartoo.model.PlaceModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallbacks;
@@ -26,10 +29,6 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.appartoo.R;
-import com.appartoo.adapter.PlacesAdapter;
-import com.appartoo.model.PlaceModel;
 
 /**
  * Created by alexandre on 16-07-20.

@@ -12,6 +12,7 @@
         android:layout_alignParentTop="true"
         android:stackFromBottom="true"
         android:transcriptMode="normal"
+        tools:listfooter="@layout/footer_message"
         tools:listitem="@layout/list_item_message">
     </ListView>
     <View
@@ -30,6 +31,8 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:isScrollContainer="true"
             android:inputType="textMultiLine"
             android:gravity="bottom"

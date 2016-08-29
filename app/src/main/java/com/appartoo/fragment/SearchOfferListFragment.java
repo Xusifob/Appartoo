@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.appartoo.R;
+import com.appartoo.model.OfferModel;
+import com.appartoo.utils.Appartoo;
+import com.appartoo.utils.RestService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -17,10 +21,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.appartoo.R;
-import com.appartoo.model.OfferModel;
-import com.appartoo.utils.Appartoo;
-import com.appartoo.utils.RestService;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;

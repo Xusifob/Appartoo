@@ -17,16 +17,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 import com.appartoo.R;
 import com.appartoo.fragment.signup.SignUpFourthFragment;
-import com.appartoo.fragment.signup.SignUpFifthFragment;
-import com.appartoo.fragment.signup.SignUpThirdFragment;
 import com.appartoo.fragment.signup.SignUpFirstFragment;
+import com.appartoo.fragment.signup.SignUpThirdFragment;
 import com.appartoo.fragment.signup.SignUpSecondFragment;
 import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.SignUpModel;
@@ -35,6 +29,12 @@ import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.TokenReceiver;
 import com.appartoo.view.NavigationDrawerView;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -49,11 +49,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class SignUpActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 4;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
-    private Calendar calendar;
-    private DatePickerDialog.OnDateSetListener date;
     private SimpleDateFormat dateFormat;
     private SimpleDateFormat jsonFormat;
     private RestService restService;
@@ -83,20 +81,6 @@ public class SignUpActivity extends FragmentActivity {
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
         sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
 
-        //Define today's date
-        calendar = Calendar.getInstance();
-        date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                ((EditText) findViewById(R.id.signUpBirthdate)).setText(dateFormat.format(calendar.getTime()));
-            }
-
-        };
-
         //Build a retrofit request
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
@@ -125,14 +109,6 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     /**
-     * Open a dialog to pick a date easily
-     * @param v
-     */
-    public void openDatePicker(View v) {
-        new DatePickerDialog(SignUpActivity.this, date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    /**
      * Checks if the informations submitted have correct
      * @return true if the informations are correct, false if they are not.
      */
@@ -140,13 +116,12 @@ public class SignUpActivity extends FragmentActivity {
         //Retrieve the form inputs
         String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString().trim();
         String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString().trim();
-        String birthdate = ((EditText) findViewById(R.id.signUpBirthdate)).getText().toString().trim();
         String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString().trim();
         String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
         String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
 
         //Check the edit text input
-        if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, birthdate, email})) {
+        if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, email})) {
             Toast.makeText(getApplicationContext(), R.string.error_missing_info_sign_up, Toast.LENGTH_LONG).show();
             return null;
         }
@@ -163,14 +138,7 @@ public class SignUpActivity extends FragmentActivity {
             return null;
         }
 
-        try {
-            birthdate = jsonFormat.format(dateFormat.parse(birthdate));
-        } catch (ParseException e) {
-            return null;
-        }
-
-
-        return new SignUpModel(email, password, firstName, lastName, birthdate);
+        return new SignUpModel(email, password, firstName, lastName);
     }
 
     /**
@@ -192,7 +160,7 @@ public class SignUpActivity extends FragmentActivity {
         if(getSignUpModel() != null){
 
             signUpButton.setEnabled(false);
-            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName(), newUser.getBirthdate());
+            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName());
 
             //Handle the server response
             callback.enqueue(new Callback<ResponseBody>() {
@@ -207,6 +175,11 @@ public class SignUpActivity extends FragmentActivity {
                     } else {
                         signUpButton.setEnabled(true);
                         System.out.println("finishSignUp response code " + response.code());
+                        try {
+                            System.out.println(response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -264,10 +237,10 @@ public class SignUpActivity extends FragmentActivity {
                     sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
-                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()))
                             .putString("profilePicUrl", Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl()).apply();
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                    Appartoo.initiateFirebase();
 
                     launchActivityWithoutHistory(SignUpProfileActivity.class);
                 } else {
@@ -276,7 +249,6 @@ public class SignUpActivity extends FragmentActivity {
                     sharedPreferences.edit().putString("givenName", newUser.getGivenName())
                             .putString("familyName", newUser.getFamilyName())
                             .putString("email", newUser.getEmail())
-                            .putString("age", String.valueOf(newUser.getAge()))
                             .putString("profilePicUrl", "images/profile.png").apply();
 
                     NavigationDrawerView.setHeaderInformations(newUser.getGivenName() + " " + newUser.getFamilyName(), newUser.getEmail());
@@ -318,8 +290,7 @@ public class SignUpActivity extends FragmentActivity {
                 case 1: return new SignUpSecondFragment();
                 case 2: return new SignUpThirdFragment();
                 case 3: return new SignUpFourthFragment();
-                case 4: return new SignUpFifthFragment();
-                default: return new SignUpFifthFragment();
+                default: return new SignUpFourthFragment();
             }
         }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
 import com.appartoo.R;
 import com.appartoo.fragment.signupprofile.SignUpProfileEighthFragment;
 import com.appartoo.fragment.signupprofile.SignUpProfileEleventhFragment;
@@ -29,6 +30,7 @@ import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.view.DisableLastSwipeViewPager;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -116,7 +118,7 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            Call<CompleteUserModel> callback = restService.updateUserProfile(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
             callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
                 public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {

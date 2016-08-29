@@ -15,6 +15,14 @@ import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.view.NavigationDrawerView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,11 +119,12 @@ public class LoginActivity extends FragmentActivity {
                     sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
-                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()))
                             .putString("profilePicUrl", Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl()).apply();
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                    Appartoo.initiateFirebase();
                 }
+
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }

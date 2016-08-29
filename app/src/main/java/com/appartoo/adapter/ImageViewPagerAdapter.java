@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
-
 import com.appartoo.activity.OfferDetailsActivity;
 import com.appartoo.activity.OfferImagesActivity;
 import com.appartoo.model.ImageModel;
 import com.appartoo.utils.ImageManager;
+
+import java.util.ArrayList;
+
 import uk.co.senab.photoview.PhotoView;
 
 /**

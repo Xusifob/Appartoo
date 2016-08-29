@@ -12,21 +12,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.adapter.GarantorsAdapter;
 import com.appartoo.model.GarantorModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by alexandre on 16-07-12.
  */
 public class SignUpProfileTenthFragment extends Fragment {
 
-    ArrayList<GarantorModel> garantorModels;
-    GarantorsAdapter garantorsAdapter;
-    ListView garantorsListView;
-    ImageView addgarantorButton;
+    private ArrayList<GarantorModel> garantorModels;
+    private GarantorsAdapter garantorsAdapter;
+    private ListView garantorsListView;
+    private ImageView addgarantorButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,9 +57,9 @@ public class SignUpProfileTenthFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     GarantorModel newgarantor = new GarantorModel();
-                    newgarantor.setFirstname(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
-                    newgarantor.setLastname(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
-                    newgarantor.setMail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
+                    newgarantor.setGivenName(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
+                    newgarantor.setFamilyName(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
+                    newgarantor.setEmail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
                     newgarantor.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString()));
                     garantorModels.add(newgarantor);
                     garantorsAdapter.notifyDataSetChanged();

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -142,6 +141,9 @@ public class NavigationDrawerView extends NavigationView {
                         }
                         return true;
                     case R.id.drawer_logout:
+
+                        Appartoo.setUserIsOnline(false);
+
                         context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE).edit()
                                 .remove("token")
                                 .remove("familyName")

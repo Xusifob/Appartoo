@@ -4,34 +4,11 @@ package com.appartoo.model;
  * Created by alexandre on 16-07-19.
  */
 public class GarantorModel {
-    String firstname;
-    String lastname;
-    String mail;
+
+    String givenName;
+    String familyName;
+    String email;
     float income;
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
 
     public float getIncome() {
         return income;
@@ -41,13 +18,27 @@ public class GarantorModel {
         this.income = income;
     }
 
-    @Override
-    public String toString() {
-        return "GarantorModel{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", mail='" + mail + '\'' +
-                ", income=" + income +
-                '}';
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

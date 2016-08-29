@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.appartoo.R;
 import com.appartoo.activity.AddOfferActivity;
 import com.appartoo.adapter.ImageListViewAdapter;
 import com.appartoo.utils.ImageManager;
-import com.appartoo.view.GridImageView;
 
 import java.io.File;
 import java.util.ArrayList;

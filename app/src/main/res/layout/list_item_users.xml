@@ -22,11 +22,9 @@
         android:paddingLeft="16dp">
         <TextView
             style="@style/Paragraph"
-            android:text="@string/firstName"
             android:id="@+id/residentName"/>
         <TextView
             style="@style/Paragraph"
-            android:text="@string/age"
             android:id="@+id/residentAge" />
     </LinearLayout>
 
@@ -41,7 +39,7 @@
                 android:layout_width="36dp"
                 android:contentDescription="@string/smoker_icon"
                 android:src="@drawable/indifferent_with_smoking"
-                android:id="@+id/residentIsSmoker"/>
+                android:id="@+id/userDetailSmoker"/>
             <ImageView
                 style="@style/Image"
                 android:layout_margin="8dp"
@@ -58,6 +56,6 @@
                 android:layout_width="36dp"
                 android:src="@drawable/alone"
                 android:contentDescription="@string/single_icon"
-                android:id="@+id/residentIsSingle"/>
+                android:id="@+id/userDetailRelationship"/>
     </LinearLayout>
 </LinearLayout>

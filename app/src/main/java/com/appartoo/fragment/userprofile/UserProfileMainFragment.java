@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,16 +74,9 @@ public class UserProfileMainFragment extends Fragment {
         System.out.println("Populating with local");
         String givenName = sharedPreferences.getString("givenName", null);
         String familyName = sharedPreferences.getString("familyName", null);
-        String age = sharedPreferences.getString("age", null);
         String profilePicUrl = sharedPreferences.getString("profilePicUrl", null);
 
-        if(givenName != null && familyName != null) {
-            userName.setText(givenName + " " + familyName);
-        }
-
-        if(age != null) {
-            userInfos.setText(age + " " + getString(R.string.year_age));
-        }
+        if(givenName != null && familyName != null) userName.setText(givenName + " " + familyName);
 
         if(profilePicUrl != null) ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, profilePicUrl, ImageManager.TRANFORM_SQUARE);
         else userProfilePic.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.default_profile_picture));
@@ -95,7 +88,11 @@ public class UserProfileMainFragment extends Fragment {
 
 
         userName.setText(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName());
-        userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
+        if(Appartoo.LOGGED_USER_PROFILE.getAge() > 0) {
+            userInfos.setText(Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge()) + " " + getString(R.string.year_age));
+        } else {
+            userInfos.setText("");
+        }
     }
 
     private void getUserProfile(){
@@ -114,8 +111,9 @@ public class UserProfileMainFragment extends Fragment {
                     sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
-                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge())).apply();
+                            .apply();
 
+                    Appartoo.initiateFirebase();
                     populateView();
 
                 } else {

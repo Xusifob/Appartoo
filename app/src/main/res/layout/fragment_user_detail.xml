@@ -93,19 +93,16 @@
             <TextView
                 style="@style/Paragraph"
                 android:textStyle="bold"
-                android:text="@string/fullname"
                 android:padding="2dp"
-                android:id="@+id/userName" />
+                android:id="@+id/userDetailName" />
             <TextView
                 style="@style/Paragraph"
                 android:padding="2dp"
-                android:text="@string/contract"
-                android:id="@+id/userContractAndSociety" />
+                android:id="@+id/userDetailContractAndSociety" />
             <TextView
                 style="@style/Paragraph"
                 android:padding="2dp"
-                android:text="@string/age"
-                android:id="@+id/userAge" />
+                android:id="@+id/userDetailAge" />
         </LinearLayout>
     </RelativeLayout>
     <View
@@ -128,7 +125,7 @@
                 style="@style/Image"
                 android:contentDescription="@string/smoker_icon"
                 android:src="@drawable/indifferent_with_smoking"
-                android:id="@+id/residentIsSmoker"/>
+                android:id="@+id/userDetailSmoker"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -140,7 +137,7 @@
                 style="@style/Image"
                 android:contentDescription="@string/student_icon"
                 android:src="@drawable/student"
-                android:id="@+id/residentContract"/>
+                android:id="@+id/userDetailIsWorker"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -152,7 +149,7 @@
                 style="@style/Image"
                 android:contentDescription="@string/single_icon"
                 android:src="@drawable/alone"
-                android:id="@+id/residentIsSingle"/>
+                android:id="@+id/userDetailRelationship"/>
         </LinearLayout>
     </LinearLayout>
     <View
@@ -161,8 +158,7 @@
     <TextView
         style="@style/Paragraph"
         android:padding="8dp"
-        android:text="@string/description"
-        android:id="@+id/userDescription" />
+        android:id="@+id/userDetailDescription" />
     <View
         style="@style/Separator"
         android:layout_margin="8dp" />

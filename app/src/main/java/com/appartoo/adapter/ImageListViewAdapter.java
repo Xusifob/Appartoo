@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import com.appartoo.view.GridImageView;
-
 /**
  * Created by alexandre on 16-08-10.
  */

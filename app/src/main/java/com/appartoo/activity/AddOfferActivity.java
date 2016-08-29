@@ -1,6 +1,6 @@
 package com.appartoo.activity;
 
-import android.graphics.Bitmap;
+import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,10 +36,10 @@ import com.appartoo.model.ImageModel;
 import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferToCreateModel;
 import com.appartoo.model.PlaceModel;
+import com.appartoo.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.GeocoderResponse;
 import com.appartoo.utils.GoogleMapsService;
-import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.view.DisableLastSwipeViewPager;
@@ -89,7 +89,8 @@ public class AddOfferActivity extends AppCompatActivity {
     private AddOfferTenthFragment addOfferTenthFragment;
     private AddOfferEleventhFragment addOfferEleventhFragment;
     private AddOfferTwelfthFragment addOfferTwelfthFragment;
-
+    private ProgressDialog progressDialog;
+    private ArrayList<UserModel> residents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,10 @@ public class AddOfferActivity extends AppCompatActivity {
 
     public void setFiles(ArrayList<File> files) {
         this.files = files;
+    }
+
+    public void setResidents(ArrayList<UserModel> residents) {
+        this.residents = residents;
     }
 
     public void toggleView(View v) {
@@ -315,11 +320,16 @@ public class AddOfferActivity extends AppCompatActivity {
             offerModel.setPhone(phone.trim());
             offerModel.setKeyword(keyword.trim());
 
+            if(residents != null) {
+                offerModel.setResidents(residents);
+            }
+
             return offerModel;
         }
 
         public void setAddress(final OfferToCreateModel offerModel) {
             if(selectedPlace.getPlaceId() != null) {
+                progressDialog = ProgressDialog.show(AddOfferActivity.this, "Création de l'annonce", "Veuillez patienter...", true);
                 Call<GeocoderResponse> callback = googleGeocodingService.getAddressFromPlaceId(selectedPlace.getPlaceId(), getResources().getString(R.string.google_maps_key));
 
                 callback.enqueue(new Callback<GeocoderResponse>() {
@@ -367,6 +377,7 @@ public class AddOfferActivity extends AppCompatActivity {
 
         private void sendOfferToServer(OfferToCreateModel offerModel) {
             if(offerModel != null) {
+
                 Gson gson = new GsonBuilder().serializeNulls().create();
                 Type stringStringMap = new TypeToken<Map<String, String>>(){}.getType();
                 Map<String,String> offerModelMap = gson.fromJson(gson.toJson(offerModel), stringStringMap);
@@ -385,10 +396,14 @@ public class AddOfferActivity extends AppCompatActivity {
                             String offerId = response.body().getId();
                             System.out.println(response.body().toString());
                             System.out.println(offerId);
-                            if(files.size() > 0) {
-                                sendImagesToServer(offerId);
+                            if(files != null && files.size() > 0) {
+                                sendImagesToServer(offerId, files.size(), 1);
+                            } else {
+                                progressDialog.dismiss();
+                                pager.setCurrentItem(NUM_PAGES-1);
                             }
                         } else {
+                            progressDialog.dismiss();
                             addOfferButton.setEnabled(true);
                             Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                             try {
@@ -404,48 +419,53 @@ public class AddOfferActivity extends AppCompatActivity {
                     public void onFailure(Call<OfferModel> call, Throwable t) {
                         t.printStackTrace();
                         Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                         addOfferButton.setEnabled(true);
                     }
                 });
             } else {
                 addOfferButton.setEnabled(true);
+                progressDialog.dismiss();
             }
         }
 
-        private void sendImagesToServer(final String offerId) {
+        private void sendImagesToServer(final String offerId, final int numberOfImages, final int currentImage) {
             String url = offerId + "/images";
             File file = files.remove(0);
+
+            progressDialog.setMessage("Annonce enregistrée, envoi des images : " + String.valueOf(currentImage) + " sur " + String.valueOf(numberOfImages) + "...");
 
             System.out.println(url);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
 
+            try {
+                BitmapFactory.decodeStream(new FileInputStream(file), null, options);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part body =  MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-            Call<ImageModel> callback = restService.addImageToServer(url, "Bearer " + Appartoo.TOKEN, body);
+            Call<ImageModel> callback = restService.addImageToServer(RestService.REST_URL + url, "Bearer " + Appartoo.TOKEN, body);
 
             callback.enqueue(new Callback<ImageModel>() {
                 @Override
                 public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
                     if(!response.isSuccessful()){
-                        System.out.println(response.code());
+                        Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                         try {
-                            System.out.println(response.errorBody().string());
+                            System.out.println(response.code());
+                            System.out.println(response.errorBody().string().toString());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
 
                     if(files.size() > 0) {
-                        sendImagesToServer(offerId);
+                        sendImagesToServer(offerId, numberOfImages, currentImage+1);
                     } else {
+                        progressDialog.dismiss();
                         addOfferButton.setEnabled(true);
                         pager.setCurrentItem(NUM_PAGES-1);
                     }
@@ -454,6 +474,7 @@ public class AddOfferActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<ImageModel> call, Throwable t) {
                     t.printStackTrace();
+                    progressDialog.dismiss();
                     addOfferButton.setEnabled(true);
                 }
             });

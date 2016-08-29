@@ -10,10 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.model.GarantorModel;
+
+import java.util.ArrayList;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -63,9 +63,9 @@ public class GarantorsAdapter extends BaseAdapter {
         }
 
         final GarantorModel garantorModel = garantorModels.get(position);
-        holder.fullname.setText(garantorModel.getFirstname() + " " + garantorModel.getLastname());
+        holder.fullname.setText(garantorModel.getGivenName() + " " + garantorModel.getFamilyName());
         holder.income.setText(Float.toString(garantorModel.getIncome()) +  " " + context.getString(R.string.euro_per_month));
-        holder.mail.setText(garantorModel.getMail());
+        holder.mail.setText(garantorModel.getEmail());
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +80,9 @@ public class GarantorsAdapter extends BaseAdapter {
                 final View dialogLayout = layoutInflater.inflate(R.layout.alert_dialog_garantor, null);
                 android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(context);
 
-                ((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).setText(garantorModel.getFirstname());
-                ((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).setText(garantorModel.getLastname());
-                ((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).setText(garantorModel.getMail());
+                ((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).setText(garantorModel.getGivenName());
+                ((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).setText(garantorModel.getFamilyName());
+                ((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).setText(garantorModel.getEmail());
                 ((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).setText(Float.toString(garantorModel.getIncome()));
 
                 selectContractDialog.setTitle("Ajouter un garant");
@@ -91,9 +91,9 @@ public class GarantorsAdapter extends BaseAdapter {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        garantorModel.setFirstname(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
-                        garantorModel.setLastname(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
-                        garantorModel.setMail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
+                        garantorModel.setGivenName(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
+                        garantorModel.setFamilyName(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
+                        garantorModel.setEmail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
                         garantorModel.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString()));
                         notifyDataSetChanged();
                     }

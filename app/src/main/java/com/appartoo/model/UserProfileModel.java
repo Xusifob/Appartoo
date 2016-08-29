@@ -2,8 +2,6 @@ package com.appartoo.model;
 
 import android.os.Parcel;
 
-import java.util.Calendar;
-
 /**
  * Created by alexandre on 16-07-22.
  */

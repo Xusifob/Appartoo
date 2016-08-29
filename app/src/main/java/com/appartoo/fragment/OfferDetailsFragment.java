@@ -3,18 +3,11 @@ package com.appartoo.fragment;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import com.appartoo.R;
 import com.appartoo.activity.UserDetailActivity;
@@ -23,8 +16,12 @@ import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.model.UserModel;
-import com.appartoo.utils.ImageManager;
+import com.appartoo.utils.TextValidator;
 import com.appartoo.view.NonScrollableListView;
+
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * Created by alexandre on 16-07-13.
@@ -73,17 +70,26 @@ public class OfferDetailsFragment extends Fragment {
     private void populateView() {
         if(offer.getAddress() != null) offerCity.setText(offer.getAddress().getCity());
         else offerCity.setText(R.string.unknown_city);
-        offerDescription.setText(offer.getDescription());
+
+        if (offer.getDescription() == null || !TextValidator.haveText(offer.getDescription())) offerDescription.setText(R.string.no_description);
+        else offerDescription.setText(offer.getDescription());
         offerTitle.setText(offer.getName());
         offerKeyword.setText(offer.getKeyword() + " " + NumberFormat.getInstance().format(offer.getPrice()) + " " + getString(R.string.euro));
         offerRooms.setText(String.valueOf(offer.getRooms()) + " " + getString(R.string.room_or_rooms));
 
+        String startNotInformed = getString(R.string.start) + " : " + getString(R.string.not_informed);
+        String endNotInformed = getString(R.string.end) + " : " + getString(R.string.not_informed);
+
         if(offer instanceof OfferModelWithDate) {
-            offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
-            offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+            if(((OfferModelWithDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
+            else offerStart.setText(startNotInformed);
+            if(((OfferModelWithDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+            else offerEnd.setText(endNotInformed);
         } else if (offer instanceof OfferModelWithDetailledDate) {
-            offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
-            offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
+            if(((OfferModelWithDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
+            else offerStart.setText(startNotInformed);
+            if(((OfferModelWithDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
+            else offerEnd.setText(endNotInformed);
         }
 
         ArrayList<UserModel> residents = new ArrayList<>();

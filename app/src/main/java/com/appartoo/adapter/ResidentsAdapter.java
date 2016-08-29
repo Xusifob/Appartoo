@@ -9,11 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.model.UserModel;
 import com.appartoo.utils.ImageManager;
+
+import java.util.ArrayList;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -59,9 +59,9 @@ public class ResidentsAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.residentName);
             holder.age = (TextView) convertView.findViewById(R.id.residentAge);
-            holder.isSmoker = (ImageView) convertView.findViewById(R.id.residentIsSmoker);
+            holder.isSmoker = (ImageView) convertView.findViewById(R.id.userDetailSmoker);
             holder.acceptAnimals = (ImageView) convertView.findViewById(R.id.residentAcceptsAnimals);
-            holder.isSingle = (ImageView) convertView.findViewById(R.id.residentIsSingle);
+            holder.isSingle = (ImageView) convertView.findViewById(R.id.userDetailRelationship);
             holder.residentImageThumbail = (ImageView) convertView.findViewById(R.id.residentThumbnail);
             convertView.setTag(holder);
         } else {
@@ -70,7 +70,9 @@ public class ResidentsAdapter extends BaseAdapter {
 
         UserModel userModel = userModels.get(position);
         holder.name.setText(userModel.getGivenName());
-        holder.age.setText(Integer.toString(userModel.getAge()) +  " " + convertView.getResources().getString(R.string.age));
+        if(userModel.getAge() > 0) {
+            holder.age.setText(Integer.toString(userModel.getAge()) + " " + convertView.getResources().getString(R.string.age));
+        }
         setPictures(holder, userModel, convertView);
 
         return convertView;

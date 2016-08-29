@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.adapter.ImageViewPagerAdapter;
 import com.appartoo.model.ImageModel;
+
+import java.util.ArrayList;
 
 public class OfferImagesActivity extends Activity {
 

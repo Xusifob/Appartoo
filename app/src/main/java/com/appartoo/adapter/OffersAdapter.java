@@ -9,15 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.model.OfferModel;
-import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
-import com.appartoo.utils.RestService;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.util.ArrayList;
 
 /**
  * Created by alexandre on 16-07-05.

@@ -238,6 +238,9 @@ public class UserModel implements Parcelable {
     }
 
     public int getAge() {
+        if(birthDate == null) {
+            return -2;
+        }
         Calendar now = Calendar.getInstance();
         Calendar birthdate = Calendar.getInstance();
         birthdate.setTime(this.birthDate);

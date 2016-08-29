@@ -63,6 +63,6 @@ android:fitsSystemWindows="true">
     <Button
         style="@style/ButtonSalmon"
         android:text="@string/action_send_message"
-        android:id="@+id/offerDetailSendMessage"
+        android:id="@+id/userDetailSendMessage"
         android:layout_gravity="bottom"/>
 </android.support.design.widget.CoordinatorLayout>

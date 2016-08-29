@@ -1,20 +1,26 @@
 package com.appartoo.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.appartoo.R;
+import com.appartoo.adapter.ImageViewPagerAdapter;
+import com.appartoo.fragment.WorkaroundMapFragment;
+import com.appartoo.model.OfferModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
@@ -26,14 +32,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import com.appartoo.R;
-import com.appartoo.adapter.ImageViewPagerAdapter;
-import com.appartoo.fragment.WorkaroundMapFragment;
-import com.appartoo.model.OfferModel;
-
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +55,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private ImageButton offerDetailOwnerPicture;
     private ViewPager viewPager;
     private Button offerDetailSendMessageButton;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,12 +92,57 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
 
-        offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                applyToOffer();
-            }
-        });
+        if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(offer.getOwner().getId())) {
+
+            //TODO Modifier offre
+
+            offerDetailSendMessageButton.setText("Modifier votre annonce");
+            offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    new AlertDialog.Builder(OfferDetailsActivity.this)
+                            .setMessage("Fonctionnalité bientôt disponible.")
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            });
+        } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
+            new AlertDialog.Builder(OfferDetailsActivity.this)
+                    .setMessage("Vous devez être inscrit et connecté pour pouvoir postuler à une annonce.")
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+        } else {
+            offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    offerDetailSendMessageButton.setEnabled(false);
+                    applyToOffer();
+                }
+            });
+        }
 
         //Define the drawer
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -152,21 +199,26 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void applyToOffer(){
+        progressDialog = ProgressDialog.show(this, "Ajout du participant", "Veuillez patienter...", true);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RestService restService = retrofit.create(RestService.class);
 
-        Call<ConversationIdReceiver> callback = restService.applyToOffer("Bearer " + Appartoo.TOKEN, offer.getOwner().getIdNumber().toString());
+        Call<ConversationIdReceiver> callback = restService.sendMessageToUser("Bearer " + Appartoo.TOKEN, offer.getOwner().getIdNumber().toString());
         callback.enqueue(new Callback<ConversationIdReceiver>() {
             @Override
             public void onResponse(Call<ConversationIdReceiver> call, Response<ConversationIdReceiver> response) {
+                progressDialog.dismiss();
+                offerDetailSendMessageButton.setEnabled(true);
                 if(response.isSuccessful()){
                     Intent intent = new Intent(OfferDetailsActivity.this, MessageActivity.class);
                     intent.putExtra("conversationId", response.body().getIdConversation());
                     startActivity(intent);
                 } else {
+                    Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
                     System.out.println(response.code());
                     try {
                         System.out.println(response.errorBody().string());
@@ -178,6 +230,13 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
             @Override
             public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
+                offerDetailSendMessageButton.setEnabled(true);
+                progressDialog.dismiss();
+                if(t instanceof SocketTimeoutException) {
+                    Toast.makeText(getApplicationContext(), "La conversation a bien été créée", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                }
                 t.printStackTrace();
             }
         });

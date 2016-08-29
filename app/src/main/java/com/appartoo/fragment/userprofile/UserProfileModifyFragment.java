@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,17 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.appartoo.R;
-import com.appartoo.model.ImageModel;
 import com.appartoo.model.CompleteUserModel;
+import com.appartoo.model.ImageModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 import com.appartoo.view.NavigationDrawerView;
+
+import java.io.File;
+import java.io.IOException;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -68,6 +68,8 @@ public class UserProfileModifyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_modify, container, false);
+
+        //TODO Plus d'options à modifier
 
         defineInteractionsVariables(view);
 
@@ -189,7 +191,7 @@ public class UserProfileModifyFragment extends Fragment {
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            Call<CompleteUserModel> callback = restService.updateUserProfile(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
 
             callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
@@ -229,7 +231,7 @@ public class UserProfileModifyFragment extends Fragment {
 
         RequestBody file = RequestBody.create(MediaType.parse("multipart/form-data"), profilePictureFile);
         MultipartBody.Part body =  MultipartBody.Part.createFormData("file", profilePictureFile.getName(), file);
-        Call<ImageModel> callback = restService.addImageToServer(Appartoo.LOGGED_USER_PROFILE.getId() + "/images","Bearer " + Appartoo.TOKEN, body);
+        Call<ImageModel> callback = restService.addImageToServer(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId() + "/images","Bearer " + Appartoo.TOKEN, body);
 
         callback.enqueue(new Callback<ImageModel>() {
             @Override

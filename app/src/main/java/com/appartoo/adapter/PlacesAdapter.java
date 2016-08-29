@@ -8,11 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.appartoo.R;
 import com.appartoo.model.PlaceModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by alexandre on 16-07-21.

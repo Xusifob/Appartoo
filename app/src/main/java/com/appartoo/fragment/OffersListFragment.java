@@ -13,8 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.activity.AddOfferActivity;
 import com.appartoo.activity.OfferDetailsActivity;
@@ -24,6 +22,9 @@ import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.ServerResponse;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -127,6 +128,7 @@ public class OffersListFragment extends Fragment {
                 refreshOffers();
             }
         });
+        offersListView.addFooterView(progressBar);
 
         offersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -137,11 +139,6 @@ public class OffersListFragment extends Fragment {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null) {
-
-                    if(offersListView.getFooterViewsCount() == 0) {
-                        offersListView.addFooterView(progressBar);
-                    }
-
                     offerPage++;
                     getOffers(offerPage);
                 }
@@ -181,7 +178,11 @@ public class OffersListFragment extends Fragment {
                     } catch (Exception e){
 
                     }
-                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                    if(offerPage == 1) {
+                        Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.no_offer_found, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 if(swipeRefreshLayout.isRefreshing()){

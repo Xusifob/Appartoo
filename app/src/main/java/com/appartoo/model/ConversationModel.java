@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by alexandre on 16-08-16.
@@ -20,6 +18,7 @@ public class ConversationModel {
     private Long createdTime;
     private Long lastMessageTime;
     private Integer type;
+    private Integer status;
     private Boolean enabled;
     private HashMap<String, String> offer;
     private HashMap<String, Boolean> hasAnswered;
@@ -133,6 +132,14 @@ public class ConversationModel {
         this.offer = offer;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public MessageModel getLastMessage() {
         if(messages == null) {
             return null;
@@ -176,28 +183,32 @@ public class ConversationModel {
     public String getConversationName(){
 
         String convName = "";
-        switch (type) {
-            case 0:
-                for (String participant : participants.keySet()){
-                    if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
-                        convName += participants.get(participant) + ", ";
+        if(type != null) {
+            switch (type) {
+                case 0:
+                    for (String participant : participants.keySet()) {
+                        if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                            convName += participants.get(participant) + ", ";
+                        }
                     }
-                }
-                convName = convName.substring(0, convName.length() - 2);
-                return convName;
-            case 1:
-                for (String participant : participants.keySet()){
-                    if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
-                        convName += participants.get(participant) + ", ";
+                    convName = convName.substring(0, convName.length() - 2);
+                    return convName;
+                case 1:
+                    for (String participant : participants.keySet()) {
+                        if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                            convName += participants.get(participant) + ", ";
+                        }
                     }
-                }
-                convName = convName.substring(0, convName.length() - 2);
-                convName += " (" + offer.get("name") + ")";
-                return convName;
-            case 2:
-                return offer.get("name");
-            default:
-                return null;
+                    convName = convName.substring(0, convName.length() - 2);
+                    convName += " (" + offer.get("name") + ")";
+                    return convName;
+                case 2:
+                    return offer.get("name");
+                default:
+                    return "";
+            }
+        } else {
+            return "";
         }
     }
 

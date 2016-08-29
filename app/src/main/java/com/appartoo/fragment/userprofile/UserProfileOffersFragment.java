@@ -13,11 +13,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-
 import com.appartoo.R;
 import com.appartoo.activity.AddOfferActivity;
 import com.appartoo.activity.OfferDetailsActivity;
@@ -26,6 +21,11 @@ import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,7 +125,7 @@ public class UserProfileOffersFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getUserOffers(Appartoo.LOGGED_USER_PROFILE.getId() + "/offers");
+        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getUserOffers(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId() + "/offers");
 
         callback.enqueue(new Callback<ArrayList<OfferModelWithDetailledDate>>(){
             @Override

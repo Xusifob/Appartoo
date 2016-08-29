@@ -1,27 +1,22 @@
 package com.appartoo.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.res.ResourcesCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.activity.MessageActivity;
-import com.appartoo.adapter.ConversationsAdapter;
 import com.appartoo.adapter.MessageAdapter;
 import com.appartoo.model.ConversationModel;
 import com.appartoo.model.MessageModel;
@@ -30,15 +25,12 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -46,7 +38,6 @@ import java.util.Map;
  */
 public class MessageFragment extends Fragment{
 
-    private DatabaseReference databaseReference;
     private ArrayList<MessageModel> messages;
     private ListView messageList;
     private MessageAdapter messageAdapter;
@@ -55,22 +46,29 @@ public class MessageFragment extends Fragment{
     private ConversationModel conversationModel;
     private EditText messageEdit;
     private String conversationName;
-    private String conversationOwner;
-    private HashMap<String, String> conversationOffer;
+    private View messageFooter;
+    private LinearLayout messageLayout;
+    private DatabaseReference conversationReference;
+    private ValueEventListener valueEventListener;
+    private ChildEventListener childEventListener;
+    private TextWatcher textWatcher;
+    private boolean isTyping;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
 
-        messageList = (ListView) view.findViewById(R.id.messageList);
-        messageEdit = (EditText) view.findViewById(R.id.conversationNewMessage);
-        sendMessage = (ImageView) view.findViewById(R.id.conversationSendMessage);
+        messageList = (ListView) rootView.findViewById(R.id.messageList);
+        messageEdit = (EditText) rootView.findViewById(R.id.conversationNewMessage);
+        sendMessage = (ImageView) rootView.findViewById(R.id.conversationSendMessage);
+        messageLayout = (LinearLayout) rootView.findViewById(R.id.messageSendMessage);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        messageFooter = inflater.inflate(R.layout.footer_message, container, false);
+
         conversationId = getActivity().getIntent().getStringExtra("conversationId");
         conversationName = getActivity().getIntent().getStringExtra("conversationName");
-        conversationOwner = getActivity().getIntent().getStringExtra("conversationOwner");
-        conversationOffer = (HashMap<String, String>) getActivity().getIntent().getSerializableExtra("conversationOffer");
+        conversationReference = Appartoo.databaseReference.getRoot().child("conversations/" + conversationId);
+        isTyping = false;
 
         messages = new ArrayList<>();
         messageAdapter = new MessageAdapter(getActivity().getApplicationContext(), messages, Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString());
@@ -79,7 +77,7 @@ public class MessageFragment extends Fragment{
             container.removeAllViews();
         }
 
-        return view;
+        return rootView;
     }
 
     @Override
@@ -94,68 +92,18 @@ public class MessageFragment extends Fragment{
     public void onStart(){
         super.onStart();
 
+        messageFooter.setEnabled(false);
+
         messageList.setOnItemClickListener(null);
+        messageList.addFooterView(messageFooter);
         messageList.setAdapter(messageAdapter);
 
-        databaseReference.getRoot()
-                .child("conversations/" + conversationId + "/messages")
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                        HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
-
-                        Gson gson = new Gson();
-                        MessageModel message = gson.fromJson(gson.toJson(gson.toJsonTree(json)), MessageModel.class);
-
-                        messages.add(message);
-                        messageAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        databaseReference.getRoot()
-                .child("conversations/" + conversationId)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue(true) != null) {
-                            System.out.println(dataSnapshot.getValue(true).toString());
-                            HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
-                            Gson gson = new Gson();
-                            conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
-                            conversationModel.setId(conversationId);
-
-                            if(getActivity() instanceof MessageActivity){
-                                ((MessageActivity) getActivity()).setConversationModel(conversationModel);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-        });
+        setValueEventListener();
+        setChildEventListener();
+        setTextWatcher();
+        conversationReference.child("/messages").addChildEventListener(childEventListener);
+        conversationReference.addValueEventListener(valueEventListener);
+        messageEdit.addTextChangedListener(textWatcher);
 
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,19 +116,135 @@ public class MessageFragment extends Fragment{
                 if (conversation != null && messageModel != null) {
                     Map<String, Object> updates = new HashMap<>();
 
-                    updates.put("/isTyping", conversation.getIsTyping());
                     updates.put("/hasAnswered", conversation.getHasAnswered());
                     updates.put("/isRead", conversation.getIsRead());
-                    updates.put("/isOnline", conversation.getIsOnline());
                     updates.put("/lastMessageTime", conversation.getLastMessageTime());
 
-                    databaseReference.getRoot().child("conversations/" + conversationId).updateChildren(updates);
-                    databaseReference.getRoot().child("conversations/" + conversationId + "/messages").push().setValue(messageModel);
+                    conversationReference.updateChildren(updates);
+                    conversationReference.child("/messages").push().setValue(messageModel);
 
                     messageEdit.setText("");
                 }
             }
         });
+    }
+
+    private void setValueEventListener() {
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot.getValue(true));
+                if(dataSnapshot.getValue(true) != null) {
+                    HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
+                    Gson gson = new Gson();
+                    conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
+                    conversationModel.setId(conversationId);
+
+                    System.out.println(dataSnapshot.getValue(true));
+
+                    if(conversationModel.getStatus() != null && conversationModel.getStatus() != 0 && conversationModel.getType() == 1) {
+                        sendMessage.setEnabled(false);
+                        sendMessage.setImageResource(R.drawable.send_message_gray);
+                        messageEdit.setText("");
+                        messageEdit.setEnabled(false);
+                        messageLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorSubLightGray, null));
+                        messageEdit.setHint(R.string.conversation_disabled);
+                    }
+
+                    if(Appartoo.LOGGED_USER_PROFILE != null && conversationModel.getIsTyping() != null) {
+                        setOtherIsTyping();
+                    }
+
+                    if(conversationModel.getMessages() != null && conversationModel.getMessages().size() != 0) {
+                        setMessageIsRead();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void setChildEventListener(){
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
+
+                Gson gson = new Gson();
+                MessageModel message = gson.fromJson(gson.toJson(gson.toJsonTree(json)), MessageModel.class);
+
+                messages.add(message);
+                messageAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void setTextWatcher(){
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!messageEdit.getText().toString().equals("") && !isTyping) {
+                    isTyping = true;
+                    setUserIsTyping(true);
+                } else if (messageEdit.getText().toString().equals("") && isTyping) {
+                    isTyping = false;
+                    setUserIsTyping(false);
+                }
+            }
+        };
+    }
+
+    private void setOtherIsTyping() {
+        TextView typingTextView = ((TextView) messageFooter.findViewById(R.id.messageTyping));
+        String isTyping = "";
+        for(String participant : conversationModel.getIsTyping().keySet()) {
+            if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString()) && conversationModel.getIsTyping().get(participant)) {
+                isTyping += conversationModel.getParticipants().get(participant) + " est en train d'écrire...\n";
+            }
+        }
+
+        if(isTyping.equals("")) {
+            typingTextView.setVisibility(View.GONE);
+        } else {
+            isTyping = isTyping.substring(0, isTyping.length()-1);
+            typingTextView.setText(isTyping);
+            typingTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     public ConversationModel getConversationModel(Long time){
@@ -196,10 +260,6 @@ public class MessageFragment extends Fragment{
             participantsMapFalse.put(participant, false);
             if(participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) participantsMapFalse.put(participant, true);
         }
-
-        conversation.setIsOnline(conversationModel.getIsOnline());
-        conversation.setIsTyping(conversationModel.getIsTyping());
-        conversation.getIsTyping().put(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), false);
 
         conversation.setHasAnswered(participantsMapFalse);
         conversation.setIsRead(participantsMapFalse);
@@ -222,5 +282,79 @@ public class MessageFragment extends Fragment{
         messageModel.setSenderName(Appartoo.LOGGED_USER_PROFILE.getGivenName());
 
         return messageModel;
+    }
+
+    public String getCandidateId(){
+        String candidateId = "";
+        if(conversationModel.getParticipants().size() == 2) {
+            for(String key : conversationModel.getParticipants().keySet()) {
+                if (!key.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                    candidateId = key;
+                    break;
+                }
+            }
+        }
+
+        return candidateId;
+    }
+
+    public void setUserIsTyping(boolean userIsTyping) {
+        HashMap<String, Object> isTyping = new HashMap<>();
+        isTyping.put("/isTyping/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), userIsTyping);
+        conversationReference.updateChildren(isTyping);
+    }
+
+    public void setMessageIsRead(){
+
+        System.out.println(conversationModel.getIsRead());
+        if(getActivity() != null && getActivity() instanceof MessageActivity) {
+
+            if (conversationModel.getParticipants().size() == 2) {
+                if (conversationModel.getLastMessage().getSenderId().equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                    if (conversationModel.getIsRead().get(getCandidateId())) {
+                        ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText(R.string.viewed);
+                    } else {
+                        ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText("");
+                    }
+                } else {
+                    ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText("");
+                }
+            } else if(conversationModel.getParticipants().size() > 2){
+                if (conversationModel.getParticipants().size() > 2 && conversationModel.getLastMessage().getSenderId().equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+
+                    String viewed_by = getString(R.string.viewed_by);
+
+                    for(String participant : conversationModel.getParticipants().keySet()) {
+                        if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString()) && conversationModel.getIsRead().get(participant)) {
+                            viewed_by += " " + conversationModel.getParticipants().get(participant) + ",";
+                        }
+                    }
+
+                    if(viewed_by.equals(getString(R.string.viewed_by))) {
+                        ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText("");
+                    } else {
+                        ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText(viewed_by.substring(0, viewed_by.length() - 1));
+                    }
+                } else {
+                    ((TextView) messageFooter.findViewById(R.id.messageViewed)).setText("");
+                }
+            }
+
+            if(!conversationModel.getIsRead().get(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())){
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("/isRead/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), true);
+                conversationReference.updateChildren(updates);
+            }
+
+            ((MessageActivity) getActivity()).setConversationModel(conversationModel);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        conversationReference.removeEventListener(childEventListener);
+        conversationReference.removeEventListener(valueEventListener);
+        messageEdit.removeTextChangedListener(textWatcher);
     }
 }

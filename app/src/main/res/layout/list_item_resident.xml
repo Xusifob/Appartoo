@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+        <TextView
+            style="@style/Paragraph"
+            android:id="@+id/residentFullName"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/fullname"/>
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:id="@+id/deleteResident"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/delete_garantor_icon"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+        android:src="@drawable/delete" />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:id="@+id/modifyResident"
+        android:contentDescription="@string/modify_garantor_icon"
+        android:layout_toLeftOf="@+id/deleteResident"
+        android:layout_toStartOf="@+id/deleteResident"
+        android:layout_centerVertical="true"
+        android:src="@drawable/edit"/>
+</RelativeLayout>

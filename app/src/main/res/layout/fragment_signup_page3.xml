@@ -37,27 +37,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_centerInParent="true"
             android:layout_margin="20dp">
             <EditText
                 android:singleLine="true"
-                android:id="@+id/signUpBirthdate"
+                android:id="@+id/signUpPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/birthdate"
-                android:onClick="openDatePicker"
-                android:focusable="false"
-                android:inputType="datetime"
+                android:inputType="textPassword"
+                android:hint="@string/password"
+                android:gravity="center"/>
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/signUpPasswordConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password_signup"
+                android:inputType="textPassword"
                 android:gravity="center"/>
         </LinearLayout>
-
         <Button
             style="@style/ButtonSalmon"
             android:text="@string/go_further"
             android:onClick="nextView"
-            android:layout_margin="16dp"
             android:background="@drawable/square_salmon"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"/>
     </RelativeLayout>
 </ScrollView>

@@ -20,6 +20,7 @@ import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.TokenReceiver;
 import com.appartoo.view.NavigationDrawerView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,9 +156,10 @@ public class LogInFragment extends Fragment {
                     sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
-                            .putString("age", Integer.toString(Appartoo.LOGGED_USER_PROFILE.getAge())).apply();
+                            .apply();
                     
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                    Appartoo.initiateFirebase();
                 }
                 getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                 getActivity().finish();
