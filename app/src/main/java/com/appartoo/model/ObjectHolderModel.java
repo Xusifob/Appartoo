@@ -2,6 +2,9 @@ package com.appartoo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by alexandre on 16-08-29.
  */
@@ -55,5 +58,16 @@ public class ObjectHolderModel {
 
     public void setSource(Object source) {
         this.source = source;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectHolderModel{" +
+                "index='" + index + '\'' +
+                ", type='" + type + '\'' +
+                ", id=" + id +
+                ", score=" + score +
+                ", source=" + source +
+                '}';
     }
 }

@@ -38,7 +38,7 @@
                 android:layout_height="36dp"
                 android:layout_width="36dp"
                 android:contentDescription="@string/smoker_icon"
-                android:src="@drawable/indifferent_with_smoking"
+                android:src="@drawable/untold_smoker"
                 android:id="@+id/userDetailSmoker"/>
             <ImageView
                 style="@style/Image"
@@ -46,7 +46,7 @@
                 android:layout_height="36dp"
                 android:layout_width="36dp"
                 android:contentDescription="@string/accept_animals_icon"
-                android:src="@drawable/indifferent_with_animals"
+                android:src="@drawable/untold_accept_animals"
                 android:id="@+id/residentAcceptsAnimals"/>
             <ImageView
                 style="@style/Image"
@@ -54,7 +54,7 @@
                 android:scaleType="fitCenter"
                 android:layout_height="36dp"
                 android:layout_width="36dp"
-                android:src="@drawable/alone"
+                android:src="@drawable/untold_relationship"
                 android:contentDescription="@string/single_icon"
                 android:id="@+id/userDetailRelationship"/>
     </LinearLayout>

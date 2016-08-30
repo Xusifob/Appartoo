@@ -17,6 +17,14 @@
             android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="@string/fullname"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/colorGray"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/residentFullName"
+            android:id="@+id/residentMail"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+            android:text="@string/mail"/>
     </RelativeLayout>
     <ImageView
         android:layout_width="40dp"

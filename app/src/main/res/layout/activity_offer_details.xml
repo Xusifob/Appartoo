@@ -17,28 +17,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <fragment
-                android:name="com.appartoo.fragment.OfferDetailsFragment"
-                android:id="@+id/offerListFragment"
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_margin="16dp"
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_offer_detail" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/offerDetailContainer"
+                android:visibility="gone">
+                <fragment
+                    android:name="com.appartoo.fragment.OfferDetailsFragment"
+                    android:id="@+id/offerDetailsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_offer_detail" />
 
-            <android.support.percent.PercentRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/offerFlatImage">
-                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    class="com.appartoo.fragment.WorkaroundMapFragment"
-                    android:layout_height="0dp"
-                    android:layout_width="0dp"
-                    app:layout_widthPercent="100%"
-                    app:layout_aspectRatio="133%"
-                    android:id="@+id/map"
-                    tools:context=".MapsActivity"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
-            </android.support.percent.PercentRelativeLayout>
+                <android.support.percent.PercentRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/offerFlatImage">
+                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        class="com.appartoo.fragment.WorkaroundMapFragment"
+                        android:layout_height="0dp"
+                        android:layout_width="0dp"
+                        app:layout_widthPercent="100%"
+                        app:layout_aspectRatio="133%"
+                        android:id="@+id/map"
+                        tools:context=".MapsActivity"
+                        android:name="com.google.android.gms.maps.SupportMapFragment" />
+                </android.support.percent.PercentRelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

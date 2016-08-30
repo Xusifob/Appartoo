@@ -17,6 +17,7 @@ import com.appartoo.R;
 import com.appartoo.activity.AddOfferActivity;
 import com.appartoo.activity.OfferDetailsActivity;
 import com.appartoo.adapter.OffersAdapter;
+import com.appartoo.adapter.OffersAndProfilesAdapter;
 import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.Appartoo;
@@ -36,7 +37,7 @@ public class UserProfileOffersFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
-    private ArrayList<OfferModel> offersList;
+    private ArrayList<OfferModelWithDetailledDate> offersList;
     private OffersAdapter offersAdapter;
     private View progressBar;
     private ProgressBar moreOfferProgress;

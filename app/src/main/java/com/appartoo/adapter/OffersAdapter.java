@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appartoo.R;
+import com.appartoo.model.ObjectHolderModel;
 import com.appartoo.model.OfferModel;
+import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.ImageManager;
 
 import java.util.ArrayList;
@@ -20,11 +22,11 @@ import java.util.ArrayList;
  */
 public class OffersAdapter extends BaseAdapter {
 
-    private ArrayList<OfferModel> offerModels;
+    private ArrayList<OfferModelWithDetailledDate> offerModels;
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public OffersAdapter(Context context, ArrayList<OfferModel> om) {
+    public OffersAdapter(Context context, ArrayList<OfferModelWithDetailledDate> om) {
         this.context = context;
         this.offerModels = om;
         this.layoutInflater = LayoutInflater.from(context);
@@ -67,23 +69,14 @@ public class OffersAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        OfferModel offerModel = offerModels.get(position);
-
+        OfferModelWithDetailledDate offerModel = offerModels.get(position);
         holder.owner.setText(offerModel.getOwner().getGivenName());
 
-        if(offerModel.getImages().size() > 0) {
-            ImageManager.downloadPictureIntoView(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
-            convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.GONE);
-        } else {
-            holder.flatImage.setImageDrawable(null);
-            convertView.findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
-        }
+        if(offerModel.getImages().size() > 0) ImageManager.downloadPictureIntoView(context, holder.flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
+        else holder.flatImage.setImageDrawable(null);
 
-        if (offerModel.getOwner().getImage() != null){
-            ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-        } else {
-            holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
-        }
+        if (offerModel.getOwner().getImage() != null) ImageManager.downloadPictureIntoView(context, holder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+        else holder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
 
         try {
             holder.city.setText(String.valueOf(offerModel.getAddress().getCity()));

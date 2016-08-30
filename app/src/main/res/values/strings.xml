@@ -220,6 +220,8 @@
     <string name="error_mail">"Veuillez entrer une adresse email valide."</string>
     <string name="error_password_not_identical">"Les mots de passe que vous avez entré ne correspondent pas entre eux."</string>
     <string name="error_retrieve_user_profile">"Impossible de récupérer vos informations de profil, veuillez réessayer plus tard."</string>
+    <string name="error_retrieve_user_informations">"Impossible de récupérer les informations de l'utilisateur, veuillez réessayer plus tard."</string>
+    <string name="error_retrieve_offer">"Impossible de récupérer les informations de l'offre, veuillez réessayer plus tard."</string>
     <string name="error_login_empty">"Veuillez entrer correctement vos identifiants."</string>
     <string name="error_login_password">"Mauvais login ou mot de passe."</string>
     <string name="error_predicate_place">"Impossible de trouver un endroit."</string>

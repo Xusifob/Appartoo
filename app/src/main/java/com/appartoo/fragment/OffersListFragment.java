@@ -16,12 +16,11 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.activity.AddOfferActivity;
 import com.appartoo.activity.OfferDetailsActivity;
-import com.appartoo.adapter.OffersAdapter;
-import com.appartoo.model.OfferModel;
-import com.appartoo.model.OfferModelWithDate;
+import com.appartoo.adapter.OffersAndProfilesAdapter;
+import com.appartoo.model.ObjectHolderModel;
+import com.appartoo.model.ObjectHolderModelReceiver;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
-import com.appartoo.utils.ServerResponse;
 
 import java.util.ArrayList;
 
@@ -39,11 +38,12 @@ public class OffersListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView offersListView;
 
-    private ArrayList<OfferModel> offersList;
-    private OffersAdapter offersAdapter;
+    private ArrayList<ObjectHolderModel> offersAndProfilesList;
+    private OffersAndProfilesAdapter offersAndProfilesAdapter;
     private View progressBar;
-    private String nextPage;
-    private int offerPage;
+    private int nextPage;
+    private int pageNumber;
+    private boolean isLoading;
     private FloatingActionButton addOfferButton;
 
     @Override
@@ -56,14 +56,15 @@ public class OffersListFragment extends Fragment {
 
         progressBar = inflater.inflate(R.layout.progress_bar_list_view, container, false);
 
-        offersList = new ArrayList<>();
-        offersAdapter = new OffersAdapter(getActivity(), offersList);
+        offersAndProfilesList = new ArrayList<>();
+        offersAndProfilesAdapter = new OffersAndProfilesAdapter(getActivity(), offersAndProfilesList);
+        isLoading = true;
 
         if (container != null) {
             container.removeAllViews();
         }
 
-        offerPage = 1;
+        pageNumber = 0;
 
         return view;
     }
@@ -77,23 +78,14 @@ public class OffersListFragment extends Fragment {
                 startActivity(new Intent(getActivity().getApplicationContext(), AddOfferActivity.class));
             }
         });
-        offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), OfferDetailsActivity.class);
-                intent.putExtra("offer", offersList.get(position));
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
-            }
-        });
 
-        offersListView.setAdapter(offersAdapter);
-        if(offersListView.getFooterViewsCount() == 0 && nextPage != null) {
+        offersListView.setAdapter(offersAndProfilesAdapter);
+        if(offersListView.getFooterViewsCount() == 0 && nextPage >= 0) {
             offersListView.addFooterView(progressBar);
         }
 
-        if(offersAdapter.getCount() == 0) {
-            getOffers(offerPage);
+        if(offersAndProfilesAdapter.getCount() == 0) {
+            getOffersAndProfiles(pageNumber);
         }
 
         super.onStart();
@@ -113,8 +105,8 @@ public class OffersListFragment extends Fragment {
                 offersListView.setSelection(0);
             }
         });
-        offerPage = 1;
-        getOffers(offerPage);
+        pageNumber = 0;
+        getOffersAndProfiles(pageNumber);
 
     }
 
@@ -129,24 +121,28 @@ public class OffersListFragment extends Fragment {
             }
         });
         offersListView.addFooterView(progressBar);
-
         offersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            public void onScrollStateChanged(AbsListView absListView, int i) {
 
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(firstVisibleItem + visibleItemCount >= totalItemCount-5 && nextPage != null) {
-                    offerPage++;
-                    getOffers(offerPage);
+
+                if(firstVisibleItem + visibleItemCount >= totalItemCount -5 && totalItemCount != 0)
+                {
+                    if(!isLoading && nextPage > 0) {
+                        isLoading = true;
+                        getOffersAndProfiles(nextPage);
+                    }
                 }
             }
         });
     }
 
-    private void getOffers(int page){
+    private void getOffersAndProfiles(final int page){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
@@ -154,21 +150,35 @@ public class OffersListFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ServerResponse<ArrayList<OfferModelWithDate>>> callback = restService.getOffers(page);
 
-        callback.enqueue(new Callback<ServerResponse<ArrayList<OfferModelWithDate>>>(){
+        String token;
+        if(Appartoo.TOKEN != null) token = "Bearer " + Appartoo.TOKEN;
+        else token = "";
+
+        Call<ObjectHolderModelReceiver> callback = restService.getOffersOrProfiles(token, page*20, 20);
+
+        callback.enqueue(new Callback<ObjectHolderModelReceiver>(){
             @Override
-            public void onResponse(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Response<ServerResponse<ArrayList<OfferModelWithDate>>> response) {
+            public void onResponse(Call<ObjectHolderModelReceiver> call, Response<ObjectHolderModelReceiver> response) {
+
+                isLoading = false;
 
                 if(response.isSuccessful()) {
-                    if(swipeRefreshLayout.isRefreshing()) {
-                        offersList.clear();
-                    }
-                    offersList.addAll(response.body().getData());
-                    offersAdapter.notifyDataSetChanged();
-                    nextPage = response.body().getNextPage();
 
-                    if(nextPage == null) {
+                    if(swipeRefreshLayout.isRefreshing()) {
+                        offersAndProfilesList.clear();
+                    }
+
+                    System.out.println(response.body().getHits());
+                    offersAndProfilesList.addAll(response.body().getHits());
+                    offersAndProfilesAdapter.notifyDataSetChanged();
+
+                    System.out.println(offersAndProfilesAdapter.getCount());
+
+                    nextPage = page + 1;
+
+                    if(nextPage * 20 >= response.body().getTotal()) {
+                        nextPage = -1;
                         offersListView.removeFooterView(progressBar);
                     }
                 } else {
@@ -178,7 +188,7 @@ public class OffersListFragment extends Fragment {
                     } catch (Exception e){
 
                     }
-                    if(offerPage == 1) {
+                    if(pageNumber == 1) {
                         Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getActivity(), R.string.no_offer_found, Toast.LENGTH_SHORT).show();
@@ -191,7 +201,7 @@ public class OffersListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ServerResponse<ArrayList<OfferModelWithDate>>> call, Throwable t) {
+            public void onFailure(Call<ObjectHolderModelReceiver> call, Throwable t) {
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);

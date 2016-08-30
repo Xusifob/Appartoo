@@ -1,7 +1,7 @@
 package com.appartoo.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,6 @@ import com.appartoo.utils.TextValidator;
  */
 public class UserDetailFragment extends Fragment {
 
-    private UserModel user;
     private TextView userContractAndSociety;
     private TextView userAge;
     private TextView userDescription;
@@ -42,14 +41,7 @@ public class UserDetailFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        user = getActivity().getIntent().getParcelableExtra("user");
-        populateView();
-    }
-
-    private void populateView(){
+    public void populateView(UserModel user){
         userName.setText(user.getGivenName());
 
         String job = user.getContract();

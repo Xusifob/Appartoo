@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -25,13 +26,16 @@ public class UserModel implements Parcelable {
     private String gender;
     private String givenName;
     private String telephone;
+    private String email;
     private Boolean isSmoker;
     private Boolean inRelationship;
+    private Boolean acceptAnimals;
     private Integer plus;
     private Double income;
     private Date birthDate;
     private AddressModel address;
     private ImageModel image;
+    private ArrayList<ImageModel> images;
 
     private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
     private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
@@ -52,13 +56,16 @@ public class UserModel implements Parcelable {
         gender = in.readString();
         givenName = in.readString();
         telephone = in.readString();
+        email = in.readString();
         isSmoker = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         inRelationship = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        acceptAnimals = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         plus = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         income = (Double) in.readValue(DOUBLE_CLASS_LOADER);
         birthDate = (Date) in.readValue(DATE_CLASS_LOADER);
         address = (AddressModel) in.readValue(ADDRESSMODEL_CLASS_LOADER);
         image = (ImageModel) in.readValue(IMAGEMODEL_CLASS_LOADER);
+        images = in.readArrayList(IMAGEMODEL_CLASS_LOADER);
     }
 
     @Override
@@ -72,13 +79,16 @@ public class UserModel implements Parcelable {
         dest.writeString(gender);
         dest.writeString(givenName);
         dest.writeString(telephone);
+        dest.writeString(email);
         dest.writeValue(isSmoker);
         dest.writeValue(inRelationship);
+        dest.writeValue(acceptAnimals);
         dest.writeValue(plus);
         dest.writeValue(income);
         dest.writeValue(birthDate);
         dest.writeValue(address);
         dest.writeValue(image);
+        dest.writeList(images);
     }
 
     @Override
@@ -224,6 +234,30 @@ public class UserModel implements Parcelable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Boolean getAcceptAnimals() {
+        return acceptAnimals;
+    }
+
+    public void setAcceptAnimals(Boolean acceptAnimals) {
+        this.acceptAnimals = acceptAnimals;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public ArrayList<ImageModel> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<ImageModel> images) {
+        this.images = images;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getIdNumber(){

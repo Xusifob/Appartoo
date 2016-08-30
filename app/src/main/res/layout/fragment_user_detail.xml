@@ -123,9 +123,12 @@
             android:orientation="vertical"
             android:gravity="end">
             <ImageView
-                style="@style/Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/smoker_icon"
-                android:src="@drawable/indifferent_with_smoking"
+                android:src="@drawable/untold_smoker"
                 android:id="@+id/userDetailSmoker"/>
         </LinearLayout>
         <LinearLayout
@@ -135,7 +138,11 @@
             android:orientation="vertical"
             android:gravity="center">
             <ImageView
-                style="@style/Image"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/student_icon"
                 android:src="@drawable/student"
                 android:id="@+id/userDetailIsWorker"/>
@@ -147,9 +154,12 @@
             android:orientation="vertical"
             android:gravity="start">
             <ImageView
-                style="@style/Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/single_icon"
-                android:src="@drawable/alone"
+                android:src="@drawable/untold_relationship"
                 android:id="@+id/userDetailRelationship"/>
         </LinearLayout>
     </LinearLayout>
@@ -165,8 +175,8 @@
         android:layout_margin="8dp" />
     <ImageView
         android:layout_margin="8dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:contentDescription="@string/score_icon"

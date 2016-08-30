@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "http://7849b389.ngrok.io";
+    public static final String SERVER_URL = "http://f82b90b8.ngrok.io";
     public static String TOKEN = "";
     public static CompleteUserModel LOGGED_USER_PROFILE;
     public static DatabaseReference databaseReference;
@@ -84,21 +84,14 @@ public class Appartoo extends Application{
     }
 
     public static void setUserIsOnline(final boolean userIsOnline) {
-        System.out.println("READY");
-        if(databaseReference != null) {
-            System.out.println("STEADY");
+        if(databaseReference != null && conversationsIds != null && Appartoo.LOGGED_USER_PROFILE != null) {
+            Map<String, Object> updates = new HashMap<>();
 
-            if (conversationsIds != null && Appartoo.LOGGED_USER_PROFILE != null) {
-                System.out.println("GO");
-                Map<String, Object> updates = new HashMap<>();
-
-                for (String conversationId : conversationsIds) {
-                    System.out.println(conversationId);
-                    updates.put("conversations/" + conversationId + "/isOnline/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), userIsOnline);
-                }
-
-                databaseReference.updateChildren(updates);
+            for (String conversationId : conversationsIds) {
+                updates.put("conversations/" + conversationId + "/isOnline/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), userIsOnline);
             }
+
+            databaseReference.updateChildren(updates);
         }
     }
 }

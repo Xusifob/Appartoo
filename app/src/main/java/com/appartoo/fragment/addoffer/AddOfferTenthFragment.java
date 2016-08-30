@@ -61,6 +61,7 @@ public class AddOfferTenthFragment extends Fragment {
                         UserModel newresident = new UserModel();
                         newresident.setGivenName(((EditText) dialogLayout.findViewById(R.id.residentRecordFirstName)).getText().toString());
                         newresident.setFamilyName(((EditText) dialogLayout.findViewById(R.id.residentRecordLastName)).getText().toString());
+                        newresident.setEmail(((EditText) dialogLayout.findViewById(R.id.residentRecordMail)).getText().toString());
                         residentModels.add(newresident);
                         if(getActivity() instanceof AddOfferActivity){
                             ((AddOfferActivity) getActivity()).setResidents(residentModels);

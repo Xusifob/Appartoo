@@ -79,31 +79,17 @@ public class ResidentsAdapter extends BaseAdapter {
     }
 
     public void setPictures(ViewHolder holder, UserModel userModel, View convertView) {
-        if(userModel.getSmoker() != null){
-            if(userModel.getSmoker() == true){
-                holder.isSmoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_smoker, null));
-            } else {
-                holder.isSmoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_not_smoker, null));
-            }
-        }
+        if(userModel.getSmoker() != null && userModel.getSmoker()) holder.isSmoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_smoker, null));
+        else if(userModel.getSmoker() != null) holder.isSmoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_not_smoker, null));
 
-        if(acceptAnimals != null){
-            if(acceptAnimals == true){
-                holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.accept_animals, null));
-            } else {
-                holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.dont_accept_animals, null));
-            }
-        }
+        if(acceptAnimals != null && acceptAnimals) holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.accept_animals, null));
+        else if (acceptAnimals != null) holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.dont_accept_animals, null));
 
-        if(userModel.getInRelationship() != null && userModel.getInRelationship() == true){
-            holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
-        }
+        if(userModel.getInRelationship() != null && userModel.getInRelationship()) holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
+        else if (userModel.getInRelationship() != null) holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.alone, null));
 
-        if (userModel.getImage() != null){
-            ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-        } else {
-            holder.residentImageThumbail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
-        }
+        if (userModel.getImage() != null) ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+        else holder.residentImageThumbail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
     }
 
     static class ViewHolder {

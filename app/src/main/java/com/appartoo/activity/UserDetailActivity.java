@@ -12,9 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.fragment.UserDetailFragment;
 import com.appartoo.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
@@ -38,10 +40,15 @@ public class UserDetailActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private UserDetailFragment userDetailFragment;
     private UserModel userModel;
     private Button sendMessageButton;
     private ImageView userProfilePic;
     private ProgressDialog progressDialog;
+    private String userId;
+    private RestService restService;
+    private ProgressBar progressBar;
+    private View userDetailContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,8 +61,14 @@ public class UserDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
         userProfilePic = (ImageView) findViewById(R.id.userDetailProfilePic);
         sendMessageButton = (Button) findViewById(R.id.userDetailSendMessage);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        userDetailContainer = findViewById(R.id.userDetailContainer);
+        userDetailFragment = (UserDetailFragment) getSupportFragmentManager().findFragmentById(R.id.userDetailFragment);
 
         userModel = getIntent().getParcelableExtra("user");
+        userId = getIntent().getStringExtra("profileId");
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
@@ -63,6 +76,69 @@ public class UserDetailActivity extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
+        progressBar.setVisibility(View.VISIBLE);
+        userDetailContainer.setVisibility(View.GONE);
+        sendMessageButton.setVisibility(View.GONE);
+
+
+        System.out.println(userModel);
+        System.out.println(userId);
+
+        if(userModel != null) {
+            userDetailFragment.populateView(userModel);
+            populateView(userModel);
+            progressBar.setVisibility(View.GONE);
+            userDetailContainer.setVisibility(View.VISIBLE);
+        } else if (userId != null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Appartoo.SERVER_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            restService = retrofit.create(RestService.class);
+
+            Call<UserModel> callback = restService.getUserInformationsById("/profiles/" + userId);
+
+            callback.enqueue(new Callback<UserModel>() {
+                @Override
+                public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                    if(response.isSuccessful()) {
+                        userDetailFragment.populateView(response.body());
+                        populateView(response.body());
+                        userDetailContainer.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(UserDetailActivity.this, R.string.error_retrieve_user_informations, Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserModel> call, Throwable t) {
+                    Toast.makeText(UserDetailActivity.this, R.string.error_retrieve_user_informations, Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    t.printStackTrace();
+                }
+            });
+        }
+
+        //Define the drawer
+        toolbar.setNavigationIcon(R.drawable.left_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+    }
+
+    private void populateView(UserModel userModel) {
         ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
@@ -88,6 +164,7 @@ public class UserDetailActivity extends AppCompatActivity {
         if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(userModel.getId())) {
             sendMessageButton.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
+            sendMessageButton.setVisibility(View.VISIBLE);
             new AlertDialog.Builder(UserDetailActivity.this)
                     .setMessage("Vous devez être inscrit pour pouvoir envoyer un message.")
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -104,6 +181,7 @@ public class UserDetailActivity extends AppCompatActivity {
                     })
                     .show();
         } else {
+            sendMessageButton.setVisibility(View.VISIBLE);
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -112,21 +190,6 @@ public class UserDetailActivity extends AppCompatActivity {
                 }
             });
         }
-
-        //Define the drawer
-        toolbar.setNavigationIcon(R.drawable.left_arrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-    @Override
-    public void finish(){
-        super.finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
     }
 
     private void sendMessageToUser(){

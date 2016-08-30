@@ -57,6 +57,7 @@
                     <RelativeLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:padding="4dp"
                         android:clickable="true"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
@@ -69,19 +70,18 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:gravity="center"
-                            android:padding="2dp"
                             android:textColor="@color/colorSalmon"
                             android:id="@+id/addOfferTextSmoker"
                             android:text="@string/dont_accept_smokers" />
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_above="@+id/addOfferTextSmoker"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
+                            android:layout_above="@+id/addOfferTextSmoker"
                             android:tag="false"
                             android:id="@+id/addOfferImageSmoker"
-                            android:layout_centerInParent="true"
                             android:src="@drawable/is_not_smoker" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -93,6 +93,7 @@
                     <RelativeLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:padding="4dp"
                         android:clickable="true"
                         android:background="@drawable/toggle_rounded_bordered_square"
                         android:onClick="toggleView"
@@ -101,7 +102,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="2dp"
                             android:textColor="@color/colorSalmon"
                             android:id="@+id/addOfferTextAnimals"
                             android:layout_alignParentBottom="true"
@@ -109,8 +109,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerCrop"
                             android:tag="false"
                             android:layout_above="@+id/addOfferTextAnimals"
                             android:layout_centerInParent="true"

@@ -20,7 +20,6 @@ import com.appartoo.utils.RestService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,7 +134,7 @@ public class MessageAdapter extends BaseAdapter {
     public void retrieveUserProfilePic(final String id) {
         System.out.println("/profiles/" + id);
 
-        Call<UserModel> callback = restService.getUserProfileById(RestService.REST_URL + "/profiles/" + id);
+        Call<UserModel> callback = restService.getUserInformationsById(RestService.REST_URL + "/profiles/" + id);
 
         callback.enqueue(new Callback<UserModel>() {
             @Override

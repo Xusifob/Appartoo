@@ -1,7 +1,6 @@
 package com.appartoo.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appartoo.R;
-import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.ConversationModel;
 import com.appartoo.model.MessageModel;
-import com.appartoo.model.OfferModel;
+import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
@@ -123,11 +121,11 @@ public class ConversationsAdapter extends BaseAdapter {
 
     public void retrieveOfferPicture(final ImageView pic, String id) {
         if (id != null && !id.equals("")) {
-            Call<OfferModel> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + id);
+            Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + id);
 
-            callback.enqueue(new Callback<OfferModel>() {
+            callback.enqueue(new Callback<OfferModelWithDate>() {
                 @Override
-                public void onResponse(Call<OfferModel> call, Response<OfferModel> response) {
+                public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {
                     if (response.isSuccessful()) {
                         if (response.body().getImages().size() > 0) {
                             ImageManager.downloadPictureIntoView(context, pic, response.body().getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
@@ -143,7 +141,7 @@ public class ConversationsAdapter extends BaseAdapter {
                 }
 
                 @Override
-                public void onFailure(Call<OfferModel> call, Throwable t) {
+                public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
                     t.printStackTrace();
                 }
             });
@@ -152,7 +150,7 @@ public class ConversationsAdapter extends BaseAdapter {
 
     public void retrieveOwnerPicture(final ImageView pic, String id) {
         if (id != null && !id.equals("")) {
-            Call<UserModel> callback = restService.getUserProfileById(RestService.REST_URL + "/profiles/" + id);
+            Call<UserModel> callback = restService.getUserInformationsById(RestService.REST_URL + "/profiles/" + id);
 
             callback.enqueue(new Callback<UserModel>() {
                 @Override

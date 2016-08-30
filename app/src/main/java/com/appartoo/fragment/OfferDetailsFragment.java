@@ -1,13 +1,14 @@
 package com.appartoo.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appartoo.R;
 import com.appartoo.activity.UserDetailActivity;
@@ -16,12 +17,20 @@ import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.model.UserModel;
+import com.appartoo.utils.Appartoo;
+import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.view.NonScrollableListView;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-13.
@@ -41,6 +50,8 @@ public class OfferDetailsFragment extends Fragment {
 
     private View offerDetailsResidentsSeparator;
     private OfferModel offer;
+    private String offerId;
+    private RestService restService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,17 +68,12 @@ public class OfferDetailsFragment extends Fragment {
         offerEnd = (TextView) rootView.findViewById(R.id.offerEnd);
         offerDetailsResidentsSeparator = rootView.findViewById(R.id.offerDetailsResidentsSeparator);
 
+        offerId = getActivity().getIntent().getStringExtra("offerId");
+
         return rootView;
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        offer = getActivity().getIntent().getParcelableExtra("offer");
-        populateView();
-    }
-
-    private void populateView() {
+    public void populateView(final OfferModelWithDate offer) {
         if(offer.getAddress() != null) offerCity.setText(offer.getAddress().getCity());
         else offerCity.setText(R.string.unknown_city);
 
@@ -80,17 +86,14 @@ public class OfferDetailsFragment extends Fragment {
         String startNotInformed = getString(R.string.start) + " : " + getString(R.string.not_informed);
         String endNotInformed = getString(R.string.end) + " : " + getString(R.string.not_informed);
 
-        if(offer instanceof OfferModelWithDate) {
-            if(((OfferModelWithDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
-            else offerStart.setText(startNotInformed);
-            if(((OfferModelWithDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
-            else offerEnd.setText(endNotInformed);
-        } else if (offer instanceof OfferModelWithDetailledDate) {
-            if(((OfferModelWithDetailledDate) offer).getAvailabilityStarts() != null) offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityStarts().getDate()));
-            else offerStart.setText(startNotInformed);
-            if(((OfferModelWithDetailledDate) offer).getAvailabilityEnds() != null) offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDetailledDate) offer).getAvailabilityEnds().getDate()));
-            else offerEnd.setText(endNotInformed);
-        }
+        if (offer.getAvailabilityStarts() != null)
+            offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
+        else
+            offerStart.setText(startNotInformed);
+        if (offer.getAvailabilityEnds() != null)
+            offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
+        else
+            offerEnd.setText(endNotInformed);
 
         ArrayList<UserModel> residents = new ArrayList<>();
         residents.addAll(offer.getResident());

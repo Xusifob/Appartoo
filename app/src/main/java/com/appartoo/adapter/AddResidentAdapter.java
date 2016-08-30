@@ -53,6 +53,7 @@ public class AddResidentAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item_resident, null);
             holder = new ViewHolder();
             holder.fullname = (TextView) convertView.findViewById(R.id.residentFullName);
+            holder.mail = (TextView) convertView.findViewById(R.id.residentMail);
             holder.delete = (ImageView) convertView.findViewById(R.id.deleteResident);
             holder.modify = (ImageView) convertView.findViewById(R.id.modifyResident);
             convertView.setTag(holder);
@@ -61,7 +62,10 @@ public class AddResidentAdapter extends BaseAdapter {
         }
 
         final UserModel residentModel = residentModels.get(position);
+
         holder.fullname.setText(residentModel.getGivenName() + " " + residentModel.getFamilyName());
+        holder.mail.setText(residentModel.getEmail());
+
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +82,7 @@ public class AddResidentAdapter extends BaseAdapter {
 
                 ((EditText) dialogLayout.findViewById(R.id.residentRecordFirstName)).setText(residentModel.getGivenName());
                 ((EditText) dialogLayout.findViewById(R.id.residentRecordLastName)).setText(residentModel.getFamilyName());
+                ((EditText) dialogLayout.findViewById(R.id.residentRecordMail)).setText(residentModel.getEmail());
 
                 selectContractDialog.setTitle("Ajouter un garant");
                 selectContractDialog.setView(dialogLayout);
@@ -87,6 +92,7 @@ public class AddResidentAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         residentModel.setGivenName(((EditText) dialogLayout.findViewById(R.id.residentRecordFirstName)).getText().toString());
                         residentModel.setFamilyName(((EditText) dialogLayout.findViewById(R.id.residentRecordLastName)).getText().toString());
+                        residentModel.setEmail(((EditText) dialogLayout.findViewById(R.id.residentRecordMail)).getText().toString());
                         notifyDataSetChanged();
                     }
                 });

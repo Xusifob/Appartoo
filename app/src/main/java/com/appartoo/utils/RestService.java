@@ -5,6 +5,7 @@ import android.support.annotation.IntRange;
 import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.ImageModel;
 import com.appartoo.model.ObjectHolderModel;
+import com.appartoo.model.ObjectHolderModelReceiver;
 import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.OfferModelWithDetailledDate;
@@ -62,7 +63,7 @@ public interface RestService {
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
 
     @GET(REST_URL + "/searchGeneral")
-    Call<ObjectHolderModel> getOffersOrProfiles(@Header("Authorization") String bearerToken);
+    Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @Query("start") Integer start, @Query("limit") Integer limit);
 
     @GET(REST_URL + "/offers")
     Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);
@@ -77,10 +78,10 @@ public interface RestService {
     Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
 
     @GET
-    Call<UserModel> getUserProfileById(@Url String profileId);
+    Call<UserModel> getUserInformationsById(@Url String profileId);
 
     @GET
-    Call<OfferModel> getOfferById(@Url String profileId);
+    Call<OfferModelWithDate> getOfferById(@Url String offerId);
 
     @PUT
     Call<CompleteUserModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body CompleteUserModel updateModel);

@@ -15,12 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
 import com.appartoo.adapter.ImageViewPagerAdapter;
+import com.appartoo.fragment.OfferDetailsFragment;
 import com.appartoo.fragment.WorkaroundMapFragment;
+import com.appartoo.model.ImageModel;
 import com.appartoo.model.OfferModel;
+import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
@@ -34,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,13 +54,19 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private NestedScrollView scrollView;
     private Toolbar toolbar;
     private SupportMapFragment mapFragment;
+    private OfferDetailsFragment offerDetailsFragment;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private OfferModel offer;
+    private ArrayList<ImageModel> images;
     private ImageButton offerDetailOwnerPicture;
     private ViewPager viewPager;
     private Button offerDetailSendMessageButton;
     private ProgressDialog progressDialog;
+    private OfferModelWithDate offer;
+    private RestService restService;
+    private String offerId;
+    private View offerDetailContainer;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,12 +81,14 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
         offerDetailOwnerPicture = (ImageButton) findViewById(R.id.offerDetailOwnerPicture);
         offerDetailSendMessageButton = (Button) findViewById(R.id.offerDetailSendMessage);
-        offer = getIntent().getParcelableExtra("offer");
+        offerId = getIntent().getStringExtra("offerId");
+        offerDetailContainer = findViewById(R.id.offerDetailContainer);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //Retrieve the others elements
         scrollView = (NestedScrollView) findViewById(R.id.offerDetailsScrollView);
+        offerDetailsFragment = (OfferDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.offerDetailsFragment);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
@@ -84,17 +97,91 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     public void onStart(){
         super.onStart();
 
+        if(offer == null) {
+            offerDetailContainer.setVisibility(View.GONE);
+            offerDetailSendMessageButton.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Appartoo.SERVER_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            restService = retrofit.create(RestService.class);
+
+            Call<OfferModelWithDate> callback = restService.getOfferById("/offers/" + offerId);
+
+            callback.enqueue(new Callback<OfferModelWithDate>() {
+                @Override
+                public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {
+                    if (response.isSuccessful()) {
+
+                        offer = response.body();
+                        offerDetailsFragment.populateView(offer);
+                        mapFragment.getMapAsync(OfferDetailsActivity.this);
+                        populateActivity();
+                        offerDetailContainer.setVisibility(View.VISIBLE);
+                        offerDetailSendMessageButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+        }
+
+        toolbar.setNavigationIcon(R.drawable.left_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //Disable the scrollview on map interaction
+        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).setListener(new WorkaroundMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+    }
+
+    private void populateActivity() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle(offer.getName());
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbarLayout.setTitle("");
+                    isShow = false;
+                }
+            }
+        });
 
         if(offer.getImages().size() > 0) {
             ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, offer.getImages());
             viewPager.setAdapter(imagesAdapter);
-        } else {
-            findViewById(R.id.noPictureIndicator).setVisibility(View.VISIBLE);
         }
 
         if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(offer.getOwner().getId())) {
-
-            //TODO Modifier offre
 
             offerDetailSendMessageButton.setText("Modifier votre annonce");
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -143,43 +230,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 }
             });
         }
-
-        //Define the drawer
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-
-            boolean isShow = false;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(offer.getName());
-                    isShow = true;
-                } else if(isShow) {
-                    collapsingToolbarLayout.setTitle("");
-                    isShow = false;
-                }
-            }
-        });
-
-        toolbar.setNavigationIcon(R.drawable.left_arrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        //Disable the scrollview on map interaction
-        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).setListener(new WorkaroundMapFragment.OnTouchListener() {
-            @Override
-            public void onTouch() {
-                scrollView.requestDisallowInterceptTouchEvent(true);
-            }
-        });
 
         if (offer.getOwner().getImage() != null) {
             ImageManager.downloadPictureIntoView(getApplicationContext(), offerDetailOwnerPicture, offer.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_CIRCLE);
