@@ -35,8 +35,8 @@
             android:text="@string/two_thousands"/>
     </RelativeLayout>
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
@@ -47,10 +47,10 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/delete_garantor_icon"
         android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-        android:src="@drawable/delete" />
+        android:src="@drawable/delete_medium" />
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
@@ -62,5 +62,5 @@
         android:layout_toLeftOf="@+id/deleteGarantor"
         android:layout_toStartOf="@+id/deleteGarantor"
         android:layout_centerVertical="true"
-        android:src="@drawable/edit"/>
+        android:src="@drawable/edit_medium"/>
 </RelativeLayout>

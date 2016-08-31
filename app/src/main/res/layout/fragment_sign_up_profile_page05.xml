@@ -55,7 +55,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/smoker_icon"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/is_smoker"/>
+                    android:src="@drawable/is_smoker_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/non_smoker_icon"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/is_not_smoker"/>
+                    android:src="@drawable/is_not_smoker_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

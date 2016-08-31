@@ -82,7 +82,7 @@
                             android:layout_above="@+id/addOfferTextSmoker"
                             android:tag="false"
                             android:id="@+id/addOfferImageSmoker"
-                            android:src="@drawable/is_not_smoker" />
+                            android:src="@drawable/is_not_smoker_big" />
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -116,7 +116,7 @@
                             android:layout_above="@+id/addOfferTextAnimals"
                             android:layout_centerInParent="true"
                             android:id="@+id/addOfferImageAnimals"
-                            android:src="@drawable/dont_accept_animals" />
+                            android:src="@drawable/dont_accept_animals_big" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

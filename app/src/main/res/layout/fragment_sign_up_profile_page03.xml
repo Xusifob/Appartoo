@@ -53,7 +53,7 @@
                     android:scaleType="centerCrop"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/male_icon"
-                    android:src="@drawable/male"/>
+                    android:src="@drawable/male_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/female_icon"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/female"/>
+                    android:src="@drawable/female_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

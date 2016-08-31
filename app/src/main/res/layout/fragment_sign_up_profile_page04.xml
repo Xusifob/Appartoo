@@ -52,7 +52,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/single_icon"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/alone"/>
+                    android:src="@drawable/alone_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/in_relationship_icon"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/couple"/>
+                    android:src="@drawable/couple_big"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

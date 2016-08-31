@@ -85,8 +85,8 @@ public class UserDetailActivity extends AppCompatActivity {
         System.out.println(userId);
 
         if(userModel != null) {
-            userDetailFragment.populateView(userModel);
-            populateView(userModel);
+            userDetailFragment.bindData(userModel);
+            bindData(userModel);
             progressBar.setVisibility(View.GONE);
             userDetailContainer.setVisibility(View.VISIBLE);
         } else if (userId != null) {
@@ -97,14 +97,14 @@ public class UserDetailActivity extends AppCompatActivity {
 
             restService = retrofit.create(RestService.class);
 
-            Call<UserModel> callback = restService.getUserInformationsById("/profiles/" + userId);
+            Call<UserModel> callback = restService.getUserInformationsById(RestService.REST_URL + "/profiles/" + userId);
 
             callback.enqueue(new Callback<UserModel>() {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                     if(response.isSuccessful()) {
-                        userDetailFragment.populateView(response.body());
-                        populateView(response.body());
+                        userDetailFragment.bindData(response.body());
+                        bindData(response.body());
                         userDetailContainer.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -138,7 +138,7 @@ public class UserDetailActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.right_in, R.anim.right_out);
     }
 
-    private void populateView(UserModel userModel) {
+    private void bindData(UserModel userModel) {
         ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 

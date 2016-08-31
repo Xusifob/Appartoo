@@ -73,7 +73,7 @@ public class OfferDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public void populateView(final OfferModelWithDate offer) {
+    public void bindData(final OfferModelWithDate offer) {
         if(offer.getAddress() != null) offerCity.setText(offer.getAddress().getCity());
         else offerCity.setText(R.string.unknown_city);
 

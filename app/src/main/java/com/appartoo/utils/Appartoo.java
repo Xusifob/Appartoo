@@ -1,7 +1,9 @@
 package com.appartoo.utils;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.appartoo.R;
 import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.ConversationModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +18,16 @@ import com.google.gson.Gson;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.config.ACRAConfiguration;
+import org.acra.config.ConfigurationBuilder;
+import org.acra.sender.HttpSender;
+import org.acra.sender.ReportSender;
+import org.acra.sender.ReportSenderFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +35,12 @@ import java.util.Map;
 /**
  * Created by alexandre on 16-07-06.
  */
+@ReportsCrashes(
+        reportSenderFactoryClasses = GoogleFormSenderFactory.class
+)
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "http://f82b90b8.ngrok.io";
+    public static final String SERVER_URL = "http://a891480d.ngrok.io";
     public static String TOKEN = "";
     public static CompleteUserModel LOGGED_USER_PROFILE;
     public static DatabaseReference databaseReference;
@@ -44,9 +59,15 @@ public class Appartoo extends Application{
     }
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        ACRA.init(this);
+
+    }
+
+    @Override
     public void onTerminate() {
         super.onTerminate();
-        System.out.println("TERMINATING");
         setUserIsOnline(false);
     }
 

@@ -109,7 +109,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
             restService = retrofit.create(RestService.class);
 
-            Call<OfferModelWithDate> callback = restService.getOfferById("/offers/" + offerId);
+            Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + offerId);
 
             callback.enqueue(new Callback<OfferModelWithDate>() {
                 @Override
@@ -117,7 +117,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                     if (response.isSuccessful()) {
 
                         offer = response.body();
-                        offerDetailsFragment.populateView(offer);
+                        offerDetailsFragment.bindData(offer);
                         mapFragment.getMapAsync(OfferDetailsActivity.this);
                         populateActivity();
                         offerDetailContainer.setVisibility(View.VISIBLE);

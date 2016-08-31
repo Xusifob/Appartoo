@@ -3,21 +3,19 @@ package com.appartoo.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.activity.OfferDetailsActivity;
 import com.appartoo.activity.UserDetailActivity;
 import com.appartoo.model.ObjectHolderModel;
-import com.appartoo.model.OfferModelWithDetailledDate;
-import com.appartoo.model.UserModel;
-import com.appartoo.model.UserPresentationModel;
+import com.appartoo.model.OfferModel;
+import com.appartoo.model.UserProfileModel;
 import com.appartoo.utils.ImageManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,29 +26,19 @@ import java.util.ArrayList;
 /**
  * Created by alexandre on 16-07-05.
  */
-public class OffersAndProfilesAdapter extends BaseAdapter {
+public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
 
-    private ArrayList<ObjectHolderModel> offerModels;
-    private LayoutInflater layoutInflater;
+    private ArrayList<ObjectHolderModel> offersAndProfilesModels;
     private Context context;
+    private Gson gson;
 
     private static final int OFFER_TYPE = 0;
     private static final int PROFILE_TYPE = 1;
 
     public OffersAndProfilesAdapter(Context context, ArrayList<ObjectHolderModel> om) {
         this.context = context;
-        this.offerModels = om;
-        this.layoutInflater = LayoutInflater.from(context);
-    }
-
-    @Override
-    public int getCount() {
-        return offerModels.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
+        this.offersAndProfilesModels = om;
+        this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").create();
     }
 
     @Override
@@ -59,14 +47,40 @@ public class OffersAndProfilesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getViewTypeCount() {
-        return 2;
+    public int getItemCount() {
+        return offersAndProfilesModels.size();
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case OFFER_TYPE:
+                View offerView = LayoutInflater.from(context).inflate(R.layout.list_item_offers, null);
+                return new OfferViewHolder(offerView);
+            case PROFILE_TYPE:
+                View profileView = LayoutInflater.from(context).inflate(R.layout.list_item_profiles, null);
+                return new ProfileViewHolder(profileView);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int itemType = getItemViewType(position);
+        final ObjectHolderModel object = offersAndProfilesModels.get(position);
+        final LinkedTreeMap<?,?> treeMap = (LinkedTreeMap) object.getSource();
+
+        if (itemType == OFFER_TYPE) {
+            ((OfferViewHolder)holder).bindData(gson.fromJson(gson.toJson(treeMap), OfferModel.class), context, object.getId().toString());
+        } else if (itemType == PROFILE_TYPE) {
+            ((ProfileViewHolder)holder).bindData(gson.fromJson(gson.toJson(treeMap), UserProfileModel.class), context, object.getId().toString());
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        System.out.println(offerModels.get(position).toString());
-        if(offerModels.get(position).getType().equals("offer")) {
+        if(offersAndProfilesModels.get(position).getType().equals("offer")) {
             return OFFER_TYPE;
         } else {
             return PROFILE_TYPE;
@@ -74,146 +88,69 @@ public class OffersAndProfilesAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        final ObjectHolderModel object = offerModels.get(position);
-        LinkedTreeMap<?,?> treeMap = (LinkedTreeMap) object.getSource();
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").create();;
-
-        int viewType = this.getItemViewType(position);
-        System.out.println(viewType);
-
-        switch (viewType) {
-            case OFFER_TYPE:
-                OfferViewHolder offerHolder;
-
-                if (convertView == null) {
-                    convertView = layoutInflater.inflate(R.layout.list_item_offers, null);
-
-                    offerHolder = new OfferViewHolder();
-
-                    offerHolder.owner = (TextView) convertView.findViewById(R.id.offerOwner);
-                    offerHolder.city = (TextView) convertView.findViewById(R.id.offerCity);
-                    offerHolder.rooms = (TextView) convertView.findViewById(R.id.offerRooms);
-                    offerHolder.keyword = (TextView) convertView.findViewById(R.id.offerKeyword);
-                    offerHolder.price = (TextView) convertView.findViewById(R.id.offerPrice);
-                    offerHolder.flatImage = (ImageView) convertView.findViewById(R.id.offerFlatImage);
-                    offerHolder.ownerImageThumbnail = (ImageView) convertView.findViewById(R.id.offerOwnerImage);
-                    convertView.setTag(offerHolder);
-                } else {
-                    System.out.println(convertView.getTag().getClass().getName());
-                    offerHolder = (OfferViewHolder) convertView.getTag();
-                }
-
-                final OfferModelWithDetailledDate offerModel = gson.fromJson(gson.toJson(treeMap), OfferModelWithDetailledDate.class);
-
-                offerHolder.owner.setText(offerModel.getOwner().getGivenName());
-                offerHolder.keyword.setText(offerModel.getKeyword());
-                offerHolder.rooms.setText(Integer.toString(offerModel.getRooms()));
-                offerHolder.price.setText(Integer.toString(offerModel.getPrice()) + " " + context.getString(R.string.euro));
-
-                if (offerModel.getImages().size() > 0)
-                    ImageManager.downloadPictureIntoView(context, offerHolder.flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
-                else
-                    offerHolder.flatImage.setImageDrawable(null);
-
-                if (offerModel.getOwner().getImage() != null)
-                    ImageManager.downloadPictureIntoView(context, offerHolder.ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-                else
-                    offerHolder.ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));
-
-                try {
-                    offerHolder.city.setText(String.valueOf(offerModel.getAddress().getCity()));
-                } catch (Exception e) {
-                    offerHolder.city.setText(R.string.unknown_city);
-                }
-
-                convertView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, OfferDetailsActivity.class);
-                        intent.putExtra("offerId", object.getId().toString());
-                        context.startActivity(intent);
-                    }
-                });
-
-                return convertView;
-            case PROFILE_TYPE:
-                ProfileViewHolder profileHolder;
-
-                if (convertView == null) {
-                    convertView = layoutInflater.inflate(R.layout.list_item_profiles, null);
-
-                    profileHolder = new ProfileViewHolder();
-
-                    profileHolder.name = (TextView) convertView.findViewById(R.id.profileName);
-                    profileHolder.image = (ImageView) convertView.findViewById(R.id.profileImage);
-                    profileHolder.acceptAnimals = (ImageView) convertView.findViewById(R.id.profileAcceptsAnimals);
-                    profileHolder.inRelationship = (ImageView) convertView.findViewById(R.id.profileRelationship);
-                    profileHolder.smoker = (ImageView) convertView.findViewById(R.id.profileSmoker);
-
-                    convertView.setTag(profileHolder);
-                } else {
-                    System.out.println(convertView.getTag().getClass().getName());
-                    profileHolder = (ProfileViewHolder) convertView.getTag();
-                }
-
-                final UserPresentationModel userModel = gson.fromJson(gson.toJson(treeMap), UserPresentationModel.class);
-
-                profileHolder.name.setText(userModel.getGivenName() + " " + userModel.getFamilyName());
-
-                if(userModel.getImages() != null && userModel.getImages().size() > 0)
-                    ImageManager.downloadPictureIntoView(context, profileHolder.image, userModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
-                else
-                    profileHolder.image.setImageDrawable(null);
-
-                if(userModel.getRelationshipStatus() != null) {
-                    if (userModel.getRelationshipStatus().equals("single"))
-                        profileHolder.inRelationship.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.alone, null));
-                    else
-                        profileHolder.inRelationship.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
-                }
-
-                if(userModel.getSmoker() != null) {
-                    if (userModel.getSmoker())
-                        profileHolder.smoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_smoker, null));
-                    else
-                        profileHolder.smoker.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.is_not_smoker, null));
-                }
-
-                if(userModel.getAcceptAnimal() != null) {
-                    if (userModel.getAcceptAnimal())
-                        profileHolder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.accept_animals, null));
-                    else
-                        profileHolder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.dont_accept_animals, null));
-                }
-
-                convertView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, UserDetailActivity.class);
-                        intent.putExtra("profileId", object.getId().toString());
-                        context.startActivity(intent);
-                    }
-                });
-
-                return convertView;
-
-            default:
-                return convertView;
-        }
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
-
-    static class ProfileViewHolder {
+    static class ProfileViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView image;
         ImageView inRelationship;
         ImageView smoker;
         ImageView acceptAnimals;
+        View itemView;
+
+        public ProfileViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            this.name = (TextView) itemView.findViewById(R.id.profileName);
+            this.image = (ImageView) itemView.findViewById(R.id.profileImage);
+            this.acceptAnimals = (ImageView) itemView.findViewById(R.id.profileAcceptsAnimals);
+            this.inRelationship = (ImageView) itemView.findViewById(R.id.profileRelationship);
+            this.smoker = (ImageView) itemView.findViewById(R.id.profileSmoker);
+        }
+
+        public void bindData(UserProfileModel userModel, final Context context, final String id){
+            name.setText(userModel.getGivenName() + " " + userModel.getFamilyName());
+
+            if(userModel.getImages() != null && userModel.getImages().size() > 0)
+                ImageManager.downloadPictureIntoView(context, image, userModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
+            else
+                image.setImageDrawable(null);
+
+            if(userModel.getRelationshipStatus() != null) {
+                if (userModel.getRelationshipStatus().equals("single"))
+                    inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.alone, null));
+                else
+                    inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.couple, null));
+            }
+
+            if(userModel.getSmoker() != null) {
+                if (userModel.getSmoker())
+                    smoker.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.is_smoker, null));
+                else
+                    smoker.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.is_not_smoker, null));
+            }
+
+            if(userModel.getAcceptAnimal() != null) {
+                if (userModel.getAcceptAnimal())
+                    acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.accept_animals, null));
+                else
+                    acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.dont_accept_animals, null));
+            }
+
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, UserDetailActivity.class);
+                    intent.putExtra("profileId", id);
+                    context.startActivity(intent);
+                }
+            });
+        }
     }
 
-    static class OfferViewHolder {
+    static class OfferViewHolder extends RecyclerView.ViewHolder {
         TextView owner;
         TextView city;
         TextView keyword;
@@ -221,5 +158,50 @@ public class OffersAndProfilesAdapter extends BaseAdapter {
         TextView price;
         ImageView ownerImageThumbnail;
         ImageView flatImage;
+        View itemView;
+
+        public OfferViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            this.owner = (TextView) itemView.findViewById(R.id.offerOwner);
+            this.city = (TextView) itemView.findViewById(R.id.offerCity);
+            this.rooms = (TextView) itemView.findViewById(R.id.offerRooms);
+            this.keyword = (TextView) itemView.findViewById(R.id.offerKeyword);
+            this.price = (TextView) itemView.findViewById(R.id.offerPrice);
+            this.flatImage = (ImageView) itemView.findViewById(R.id.offerFlatImage);
+            this.ownerImageThumbnail = (ImageView) itemView.findViewById(R.id.offerOwnerImage);
+        }
+        
+        public void bindData(OfferModel offerModel, final Context context, final String id){
+            owner.setText(offerModel.getOwner().getGivenName());
+            keyword.setText(offerModel.getKeyword());
+            rooms.setText(Integer.toString(offerModel.getRooms()));
+            price.setText(Integer.toString(offerModel.getPrice()) + " " + context.getString(R.string.euro));
+
+            if (offerModel.getImages().size() > 0)
+                ImageManager.downloadPictureIntoView(context, flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
+            else
+                flatImage.setImageDrawable(null);
+
+            if (offerModel.getOwner().getImage() != null)
+                ImageManager.downloadPictureIntoView(context, ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+            else
+                ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.default_profile_picture, null));
+
+            try {
+                city.setText(String.valueOf(offerModel.getAddress().getCity()));
+            } catch (Exception e) {
+                city.setText(R.string.unknown_city);
+            }
+
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, OfferDetailsActivity.class);
+                    intent.putExtra("offerId", id);
+                    context.startActivity(intent);
+                }
+            });
+        }
     }
 }

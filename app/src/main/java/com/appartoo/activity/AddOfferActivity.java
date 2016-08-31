@@ -39,7 +39,7 @@ import com.appartoo.model.PlaceModel;
 import com.appartoo.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.GeocoderResponse;
-import com.appartoo.utils.GoogleMapsService;
+import com.appartoo.utils.GoogleServices;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.view.DisableLastSwipeViewPager;
@@ -72,7 +72,7 @@ public class AddOfferActivity extends AppCompatActivity {
     private DisableLastSwipeViewPager pager;
     private PagerAdapter pagerAdapter;
     private Button addOfferButton;
-    private GoogleMapsService googleGeocodingService;
+    private GoogleServices googleGeocodingService;
     private SimpleDateFormat dateFormat;
     private RestService restService;
     private ArrayList<File> files;
@@ -136,7 +136,7 @@ public class AddOfferActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        googleGeocodingService = geocodingRetrofit.create(GoogleMapsService.class);
+        googleGeocodingService = geocodingRetrofit.create(GoogleServices.class);
     }
 
     @Override

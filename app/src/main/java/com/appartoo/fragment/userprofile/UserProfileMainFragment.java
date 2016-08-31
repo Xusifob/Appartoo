@@ -18,6 +18,7 @@ import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
+import com.appartoo.view.NavigationDrawerView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +67,7 @@ public class UserProfileMainFragment extends Fragment {
             populateWithLocalInfos();
             getUserProfile();
         } else {
-            populateView();
+            bindData();
         }
     }
 
@@ -82,7 +83,7 @@ public class UserProfileMainFragment extends Fragment {
         else userProfilePic.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.default_profile_picture));
     }
 
-    public void populateView() {
+    public void bindData() {
         if (Appartoo.LOGGED_USER_PROFILE.getImage() != null) ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         else userProfilePic.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.default_profile_picture));
 
@@ -113,8 +114,9 @@ public class UserProfileMainFragment extends Fragment {
                             .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
                             .apply();
 
+                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(), Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     Appartoo.initiateFirebase();
-                    populateView();
+                    bindData();
 
                 } else {
                     response.code();

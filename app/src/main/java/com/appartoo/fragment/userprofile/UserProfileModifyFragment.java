@@ -94,7 +94,7 @@ public class UserProfileModifyFragment extends Fragment {
         super.onStart();
 
         if(Appartoo.LOGGED_USER_PROFILE != null) {
-            populateView();
+            bindData();
         }
 
         userProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +151,7 @@ public class UserProfileModifyFragment extends Fragment {
         }
     }
 
-    private void populateView(){
+    private void bindData(){
 
         if (userProfilePic.getDrawable() == null) {
             ImageManager.downloadPictureIntoView(getActivity().getApplicationContext(), userProfilePic, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);

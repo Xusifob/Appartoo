@@ -41,7 +41,7 @@ public class UserDetailFragment extends Fragment {
         return rootView;
     }
 
-    public void populateView(UserModel user){
+    public void bindData(UserModel user){
         userName.setText(user.getGivenName());
 
         String job = user.getContract();

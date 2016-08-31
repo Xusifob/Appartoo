@@ -128,7 +128,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/smoker_icon"
-                android:src="@drawable/untold_smoker"
+                android:src="@drawable/untold_smoker_big"
                 android:id="@+id/userDetailSmoker"/>
         </LinearLayout>
         <LinearLayout
@@ -144,7 +144,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/student_icon"
-                android:src="@drawable/student"
+                android:src="@drawable/student_big"
                 android:id="@+id/userDetailIsWorker"/>
         </LinearLayout>
         <LinearLayout
@@ -159,7 +159,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/single_icon"
-                android:src="@drawable/untold_relationship"
+                android:src="@drawable/untold_relationship_big"
                 android:id="@+id/userDetailRelationship"/>
         </LinearLayout>
     </LinearLayout>
@@ -181,7 +181,7 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/score_icon"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/thumb"/>
+        android:src="@drawable/thumb_big"/>
     <TextView
         style="@style/Paragraph"
         android:paddingBottom="8dp"
