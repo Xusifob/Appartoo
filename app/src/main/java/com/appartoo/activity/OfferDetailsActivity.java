@@ -23,7 +23,6 @@ import com.appartoo.adapter.ImageViewPagerAdapter;
 import com.appartoo.fragment.OfferDetailsFragment;
 import com.appartoo.fragment.WorkaroundMapFragment;
 import com.appartoo.model.ImageModel;
-import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
@@ -73,6 +72,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_details);
 
+
         //Retrieve the drawer element
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
@@ -82,6 +82,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         offerDetailOwnerPicture = (ImageButton) findViewById(R.id.offerDetailOwnerPicture);
         offerDetailSendMessageButton = (Button) findViewById(R.id.offerDetailSendMessage);
         offerId = getIntent().getStringExtra("offerId");
+        offer = getIntent().getParcelableExtra("offer");
         offerDetailContainer = findViewById(R.id.offerDetailContainer);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -119,7 +120,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                         offer = response.body();
                         offerDetailsFragment.bindData(offer);
                         mapFragment.getMapAsync(OfferDetailsActivity.this);
-                        populateActivity();
+                        bindData();
                         offerDetailContainer.setVisibility(View.VISIBLE);
                         offerDetailSendMessageButton.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
@@ -136,6 +137,13 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                     t.printStackTrace();
                 }
             });
+        } else {
+            offerDetailsFragment.bindData(offer);
+            mapFragment.getMapAsync(OfferDetailsActivity.this);
+            bindData();
+            offerDetailContainer.setVisibility(View.VISIBLE);
+            offerDetailSendMessageButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
 
         toolbar.setNavigationIcon(R.drawable.left_arrow);
@@ -155,7 +163,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
-    private void populateActivity() {
+    private void bindData() {
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
             boolean isShow = false;

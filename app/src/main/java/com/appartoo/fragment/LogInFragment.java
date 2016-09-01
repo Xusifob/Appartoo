@@ -65,7 +65,7 @@ public class LogInFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         restService = retrofit.create(RestService.class);
-        sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
 
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +101,7 @@ public class LogInFragment extends Fragment {
                     Appartoo.TOKEN = response.body().getToken();
 
                     //Stock the token in shared preferences
-                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                    sharedPreferences.edit().putString(Appartoo.KEY_TOKEN, Appartoo.TOKEN).apply();
 
                     if (Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
                         retrieveUserProfile();
@@ -153,9 +153,9 @@ public class LogInFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Appartoo.LOGGED_USER_PROFILE = response.body();
 
-                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
-                            .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
-                            .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                    sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                            .putString(Appartoo.KEY_FAMILY_NAME, Appartoo.LOGGED_USER_PROFILE.getFamilyName())
+                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
                             .apply();
                     
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());

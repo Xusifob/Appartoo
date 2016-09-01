@@ -1,6 +1,8 @@
 package com.appartoo.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,14 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.appartoo.R;
+import com.appartoo.utils.Appartoo;
 import com.appartoo.view.NavigationDrawerView;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     private final int ID_MENU_SEARCH = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
+        sharedPreferences = getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -41,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Appartoo");
+        getSupportActionBar().setTitle(Appartoo.APP_NAME);
         navigationDrawerView.setDrawerLayout(drawerLayout);
 
         toolbar.setNavigationIcon(R.drawable.ic_drawer);
@@ -55,12 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        navigationDrawerView.updateHeader();
     }
 
     @Override

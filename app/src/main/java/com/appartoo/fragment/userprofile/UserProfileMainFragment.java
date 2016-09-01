@@ -48,7 +48,7 @@ public class UserProfileMainFragment extends Fragment {
         userName = (TextView) view.findViewById(R.id.profileName);
         userInfos = (TextView) view.findViewById(R.id.profileInfos);
         userProfilePic = (ImageView) view.findViewById(R.id.userProfileMainProfilePic);
-        sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
 
         return view;
     }
@@ -73,9 +73,9 @@ public class UserProfileMainFragment extends Fragment {
 
     public void populateWithLocalInfos() {
         System.out.println("Populating with local");
-        String givenName = sharedPreferences.getString("givenName", null);
-        String familyName = sharedPreferences.getString("familyName", null);
-        String profilePicUrl = sharedPreferences.getString("profilePicUrl", null);
+        String givenName = sharedPreferences.getString(Appartoo.KEY_GIVEN_NAME, null);
+        String familyName = sharedPreferences.getString(Appartoo.KEY_FAMILY_NAME, null);
+        String profilePicUrl = sharedPreferences.getString(Appartoo.KEY_PROFILE_PICTURE, null);
 
         if(givenName != null && familyName != null) userName.setText(givenName + " " + familyName);
 
@@ -109,9 +109,9 @@ public class UserProfileMainFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Appartoo.LOGGED_USER_PROFILE = response.body();
 
-                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
-                            .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
-                            .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                    sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                            .putString(Appartoo.KEY_FAMILY_NAME, Appartoo.LOGGED_USER_PROFILE.getFamilyName())
+                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
                             .apply();
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(), Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());

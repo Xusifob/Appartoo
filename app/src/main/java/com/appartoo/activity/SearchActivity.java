@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.appartoo.R;
+import com.appartoo.utils.Appartoo;
 import com.appartoo.view.NavigationDrawerView;
 
 public class SearchActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve the drawer elements
@@ -36,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onStart();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Appartoo");
+        getSupportActionBar().setTitle(Appartoo.APP_NAME);
         navigationDrawerView.setDrawerLayout(drawerLayout);
 
         toolbar.setNavigationIcon(R.drawable.ic_drawer);

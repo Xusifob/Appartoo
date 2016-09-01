@@ -1,6 +1,5 @@
 package com.appartoo.activity;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,9 +29,7 @@ import com.appartoo.utils.TokenReceiver;
 import com.appartoo.view.NavigationDrawerView;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 import okhttp3.ResponseBody;
@@ -64,6 +60,7 @@ public class SignUpActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retreive the resources
@@ -79,7 +76,7 @@ public class SignUpActivity extends FragmentActivity {
 
         //Define the number of pages to keep in memory
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
-        sharedPreferences = getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
 
         //Build a retrofit request
         Retrofit retrofit = new Retrofit.Builder()
@@ -204,7 +201,7 @@ public class SignUpActivity extends FragmentActivity {
             public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
                 if(response.isSuccessful()) {
                     Appartoo.TOKEN = response.body().getToken();
-                    sharedPreferences.edit().putString("token", Appartoo.TOKEN).apply();
+                    sharedPreferences.edit().putString(Appartoo.KEY_TOKEN, Appartoo.TOKEN).apply();
                     retrieveUserProfile();
                 } else {
                     finish();
@@ -234,10 +231,10 @@ public class SignUpActivity extends FragmentActivity {
                 if(response.isSuccessful()) {
                     Appartoo.LOGGED_USER_PROFILE = response.body();
 
-                    sharedPreferences.edit().putString("givenName", Appartoo.LOGGED_USER_PROFILE.getGivenName())
-                            .putString("familyName", Appartoo.LOGGED_USER_PROFILE.getFamilyName())
-                            .putString("email", Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
-                            .putString("profilePicUrl", Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl()).apply();
+                    sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, Appartoo.LOGGED_USER_PROFILE.getGivenName())
+                            .putString(Appartoo.KEY_FAMILY_NAME, Appartoo.LOGGED_USER_PROFILE.getFamilyName())
+                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                            .putString(Appartoo.KEY_PROFILE_PICTURE, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl()).apply();
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     Appartoo.initiateFirebase();
@@ -246,10 +243,10 @@ public class SignUpActivity extends FragmentActivity {
                 } else {
 
                     System.out.println("retrieveUserProfile response code " + response.code());
-                    sharedPreferences.edit().putString("givenName", newUser.getGivenName())
-                            .putString("familyName", newUser.getFamilyName())
-                            .putString("email", newUser.getEmail())
-                            .putString("profilePicUrl", "images/profile.png").apply();
+                    sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, newUser.getGivenName())
+                            .putString(Appartoo.KEY_FAMILY_NAME, newUser.getFamilyName())
+                            .putString(Appartoo.KEY_EMAIL, newUser.getEmail())
+                            .putString(Appartoo.KEY_PROFILE_PICTURE, "images/profile.png").apply();
 
                     NavigationDrawerView.setHeaderInformations(newUser.getGivenName() + " " + newUser.getFamilyName(), newUser.getEmail());
 
@@ -270,8 +267,8 @@ public class SignUpActivity extends FragmentActivity {
     private void launchActivityWithoutHistory(Class activityClass){
         Intent intent = new Intent(SignUpActivity.this, activityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

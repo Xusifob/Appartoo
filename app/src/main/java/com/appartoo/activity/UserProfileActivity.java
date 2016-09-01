@@ -38,6 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+
         mainFragment = new UserProfileMainFragment();
         modifyFragment = new UserProfileModifyFragment();
         settingsFragment = new UserProfileSettingsFragment();
@@ -67,7 +68,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Define the drawer
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Appartoo");
+        getSupportActionBar().setTitle(Appartoo.APP_NAME);
         navigationDrawerView.setDrawerLayout(drawerLayout);
 
         if(settingsFragment.isVisible() || modifyFragment.isVisible() || offersFragment.isVisible()) {

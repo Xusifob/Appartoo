@@ -51,6 +51,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_profile);
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())

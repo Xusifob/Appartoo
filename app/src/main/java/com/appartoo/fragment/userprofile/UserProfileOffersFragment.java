@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +38,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserProfileOffersFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ListView offersListView;
+    private RecyclerView offersListView;
     private ArrayList<OfferModelWithDetailledDate> offersList;
     private OffersAdapter offersAdapter;
-    private View progressBar;
-    private ProgressBar moreOfferProgress;
+    private ProgressBar progressBar;
     private FloatingActionButton addOfferButton;
 
     @Override
@@ -48,14 +49,17 @@ public class UserProfileOffersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
-        offersListView = (ListView) view.findViewById(R.id.offersList);
+        offersListView = (RecyclerView) view.findViewById(R.id.offersList);
         addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListAddOfferButton);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
 
-        progressBar = inflater.inflate(R.layout.progress_bar_list_view, container, false);
-        moreOfferProgress = (ProgressBar) progressBar.findViewById(R.id.footerListBar);
+        offersListView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        offersListView.setLayoutManager(linearLayoutManager);
 
         if (container != null) {
             container.removeAllViews();
@@ -66,25 +70,10 @@ public class UserProfileOffersFragment extends Fragment {
 
     @Override
     public void onStart() {
-        moreOfferProgress.setIndeterminate(true);
-
+        progressBar.setIndeterminate(true);
         offersListView.setAdapter(offersAdapter);
-        offersListView.addFooterView(progressBar);
-        offersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), OfferDetailsActivity.class);
-                intent.putExtra("offer", offersList.get(position));
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.left_out);
-            }
-        });
 
-        if(offersAdapter.getCount() == 0) {
-            if(Appartoo.LOGGED_USER_PROFILE != null) {
-                getOffers();
-            }
-        }
+        getOffers();
 
         super.onStart();
     }
@@ -131,6 +120,7 @@ public class UserProfileOffersFragment extends Fragment {
         callback.enqueue(new Callback<ArrayList<OfferModelWithDetailledDate>>(){
             @Override
             public void onResponse(Call<ArrayList<OfferModelWithDetailledDate>> call, Response<ArrayList<OfferModelWithDetailledDate>> response) {
+                progressBar.setVisibility(View.GONE);
 
                 if(response.isSuccessful()) {
                     System.out.println(response.body().size());
@@ -145,15 +135,13 @@ public class UserProfileOffersFragment extends Fragment {
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    moreOfferProgress.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<OfferModelWithDetailledDate>> call, Throwable t) {
 
-                moreOfferProgress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);

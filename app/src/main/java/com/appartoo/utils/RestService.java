@@ -44,7 +44,7 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST(REST_URL + "/register")
-    Call<ResponseBody> postUser(@Field("email") String mail, @Field("password") String password, @Field("givenName") String givenName, @Field("familyName") String familyName);
+    Call<ResponseBody> postUser(@Field(Appartoo.KEY_EMAIL) String mail, @Field("password") String password, @Field(Appartoo.KEY_GIVEN_NAME) String givenName, @Field(Appartoo.KEY_FAMILY_NAME) String familyName);
 
     @FormUrlEncoded
     @POST(REST_URL + "/offer/create")

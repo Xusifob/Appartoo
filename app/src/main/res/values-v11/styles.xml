@@ -12,6 +12,10 @@
         <item name="windowActionBarOverlay">false</item>
     </style>
 
+    <style name="ReportDialog" parent="AppTheme">
+        <item name="android:padding">4dp</item>
+    </style>
+
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="windowActionBarOverlay">false</item>
         <item name="android:clipToPadding">false</item>

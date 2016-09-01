@@ -80,7 +80,7 @@ public class UserProfileModifyFragment extends Fragment {
 
         restService = retrofit.create(RestService.class);
         navigationDrawerView = (NavigationDrawerView) getActivity().findViewById(R.id.navigationDrawer);
-        sharedPreferences = getActivity().getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
 
         if (container != null) {
             container.removeAllViews();
@@ -304,7 +304,7 @@ public class UserProfileModifyFragment extends Fragment {
         userLastName = (EditText) view.findViewById(R.id.userProfileModifyLastName);
         userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
         userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);
-        userMail = (EditText) view.findViewById(R.id.userProfileModifyMail);
+        userMail = (EditText) view.findViewById(R.id.searchOfferPrice);
         isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
         isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
         isCook = (Switch) view.findViewById(R.id.userProfileModifyIsCook);

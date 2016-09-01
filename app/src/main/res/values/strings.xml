@@ -68,6 +68,13 @@
     <string name="drawer_logout">Déconnexion</string>
     <string name="drawer_messages">Mes messages</string>
 
+    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
+
+    <string name="crash_dialog_title">"Appartoo s'est arrêté"</string>
+    <string name="crash_dialog_text">"Une erreur inattendue s'est produite, forçant l'arrêt de l'application. Appuyez sur OK pour nous envoyer un rapport détaillé et nous aider à améliorer l'application."</string>
+    <string name="crash_dialog_comment_prompt">"Aidez-nous en nous décrivant les étapes qui ont précédé l'arrêt : (optionnel)"</string>
+    <string name="crash_dialog_ok_toast">"Merci pour votre participation !"</string>
+
     <!-- MESSAGES OPTIONS MENU STRINGS -->
     <string name="confirm_accept_candidate">Êtes-vous sûr de vouloir accepter ce candidat ?</string>
     <string name="confirm_refuse_candidate">Êtes-vous sûr de vouloir refuser ce candidat ?</string>

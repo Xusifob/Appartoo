@@ -38,7 +38,7 @@ public class NavigationDrawerView extends NavigationView {
     public NavigationDrawerView(Context context) {
         super(context);
         this.context = context;
-        this.sharedPreferences = context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
         setMenuActions();
         updateHeader();
     }
@@ -46,7 +46,7 @@ public class NavigationDrawerView extends NavigationView {
     public NavigationDrawerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        this.sharedPreferences = context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
         setMenuActions();
         updateHeader();
     }
@@ -54,7 +54,7 @@ public class NavigationDrawerView extends NavigationView {
     public NavigationDrawerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
-        this.sharedPreferences = context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE);
+        this.sharedPreferences = context.getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
         setMenuActions();
         updateHeader();
     }
@@ -79,7 +79,7 @@ public class NavigationDrawerView extends NavigationView {
             ImageManager.downloadPictureIntoView(context, profilePicture, Appartoo.LOGGED_USER_PROFILE.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         } else {
             String profilePicUrlThumb = sharedPreferences.getString("profilePicUrlThumbnail", null);
-            String profilePicUrl = sharedPreferences.getString("profilePicUrl", null);
+            String profilePicUrl = sharedPreferences.getString(Appartoo.KEY_PROFILE_PICTURE, null);
 
             if(profilePicUrlThumb != null) {
                 ImageManager.downloadPictureIntoView(context, profilePicture, profilePicUrlThumb, ImageManager.TRANFORM_SQUARE);
@@ -144,12 +144,12 @@ public class NavigationDrawerView extends NavigationView {
 
                         Appartoo.setUserIsOnline(false);
 
-                        context.getSharedPreferences("Appartoo", Context.MODE_PRIVATE).edit()
+                        context.getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE).edit()
                                 .remove("token")
-                                .remove("familyName")
-                                .remove("email")
-                                .remove("age")
-                                .remove("profilePicUrl").apply();
+                                .remove(Appartoo.KEY_FAMILY_NAME)
+                                .remove(Appartoo.KEY_EMAIL)
+                                .remove(Appartoo.KEY_AGE)
+                                .remove(Appartoo.KEY_PROFILE_PICTURE).apply();
 
                         Appartoo.LOGGED_USER_PROFILE = null;
                         Appartoo.TOKEN = null;

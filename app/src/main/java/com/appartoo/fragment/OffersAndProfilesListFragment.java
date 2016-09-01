@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
@@ -33,16 +34,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by alexandre on 16-07-13.
  */
-public class OffersListFragment extends Fragment {
+public class OffersAndProfilesListFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView offersAndProfiles;
-
     private ArrayList<ObjectHolderModel> offersAndProfilesList;
     private OffersAndProfilesAdapter offersAndProfilesAdapter;
+    private FloatingActionButton addOfferButton;
+    private ProgressBar progressBar;
     private int nextPage;
     private int pageNumber;
-    private FloatingActionButton addOfferButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,8 +55,7 @@ public class OffersListFragment extends Fragment {
 
         offersAndProfilesList = new ArrayList<>();
         offersAndProfilesAdapter = new OffersAndProfilesAdapter(getActivity(), offersAndProfilesList);
-
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         offersAndProfiles.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -75,6 +75,7 @@ public class OffersListFragment extends Fragment {
     @Override
     public void onStart() {
 
+        progressBar.setIndeterminate(true);
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,9 +84,6 @@ public class OffersListFragment extends Fragment {
         });
 
         offersAndProfiles.setAdapter(offersAndProfilesAdapter);
-//        if(offersAndProfiles.getFooterViewsCount() == 0 && nextPage >= 0) {
-//            offersAndProfiles.addFooterView(progressBar);
-//        }
 
         if(offersAndProfilesAdapter.getItemCount() == 0) {
             getOffersAndProfiles(pageNumber);
@@ -137,7 +135,6 @@ public class OffersListFragment extends Fragment {
             @Override
             public void onResponse(Call<ObjectHolderModelReceiver> call, Response<ObjectHolderModelReceiver> response) {
 
-
                 if(response.isSuccessful()) {
 
                     if(swipeRefreshLayout.isRefreshing()) {
@@ -153,20 +150,18 @@ public class OffersListFragment extends Fragment {
                     nextPage = page + 1;
 
                     if(nextPage * 20 >= response.body().getTotal()) {
+                        progressBar.setVisibility(View.GONE);
                         nextPage = -1;
                     }
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     System.out.println(response.code());
                     try {
                         System.out.println(response.errorBody().string());
                     } catch (Exception e){
-
+                        e.printStackTrace();
                     }
-                    if(pageNumber == 1) {
-                        Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), R.string.no_offer_found, Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
 
                 if(swipeRefreshLayout.isRefreshing()){

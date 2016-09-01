@@ -17,5 +17,10 @@ public interface GoogleServices {
 
     @FormUrlEncoded
     @POST("formResponse")
-    Call<ResponseBody> reportError(@Field("entry.741070548") String crashInfos, @Field("entry.1053371281") String phoneInfos);
+    Call<ResponseBody> reportError(
+            @Field("entry.741070548") String exception,
+            @Field("entry.1053371281") String phoneInfos,
+            @Field("entry.1287320624") String logcat,
+            @Field("entry.325751971") String userComment,
+            @Field("entry.1652759026") String other);
 }
