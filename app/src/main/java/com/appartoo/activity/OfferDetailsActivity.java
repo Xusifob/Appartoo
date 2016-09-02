@@ -12,6 +12,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -23,7 +24,9 @@ import com.appartoo.adapter.ImageViewPagerAdapter;
 import com.appartoo.fragment.OfferDetailsFragment;
 import com.appartoo.fragment.WorkaroundMapFragment;
 import com.appartoo.model.ImageModel;
+import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
+import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
@@ -61,7 +64,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private ViewPager viewPager;
     private Button offerDetailSendMessageButton;
     private ProgressDialog progressDialog;
-    private OfferModelWithDate offer;
+    private OfferModel offer;
     private RestService restService;
     private String offerId;
     private View offerDetailContainer;
@@ -125,6 +128,13 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                         offerDetailSendMessageButton.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                     } else {
+                        try {
+                            Log.v("OfferDetailsActivity", "onStart: " + String.valueOf(response.code()));
+                            Log.v("OfferDetailsActivity", "onStart: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
@@ -134,7 +144,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                    Log.v("OfferDetailsActivity", "onStart: " + t.getMessage());
                 }
             });
         } else {
@@ -277,9 +287,9 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("OfferDetailsActivity", "applyToOffer: " + String.valueOf(response.code()));
+                        Log.v("OfferDetailsActivity", "applyToOffer: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -290,12 +300,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
                 offerDetailSendMessageButton.setEnabled(true);
                 progressDialog.dismiss();
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getApplicationContext(), "La conversation a bien été créée", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
-                }
-                t.printStackTrace();
+                Log.v("OfferDetailsActivity", "applyToOffer: " + t.getMessage());
             }
         });
     }

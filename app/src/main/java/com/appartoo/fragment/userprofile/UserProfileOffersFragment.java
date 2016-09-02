@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.appartoo.utils.RestService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -115,7 +117,7 @@ public class UserProfileOffersFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getUserOffers(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId() + "/offers");
+        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getUserOffers(Appartoo.LOGGED_USER_PROFILE.getId() + "/offers");
 
         callback.enqueue(new Callback<ArrayList<OfferModelWithDetailledDate>>(){
             @Override
@@ -123,13 +125,16 @@ public class UserProfileOffersFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
 
                 if(response.isSuccessful()) {
-                    System.out.println(response.body().size());
-
                     offersList.clear();
                     offersList.addAll(response.body());
                     offersAdapter.notifyDataSetChanged();
                 } else {
-                    System.out.println(response.code());
+                    try  {
+                        Log.v("UserProfileOffersFragme", "getOffers: " + String.valueOf(response.code()));
+                        Log.v("UserProfileOffersFragme", "getOffers: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(getActivity(),R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
 
@@ -146,13 +151,7 @@ public class UserProfileOffersFragment extends Fragment {
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 }
-
-                t.printStackTrace();
-                if(t instanceof IllegalStateException) {
-                    Toast.makeText(getActivity(), R.string.no_offer_found, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_SHORT).show();
-                }
+                Log.v("UserProfileOffersFragme", "getOffers: " + t.getMessage());
             }
         });
     }

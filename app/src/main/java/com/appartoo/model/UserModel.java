@@ -3,11 +3,17 @@ package com.appartoo.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.internal.LinkedTreeMap;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +38,7 @@ public class UserModel implements Parcelable {
     private Boolean acceptAnimals;
     private Integer plus;
     private Double income;
-    private Date birthDate;
+    private Object birthDate;
     private AddressModel address;
     private ImageModel image;
     private ArrayList<ImageModel> images;
@@ -40,7 +46,8 @@ public class UserModel implements Parcelable {
     private static final ClassLoader BOOLEAN_CLASS_LOADER = Boolean.class.getClassLoader();
     private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
     private static final ClassLoader DOUBLE_CLASS_LOADER = Double.class.getClassLoader();
-    private static final ClassLoader DATE_CLASS_LOADER = Date.class.getClassLoader();
+    private static final ClassLoader OBJECT_CLASS_LOADER = Object.class.getClassLoader();
+//    private static final ClassLoader DATE_CLASS_LOADER = Date.class.getClassLoader();
     private static final ClassLoader IMAGEMODEL_CLASS_LOADER = ImageModel.class.getClassLoader();
     private static final ClassLoader ADDRESSMODEL_CLASS_LOADER = AddressModel.class.getClassLoader();
 
@@ -62,7 +69,7 @@ public class UserModel implements Parcelable {
         acceptAnimals = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         plus = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         income = (Double) in.readValue(DOUBLE_CLASS_LOADER);
-        birthDate = (Date) in.readValue(DATE_CLASS_LOADER);
+        birthDate = in.readValue(OBJECT_CLASS_LOADER);
         address = (AddressModel) in.readValue(ADDRESSMODEL_CLASS_LOADER);
         image = (ImageModel) in.readValue(IMAGEMODEL_CLASS_LOADER);
         images = in.readArrayList(IMAGEMODEL_CLASS_LOADER);
@@ -180,11 +187,11 @@ public class UserModel implements Parcelable {
         this.address = address;
     }
 
-    public Date getBirthDate() {
+    public Object getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Object birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -272,17 +279,38 @@ public class UserModel implements Parcelable {
     }
 
     public int getAge() {
-        if(birthDate == null) {
-            return -2;
+
+        if(birthDate instanceof String) {
+            SimpleDateFormat jsonFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+            Calendar now = Calendar.getInstance();
+            Calendar birthdate = Calendar.getInstance();
+            try {
+                birthdate.setTime(jsonFormat.parse((String) this.birthDate));
+            } catch (ParseException e) {
+                return 1;
+            }
+            int age = now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+            if (birthdate.get(Calendar.DAY_OF_YEAR) > now.get(Calendar.DAY_OF_YEAR)) {
+                age -= 1;
+            }
+            return age;
+        } else if (birthDate != null) {
+            LinkedTreeMap<?, ?> link = (LinkedTreeMap) birthDate;
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").create();
+            DetailledDateModel date = gson.fromJson(gson.toJson(link), DetailledDateModel.class);
+
+            Calendar now = Calendar.getInstance();
+            Calendar birthdate = Calendar.getInstance();
+            birthdate.setTime(date.getDate());
+
+            int age = now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+            if (birthdate.get(Calendar.DAY_OF_YEAR) > now.get(Calendar.DAY_OF_YEAR)) {
+                age -= 1;
+            }
+            return age;
+        } else {
+            return -1;
         }
-        Calendar now = Calendar.getInstance();
-        Calendar birthdate = Calendar.getInstance();
-        birthdate.setTime(this.birthDate);
-        int age = now.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
-        if (birthdate.get(Calendar.DAY_OF_YEAR) > now.get(Calendar.DAY_OF_YEAR)) {
-            age -= 1;
-        }
-        return age;
     }
 
     @Override

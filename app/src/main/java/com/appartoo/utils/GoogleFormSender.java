@@ -3,6 +3,7 @@ package com.appartoo.utils;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.appartoo.activity.LoginActivity;
 
@@ -52,20 +53,20 @@ public class GoogleFormSender implements ReportSender {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(!response.isSuccessful()) {
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("Report", String.valueOf(response.code()));
+                        Log.v("Report", response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("Report sent !");
+                    Log.v("Report", "Report sent.");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
+                Log.v("Report", t.getMessage());
             }
         });
     }

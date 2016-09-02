@@ -1,5 +1,7 @@
 package com.appartoo.fragment;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -133,32 +135,8 @@ public class MessageFragment extends Fragment{
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot.getValue(true));
-                if(dataSnapshot.getValue(true) != null) {
-                    HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
-                    Gson gson = new Gson();
-                    conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
-                    conversationModel.setId(conversationId);
 
-                    System.out.println(dataSnapshot.getValue(true));
-
-                    if(conversationModel.getStatus() != null && conversationModel.getStatus() != 0 && conversationModel.getType() == 1) {
-                        sendMessage.setEnabled(false);
-                        sendMessage.setImageResource(R.drawable.send_message_gray);
-                        messageEdit.setText("");
-                        messageEdit.setEnabled(false);
-                        messageLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.colorSubLightGray, null));
-                        messageEdit.setHint(R.string.conversation_disabled);
-                    }
-
-                    if(Appartoo.LOGGED_USER_PROFILE != null && conversationModel.getIsTyping() != null) {
-                        setOtherIsTyping();
-                    }
-
-                    if(conversationModel.getMessages() != null && conversationModel.getMessages().size() != 0) {
-                        setMessageIsRead();
-                    }
-                }
+                new DataChangedTask().execute(dataSnapshot);
             }
 
             @Override
@@ -172,7 +150,6 @@ public class MessageFragment extends Fragment{
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                 HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.getValue(true);
 
                 Gson gson = new Gson();
@@ -227,6 +204,12 @@ public class MessageFragment extends Fragment{
                 }
             }
         };
+    }
+
+    private void setUserIsTyping(boolean userIsTyping) {
+        HashMap<String, Object> isTyping = new HashMap<>();
+        isTyping.put("/isTyping/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), userIsTyping);
+        conversationReference.updateChildren(isTyping);
     }
 
     private void setOtherIsTyping() {
@@ -298,15 +281,8 @@ public class MessageFragment extends Fragment{
         return candidateId;
     }
 
-    public void setUserIsTyping(boolean userIsTyping) {
-        HashMap<String, Object> isTyping = new HashMap<>();
-        isTyping.put("/isTyping/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString(), userIsTyping);
-        conversationReference.updateChildren(isTyping);
-    }
-
     public void setMessageIsRead(){
 
-        System.out.println(conversationModel.getIsRead());
         if(getActivity() != null && getActivity() instanceof MessageActivity) {
 
             if (conversationModel.getParticipants().size() == 2) {
@@ -357,4 +333,45 @@ public class MessageFragment extends Fragment{
         conversationReference.removeEventListener(valueEventListener);
         messageEdit.removeTextChangedListener(textWatcher);
     }
+
+    private class DataChangedTask extends AsyncTask<DataSnapshot, Void, ConversationModel> {
+
+        @Override
+        protected ConversationModel doInBackground(DataSnapshot... dataSnapshots) {
+            System.out.println("onDataChange");
+
+            if(dataSnapshots[0].getValue(true) != null) {
+                HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshots[0].getValue(true);
+                Gson gson = new Gson();
+                conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
+                conversationModel.setId(conversationId);
+
+                return conversationModel;
+            } else {
+                return null;
+            }
+        }
+
+        protected void onPostExecute(ConversationModel conversationModel) {
+            if (conversationModel != null) {
+                if (conversationModel.getStatus() != null && conversationModel.getStatus() != 0 && conversationModel.getType() == 1) {
+                    sendMessage.setEnabled(false);
+                    sendMessage.setImageResource(R.drawable.send_message_gray);
+                    messageEdit.setText("");
+                    messageEdit.setEnabled(false);
+                    messageLayout.setBackgroundColor(Color.argb(255, 232, 232, 232));
+                    messageEdit.setHint(R.string.conversation_disabled);
+                }
+
+                if (Appartoo.LOGGED_USER_PROFILE != null && conversationModel.getIsTyping() != null) {
+                    setOtherIsTyping();
+                }
+
+                if (conversationModel.getMessages() != null && conversationModel.getMessages().size() != 0) {
+                    setMessageIsRead();
+                }
+            }
+        }
+    }
+
 }

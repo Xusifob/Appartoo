@@ -1,15 +1,13 @@
 package com.appartoo.utils;
 
-import android.support.annotation.IntRange;
-
 import com.appartoo.model.CompleteUserModel;
 import com.appartoo.model.ImageModel;
-import com.appartoo.model.ObjectHolderModel;
 import com.appartoo.model.ObjectHolderModelReceiver;
 import com.appartoo.model.OfferModel;
 import com.appartoo.model.OfferModelWithDate;
 import com.appartoo.model.OfferModelWithDetailledDate;
 import com.appartoo.model.UserModel;
+import com.appartoo.model.UserProfileModel;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,7 +34,7 @@ import retrofit2.http.Url;
  */
 public interface RestService {
 
-    String REST_URL = "";
+    String REST_URL = "/a";
 
     @FormUrlEncoded
     @POST(REST_URL + "/login")
@@ -64,9 +62,6 @@ public interface RestService {
 
     @GET(REST_URL + "/searchGeneral")
     Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @Query("start") Integer start, @Query("limit") Integer limit);
-
-    @GET(REST_URL + "/offers")
-    Call<ServerResponse<ArrayList<OfferModelWithDate>>> getOffers(@IntRange(from=1) @Query("page") int page);
 
     @GET(REST_URL + "/me")
     Call<CompleteUserModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);

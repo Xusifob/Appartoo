@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.model.UserModel;
+import com.appartoo.model.UserProfileModel;
 import com.appartoo.utils.TextValidator;
 
 /**
@@ -55,6 +56,7 @@ public class UserDetailFragment extends Fragment {
         if(user.getAge() > 0) {
             userAge.setText(Integer.toString(user.getAge()) + " " + getResources().getString(R.string.year_age));
         }
+
         if (user.getDescription() == null || !TextValidator.haveText(user.getDescription())) userDescription.setText(R.string.no_description);
         else userDescription.setText(user.getDescription());
 

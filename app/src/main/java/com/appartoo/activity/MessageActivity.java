@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,10 +150,10 @@ public class MessageActivity extends AppCompatActivity {
     private void refuseUser(){
 
         loading = ProgressDialog.show(this, "Refus du participant", "Veuillez patienter...", true);
-        String url = Appartoo.SERVER_URL + "/organization/" + conversationModel.getOffer().get("id") + "/candidate";
+        String url = Appartoo.SERVER_URL + RestService.REST_URL + "/organization/" + conversationModel.getOffer().get("id") + "/candidate";
         String candidateId = getCandidateId();
 
-        Call<ResponseBody> callback = restService.refuseCandidateToOffer(RestService.REST_URL + url, "Bearer " + Appartoo.TOKEN, candidateId, conversationModel.getId());
+        Call<ResponseBody> callback = restService.refuseCandidateToOffer(url, "Bearer " + Appartoo.TOKEN, candidateId, conversationModel.getId());
 
         callback.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -164,9 +165,9 @@ public class MessageActivity extends AppCompatActivity {
                 } else {
                     postExecutionDialog.setMessage(R.string.connection_error).show();
 
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("MessageActivity", "refuseUser: " + String.valueOf(response.code()));
+                        Log.v("MessageActivity", "refuseUser: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -176,8 +177,8 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 loading.dismiss();
+                Log.v("MessageActivity", "refuseUser: " + t.getMessage());
                 postExecutionDialog.setMessage(R.string.connection_error).show();
-                t.printStackTrace();
             }
         });
     }
@@ -185,10 +186,10 @@ public class MessageActivity extends AppCompatActivity {
     private void acceptUser(){
 
         loading = ProgressDialog.show(this, "Ajout du participant", "Veuillez patienter...", true);
-        String url = Appartoo.SERVER_URL + "/organization/" + conversationModel.getOffer().get("id") + "/accept";
+        String url = Appartoo.SERVER_URL + RestService.REST_URL + "/organization/" + conversationModel.getOffer().get("id") + "/accept";
         String candidateId = getCandidateId();
 
-        Call<ResponseBody> callback = restService.acceptCandidateToOffer(RestService.REST_URL + url, "Bearer " + Appartoo.TOKEN, candidateId, conversationModel.getId());
+        Call<ResponseBody> callback = restService.acceptCandidateToOffer(url, "Bearer " + Appartoo.TOKEN, candidateId, conversationModel.getId());
 
         callback.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -200,9 +201,9 @@ public class MessageActivity extends AppCompatActivity {
                 } else {
                     postExecutionDialog.setMessage(R.string.connection_error).show();
 
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("MessageActivity", "acceptUser: " + String.valueOf(response.code()));
+                        Log.v("MessageActivity", "acceptUser: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -213,7 +214,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 loading.dismiss();
                 postExecutionDialog.setMessage(R.string.connection_error).show();
-                t.printStackTrace();
+                Log.v("MessageActivity", "acceptUser: " + String.valueOf(t.getMessage()));
             }
         });
     }

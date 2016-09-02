@@ -1,6 +1,7 @@
 package com.appartoo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.appartoo.R;
 import com.appartoo.model.MessageModel;
 import com.appartoo.model.UserModel;
+import com.appartoo.model.UserProfileModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.DateManager;
 import com.appartoo.utils.ImageManager;
@@ -96,8 +98,6 @@ public class MessageAdapter extends BaseAdapter {
         final MessageModel messageModel = messageModels.get(i);
         final boolean isMe = messageModel.getSenderId() != null && messageModel.getSenderId().equals(userId);
 
-        System.out.println(profilePictures.get(messageModel.getSenderId()));
-
         if(isMe) {
             holder.myMessage.setText(messageModel.getMessage());
 
@@ -132,8 +132,6 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     public void retrieveUserProfilePic(final String id) {
-        System.out.println("/profiles/" + id);
-
         Call<UserModel> callback = restService.getUserInformationsById(RestService.REST_URL + "/profiles/" + id);
 
         callback.enqueue(new Callback<UserModel>() {
@@ -141,10 +139,11 @@ public class MessageAdapter extends BaseAdapter {
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 if(response.isSuccessful()) {
                     profilePictures.put(id, response.body().getImage().getContentUrl());
+                    notifyDataSetChanged();
                 } else {
-                    System.out.println(response.code());
-                    try {
-                        System.out.println(response.errorBody().string());
+                    try  {
+                        Log.v("MessageAdapter", "retrieveUserProfilePic: " + String.valueOf(response.code()));
+                        Log.v("MessageAdapter", "retrieveUserProfilePic: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -153,7 +152,7 @@ public class MessageAdapter extends BaseAdapter {
 
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
-                t.printStackTrace();
+                Log.v("MessageAdapter", "retrieveUserProfilePic: " + t.getMessage());
             }
         });
     }

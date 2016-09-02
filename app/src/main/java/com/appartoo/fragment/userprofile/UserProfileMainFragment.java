@@ -72,7 +72,6 @@ public class UserProfileMainFragment extends Fragment {
     }
 
     public void populateWithLocalInfos() {
-        System.out.println("Populating with local");
         String givenName = sharedPreferences.getString(Appartoo.KEY_GIVEN_NAME, null);
         String familyName = sharedPreferences.getString(Appartoo.KEY_FAMILY_NAME, null);
         String profilePicUrl = sharedPreferences.getString(Appartoo.KEY_PROFILE_PICTURE, null);

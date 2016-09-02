@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,9 +145,6 @@ public class OffersAndProfilesListFragment extends Fragment {
                     offersAndProfilesList.addAll(response.body().getHits());
                     offersAndProfilesAdapter.notifyDataSetChanged();
 
-                    System.out.println(offersAndProfilesList.size());
-                    System.out.println(offersAndProfilesAdapter.getItemCount());
-
                     nextPage = page + 1;
 
                     if(nextPage * 20 >= response.body().getTotal()) {
@@ -155,9 +153,9 @@ public class OffersAndProfilesListFragment extends Fragment {
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("OffersAndProfilesListFr", "getOffersAndProfiles: " + String.valueOf(response.code()));
+                        Log.v("OffersAndProfilesListFr", "getOffersAndProfiles: " + response.errorBody().string());
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -176,7 +174,7 @@ public class OffersAndProfilesListFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
-                t.printStackTrace();
+                Log.v("OffersAndProfilesListFr", "getOffersAndProfiles: " + t.getMessage());
                 Toast.makeText(getActivity(),R.string.connection_error, Toast.LENGTH_SHORT).show();
             }
         });

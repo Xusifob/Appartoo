@@ -182,39 +182,38 @@ public class ConversationModel {
 
     public String getConversationName(){
 
-        String convName = "";
-        if(type != null) {
-            switch (type) {
-                case 0:
-                    for (String participant : participants.keySet()) {
-                        if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
-                            convName += participants.get(participant) + ", ";
+        if(Appartoo.LOGGED_USER_PROFILE != null) {
+            String convName = "";
+            if (type != null) {
+                switch (type) {
+                    case 0:
+                        for (String participant : participants.keySet()) {
+                            if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                                convName += participants.get(participant) + ", ";
+                            }
                         }
-                    }
-                    convName = convName.substring(0, convName.length() - 2);
-                    return convName;
-                case 1:
-                    for (String participant : participants.keySet()) {
-                        if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
-                            convName += participants.get(participant) + ", ";
+                        convName = convName.substring(0, convName.length() - 2);
+                        return convName;
+                    case 1:
+                        for (String participant : participants.keySet()) {
+                            if (!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                                convName += participants.get(participant) + ", ";
+                            }
                         }
-                    }
-                    convName = convName.substring(0, convName.length() - 2);
-                    convName += " (" + offer.get("name") + ")";
-                    return convName;
-                case 2:
-                    return offer.get("name");
-                default:
-                    return "";
+                        convName = convName.substring(0, convName.length() - 2);
+                        convName += " (" + offer.get("name") + ")";
+                        return convName;
+                    case 2:
+                        return offer.get("name");
+                    default:
+                        return "";
+                }
+            } else {
+                return "";
             }
         } else {
             return "";
         }
-    }
-
-    @JsonIgnore
-    public String getOwnerName(){
-        return participants.get(owner);
     }
 
     @Override

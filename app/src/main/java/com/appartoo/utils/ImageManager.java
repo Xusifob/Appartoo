@@ -188,7 +188,7 @@ public class ImageManager {
     }
 
     public static void downloadPictureIntoView(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, String transformation){
-        final String imageUrl = Appartoo.SERVER_URL + "/upload/" + url;
+        final String imageUrl = Appartoo.SERVER_URL + RestService.REST_URL + "/upload/" + url;
 
         RequestCreator requestCreator = Picasso.with(context)
                 .load(imageUrl)
@@ -205,6 +205,7 @@ public class ImageManager {
 
                     @Override
                     public void onError() {
+                        Log.v("Picasso","Could not fetch image, trying again.");
                         //Try again online if cache failed
                         Picasso.with(context)
                                 .load(imageUrl)

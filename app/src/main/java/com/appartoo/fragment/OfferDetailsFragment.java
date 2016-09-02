@@ -49,9 +49,6 @@ public class OfferDetailsFragment extends Fragment {
     private TextView offerEnd;
 
     private View offerDetailsResidentsSeparator;
-    private OfferModel offer;
-    private String offerId;
-    private RestService restService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,17 +65,16 @@ public class OfferDetailsFragment extends Fragment {
         offerEnd = (TextView) rootView.findViewById(R.id.offerEnd);
         offerDetailsResidentsSeparator = rootView.findViewById(R.id.offerDetailsResidentsSeparator);
 
-        offerId = getActivity().getIntent().getStringExtra("offerId");
-
         return rootView;
     }
 
-    public void bindData(final OfferModelWithDate offer) {
+    public void bindData(final OfferModel offer) {
         if(offer.getAddress() != null) offerCity.setText(offer.getAddress().getCity());
         else offerCity.setText(R.string.unknown_city);
 
         if (offer.getDescription() == null || !TextValidator.haveText(offer.getDescription())) offerDescription.setText(R.string.no_description);
         else offerDescription.setText(offer.getDescription());
+
         offerTitle.setText(offer.getName());
         offerKeyword.setText(offer.getKeyword() + " " + NumberFormat.getInstance().format(offer.getPrice()) + " " + getString(R.string.euro));
         offerRooms.setText(String.valueOf(offer.getRooms()) + " " + getString(R.string.room_or_rooms));
@@ -86,14 +82,29 @@ public class OfferDetailsFragment extends Fragment {
         String startNotInformed = getString(R.string.start) + " : " + getString(R.string.not_informed);
         String endNotInformed = getString(R.string.end) + " : " + getString(R.string.not_informed);
 
-        if (offer.getAvailabilityStarts() != null)
-            offerStart.setText(getString(R.string.start) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityStarts()));
-        else
-            offerStart.setText(startNotInformed);
-        if (offer.getAvailabilityEnds() != null)
-            offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(((OfferModelWithDate) offer).getAvailabilityEnds()));
-        else
-            offerEnd.setText(endNotInformed);
+        if(offer instanceof OfferModelWithDate) {
+            OfferModelWithDate offerModel = (OfferModelWithDate) offer;
+            if (offerModel.getAvailabilityStarts() != null)
+                offerStart.setText(getString(R.string.start) + " : " + dateParser.format(offerModel.getAvailabilityStarts()));
+            else
+                offerStart.setText(startNotInformed);
+
+            if (offerModel.getAvailabilityEnds() != null)
+                offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(offerModel.getAvailabilityEnds()));
+            else
+                offerEnd.setText(endNotInformed);
+        } else if(offer instanceof OfferModelWithDetailledDate) {
+            OfferModelWithDetailledDate offerModel = (OfferModelWithDetailledDate) offer;
+            if (offerModel.getAvailabilityStarts() != null)
+                offerStart.setText(getString(R.string.start) + " : " + dateParser.format(offerModel.getAvailabilityStarts().getDate()));
+            else
+                offerStart.setText(startNotInformed);
+
+            if (offerModel.getAvailabilityEnds() != null)
+                offerEnd.setText(getString(R.string.end) + " : " + dateParser.format(offerModel.getAvailabilityEnds().getDate()));
+            else
+                offerEnd.setText(endNotInformed);
+        }
 
         ArrayList<UserModel> residents = new ArrayList<>();
         residents.addAll(offer.getResident());
@@ -115,7 +126,7 @@ public class OfferDetailsFragment extends Fragment {
             });
         } else {
             residentList.setVisibility(View.GONE);
-            offerDetailsResidentsSeparator.setVisibility(View.GONE);
+                offerDetailsResidentsSeparator.setVisibility(View.GONE);
         }
     }
 }

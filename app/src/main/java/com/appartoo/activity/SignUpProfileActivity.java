@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.view.DisableLastSwipeViewPager;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -119,7 +122,7 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<CompleteUserModel> callback = restService.updateUserProfile(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
             callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
                 public void onResponse(Call<CompleteUserModel> call, Response<CompleteUserModel> response) {
@@ -130,14 +133,19 @@ public class SignUpProfileActivity extends FragmentActivity {
                         updateProfile.setEnabled(true);
 
                     } else {
-                        System.out.println(response.code());
+                        try {
+                            Log.v("SignUpProfileActivity", "updateUserProfile: " + String.valueOf(response.code()));
+                            Log.v("SignUpProfileActivity", "updateUserProfile: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         updateProfile.setEnabled(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<CompleteUserModel> call, Throwable t) {
-                    t.printStackTrace();
+                    Log.v("SignUpProfileActivity", "updateUserProfile: " + t.getMessage());
                 }
             });
         } else {

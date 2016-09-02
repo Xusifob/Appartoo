@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.fragment.UserDetailFragment;
 import com.appartoo.model.UserModel;
+import com.appartoo.model.UserProfileModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
@@ -81,10 +83,6 @@ public class UserDetailActivity extends AppCompatActivity {
         userDetailContainer.setVisibility(View.GONE);
         sendMessageButton.setVisibility(View.GONE);
 
-
-        System.out.println(userModel);
-        System.out.println(userId);
-
         if(userModel != null) {
             userDetailFragment.bindData(userModel);
             bindData(userModel);
@@ -104,8 +102,10 @@ public class UserDetailActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                     if(response.isSuccessful()) {
-                        userDetailFragment.bindData(response.body());
-                        bindData(response.body());
+
+                        userModel = response.body();
+                        userDetailFragment.bindData(userModel);
+                        bindData(userModel);
                         userDetailContainer.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -200,6 +200,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 .baseUrl(Appartoo.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         RestService restService = retrofit.create(RestService.class);
 
         Call<ConversationIdReceiver> callback = restService.sendMessageToUser("Bearer " + Appartoo.TOKEN, userModel.getIdNumber().toString());
@@ -215,9 +216,9 @@ public class UserDetailActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("UserDetailActivity", "sendMessageToUser: " + String.valueOf(response.code()));
+                        Log.v("UserDetailActivity", "sendMessageToUser: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -228,12 +229,7 @@ public class UserDetailActivity extends AppCompatActivity {
             public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
                 sendMessageButton.setEnabled(true);
                 progressDialog.dismiss();
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getApplicationContext(), "La conversation a bien été créée", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
-                }
-                t.printStackTrace();
+                Log.v("UserDetailActivity", "sendMessageToUser: " + t.getMessage());
             }
         });
     }

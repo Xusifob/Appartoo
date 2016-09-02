@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -171,9 +172,9 @@ public class SignUpActivity extends FragmentActivity {
                         Toast.makeText(getApplicationContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
                     } else {
                         signUpButton.setEnabled(true);
-                        System.out.println("finishSignUp response code " + response.code());
                         try {
-                            System.out.println(response.errorBody().string());
+                            Log.v("SignUpActivity", "finishSignUp: " + String.valueOf(response.code()));
+                            Log.v("SignUpActivity", "finishSignUp: " + response.errorBody().string());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -183,8 +184,8 @@ public class SignUpActivity extends FragmentActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    t.printStackTrace();
-                    System.out.println("finishSignUp Failure");
+
+                    Log.v("SignUpActivity", "finishSignUp: " + t.getMessage());
                     Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                     signUpButton.setEnabled(true);
                 }
@@ -193,7 +194,6 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     private void logUser() {
-        System.out.println("Logging user...");
         Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
 
         newCallback.enqueue(new Callback<TokenReceiver>() {
@@ -205,7 +205,12 @@ public class SignUpActivity extends FragmentActivity {
                     retrieveUserProfile();
                 } else {
                     finish();
-                    System.out.println("logUser response code " + response.code());
+                    try {
+                        Log.v("SignUpActivity", "logUser: " + String.valueOf(response.code()));
+                        Log.v("SignUpActivity", "logUser: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -213,7 +218,7 @@ public class SignUpActivity extends FragmentActivity {
             @Override
             public void onFailure(Call<TokenReceiver> call, Throwable t) {
                 finish();
-                System.out.println("logUser Failure");
+                Log.v("SignUpActivity", "logUser: " + t.getMessage());
                 Toast.makeText(getApplicationContext(), R.string.success_sign_up, Toast.LENGTH_SHORT).show();
             }
         });
@@ -242,7 +247,12 @@ public class SignUpActivity extends FragmentActivity {
                     launchActivityWithoutHistory(SignUpProfileActivity.class);
                 } else {
 
-                    System.out.println("retrieveUserProfile response code " + response.code());
+                    try {
+                        Log.v("SignUpActivity", "retrieveUserProfile: " + String.valueOf(response.code()));
+                        Log.v("SignUpActivity", "retrieveUserProfile: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, newUser.getGivenName())
                             .putString(Appartoo.KEY_FAMILY_NAME, newUser.getFamilyName())
                             .putString(Appartoo.KEY_EMAIL, newUser.getEmail())
@@ -256,9 +266,8 @@ public class SignUpActivity extends FragmentActivity {
 
             @Override
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
-                System.out.println("retrieveUserProfile Failure");
                 launchActivityWithoutHistory(MainActivity.class);
-                t.printStackTrace();
+                Log.v("SignUpActivity", "retrieveUserProfile: " + t.getMessage());
             }
         });
     }

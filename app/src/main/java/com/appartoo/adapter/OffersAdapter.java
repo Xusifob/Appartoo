@@ -1,5 +1,6 @@
 package com.appartoo.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
@@ -107,6 +108,7 @@ public class OffersAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(context, OfferDetailsActivity.class);
                     intent.putExtra("offer", offerModel);
                     context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.left_in, R.anim.left_out);;
                 }
             });
         }

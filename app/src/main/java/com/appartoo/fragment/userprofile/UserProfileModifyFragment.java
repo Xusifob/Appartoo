@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,6 @@ public class UserProfileModifyFragment extends Fragment {
     private Button saveSettings;
     private ImageView userProfilePic;
     private RestService restService;
-    private SharedPreferences sharedPreferences;
     private NavigationDrawerView navigationDrawerView;
     private File profilePictureFile;
 
@@ -80,7 +80,6 @@ public class UserProfileModifyFragment extends Fragment {
 
         restService = retrofit.create(RestService.class);
         navigationDrawerView = (NavigationDrawerView) getActivity().findViewById(R.id.navigationDrawer);
-        sharedPreferences = getActivity().getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
 
         if (container != null) {
             container.removeAllViews();
@@ -186,12 +185,11 @@ public class UserProfileModifyFragment extends Fragment {
     }
 
     private void updateUserProfile(){
-        System.out.println("Updating user profile");
         final CompleteUserModel profileUpdateModel = getProfileUpdateModel();
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
 
-            Call<CompleteUserModel> callback = restService.updateUserProfile(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
+            Call<CompleteUserModel> callback = restService.updateUserProfile(Appartoo.LOGGED_USER_PROFILE.getId(),"Bearer " + Appartoo.TOKEN, profileUpdateModel);
 
             callback.enqueue(new Callback<CompleteUserModel>() {
                 @Override
@@ -213,14 +211,19 @@ public class UserProfileModifyFragment extends Fragment {
                             saveSettings.setEnabled(true);
                         }
                     } else {
-                        System.out.println(response.code());
+                        try {
+                            Log.v("UserProfileModifyFragme", "updateUserProfile: " + String.valueOf(response.code()));
+                            Log.v("UserProfileModifyFragme", "updateUserProfile: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         saveSettings.setEnabled(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<CompleteUserModel> call, Throwable t) {
-                    t.printStackTrace();
+                    Log.v("UserProfileModifyFragme", "updateUserProfile: " + t.getMessage());
                     saveSettings.setEnabled(true);
                 }
             });
@@ -229,9 +232,10 @@ public class UserProfileModifyFragment extends Fragment {
 
     private void updateUserProfilePicture(){
 
+
         RequestBody file = RequestBody.create(MediaType.parse("multipart/form-data"), profilePictureFile);
         MultipartBody.Part body =  MultipartBody.Part.createFormData("file", profilePictureFile.getName(), file);
-        Call<ImageModel> callback = restService.addImageToServer(RestService.REST_URL + Appartoo.LOGGED_USER_PROFILE.getId() + "/images","Bearer " + Appartoo.TOKEN, body);
+        Call<ImageModel> callback = restService.addImageToServer(Appartoo.LOGGED_USER_PROFILE.getId() + "/images","Bearer " + Appartoo.TOKEN, body);
 
         callback.enqueue(new Callback<ImageModel>() {
             @Override
@@ -243,9 +247,9 @@ public class UserProfileModifyFragment extends Fragment {
                     Appartoo.LOGGED_USER_PROFILE.setImage(response.body());
                     navigationDrawerView.updateHeader();
                 } else {
-                    System.out.println(response.code());
                     try {
-                        System.out.println(response.errorBody().string());
+                        Log.v("UserProfileModifyFragme", "updateUserProfilePicture: " + String.valueOf(response.code()));
+                        Log.v("UserProfileModifyFragme", "updateUserProfilePicture: " + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -254,7 +258,7 @@ public class UserProfileModifyFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ImageModel> call, Throwable t) {
-                t.printStackTrace();
+                Log.v("UserProfileModifyFragme", "updateUserProfilePicture: " + t.getMessage());
                 saveSettings.setEnabled(true);
             }
         });
@@ -304,7 +308,7 @@ public class UserProfileModifyFragment extends Fragment {
         userLastName = (EditText) view.findViewById(R.id.userProfileModifyLastName);
         userFirstName = (EditText) view.findViewById(R.id.userProfileModifyFirstName);
         userPhone = (EditText) view.findViewById(R.id.userProfileModifyPhone);
-        userMail = (EditText) view.findViewById(R.id.searchOfferPrice);
+        userMail = (EditText) view.findViewById(R.id.userProfileModifyMail);
         isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
         isSmoker = (Switch) view.findViewById(R.id.userProfileModifyIsSmoker);
         isCook = (Switch) view.findViewById(R.id.userProfileModifyIsCook);

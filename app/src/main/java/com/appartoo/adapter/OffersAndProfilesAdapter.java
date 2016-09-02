@@ -1,5 +1,6 @@
 package com.appartoo.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
@@ -145,6 +146,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(context, UserDetailActivity.class);
                     intent.putExtra("profileId", id);
                     context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.left_in, R.anim.left_out);
                 }
             });
         }
@@ -200,6 +202,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(context, OfferDetailsActivity.class);
                     intent.putExtra("offerId", id);
                     context.startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.left_in, R.anim.left_out);
                 }
             });
         }

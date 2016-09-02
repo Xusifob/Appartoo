@@ -46,7 +46,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            System.out.println("RESTORING FRAGMENT");
             currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "currentFragment");
             fragmentManager.beginTransaction().replace(R.id.userProfileFrame, currentFragment).commit();
         } else {

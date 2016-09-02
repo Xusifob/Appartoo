@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +60,9 @@ import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,9 +127,13 @@ public class AddOfferActivity extends AppCompatActivity {
         super.onStart();
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
 
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         restService = retrofit.create(RestService.class);
@@ -168,22 +175,22 @@ public class AddOfferActivity extends AppCompatActivity {
             Boolean acceptAnimals = Boolean.valueOf(animals.getTag().toString());
             if(acceptAnimals) {
                 animals.setTag("false");
-                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.dont_accept_animals, null));
+                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.dont_accept_animals_big, null));
                 ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.dont_accept_animals);
             } else {
                 animals.setTag("true");
-                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.accept_animals, null));
+                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.accept_animals_big, null));
                 ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.accept_animals);
             }
         } else if (smoker != null) {
             Boolean acceptSmoker = Boolean.valueOf(smoker.getTag().toString());
             if(acceptSmoker) {
                 smoker.setTag("false");
-                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_not_smoker, null));
+                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_not_smoker_big, null));
                 ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.dont_accept_smokers);
             } else {
                 smoker.setTag("true");
-                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_smoker, null));
+                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_smoker_big, null));
                 ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.accept_smokers);
             }
         }
@@ -386,7 +393,6 @@ public class AddOfferActivity extends AppCompatActivity {
                     offerModelMap.values().remove(null);
                 }
 
-                System.out.println(offerModelMap.toString());
                 Call<OfferModel> callback = restService.addOffer("Bearer " + Appartoo.TOKEN, offerModelMap);
                 callback.enqueue(new Callback<OfferModel>() {
                     @Override
@@ -394,8 +400,6 @@ public class AddOfferActivity extends AppCompatActivity {
 
                         if(response.isSuccessful()){
                             String offerId = response.body().getId();
-                            System.out.println(response.body().toString());
-                            System.out.println(offerId);
                             if(files != null && files.size() > 0) {
                                 sendImagesToServer(offerId, files.size(), 1);
                             } else {
@@ -407,8 +411,8 @@ public class AddOfferActivity extends AppCompatActivity {
                             addOfferButton.setEnabled(true);
                             Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                             try {
-                                System.out.println(response.code());
-                                System.out.println(response.errorBody().string().toString());
+                                Log.v("AddOfferActivity", "sendOfferToServer: " + String.valueOf(response.code()));
+                                Log.v("AddOfferActivity", "sendOfferToServer: " + response.errorBody().string());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -417,7 +421,7 @@ public class AddOfferActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<OfferModel> call, Throwable t) {
-                        t.printStackTrace();
+                        Log.v("AddOfferActivity", "sendOfferToServer: " + t.getMessage());
                         Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                         addOfferButton.setEnabled(true);
@@ -430,12 +434,10 @@ public class AddOfferActivity extends AppCompatActivity {
         }
 
         private void sendImagesToServer(final String offerId, final int numberOfImages, final int currentImage) {
-            String url = offerId + "/images";
+            String url = RestService.REST_URL + offerId + "/images";
             File file = files.remove(0);
 
             progressDialog.setMessage("Annonce enregistrée, envoi des images : " + String.valueOf(currentImage) + " sur " + String.valueOf(numberOfImages) + "...");
-
-            System.out.println(url);
 
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -447,16 +449,18 @@ public class AddOfferActivity extends AppCompatActivity {
 
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part body =  MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-            Call<ImageModel> callback = restService.addImageToServer(RestService.REST_URL + url, "Bearer " + Appartoo.TOKEN, body);
+
+            Call<ImageModel> callback = restService.addImageToServer(url, "Bearer " + Appartoo.TOKEN, body);
 
             callback.enqueue(new Callback<ImageModel>() {
                 @Override
                 public void onResponse(Call<ImageModel> call, Response<ImageModel> response) {
+
                     if(!response.isSuccessful()){
                         Toast.makeText(getApplicationContext().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                         try {
-                            System.out.println(response.code());
-                            System.out.println(response.errorBody().string().toString());
+                            Log.v("AddOfferActivity", "sendImagesToServer: " + String.valueOf(response.code()));
+                            Log.v("AddOfferActivity", "sendImagesToServer: " + response.errorBody().string());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -473,7 +477,7 @@ public class AddOfferActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ImageModel> call, Throwable t) {
-                    t.printStackTrace();
+                    Log.v("AddOfferActivity", "sendImagesToServer: " + String.valueOf(t.getMessage()));
                     progressDialog.dismiss();
                     addOfferButton.setEnabled(true);
                 }

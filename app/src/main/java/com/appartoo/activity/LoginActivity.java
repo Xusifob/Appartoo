@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 
 import com.appartoo.R;
@@ -15,6 +16,8 @@ import com.appartoo.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.view.NavigationDrawerView;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +92,12 @@ public class LoginActivity extends FragmentActivity {
         welcomeThread.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     /**
      * Launch the signup activity
      * @param v - the button to launch the activity
@@ -117,6 +126,13 @@ public class LoginActivity extends FragmentActivity {
 
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     Appartoo.initiateFirebase();
+                } else {
+                    try {
+                        Log.v("LoginActivity", "retrieveUserProfile: " + String.valueOf(response.code()));
+                        Log.v("LoginActivity", "retrieveUserProfile: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -126,7 +142,7 @@ public class LoginActivity extends FragmentActivity {
             @Override
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
 
-                t.printStackTrace();
+                Log.v("LoginActivity", "retrieveUserProfile: " + t.getMessage());
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }

@@ -1,8 +1,12 @@
 package com.appartoo.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +43,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MessagesListFragment extends Fragment{
     
     private ArrayList<ConversationModel> userConversations;
-    private ListView conversationsList;
+    private RecyclerView conversationsList;
     private ConversationsAdapter conversationsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_messages_list, container, false);
 
-        conversationsList = (ListView) view.findViewById(R.id.messagesConversationList);
+        conversationsList = (RecyclerView) view.findViewById(R.id.messagesConversationList);
         Appartoo.databaseReference = FirebaseDatabase.getInstance().getReference();
         userConversations = new ArrayList<>();
         conversationsAdapter = new ConversationsAdapter(getActivity(), userConversations);
+
+        conversationsList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        conversationsList.setLayoutManager(linearLayoutManager);
 
         if (container != null) {
             container.removeAllViews();
@@ -64,56 +73,14 @@ public class MessagesListFragment extends Fragment{
 
         conversationsList.setAdapter(conversationsAdapter);
 
-        conversationsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                ConversationModel conversationModel = userConversations.get(i);
-
-                Intent intent = new Intent(getActivity().getApplicationContext(), MessageActivity.class);
-
-                intent.putExtra("conversationName", conversationModel.getConversationName());
-                intent.putExtra("conversationId", conversationModel.getId());
-                intent.putExtra("conversationType", conversationModel.getType());
-                intent.putExtra("conversationOwner", conversationModel.getOwner());
-                intent.putExtra("conversationOffer", conversationModel.getOffer());
-                intent.putExtra("conversationStatus", conversationModel.getStatus());
-                startActivity(intent);
-            }
-        });
-
         Appartoo.databaseReference.getRoot().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(Appartoo.LOGGED_USER_PROFILE != null) {
-                    GenericTypeIndicator<HashMap<String, String>> hashMapType = new GenericTypeIndicator<HashMap<String, String>>() {
-                    };
+                System.out.println("onDataChange");
 
-                    HashMap<String, String> conversations = dataSnapshot
-                            .child("profiles/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString() + "/conversations")
-                            .getValue(hashMapType);
+                new DataChangedTask().execute(dataSnapshot);
 
-                    userConversations.clear();
-
-                    if (conversations != null) {
-                        for (String conversationId : conversations.values()) {
-                            if (dataSnapshot.child("conversations/").child(conversationId).getValue(true) != null) {
-
-                                HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshot.child("conversations/")
-                                        .child(conversationId)
-                                        .getValue(true);
-
-                                Gson gson = new Gson();
-                                ConversationModel conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
-                                conversationModel.setId(conversationId);
-
-                                userConversations.add(conversationModel);
-                            }
-                        }
-                    }
-                    conversationsAdapter.notifyDataSetChanged();
-                }
             }
 
             @Override
@@ -127,5 +94,51 @@ public class MessagesListFragment extends Fragment{
     public void onResume(){
         super.onResume();
         conversationsAdapter.notifyDataSetChanged();
+    }
+
+    private class DataChangedTask extends AsyncTask<DataSnapshot, Void, ArrayList<ConversationModel>> {
+
+        @Override
+        protected ArrayList<ConversationModel> doInBackground(DataSnapshot... dataSnapshots) {
+            if(Appartoo.LOGGED_USER_PROFILE != null) {
+                GenericTypeIndicator<HashMap<String, String>> hashMapType = new GenericTypeIndicator<HashMap<String, String>>() {
+                };
+
+                HashMap<String, String> conversations = dataSnapshots[0]
+                        .child("profiles/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString() + "/conversations")
+                        .getValue(hashMapType);
+
+                ArrayList<ConversationModel> conversationModels = new ArrayList<>();
+
+                if (conversations != null) {
+                    for (String conversationId : conversations.values()) {
+                        if (dataSnapshots[0].child("conversations/").child(conversationId).getValue(true) != null) {
+
+                            HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshots[0].child("conversations/")
+                                    .child(conversationId)
+                                    .getValue(true);
+
+                            Gson gson = new Gson();
+                            ConversationModel conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
+                            conversationModel.setId(conversationId);
+
+                            conversationModels.add(conversationModel);
+                        }
+                    }
+                }
+
+                return conversationModels;
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(ArrayList<ConversationModel> conversationModels) {
+            if(conversationModels != null) {
+                userConversations.clear();
+                userConversations.addAll(conversationModels);
+                conversationsAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

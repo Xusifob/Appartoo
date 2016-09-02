@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.TokenReceiver;
 import com.appartoo.view.NavigationDrawerView;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,14 +117,19 @@ public class LogInFragment extends Fragment {
                     //If the server isn't responding
                 } else {
                     logInButton.setEnabled(true);
-                    System.out.println(response.code());
+                    try {
+                        Log.v("LoginFragment", "logIn: " + String.valueOf(response.code()));
+                        Log.v("LoginFragment", "logIn: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TokenReceiver> call, Throwable t) {
-                t.printStackTrace();
+                Log.v("LoginFragment", "logIn: " + t.getMessage());
                 Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
                 logInButton.setEnabled(true);
             }

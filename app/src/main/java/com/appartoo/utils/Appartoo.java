@@ -3,6 +3,7 @@ package com.appartoo.utils;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 
 import com.appartoo.R;
 import com.appartoo.activity.LoginActivity;
@@ -40,7 +41,7 @@ import java.util.Map;
 )
 public class Appartoo extends Application{
 
-    public static final String SERVER_URL = "http://626ff880.ngrok.io";
+    public static final String SERVER_URL = "http://vps310391.ovh.net";
     public static final String APP_NAME = "Appartoo";
     public static final String KEY_TOKEN = "token";
     public static final String KEY_AGE = "age";
@@ -48,7 +49,6 @@ public class Appartoo extends Application{
     public static final String KEY_FAMILY_NAME = "familyName";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PROFILE_PICTURE = "profilePicUrl";
-
 
     private static final String KEY_APP_CRASHED = "KEY_APP_CRASHED";
 
@@ -87,17 +87,10 @@ public class Appartoo extends Application{
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            System.out.println("onDataChange");
 
-                            if (Appartoo.LOGGED_USER_PROFILE != null) {
-                                GenericTypeIndicator<Map<String, String>> mapType = new GenericTypeIndicator<Map<String, String>>() {};
-                                Map<String, String> conversations = dataSnapshot.getValue(mapType);
+                            new DataChangedClass().execute(dataSnapshot);
 
-                                if (conversations != null) {
-                                    conversationsIds.clear();
-                                    conversationsIds.addAll(conversations.values());
-                                    setUserIsOnline(true);
-                                }
-                            }
                         }
 
                         @Override
@@ -117,6 +110,25 @@ public class Appartoo extends Application{
             }
 
             databaseReference.updateChildren(updates);
+        }
+    }
+
+    private static class DataChangedClass extends AsyncTask<DataSnapshot, Void, Void> {
+
+        @Override
+        protected Void doInBackground(DataSnapshot... dataSnapshots) {
+            if (Appartoo.LOGGED_USER_PROFILE != null) {
+                GenericTypeIndicator<Map<String, String>> mapType = new GenericTypeIndicator<Map<String, String>>() {};
+                Map<String, String> conversations = dataSnapshots[0].getValue(mapType);
+
+                if (conversations != null) {
+                    conversationsIds.clear();
+                    conversationsIds.addAll(conversations.values());
+                    setUserIsOnline(true);
+                }
+            }
+
+            return null;
         }
     }
 }
