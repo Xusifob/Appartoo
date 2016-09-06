@@ -1,13 +1,12 @@
 package com.appartoo.utils;
 
-import com.appartoo.model.CompleteUserModel;
-import com.appartoo.model.ImageModel;
-import com.appartoo.model.ObjectHolderModelReceiver;
-import com.appartoo.model.OfferModel;
-import com.appartoo.model.OfferModelWithDate;
-import com.appartoo.model.OfferModelWithDetailledDate;
-import com.appartoo.model.UserModel;
-import com.appartoo.model.UserProfileModel;
+import com.appartoo.utils.model.CompleteUserModel;
+import com.appartoo.utils.model.ImageModel;
+import com.appartoo.utils.model.ObjectHolderModelReceiver;
+import com.appartoo.utils.model.OfferModel;
+import com.appartoo.utils.model.OfferModelWithDate;
+import com.appartoo.utils.model.OfferModelWithDetailledDate;
+import com.appartoo.utils.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.Map;

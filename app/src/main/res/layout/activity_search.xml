@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:background="@color/colorWhite">
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,20 +30,32 @@
                 app:titleTextColor="@color/colorWhite">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:id="@+id/mainFragments">
-            <fragment
-                android:name="com.appartoo.fragment.SearchOfferFragment"
-                android:id="@+id/offerDetailsFragment"
+            android:orientation="vertical">
+            <android.support.design.widget.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:id="@+id/searchTabs">
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/offers"/>
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profiles"/>
+            </android.support.design.widget.TabLayout>
+            <com.appartoo.utils.view.NonSwipeableViewPager
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout="@layout/fragment_search_offer" />
-        </FrameLayout>
+                android:id="@+id/searchViewPager"/>
+        </LinearLayout>
+
     </android.support.design.widget.CoordinatorLayout>
-    <com.appartoo.view.NavigationDrawerView
+    <com.appartoo.utils.view.NavigationDrawerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

@@ -1,19 +1,12 @@
 package com.appartoo.utils;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-
-import com.appartoo.activity.LoginActivity;
 
 import org.acra.ReportField;
 import org.acra.collector.CrashReportData;
-import org.acra.config.ACRAConfiguration;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderException;
-import org.acra.sender.ReportSenderFactory;
-import org.acra.util.JSONReportBuilder;
 
 import java.io.IOException;
 

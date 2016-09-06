@@ -36,14 +36,14 @@
             android:id="@+id/userProfileFrame"
             android:layout_marginTop="?attr/actionBarSize">
             <fragment
-                android:name="com.appartoo.fragment.userprofile.UserProfileMainFragment"
+                android:name="com.appartoo.profile.UserProfileMainFragment"
                 android:id="@+id/userProfileMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_user_profile_main" />
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
-    <com.appartoo.view.NavigationDrawerView
+    <com.appartoo.utils.view.NavigationDrawerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

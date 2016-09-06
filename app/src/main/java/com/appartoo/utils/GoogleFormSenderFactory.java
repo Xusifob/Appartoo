@@ -1,15 +1,8 @@
 package com.appartoo.utils;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-
-import com.appartoo.R;
-import com.appartoo.activity.LoginActivity;
 
 import org.acra.config.ACRAConfiguration;
-import org.acra.dialog.CrashReportDialog;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderFactory;
 

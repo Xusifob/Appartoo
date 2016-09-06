@@ -44,6 +44,9 @@
     <string name="viewed_by">Vu par</string>
     <string name="everybody">Tout le monde</string>
     <string name="email">Email</string>
+    <string name="profiles">Profils</string>
+    <string name="offers">Annonces</string>
+    <string name="place">Lieu</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>

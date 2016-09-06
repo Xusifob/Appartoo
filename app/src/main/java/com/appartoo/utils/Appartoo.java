@@ -2,12 +2,10 @@ package com.appartoo.utils;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.appartoo.R;
-import com.appartoo.activity.LoginActivity;
-import com.appartoo.model.CompleteUserModel;
+import com.appartoo.utils.model.CompleteUserModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,8 +48,6 @@ public class Appartoo extends Application{
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PROFILE_PICTURE = "profilePicUrl";
 
-    private static final String KEY_APP_CRASHED = "KEY_APP_CRASHED";
-
     public static String TOKEN = "";
     public static CompleteUserModel LOGGED_USER_PROFILE;
     public static DatabaseReference databaseReference;
@@ -87,8 +83,6 @@ public class Appartoo extends Application{
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            System.out.println("onDataChange");
-
                             new DataChangedClass().execute(dataSnapshot);
 
                         }

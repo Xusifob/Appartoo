@@ -1,6 +1,6 @@
 package com.appartoo.utils;
 
-import com.appartoo.model.AddressInformationsModel;
+import com.appartoo.utils.model.AddressInformationsModel;
 
 import java.util.ArrayList;
 

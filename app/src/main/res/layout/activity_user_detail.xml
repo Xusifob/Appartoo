@@ -70,7 +70,7 @@
                 android:id="@+id/userDetailContainer"
                 android:visibility="gone">
                 <fragment
-                    android:name="com.appartoo.fragment.UserDetailFragment"
+                    android:name="com.appartoo.general.UserDetailFragment"
                     android:id="@+id/userDetailFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

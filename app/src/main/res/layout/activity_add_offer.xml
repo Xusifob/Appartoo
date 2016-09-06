@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.appartoo.view.DisableLastSwipeViewPager
+<com.appartoo.utils.view.DisableLastSwipeViewPager
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -9,4 +9,4 @@
     android:background="@color/colorWhite"
     android:gravity="center"
     android:id="@+id/addOfferPager"
-    tools:context="com.appartoo.activity.AddOfferActivity" />
+    tools:context=".addoffer.AddOfferActivity" />

@@ -79,7 +79,7 @@
             <View
                 style="@style/Separator"
                 android:layout_margin="8dp"/>
-            <com.appartoo.view.NonScrollableListView
+            <com.appartoo.utils.view.NonScrollableListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

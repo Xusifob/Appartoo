@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.appartoo.activity.LoginActivity;
+import com.appartoo.login.LoginActivity;
 
 import org.acra.ACRA;
 import org.acra.ACRAConstants;
