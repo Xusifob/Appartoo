@@ -1,6 +1,7 @@
 package com.appartoo.addoffer;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -79,7 +82,6 @@ public class AddOfferActivity extends AppCompatActivity {
     private AddOfferEleventhFragment addOfferEleventhFragment;
     private AddOfferTwelfthFragment addOfferTwelfthFragment;
     private ProgressDialog progressDialog;
-    private ArrayList<UserModel> residents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,10 +149,6 @@ public class AddOfferActivity extends AppCompatActivity {
 
     public void setFiles(ArrayList<File> files) {
         this.files = files;
-    }
-
-    public void setResidents(ArrayList<UserModel> residents) {
-        this.residents = residents;
     }
 
     public void toggleView(View v) {
@@ -313,10 +311,6 @@ public class AddOfferActivity extends AppCompatActivity {
             offerModel.setPhone(phone.trim());
             offerModel.setKeyword(keyword.trim());
 
-            if(residents != null) {
-                offerModel.setResidents(residents);
-            }
-
             return offerModel;
         }
 
@@ -331,18 +325,15 @@ public class AddOfferActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             if(response.body().getResults().size() > 0) {
                                 AddressInformationsModel addressInformations = response.body().getResults().get(0);
+
                                 for (AddressComponent component : addressInformations.getAddress_components()) {
-                                    if (component.getTypes().contains("locality"))
-                                        offerModel.setAddressLocality(component.getLong_name());
-                                    if (component.getTypes().contains("country"))
-                                        offerModel.setCountry(component.getLong_name());
-                                    if (component.getTypes().contains("administrative_area_level_2") && offerModel.getAddressRegion() == null)
-                                        offerModel.setAddressRegion(component.getLong_name());
-                                    if (component.getTypes().contains("administrative_area_level_1"))
-                                        offerModel.setAddressRegion(component.getLong_name());
-                                    if (component.getTypes().contains("postal_code"))
-                                        offerModel.setPostalCode(component.getLong_name());
+                                    if (component.getTypes().contains("locality")) offerModel.setAddressLocality(component.getLong_name());
+                                    if (component.getTypes().contains("country")) offerModel.setCountry(component.getLong_name());
+                                    if (component.getTypes().contains("administrative_area_level_2") && offerModel.getAddressRegion() == null) offerModel.setAddressRegion(component.getLong_name());
+                                    if (component.getTypes().contains("administrative_area_level_1")) offerModel.setAddressRegion(component.getLong_name());
+                                    if (component.getTypes().contains("postal_code")) offerModel.setPostalCode(component.getLong_name());
                                 }
+
                                 offerModel.setLatitude(addressInformations.getLatitude());
                                 offerModel.setLongitude(addressInformations.getLongitude());
                                 offerModel.setFormattedAddress(addressInformations.getFormatted_address());
@@ -470,5 +461,17 @@ public class AddOfferActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    public void alertUser(View v) {
+        new AlertDialog.Builder(new ContextThemeWrapper(AddOfferActivity.this, R.style.AppThemeDialog))
+                .setMessage("Fonctionnalité bientôt disponible.")
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 }

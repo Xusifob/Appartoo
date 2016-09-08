@@ -42,40 +42,25 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve login button and shared preferences
         sharedPreferences = getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
 
         //Retrieve the user token
         Appartoo.TOKEN = sharedPreferences.getString(Appartoo.KEY_TOKEN, "");
-
-        //Build a retrofit request
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        restService = retrofit.create(RestService.class);
 
         fragmentManager = getSupportFragmentManager();
         homeFragment = new HomeFragment();
         logInFragment = new LogInFragment();
 
-        //If the token exist, launch the main activity
-        Thread welcomeThread = new Thread() {
+        new Thread() {
 
             @Override
             public void run() {
                 try {
                     super.run();
-                    sleep(0);
+                    sleep(2000);
                 } catch (Exception e) {
 
                 } finally {
@@ -92,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }
-        };
-        welcomeThread.start();
+        }.start();
     }
 
     @Override
@@ -112,6 +96,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void retrieveUserProfile(){
+        //Build a retrofit request
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        restService = retrofit.create(RestService.class);
+
         Call<CompleteUserModel> callback = restService.getLoggedUserProfile("Bearer " + Appartoo.TOKEN);
 
         //Handle the server response

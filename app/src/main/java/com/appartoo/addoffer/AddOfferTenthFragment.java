@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,7 @@ public class AddOfferTenthFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_page10, container, false);
 
         residentModels = new ArrayList<>();
-        residentsListView = (ListView) rootView.findViewById(R.id.residentList);
+        residentsListView = (ListView) rootView.findViewById(R.id.addOfferResidentList);
         addresidentButton = (ImageView) rootView.findViewById(R.id.addResidentButton);
         residentsAdapter = new AddResidentAdapter(getActivity(), residentModels);
         return rootView;
@@ -46,7 +48,7 @@ public class AddOfferTenthFragment extends Fragment {
         super.onStart();
 
         residentsListView.setAdapter(residentsAdapter);
-        addresidentButton.setOnClickListener(new View.OnClickListener() {
+        /*addresidentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,6 +73,6 @@ public class AddOfferTenthFragment extends Fragment {
                 addGarantorDialog.setNegativeButton(R.string.cancel, null);
                 addGarantorDialog.show();
             }
-        });
+        });*/
     }
 }
