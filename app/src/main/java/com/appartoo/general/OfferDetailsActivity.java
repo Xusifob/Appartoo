@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -66,7 +67,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private String offerId;
     private View offerDetailContainer;
     private ProgressBar progressBar;
-
+    private boolean isOwner;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +84,12 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         offerDetailSendMessageButton = (Button) findViewById(R.id.offerDetailSendMessage);
         offerId = getIntent().getStringExtra("offerId");
         offer = getIntent().getParcelableExtra("offer");
+        isOwner = getIntent().getBooleanExtra("isOwner", false);
+
         offerDetailContainer = findViewById(R.id.offerDetailContainer);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
 
         //Retrieve the others elements
         scrollView = (NestedScrollView) findViewById(R.id.offerDetailsScrollView);
@@ -196,22 +201,16 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             viewPager.setAdapter(imagesAdapter);
         }
 
-        if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(offer.getOwner().getId())) {
+        if((Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(offer.getOwner().getId())) || isOwner) {
 
             offerDetailSendMessageButton.setText("Modifier votre annonce");
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    new AlertDialog.Builder(OfferDetailsActivity.this)
+                    new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
                             .setMessage("Fonctionnalité bientôt disponible.")
                             .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
@@ -221,7 +220,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 }
             });
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
-            new AlertDialog.Builder(OfferDetailsActivity.this)
+            new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
                     .setMessage("Vous devez être inscrit et connecté pour pouvoir postuler à une annonce.")
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override

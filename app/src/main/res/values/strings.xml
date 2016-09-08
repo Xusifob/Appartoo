@@ -190,8 +190,8 @@
     <string name="price_per_month">Prix (par mois)</string>
     <string name="rooms_available">Nombre de chambres disponibles</string>
     <string name="offer_description">"Description de l'annonce"</string>
-    <string name="take_a_picture">Prendre une photo</string>
-    <string name="choose_from_gallery">Choisir une image</string>
+    <string name="take_a_picture">Caméra</string>
+    <string name="choose_from_gallery">Gallerie</string>
     <string name="unable_to_load_picture">Impossible de charger votre image.</string>
     <string name="add_residents">Ajouter des résidents</string>
     <string name="add_resident">Ajouter un résident</string>

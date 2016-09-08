@@ -1,11 +1,14 @@
 package com.appartoo.profile;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -17,7 +20,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
 /**
  * Created by alexandre on 16-07-15.
  */
-public class UserProfileActivity extends AppCompatActivity {
+    public class UserProfileActivity extends AppCompatActivity {
 
     private UserProfileMainFragment mainFragment;
     private UserProfileSettingsFragment settingsFragment;
@@ -116,7 +119,16 @@ public class UserProfileActivity extends AppCompatActivity {
     public void switchFragment(View v) {
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             if (v.getTag().equals("my_settings")) {
-                fragmentManager.beginTransaction().replace(R.id.userProfileFrame, settingsFragment).commit();
+                new AlertDialog.Builder(UserProfileActivity.this)
+                        .setMessage("Fonctionnalité bientôt disponible.")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .show();
+//                fragmentManager.beginTransaction().replace(R.id.userProfileFrame, settingsFragment).commit();
             } else if (v.getTag().equals("modify_profile")) {
                 fragmentManager.beginTransaction().replace(R.id.userProfileFrame, modifyFragment).commit();
             } else if (v.getTag().equals("my_offers")) {
@@ -148,5 +160,17 @@ public class UserProfileActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         navigationDrawerView.updateHeader();
+    }
+
+    public void alertUser(View v) {
+        new AlertDialog.Builder(new ContextThemeWrapper(UserProfileActivity.this, R.style.AppThemeDialog))
+                .setMessage("Fonctionnalité bientôt disponible.")
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 }

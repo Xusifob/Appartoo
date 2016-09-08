@@ -52,7 +52,7 @@ public class AddOfferTenthFragment extends Fragment {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View dialogLayout = inflater.inflate(R.layout.alert_dialog_resident, null);
                 android.app.AlertDialog.Builder addGarantorDialog = new android.app.AlertDialog.Builder(getActivity());
-                addGarantorDialog.setTitle("Ajouter un garant");
+                addGarantorDialog.setTitle("Ajouter un résident");
                 addGarantorDialog.setView(dialogLayout);
                 addGarantorDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override

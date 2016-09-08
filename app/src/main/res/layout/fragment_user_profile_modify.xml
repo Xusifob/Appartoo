@@ -497,7 +497,8 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:background="@drawable/rounded_square_blue"
-            android:id="@+id/signUp">
+            android:id="@+id/userProfileFacebookButton"
+            android:onClick="alertUser">
             <ImageView
                 android:layout_margin="8dp"
                 android:layout_width="24dp"

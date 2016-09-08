@@ -1,11 +1,15 @@
 package com.appartoo.login;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
 
@@ -25,7 +29,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private RestService restService;
@@ -147,5 +151,17 @@ public class LoginActivity extends FragmentActivity {
                 finish();
             }
         });
+    }
+
+    public void alertUser(View v) {
+        new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppThemeDialog))
+                .setMessage("Fonctionnalité bientôt disponible.")
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 }

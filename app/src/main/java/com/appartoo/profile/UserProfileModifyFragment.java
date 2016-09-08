@@ -7,14 +7,19 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -61,6 +66,7 @@ public class UserProfileModifyFragment extends Fragment {
     private ImageView userProfilePic;
     private RestService restService;
     private NavigationDrawerView navigationDrawerView;
+    private LinearLayout facebookLink;
     private File profilePictureFile;
 
     @Override
@@ -322,6 +328,7 @@ public class UserProfileModifyFragment extends Fragment {
         isManiac = (Switch) view.findViewById(R.id.userProfileModifyIsManiac);
         isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
         saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
+        facebookLink = (LinearLayout) view.findViewById(R.id.userProfileFacebookButton);
     }
 
     @Override

@@ -107,6 +107,7 @@ public class OffersAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, OfferDetailsActivity.class);
                     intent.putExtra("offer", offerModel);
+                    intent.putExtra("isOwner", true);
                     context.startActivity(intent);
                     ((Activity) context).overridePendingTransition(R.anim.left_in, R.anim.left_out);;
                 }

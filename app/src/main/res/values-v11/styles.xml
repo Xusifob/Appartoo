@@ -16,6 +16,10 @@
         <item name="android:padding">4dp</item>
     </style>
 
+    <style name="AppThemeDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="windowActionBarOverlay">false</item>
         <item name="android:clipToPadding">false</item>
