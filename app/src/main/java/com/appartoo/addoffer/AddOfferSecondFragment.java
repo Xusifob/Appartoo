@@ -30,17 +30,17 @@ public class AddOfferSecondFragment extends Fragment {
         keyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
+                android.app.AlertDialog.Builder selectKeywordDialog = new android.app.AlertDialog.Builder(getActivity());
 
                 final String[] items = getResources().getStringArray(R.array.keywords);
 
-                selectContractDialog.setItems(items, new DialogInterface.OnClickListener() {
+                selectKeywordDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         keyword.setText(items[which]);
                     }
                 });
-                selectContractDialog.show();
+                selectKeywordDialog.show();
             }
         });
     }

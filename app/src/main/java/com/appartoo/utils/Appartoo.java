@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -84,7 +85,6 @@ public class Appartoo extends Application{
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             new DataChangedClass().execute(dataSnapshot);
-
                         }
 
                         @Override
@@ -92,6 +92,8 @@ public class Appartoo extends Application{
 
                         }
                     });
+
+            System.out.println(FirebaseInstanceId.getInstance().getToken());
         }
     }
 

@@ -281,6 +281,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 if(response.isSuccessful()){
                     Intent intent = new Intent(OfferDetailsActivity.this, MessageActivity.class);
                     intent.putExtra("conversationId", response.body().getIdConversation());
+                    intent.putExtra("conversationName", offer.getOwner().getGivenName() + " (" + offer.getName() + ")");
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();

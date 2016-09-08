@@ -26,6 +26,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**
@@ -60,7 +61,7 @@ public interface RestService {
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
 
     @GET(REST_URL + "/searchGeneral")
-    Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @Query("start") Integer start, @Query("limit") Integer limit);
+    Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @QueryMap Map<String, Object> queryParam);
 
     @GET(REST_URL + "/me")
     Call<CompleteUserModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);

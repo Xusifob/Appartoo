@@ -23,6 +23,7 @@ import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +42,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     private OffersAndProfilesAdapter offersAndProfilesAdapter;
     private FloatingActionButton addOfferButton;
     private ProgressBar progressBar;
+    private HashMap<String, Object> query;
     private int nextPage;
     private int pageNumber;
 
@@ -61,6 +63,7 @@ public class OffersAndProfilesListFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         offersAndProfiles.setLayoutManager(linearLayoutManager);
 
+        query = (HashMap<String, Object>) getActivity().getIntent().getSerializableExtra("query");
 
         if (container != null) {
             container.removeAllViews();
@@ -73,6 +76,11 @@ public class OffersAndProfilesListFragment extends Fragment {
 
     @Override
     public void onStart() {
+
+        if(query == null) {
+            query = new HashMap<>();
+            query.put("start", 0);
+        }
 
         progressBar.setIndeterminate(true);
         addOfferButton.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +97,6 @@ public class OffersAndProfilesListFragment extends Fragment {
         }
 
         super.onStart();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
     }
 
     public void refreshOffers() {
@@ -128,7 +131,10 @@ public class OffersAndProfilesListFragment extends Fragment {
         if(Appartoo.TOKEN != null) token = "Bearer " + Appartoo.TOKEN;
         else token = "";
 
-        Call<ObjectHolderModelReceiver> callback = restService.getOffersOrProfiles(token, page*20, 20);
+        System.out.println(query);
+
+        Call<ObjectHolderModelReceiver> callback = restService.getOffersOrProfiles(token, query);
+
 
         callback.enqueue(new Callback<ObjectHolderModelReceiver>(){
             @Override

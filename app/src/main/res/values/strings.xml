@@ -96,6 +96,15 @@
     <string name="title_activity_login">Connexion</string>
     <string name="title_activity_sign_up">Inscription</string>
 
+    <!-- SEARCH STRINGS -->
+    <string name="accept_animals">Animaux acceptés</string>
+    <string name="doesnt_accept_animals">Animaux non acceptés</string>
+    <string name="accept_smokers">Fumeurs acceptés</string>
+    <string name="doesnt_accept_smokers">Fumeurs non acceptés</string>
+    <string name="indifferent">Indifférent</string>
+    <string name="i_research_offers">Je recherche des annonces</string>
+    <string name="i_research_profiles">Je recherche des locataires</string>
+
     <!-- USER MODIFY PROFILE STRINGS -->
     <string name="lastname">Nom</string>
     <string name="firstName">Prénom</string>
@@ -112,6 +121,7 @@
     <string name="layabout">Glandeur</string>
     <string name="nerdy">Geek</string>
     <string name="worker">Salarié</string>
+    <string name="non_worker">Non salarié</string>
     <string name="situation">Activité</string>
     <string name="important_infos">Informations importantes</string>
     <string name="personnal_infos">A propos de vous</string>
@@ -170,10 +180,10 @@
     <string name="two_thousands">2000</string>
 
     <!-- ADD OFFER STRINGS -->
-    <string name="accept_smokers">"J'accepte les fumeurs"</string>
-    <string name="dont_accept_smokers">"Je n'accepte pas de fumeur"</string>
-    <string name="accept_animals">"J'accepte les animaux"</string>
-    <string name="dont_accept_animals">"Je n'accepte pas d'animal"</string>
+    <string name="i_accept_smokers">"J'accepte les fumeurs"</string>
+    <string name="i_dont_accept_smokers">"Je n'accepte pas de fumeur"</string>
+    <string name="i_accept_animals">"J'accepte les animaux"</string>
+    <string name="i_dont_accept_animals">"Je n'accepte pas d'animal"</string>
     <string name="save_my_offer">Enregistrer mon annonce</string>
     <string name="offer_title">"Titre de l'annonce"</string>
     <string name="offer_keyword">"Type de l'annonce"</string>
@@ -223,6 +233,7 @@
     <string name="marker_icon">Icône de lieu</string>
     <string name="accept_animals_icon">"Icône d'ami des animaux"</string>
     <string name="score_icon">Icône de score</string>
+    <string name="bed_icon">Icône de lit</string>
     <string name="my_messages">Mes messages</string>
 
     <!-- TOAST MESSAGES -->
@@ -245,4 +256,5 @@
     <string name="success_sign_up">"Votre inscription a été finalisée avec succès !"</string>
     <string name="success_add_offer">"Votre annonce a été mise en ligne avec succès !"</string>
     <string name="success_update_user_profile">"Votre profil a été enregistré avec succès !"</string>
+
 </resources>

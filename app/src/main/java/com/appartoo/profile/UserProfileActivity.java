@@ -63,7 +63,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //Define the drawer
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Appartoo.APP_NAME);
+        getSupportActionBar().setTitle(R.string.drawer_profile);
         navigationDrawerView.setDrawerLayout(drawerLayout);
 
         if(settingsFragment.isVisible() || modifyFragment.isVisible() || offersFragment.isVisible()) {

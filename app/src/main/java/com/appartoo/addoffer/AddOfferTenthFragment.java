@@ -51,10 +51,10 @@ public class AddOfferTenthFragment extends Fragment {
             public void onClick(View v) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View dialogLayout = inflater.inflate(R.layout.alert_dialog_resident, null);
-                android.app.AlertDialog.Builder selectContractDialog = new android.app.AlertDialog.Builder(getActivity());
-                selectContractDialog.setTitle("Ajouter un garant");
-                selectContractDialog.setView(dialogLayout);
-                selectContractDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                android.app.AlertDialog.Builder addGarantorDialog = new android.app.AlertDialog.Builder(getActivity());
+                addGarantorDialog.setTitle("Ajouter un garant");
+                addGarantorDialog.setView(dialogLayout);
+                addGarantorDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         UserModel newresident = new UserModel();
@@ -68,8 +68,8 @@ public class AddOfferTenthFragment extends Fragment {
                         residentsAdapter.notifyDataSetChanged();
                     }
                 });
-                selectContractDialog.setNegativeButton(R.string.cancel, null);
-                selectContractDialog.show();
+                addGarantorDialog.setNegativeButton(R.string.cancel, null);
+                addGarantorDialog.show();
             }
         });
     }

@@ -30,11 +30,11 @@
                 app:titleTextColor="@color/colorWhite">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
             <android.support.design.widget.TabLayout
+                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
@@ -49,10 +49,24 @@
                     android:text="@string/profiles"/>
             </android.support.design.widget.TabLayout>
             <com.appartoo.utils.view.NonSwipeableViewPager
+                android:layout_below="@+id/searchTabs"
+                android:layout_above="@+id/searchButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/searchViewPager"/>
-        </LinearLayout>
+                android:id="@+id/searchViewPager" />
+
+            <Button
+                style="@style/ButtonSalmon"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:id="@+id/searchButton"
+                android:onClick="launchSearch"
+                android:text="@string/search"/>
+        </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>
     <com.appartoo.utils.view.NavigationDrawerView

@@ -5,16 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools">
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/messageList"
         android:divider="@android:color/transparent"
-        android:layout_above="@+id/messageSeparator"
+        android:layout_above="@+id/messageTyping"
         android:layout_alignParentTop="true"
         android:stackFromBottom="true"
         android:transcriptMode="normal"
         tools:listfooter="@layout/footer_message"
         tools:listitem="@layout/list_item_message">
     </ListView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingRight="68dp"
+        android:paddingLeft="68dp"
+        android:id="@+id/messageTyping"
+        android:layout_above="@+id/messageSeparator"
+        android:textColor="@color/colorGray"
+        android:visibility="gone" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

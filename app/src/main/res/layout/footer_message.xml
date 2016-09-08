@@ -12,11 +12,4 @@
         android:layout_height="wrap_content"
         android:id="@+id/messageViewed"
         android:textColor="@color/colorGray"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:id="@+id/messageTyping"
-        android:textColor="@color/colorGray"
-        android:visibility="gone"/>
 </LinearLayout>

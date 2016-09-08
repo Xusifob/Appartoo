@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:scrollbars="none">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,8 +13,11 @@
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:textSize="16sp"
-            android:text="Je recherche des annonces"/>
+            android:text="@string/i_research_offers"
+            android:checked="true"
+            android:id="@+id/searchOffersCheckbox"/>
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,15 +29,6 @@
             android:drawableStart="@drawable/marker_red"
             android:drawablePadding="4dp"
             android:hint="@string/place" />
-        <EditText
-            android:layout_margin="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:drawableLeft="@drawable/key_yellow"
-            android:drawableStart="@drawable/key_yellow"
-            android:drawablePadding="4dp"
-            android:hint="@string/keyword" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +47,7 @@
                     android:focusable="false"
                     android:drawableStart="@drawable/clock"
                     android:drawableLeft="@drawable/clock"
-                    android:id="@+id/addOfferAvailabilityStarts"
+                    android:id="@+id/searchAvailabilityStarts"
                     android:drawablePadding="4dp"/>
                 <View
                     android:layout_width="8dp"
@@ -65,7 +60,7 @@
                     android:layout_weight="1"
                     android:drawableStart="@drawable/clock"
                     android:drawableLeft="@drawable/clock"
-                    android:id="@+id/addOfferAvailabilityEnds"
+                    android:id="@+id/searchAvailabilityEnds"
                     android:drawablePadding="4dp"/>
             </LinearLayout>
             <LinearLayout
@@ -80,16 +75,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
                     android:contentDescription="@string/money_icon"
-                    android:src="@drawable/euro_green"/>
+                    android:src="@drawable/euro_green_small"/>
                 <TextView
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:gravity="center"
-                    android:id="@+id/searchRangeMinValue"
+                    android:id="@+id/searchPriceMinValue"
                     android:text="@string/zero"/>
                 <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:id="@+id/searchOfferPrice"
@@ -106,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:gravity="center"
-                    android:id="@+id/searchRangeMaxValue"
+                    android:id="@+id/searchPriceMaxValue"
                     android:text="@string/two_thousands"/>
             </LinearLayout>
             <LinearLayout
@@ -117,19 +110,20 @@
                 android:id="@+id/searchRoomsField"
                 android:layout_margin="4dp">
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@string/money_icon"
-                    android:src="@drawable/bed"/>
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/bed_icon"
+                    android:src="@drawable/bed_small"/>
                 <TextView
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:gravity="center"
-                    android:id="@+id/searchOfferRoomsMin"
+                    android:id="@+id/searchRoomsMinValue"
                     android:text="@string/zero"/>
                 <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:id="@+id/searchOfferRooms"
@@ -146,31 +140,89 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:gravity="center"
-                    android:id="@+id/searchOfferRoomsMax"
+                    android:id="@+id/searchRoomsMaxValue"
                     android:text="10"/>
             </LinearLayout>
-            <CheckBox
-                android:layout_gravity="center_vertical"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="16sp"
-                android:padding="4dp"
-                android:text="Le logement accepte les animaux">
-            </CheckBox>
-            <CheckBox
-                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:background="@color/colorBlue"
+                android:id="@+id/searchAcceptAnimals">
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/accept_animals"
+                    android:onClick="toggleView"
+                    android:tag="true"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/doesnt_accept_animals"
+                    android:onClick="toggleView"
+                    android:tag="false"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@color/colorWhite"
+                    android:textColor="@color/colorBlue"
+                    android:text="@string/indifferent"
+                    android:onClick="toggleView" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="16sp"
-                android:padding="4dp"
-                android:text="Le logement accepte les fumeurs">
-            </CheckBox>
+                android:layout_margin="4dp"
+                android:background="@color/colorBlue"
+                android:id="@+id/searchAcceptSmokers">
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/accept_smokers"
+                    android:onClick="toggleView"
+                    android:tag="true"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/doesnt_accept_smokers"
+                    android:onClick="toggleView"
+                    android:tag="false"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@color/colorWhite"
+                    android:textColor="@color/colorBlue"
+                    android:text="@string/indifferent"
+                    android:onClick="toggleView" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-        <Button
-            style="@style/ButtonSalmon"
-            android:layout_margin="4dp"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:text="@string/search"/>
-</RelativeLayout>
+</ScrollView>

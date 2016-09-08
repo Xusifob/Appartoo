@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:scrollbars="none">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -72,7 +73,7 @@
                             android:gravity="center"
                             android:textColor="@color/colorSalmon"
                             android:id="@+id/addOfferTextSmoker"
-                            android:text="@string/dont_accept_smokers" />
+                            android:text="@string/i_dont_accept_smokers" />
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -105,7 +106,7 @@
                             android:textColor="@color/colorSalmon"
                             android:id="@+id/addOfferTextAnimals"
                             android:layout_alignParentBottom="true"
-                            android:text="@string/dont_accept_animals" />
+                            android:text="@string/i_dont_accept_animals" />
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

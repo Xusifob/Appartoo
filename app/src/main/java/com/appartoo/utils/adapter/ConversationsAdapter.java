@@ -195,8 +195,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter {
         if (id != null && !id.equals("")) {
             Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + id);
 
-            System.out.println(RestService.REST_URL + "/offers/" + id);
-
             callback.enqueue(new Callback<OfferModelWithDate>() {
                 @Override
                 public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {

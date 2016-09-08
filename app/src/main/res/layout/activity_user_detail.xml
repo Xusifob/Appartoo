@@ -52,7 +52,8 @@
         android:layout_height="match_parent"
         android:id="@+id/offerDetailsScrollView"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="40dp"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

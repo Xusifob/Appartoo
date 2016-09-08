@@ -162,22 +162,22 @@ public class AddOfferActivity extends AppCompatActivity {
             if(acceptAnimals) {
                 animals.setTag("false");
                 animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.dont_accept_animals_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.dont_accept_animals);
+                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.i_dont_accept_animals);
             } else {
                 animals.setTag("true");
                 animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.accept_animals_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.accept_animals);
+                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.i_accept_animals);
             }
         } else if (smoker != null) {
             Boolean acceptSmoker = Boolean.valueOf(smoker.getTag().toString());
             if(acceptSmoker) {
                 smoker.setTag("false");
                 smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_not_smoker_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.dont_accept_smokers);
+                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.i_dont_accept_smokers);
             } else {
                 smoker.setTag("true");
                 smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_smoker_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.accept_smokers);
+                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.i_accept_smokers);
             }
         }
     }

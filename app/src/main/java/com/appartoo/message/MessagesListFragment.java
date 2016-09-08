@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -62,9 +64,6 @@ public class MessagesListFragment extends Fragment{
         Appartoo.databaseReference.getRoot().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                System.out.println("onDataChange");
-
                 new DataChangedTask().execute(dataSnapshot);
 
             }
@@ -111,6 +110,13 @@ public class MessagesListFragment extends Fragment{
                             conversationModels.add(conversationModel);
                         }
                     }
+
+                    Collections.sort(conversationModels, new Comparator<ConversationModel>() {
+                        @Override
+                        public int compare(ConversationModel conversationModel, ConversationModel t1) {
+                            return t1.getLastMessageTime().compareTo(conversationModel.getLastMessageTime());
+                        }
+                    });
                 }
 
                 return conversationModels;

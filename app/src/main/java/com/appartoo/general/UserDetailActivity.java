@@ -211,6 +211,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Intent intent = new Intent(UserDetailActivity.this, MessageActivity.class);
                     intent.putExtra("conversationId", response.body().getIdConversation());
+                    intent.putExtra("conversationName", userModel.getGivenName());
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();

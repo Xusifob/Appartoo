@@ -53,6 +53,7 @@ public class MessageFragment extends Fragment{
     private ChildEventListener childEventListener;
     private TextWatcher textWatcher;
     private boolean isTyping;
+    private TextView typingTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class MessageFragment extends Fragment{
         messageEdit = (EditText) rootView.findViewById(R.id.conversationNewMessage);
         sendMessage = (ImageView) rootView.findViewById(R.id.conversationSendMessage);
         messageLayout = (LinearLayout) rootView.findViewById(R.id.messageSendMessage);
+        typingTextView = ((TextView) rootView.findViewById(R.id.messageTyping));
 
         messageFooter = inflater.inflate(R.layout.footer_message, container, false);
 
@@ -211,7 +213,6 @@ public class MessageFragment extends Fragment{
     }
 
     private void setOtherIsTyping() {
-        TextView typingTextView = ((TextView) messageFooter.findViewById(R.id.messageTyping));
         String isTyping = "";
         for(String participant : conversationModel.getIsTyping().keySet()) {
             if(!participant.equals(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString()) && conversationModel.getIsTyping().get(participant)) {
@@ -336,7 +337,6 @@ public class MessageFragment extends Fragment{
 
         @Override
         protected ConversationModel doInBackground(DataSnapshot... dataSnapshots) {
-            System.out.println("onDataChange");
 
             if(dataSnapshots[0].getValue(true) != null) {
                 HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshots[0].getValue(true);

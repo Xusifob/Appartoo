@@ -18,6 +18,8 @@ import com.appartoo.search.SearchActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.view.NavigationDrawerView;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -26,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
-    private SharedPreferences sharedPreferences;
-
+    private HashMap<String, Object> query;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
-        sharedPreferences = getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE);
+
+        query = (HashMap<String, Object>) getIntent().getSerializableExtra("query");
     }
 
     @Override
@@ -49,25 +51,37 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(Appartoo.APP_NAME);
-        navigationDrawerView.setDrawerLayout(drawerLayout);
 
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
+        if(query == null) {
+            getSupportActionBar().setTitle(Appartoo.APP_NAME);
+            navigationDrawerView.setDrawerLayout(drawerLayout);
+
+            toolbar.setNavigationIcon(R.drawable.ic_drawer);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    } else {
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            getSupportActionBar().setTitle(R.string.drawer_search);
+            toolbar.setNavigationIcon(R.drawable.left_arrow);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, ID_MENU_SEARCH, Menu.NONE, "Search").setIcon(R.drawable.search_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        if(query == null) menu.add(Menu.NONE, ID_MENU_SEARCH, Menu.NONE, "Search").setIcon(R.drawable.search_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
