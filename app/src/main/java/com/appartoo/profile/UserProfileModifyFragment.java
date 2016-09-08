@@ -68,6 +68,7 @@ public class UserProfileModifyFragment extends Fragment {
     private NavigationDrawerView navigationDrawerView;
     private LinearLayout facebookLink;
     private File profilePictureFile;
+    private Uri cameraUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -115,8 +116,17 @@ public class UserProfileModifyFragment extends Fragment {
                         switch (which){
                             case 0:
                                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(ImageManager.getTempFile(getActivity())) );
-                                startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
+                                File photo;
+                                try {
+                                    photo = ImageManager.createTemporaryFile("picture", ".jpg");
+                                    photo.delete();
+                                    cameraUri = Uri.fromFile(photo);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
+                                    startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
+                                } catch(Exception e) {
+                                    Log.v("Photo", "Can't create file to take picture!");
+                                    Toast.makeText(getActivity(), "Erreur lors du chargement de la caméra", Toast.LENGTH_SHORT).show();
+                                }
                                 break;
                             case 1:
                                 intent = new Intent();
@@ -138,13 +148,16 @@ public class UserProfileModifyFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK) {
-            Bitmap imageBitmap;
+            Bitmap imageBitmap = null;
             if (requestCode == ImageManager.REQUEST_IMAGE_CAPTURE) {
-                imageBitmap = ImageManager.getPictureFromCamera(getActivity());
+                try {
+                    imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
+                } catch (IOException e) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {
                 imageBitmap = ImageManager.getPictureFromGallery(data, getActivity());
-            } else {
-                imageBitmap = null;
             }
 
             if(imageBitmap != null) {
@@ -186,6 +199,8 @@ public class UserProfileModifyFragment extends Fragment {
                 updateUserProfile();
             }
         });
+
+
     }
 
     private void updateUserProfile(){

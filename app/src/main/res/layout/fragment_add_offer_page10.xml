@@ -44,7 +44,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_above="@+id/nextPageButton"
-            android:layout_below="@+id/pageTitle">
+            android:layout_below="@+id/pageTitle"
+            android:onClick="alertUser">
             <ImageView
                 android:layout_marginBottom="10dp"
                 android:layout_width="50dp"
@@ -57,7 +58,7 @@
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/residentList"
+                android:id="@+id/addOfferResidentList"
                 tools:listitem="@layout/list_item_resident"
                 android:scrollbars="none">
             </ListView>

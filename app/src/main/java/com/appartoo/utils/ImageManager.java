@@ -1,6 +1,7 @@
 package com.appartoo.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -19,6 +20,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -50,41 +52,34 @@ public class ImageManager {
     public static Bitmap getPictureFromGallery(Intent data, Activity activity){
         Bitmap imageBitmap;
         Uri selectedImage = data.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = activity.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
         try {
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String filePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            imageBitmap = BitmapFactory.decodeFile(filePath);
-            imageBitmap = rotateImageIfRequired(imageBitmap, Uri.parse(filePath));
+            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), selectedImage);
+            imageBitmap = rotateImageIfRequired(imageBitmap, selectedImage);
             imageBitmap = ImageManager.transformResize(imageBitmap, 1280);
-
-        } catch (NullPointerException e) {
-            imageBitmap = null;
-            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             imageBitmap = null;
+            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+
         return imageBitmap;
     }
 
-    public static Bitmap getPictureFromCamera(Activity activity){
+    public static Bitmap getPictureFromCamera(Activity activity, Uri uri) throws IOException {
+
+        activity.getContentResolver().notifyChange(uri, null);
+
         Bitmap imageBitmap;
-        File file = getTempFile(activity);
         try {
-            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), Uri.fromFile(file) );
-            imageBitmap = rotateImageIfRequired(imageBitmap, Uri.fromFile(file));
+            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri );
+            imageBitmap = rotateImageIfRequired(imageBitmap, uri);
             imageBitmap = ImageManager.transformResize(imageBitmap, 1280);
         } catch (IOException e) {
             imageBitmap = null;
             e.printStackTrace();
         }
+
         return imageBitmap;
     }
 
@@ -315,5 +310,14 @@ public class ImageManager {
         public String key() {
             return "circle";
         }
+    }
+
+    public static File createTemporaryFile(String part, String ext) throws Exception {
+        File tempDir= Environment.getDataDirectory();
+        tempDir = new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists()) {
+            tempDir.mkdirs();
+        }
+        return File.createTempFile(part + "_" + String.valueOf(System.currentTimeMillis()), ext, tempDir);
     }
 }

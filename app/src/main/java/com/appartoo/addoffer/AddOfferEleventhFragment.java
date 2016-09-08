@@ -9,19 +9,33 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.utils.Appartoo;
+import com.appartoo.utils.GoogleFormSender;
+import com.appartoo.utils.GoogleServices;
+import com.appartoo.utils.RestService;
 import com.appartoo.utils.adapter.ImageListViewAdapter;
 import com.appartoo.utils.ImageManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -34,6 +48,8 @@ public class AddOfferEleventhFragment extends Fragment {
     private ArrayList<ImageView> images;
     private ArrayList<File> files;
     private ImageListViewAdapter picturesAdapter;
+    private Uri cameraUri;
+    private int photoNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,8 +97,25 @@ public class AddOfferEleventhFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(ImageManager.getTempFile(getActivity())) );
-                startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
+                File photo;
+                try {
+                    photo = ImageManager.createTemporaryFile("picture_" + String.valueOf(photoNumber++), ".jpg");
+                    photo.delete();
+                    cameraUri = Uri.fromFile(photo);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
+                    startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
+                } catch(Exception e) {
+                    Retrofit retrofitSender = new Retrofit.Builder()
+                            .baseUrl("https://docs.google.com/forms/d/e/1FAIpQLScH77O2_-FsMZipSpwqxlPYuUzv1bIXFbI1j1Gu1dvGnm_63w/")
+                            .build();
+
+                    GoogleServices googleServices = retrofitSender.create(GoogleServices.class);
+                    googleServices.reportError(e.getMessage(), "", "", "", "");
+
+                    e.printStackTrace();
+                    Log.v("Photo", "Can't create file to take picture!");
+                    Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -99,14 +132,18 @@ public class AddOfferEleventhFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if(resultCode == Activity.RESULT_OK) {
-            Bitmap imageBitmap;
+            Bitmap imageBitmap = null;
             if (requestCode == ImageManager.REQUEST_IMAGE_CAPTURE) {
-                imageBitmap = ImageManager.getPictureFromCamera(getActivity());
+                try {
+                    imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
+                }
             } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {
                 imageBitmap = ImageManager.getPictureFromGallery(data, getActivity());
-            } else {
-                imageBitmap = null;
             }
 
             if(imageBitmap != null) {
