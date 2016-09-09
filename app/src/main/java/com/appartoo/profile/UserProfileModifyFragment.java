@@ -7,12 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,17 +112,18 @@ public class UserProfileModifyFragment extends Fragment {
                         switch (which){
                             case 0:
                                 intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                File photo;
                                 try {
-                                    photo = ImageManager.createTemporaryFile("picture", ".jpg");
-                                    photo.delete();
-                                    cameraUri = Uri.fromFile(photo);
+
+                                    File cameraFile = ImageManager.createImageFile(getActivity().getApplicationContext());
+                                    cameraUri = Uri.fromFile(cameraFile);
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
                                     startActivityForResult(intent, ImageManager.REQUEST_IMAGE_CAPTURE);
-                                } catch(Exception e) {
-                                    Log.v("Photo", "Can't create file to take picture!");
-                                    Toast.makeText(getActivity(), "Erreur lors du chargement de la caméra", Toast.LENGTH_SHORT).show();
+
+                                } catch (IOException e) {
+                                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
                                 }
+
                                 break;
                             case 1:
                                 intent = new Intent();
@@ -145,6 +142,7 @@ public class UserProfileModifyFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK) {
@@ -153,7 +151,7 @@ public class UserProfileModifyFragment extends Fragment {
                 try {
                     imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
                 } catch (IOException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {

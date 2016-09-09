@@ -192,7 +192,7 @@
     <string name="offer_description">"Description de l'annonce"</string>
     <string name="take_a_picture">Caméra</string>
     <string name="choose_from_gallery">Gallerie</string>
-    <string name="unable_to_load_picture">Impossible de charger votre image.</string>
+    <string name="unable_to_load_camera">"Impossible de charger l'appareil photo"</string>
     <string name="add_residents">Ajouter des résidents</string>
     <string name="add_resident">Ajouter un résident</string>
     <string name="add_photos">Ajouter des photos</string>

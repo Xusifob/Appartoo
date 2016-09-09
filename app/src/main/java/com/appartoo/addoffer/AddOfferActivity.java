@@ -35,6 +35,7 @@ import com.appartoo.utils.GoogleServices;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.view.DisableLastSwipeViewPager;
+import com.appartoo.utils.view.NonSwipeableViewPager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -61,7 +62,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddOfferActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 12;
-    private DisableLastSwipeViewPager pager;
+    private NonSwipeableViewPager pager;
     private PagerAdapter pagerAdapter;
     private Button addOfferButton;
     private GoogleServices googleGeocodingService;
@@ -88,7 +89,7 @@ public class AddOfferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_offer);
 
-        pager = (DisableLastSwipeViewPager) findViewById(R.id.addOfferPager);
+        pager = (NonSwipeableViewPager) findViewById(R.id.addOfferPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         addOfferButton = (Button) findViewById(R.id.finishAddOfferButton);
         dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());

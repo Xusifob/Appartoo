@@ -1,13 +1,10 @@
 package com.appartoo.utils;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,7 +17,6 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,6 +33,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by alexandre on 16-08-10.
@@ -59,7 +57,7 @@ public class ImageManager {
             imageBitmap = ImageManager.transformResize(imageBitmap, 1280);
         } catch (IOException e) {
             imageBitmap = null;
-            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_picture, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -98,14 +96,6 @@ public class ImageManager {
             default:
                 return img;
         }
-    }
-
-    public static File getTempFile(Context context){
-        final File path = new File(Environment.getExternalStorageDirectory(), context.getPackageName() );
-        if(!path.exists()){
-            path.mkdir();
-        }
-        return new File(path, "image.tmp");
     }
 
     public static Bitmap transformResize(Bitmap bitmap, int scaleSize) {
@@ -312,12 +302,18 @@ public class ImageManager {
         }
     }
 
-    public static File createTemporaryFile(String part, String ext) throws Exception {
-        File tempDir= Environment.getDataDirectory();
-        tempDir = new File(tempDir.getAbsolutePath()+"/.temp/");
-        if(!tempDir.exists()) {
-            tempDir.mkdirs();
-        }
-        return File.createTempFile(part + "_" + String.valueOf(System.currentTimeMillis()), ext, tempDir);
+    public static File createImageFile(Context context) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        image.getAbsolutePath();
+        return image;
     }
 }
