@@ -37,7 +37,7 @@
                 android:id="@+id/mainFragments"
                 android:layout_marginTop="?attr/actionBarSize">
                 <fragment
-                    android:name="com.appartoo.general.OffersAndProfilesListFragment"
+                    android:name="com.appartoo.misc.OffersAndProfilesListFragment"
                     android:id="@+id/offerDetailsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

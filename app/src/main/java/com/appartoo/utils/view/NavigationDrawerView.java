@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.login.LoginActivity;
-import com.appartoo.general.MainActivity;
+import com.appartoo.misc.MainActivity;
 import com.appartoo.message.MessageActivity;
 import com.appartoo.message.MessagesListActivity;
 import com.appartoo.search.SearchActivity;

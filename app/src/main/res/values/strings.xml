@@ -238,7 +238,6 @@
 
     <!-- TOAST MESSAGES -->
     <string name="error_missing_info_sign_up">"Veuillez entrer toutes les informations pour compléter l'inscription."</string>
-    <string name="error_mail">"Veuillez entrer une adresse email valide."</string>
     <string name="error_password_not_identical">"Les mots de passe que vous avez entré ne correspondent pas entre eux."</string>
     <string name="error_retrieve_user_profile">"Impossible de récupérer vos informations de profil, veuillez réessayer plus tard."</string>
     <string name="error_retrieve_user_informations">"Impossible de récupérer les informations de l'utilisateur, veuillez réessayer plus tard."</string>
@@ -256,5 +255,18 @@
     <string name="success_sign_up">"Votre inscription a été finalisée avec succès !"</string>
     <string name="success_add_offer">"Votre annonce a été mise en ligne avec succès !"</string>
     <string name="success_update_user_profile">"Votre profil a été enregistré avec succès !"</string>
-
+    <string name="please_enter_valid_email">"Veuillez entrer une adresse email valide."</string>
+    <string name="please_enter_valid_givenname">"Veuillez entrer votre prénom"</string>
+    <string name="please_enter_valid_familyname">"Veuillez enter votre nom de famille"</string>
+    <string name="please_enter_passwords">"Veuillez entrer un mot de passe"</string>
+    <string name="error_password_length">"Votre mot de passe doit avoir une longueur de 8 charactères minimum."</string>
+    <string name="error_missing_rooms">"Veuillez entrer le nombre de chambres disponibles"</string>
+    <string name="error_max_rooms">"Le nombre maximum de chambres est de 10"</string>
+    <string name="error_missing_title">"Veuillez entrer le titre de l'annonce"</string>
+    <string name="error_missing_keyword">"Veuillez entrer le type de l'annonce"</string>
+    <string name="error_missing_place">"Veuillez entrer l'adresse de l'annonce"</string>
+    <string name="error_missing_start_date">"Veuillez entrer la date où commence l'annonce"</string>
+    <string name="error_missing_price">"Veuillez entrer le prix par mois de l'annonce"</string>
+    <string name="error_missing_phone">"Veuillez entrer votre numéro de téléphone"</string>
+    <string name="error_correct_phone">"Veuillez entrer un numéro de téléphone valide"</string>
 </resources>

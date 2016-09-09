@@ -19,7 +19,7 @@
         <!-- LOGIN AND SIGN UP ACTIVITIES -->
         <activity
             android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="orientation|keyboardHidden|screenSize">
@@ -32,18 +32,18 @@
             android:name=".signup.SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".signup.configuration.SignUpProfileActivity"
             android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize" />
 
         <!-- BROWSING ACTIVITIES -->
         <activity
-            android:name=".general.MainActivity"
+            android:name=".misc.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"
@@ -51,7 +51,7 @@
             >
         </activity>
         <activity
-            android:name=".general.OfferDetailsActivity"
+            android:name=".misc.OfferDetailsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"
@@ -59,13 +59,13 @@
             >
         </activity>
         <activity
-            android:name=".general.OfferImagesActivity"
+            android:name=".misc.OfferImagesActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             />
         <activity
-            android:name=".general.UserDetailActivity"
+            android:name=".misc.UserDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"

@@ -11,30 +11,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.general.MainActivity;
-import com.appartoo.utils.Appartoo;
-import com.appartoo.utils.RestService;
-import com.appartoo.utils.model.ObjectHolderModelReceiver;
+import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.view.NavigationDrawerView;
 import com.appartoo.utils.view.NonSwipeableViewPager;
 
 import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -103,7 +90,6 @@ public class SearchActivity extends AppCompatActivity {
         SearchOffersFragment offersFragment = (SearchOffersFragment) adapter.getItem(0);
         SearchProfilesFragment profilesFragment = (SearchProfilesFragment) adapter.getItem(1);
 
-
         offerQuery = offersFragment.getOfferQuery();
         profileQuery = profilesFragment.getProfileQuery();
         HashMap<String, Object> query = new HashMap<>();
@@ -165,7 +151,11 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return fragments[position];
+            if(position < fragments.length) {
+                return fragments[position];
+            } else {
+                return null;
+            }
         }
 
         @Override

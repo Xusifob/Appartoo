@@ -1,14 +1,10 @@
 package com.appartoo.login;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.general.MainActivity;
+import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;

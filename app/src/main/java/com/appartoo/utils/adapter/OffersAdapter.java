@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appartoo.R;
-import com.appartoo.general.OfferDetailsActivity;
+import com.appartoo.misc.OfferDetailsActivity;
 import com.appartoo.utils.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.ImageManager;
 

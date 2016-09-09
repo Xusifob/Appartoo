@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.appartoo.general.OfferDetailsActivity;
-import com.appartoo.general.OfferImagesActivity;
+import com.appartoo.misc.OfferDetailsActivity;
+import com.appartoo.misc.OfferImagesActivity;
 import com.appartoo.utils.model.ImageModel;
 import com.appartoo.utils.ImageManager;
 

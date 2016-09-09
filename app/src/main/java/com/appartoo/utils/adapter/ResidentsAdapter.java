@@ -86,7 +86,7 @@ public class ResidentsAdapter extends BaseAdapter {
         else if (acceptAnimals != null) holder.acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.dont_accept_animals, null));
 
         if(userModel.getInRelationship() != null && userModel.getInRelationship()) holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.couple, null));
-        else if (userModel.getInRelationship() != null) holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.alone, null));
+        else if (userModel.getInRelationship() != null) holder.isSingle.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.single, null));
 
         if (userModel.getImage() != null) ImageManager.downloadPictureIntoView(context, holder.residentImageThumbail, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         else holder.residentImageThumbail.setImageDrawable(ResourcesCompat.getDrawable(convertView.getResources(), R.drawable.default_profile_picture, null));

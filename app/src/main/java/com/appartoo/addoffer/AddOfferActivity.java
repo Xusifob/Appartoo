@@ -1,40 +1,38 @@
 package com.appartoo.addoffer;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.utils.ValidationFragment;
 import com.appartoo.utils.model.AddressComponent;
 import com.appartoo.utils.model.AddressInformationsModel;
 import com.appartoo.utils.model.ImageModel;
 import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.OfferToCreateModel;
 import com.appartoo.utils.model.PlaceModel;
-import com.appartoo.utils.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.GeocoderResponse;
 import com.appartoo.utils.GoogleServices;
 import com.appartoo.utils.RestService;
-import com.appartoo.utils.TextValidator;
-import com.appartoo.utils.view.DisableLastSwipeViewPager;
 import com.appartoo.utils.view.NonSwipeableViewPager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,9 +43,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -63,25 +59,11 @@ public class AddOfferActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 12;
     private NonSwipeableViewPager pager;
-    private PagerAdapter pagerAdapter;
+    private ScreenSlidePagerAdapter pagerAdapter;
     private Button addOfferButton;
     private GoogleServices googleGeocodingService;
-    private SimpleDateFormat dateFormat;
     private RestService restService;
     private ArrayList<File> files;
-    private PlaceModel selectedPlace;
-    private AddOfferFirstFragment addOfferFirstFragment;
-    private AddOfferSecondFragment addOfferSecondFragment;
-    private AddOfferThirdFragment addOfferThirdFragment;
-    private AddOfferFourthFragment addOfferFourthFragment;
-    private AddOfferFifthFragment addOfferFifthFragment;
-    private AddOfferSixthFragment addOfferSixthFragment;
-    private AddOfferSeventhFragment addOfferSeventhFragment;
-    private AddOfferEighthFragment addOfferEighthFragment;
-    private AddOfferNinthFragment addOfferNinthFragment;
-    private AddOfferTenthFragment addOfferTenthFragment;
-    private AddOfferEleventhFragment addOfferEleventhFragment;
-    private AddOfferTwelfthFragment addOfferTwelfthFragment;
     private ProgressDialog progressDialog;
 
     @Override
@@ -92,20 +74,6 @@ public class AddOfferActivity extends AppCompatActivity {
         pager = (NonSwipeableViewPager) findViewById(R.id.addOfferPager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         addOfferButton = (Button) findViewById(R.id.finishAddOfferButton);
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-        addOfferFirstFragment = new AddOfferFirstFragment();
-        addOfferSecondFragment = new AddOfferSecondFragment();
-        addOfferThirdFragment = new AddOfferThirdFragment();
-        addOfferFourthFragment = new AddOfferFourthFragment();
-        addOfferFifthFragment = new AddOfferFifthFragment();
-        addOfferSixthFragment = new AddOfferSixthFragment();
-        addOfferSeventhFragment = new AddOfferSeventhFragment();
-        addOfferEighthFragment = new AddOfferEighthFragment();
-        addOfferNinthFragment = new AddOfferNinthFragment();
-        addOfferTenthFragment = new AddOfferTenthFragment();
-        addOfferEleventhFragment = new AddOfferEleventhFragment();
-        addOfferTwelfthFragment = new AddOfferTwelfthFragment();
 
         pager.setAdapter(pagerAdapter);
 
@@ -142,14 +110,6 @@ public class AddOfferActivity extends AppCompatActivity {
         } else if (pager.getCurrentItem() < NUM_PAGES-1){
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
-    }
-
-    public void setSelectedPlace(PlaceModel selectedPlace) {
-        this.selectedPlace = selectedPlace;
-    }
-
-    public void setFiles(ArrayList<File> files) {
-        this.files = files;
     }
 
     public void toggleView(View v) {
@@ -194,7 +154,8 @@ public class AddOfferActivity extends AppCompatActivity {
             addOfferButton.setEnabled(false);
             new AsyncOffer().execute();
         } else {
-            pager.setCurrentItem(pager.getCurrentItem()+1);
+            if (pagerAdapter.getItem(pager.getCurrentItem()).validateFragment(AddOfferActivity.this))
+                pager.setCurrentItem(pager.getCurrentItem()+1);
         }
     }
 
@@ -209,28 +170,36 @@ public class AddOfferActivity extends AppCompatActivity {
     /**
      * A simple adapter to associate with the view pager
      */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+
+        private ValidationFragment fragments[] = {
+                new AddOfferTitleFragment(), new AddOfferKeywordFragment(),
+                new AddOfferAddressFragment(), new AddOfferDatesFragment(),
+                new AddOfferPriceFragment(), new AddOfferRoomsFragment(),
+                new AddOfferPhoneFragment(), new AddOfferDescriptionFragment(),
+                new AddOfferSmokerAnimalsFragment(), new AddOfferResidentsFragment(),
+                new AddOfferPicturesFragment(), new AddOfferSuccessFragment()
+        };
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+
+
+        public <T> T getItemFromClass(Class<T> fragmentClass) {
+            for(ValidationFragment fragment : fragments) {
+                if(fragment.getClass().equals(fragmentClass)) return (T) fragment;
+            }
+            return null;
+        }
+
         @Override
-        public Fragment getItem(int position) {
-            switch(position) {
-                case 0: return addOfferFirstFragment;
-                case 1: return addOfferSecondFragment;
-                case 2: return addOfferThirdFragment;
-                case 3: return addOfferFourthFragment;
-                case 4: return addOfferFifthFragment;
-                case 5: return addOfferSixthFragment;
-                case 6: return addOfferSeventhFragment;
-                case 7: return addOfferEighthFragment;
-                case 8: return addOfferNinthFragment;
-                case 9: return addOfferTenthFragment;
-                case 10: return addOfferEleventhFragment;
-                case 11: return addOfferTwelfthFragment;
-                default: return addOfferFirstFragment;
+        public ValidationFragment getItem(int position) {
+            if(position < fragments.length) {
+                return fragments[position];
+            } else {
+                return null;
             }
         }
 
@@ -259,64 +228,32 @@ public class AddOfferActivity extends AppCompatActivity {
         private OfferToCreateModel getOfferModel(){
             OfferToCreateModel offerModel = new OfferToCreateModel();
 
-            String name = ((EditText) findViewById(R.id.addOfferTitle)).getText().toString();
-            String keyword = ((EditText) findViewById(R.id.addOfferKeyword)).getText().toString();
-            String availabilityStartsStr = ((EditText) findViewById(R.id.addOfferAvailabilityStarts)).getText().toString();
-            String availabilityEndsStr = ((EditText) findViewById(R.id.addOfferAvailabilityEnds)).getText().toString();
-            String price = ((EditText) findViewById(R.id.addOfferPrice)).getText().toString();
-            String rooms = ((EditText) findViewById(R.id.addOfferRooms)).getText().toString();
-            String phone = ((EditText) findViewById(R.id.addOfferPhone)).getText().toString();
-            String description = ((EditText) findViewById(R.id.addOfferDescription)).getText().toString();
-            boolean acceptAnimals = Boolean.valueOf(findViewById(R.id.addOfferImageAnimals).getTag().toString());
-            boolean acceptSmoker = Boolean.valueOf(findViewById(R.id.addOfferImageSmoker).getTag().toString());
-
-            if(!TextValidator.haveText(new String[] {price, rooms, name, description, phone, keyword})) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.error_missing_info_add_offer, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return null;
-            }
-
-            try {
-                offerModel.setStart(dateFormat.parse(availabilityStartsStr));
-                offerModel.setEnd(dateFormat.parse(availabilityEndsStr));
-
-                if(offerModel.getStart().compareTo(offerModel.getEnd()) >= 0){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            for(int i = 0 ; i < pagerAdapter.getCount() ; i++) {
+                if(!pagerAdapter.getItem(i).validateFragment(AddOfferActivity.this)) {
+                    Toast.makeText(AddOfferActivity.this, R.string.error_missing_info_add_offer, Toast.LENGTH_SHORT).show();
                     return null;
                 }
-            } catch (Exception e){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.error_dates_add_offer, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return null;
             }
 
-            offerModel.setOffer_name(name.trim());
-            offerModel.setPrice(Integer.valueOf(price));
-            offerModel.setRooms(Integer.valueOf(rooms));
-            offerModel.setAcceptAnimal(acceptAnimals);
-            offerModel.setSmoker(acceptSmoker);
-            offerModel.setDescription(description.trim());
-            offerModel.setPhone(phone.trim());
-            offerModel.setKeyword(keyword.trim());
+            offerModel.setStart(pagerAdapter.getItemFromClass(AddOfferDatesFragment.class).getStartDate());
+            offerModel.setEnd(pagerAdapter.getItemFromClass(AddOfferDatesFragment.class).getEndDate());
+            offerModel.setOffer_name(pagerAdapter.getItemFromClass(AddOfferTitleFragment.class).getTitle().trim());
+            offerModel.setPrice(pagerAdapter.getItemFromClass(AddOfferPriceFragment.class).getPrice());
+            offerModel.setRooms(pagerAdapter.getItemFromClass(AddOfferRoomsFragment.class).getRooms());
+            offerModel.setAcceptAnimal(pagerAdapter.getItemFromClass(AddOfferSmokerAnimalsFragment.class).getAcceptAnimals());
+            offerModel.setSmoker(pagerAdapter.getItemFromClass(AddOfferSmokerAnimalsFragment.class).getAllowSmoker());
+            offerModel.setDescription(pagerAdapter.getItemFromClass(AddOfferDescriptionFragment.class).getDescription());
+            offerModel.setPhone(pagerAdapter.getItemFromClass(AddOfferPhoneFragment.class).getTelephone());
+            offerModel.setKeyword(pagerAdapter.getItemFromClass(AddOfferKeywordFragment.class).getKeyword());
 
             return offerModel;
         }
 
         public void setAddress(final OfferToCreateModel offerModel) {
-            if(selectedPlace.getPlaceId() != null) {
+
+            final PlaceModel selectedPlace = pagerAdapter.getItemFromClass(AddOfferAddressFragment.class).getSelectedPlace();
+
+            if(selectedPlace != null && selectedPlace.getPlaceId() != null) {
                 progressDialog = ProgressDialog.show(AddOfferActivity.this, "Création de l'annonce", "Veuillez patienter...", true);
                 Call<GeocoderResponse> callback = googleGeocodingService.getAddressFromPlaceId(selectedPlace.getPlaceId(), getResources().getString(R.string.google_maps_key));
 
@@ -378,6 +315,7 @@ public class AddOfferActivity extends AppCompatActivity {
 
                         if(response.isSuccessful()){
                             String offerId = response.body().getId();
+                            files = pagerAdapter.getItemFromClass(AddOfferPicturesFragment.class).getFiles();
                             if(files != null && files.size() > 0) {
                                 sendImagesToServer(offerId, files.size(), 1);
                             } else {

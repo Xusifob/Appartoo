@@ -14,12 +14,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.appartoo.R;
-import com.appartoo.general.MainActivity;
+import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
-import com.appartoo.utils.view.DisableLastSwipeViewPager;
+import com.appartoo.utils.view.NonSwipeableViewPager;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SignUpProfileActivity extends FragmentActivity {
 
     private static final int NUM_PAGES = 12;
-    private DisableLastSwipeViewPager pager;
+    private NonSwipeableViewPager pager;
     private PagerAdapter pagerAdapter;
     private RestService restService;
     private Button updateProfile;
@@ -53,7 +53,7 @@ public class SignUpProfileActivity extends FragmentActivity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        pager = (DisableLastSwipeViewPager) findViewById(R.id.signup_pager);
+        pager = (NonSwipeableViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
     }
@@ -220,19 +220,19 @@ public class SignUpProfileActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             switch(position) {
-                case 0: return new SignUpProfileFirstFragment();
-                case 1: return new SignUpProfileSecondFragment();
-                case 2: return new SignUpProfileThirdFragment();
-                case 3: return new SignUpProfileFourthFragment();
-                case 4: return new SignUpProfileFifthFragment();
-                case 5: return new SignUpProfileSixthFragment();
-                case 6: return new SignUpProfileSeventhFragment();
-                case 7: return new SignUpProfileEighthFragment();
-                case 8: return new SignUpProfileNinthFragment();
-                case 9: return new SignUpProfileTenthFragment();
-                case 10: return new SignUpProfileEleventhFragment();
-                case 11: return new SignUpProfileTwelfthFragment();
-                default: return new SignUpProfileFirstFragment();
+                case 0: return new SignUpProfileBeginConfFragment();
+                case 1: return new SignUpProfileConfTypeFragment();
+                case 2: return new SignUpProfileGenderFragment();
+                case 3: return new SignUpProfileStatusFragment();
+                case 4: return new SignUpProfileSmokerFragment();
+                case 5: return new SignUpProfileSocietyFragment();
+                case 6: return new SignUpProfileFunctionFragment();
+                case 7: return new SignUpProfileContractFragment();
+                case 8: return new SignUpProfileIncomeFragment();
+                case 9: return new SignUpProfileGarantorFragment();
+                case 10: return new SignUpProfileDescriptionFragment();
+                case 11: return new SignUpProfileSuccessFragment();
+                default: return new SignUpProfileBeginConfFragment();
             }
         }
 

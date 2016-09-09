@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appartoo.R;
-import com.appartoo.general.OfferDetailsActivity;
-import com.appartoo.general.UserDetailActivity;
+import com.appartoo.misc.OfferDetailsActivity;
+import com.appartoo.misc.UserDetailActivity;
 import com.appartoo.utils.model.ObjectHolderModel;
 import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.UserProfileModel;
@@ -121,7 +121,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
 
             if(userModel.getRelationshipStatus() != null) {
                 if (userModel.getRelationshipStatus().equals("single"))
-                    inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.alone, null));
+                    inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.single, null));
                 else
                     inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.couple, null));
             }

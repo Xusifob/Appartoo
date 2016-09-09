@@ -5,16 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.appartoo.R;
-import com.appartoo.general.MainActivity;
+import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.signup.SignUpActivity;
 import com.appartoo.utils.Appartoo;
@@ -78,6 +78,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override

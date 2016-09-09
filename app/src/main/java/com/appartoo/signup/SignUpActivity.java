@@ -4,32 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.general.MainActivity;
+import com.appartoo.misc.MainActivity;
+import com.appartoo.utils.ValidationFragment;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.model.SignUpModel;
 import com.appartoo.signup.configuration.SignUpProfileActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
-import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.TokenReceiver;
 import com.appartoo.utils.view.NavigationDrawerView;
+import com.appartoo.utils.view.NonSwipeableViewPager;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -45,10 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SignUpActivity extends FragmentActivity {
 
     private static final int NUM_PAGES = 4;
-    private ViewPager pager;
-    private PagerAdapter pagerAdapter;
-    private SimpleDateFormat dateFormat;
-    private SimpleDateFormat jsonFormat;
+    private NonSwipeableViewPager pager;
+    private ScreenSlidePagerAdapter pagerAdapter;
     private RestService restService;
     private Button signUpButton;
     private SharedPreferences sharedPreferences;
@@ -59,14 +52,11 @@ public class SignUpActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retreive the resources
-        pager = (ViewPager) findViewById(R.id.signup_pager);
+        pager = (NonSwipeableViewPager) findViewById(R.id.signup_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        jsonFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         pager.setAdapter(pagerAdapter);
     }
 
@@ -109,32 +99,19 @@ public class SignUpActivity extends FragmentActivity {
      * @return true if the informations are correct, false if they are not.
      */
     private SignUpModel getSignUpModel(){
-        //Retrieve the form inputs
-        String firstName = ((EditText) findViewById(R.id.signupFirstName)).getText().toString().trim();
-        String lastName = ((EditText) findViewById(R.id.signupLastName)).getText().toString().trim();
-        String email = ((EditText) findViewById(R.id.signUpMail)).getText().toString().trim();
-        String password = ((EditText) findViewById(R.id.signUpPassword)).getText().toString();
-        String password_confirm = ((EditText) findViewById(R.id.signUpPasswordConfirm)).getText().toString();
 
-        //Check the edit text input
-        if(!TextValidator.haveText(new String[] {firstName, lastName, password, password_confirm, email})) {
-            Toast.makeText(getApplicationContext(), R.string.error_missing_info_sign_up, Toast.LENGTH_LONG).show();
-            return null;
+        for(int i = 0 ; i < pagerAdapter.getCount() ; i++) {
+            if (!pagerAdapter.getItem(i).validateFragment(SignUpActivity.this)) {
+                Toast.makeText(SignUpActivity.this, R.string.error_missing_info_sign_up, Toast.LENGTH_SHORT).show();
+                return null;
+            }
         }
 
-        //Check if mail is valid
-        if(!TextValidator.isEmail(email)) {
-            Toast.makeText(getApplicationContext(), R.string.error_mail, Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        //Check if password is valid
-        if(!password.equals(password_confirm)) {
-            Toast.makeText(getApplicationContext(), R.string.error_password_not_identical, Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        return new SignUpModel(email, password, firstName, lastName);
+        return new SignUpModel(
+                ((SignUpEmailFragment) pagerAdapter.getItem(1)).getEmail(),
+                ((SignUpPasswordFragment) pagerAdapter.getItem(2)).getPassword(),
+                ((SignUpNameFragment) pagerAdapter.getItem(0)).getGivenName(),
+                ((SignUpNameFragment) pagerAdapter.getItem(0)).getFamilyName());
     }
 
     /**
@@ -145,7 +122,8 @@ public class SignUpActivity extends FragmentActivity {
         if(pager.getCurrentItem() == NUM_PAGES - 1) {
             finishSignUp(v);
         } else {
-            pager.setCurrentItem(pager.getCurrentItem()+1);
+            if(pagerAdapter.getItem(pager.getCurrentItem()).validateFragment(SignUpActivity.this))
+                pager.setCurrentItem(pager.getCurrentItem()+1);
         }
     }
 
@@ -282,19 +260,20 @@ public class SignUpActivity extends FragmentActivity {
     /**
      * A simple adapter to associate with the view pager
      */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+
+        ValidationFragment[] fragments = {new SignUpNameFragment(), new SignUpEmailFragment(), new SignUpPasswordFragment(), new SignUpFinishFragment()};
+
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int position) {
-            switch(position) {
-                case 0: return new SignUpFirstFragment();
-                case 1: return new SignUpSecondFragment();
-                case 2: return new SignUpThirdFragment();
-                case 3: return new SignUpFourthFragment();
-                default: return new SignUpFourthFragment();
+        public ValidationFragment getItem(int position) {
+            if(position < fragments.length) {
+                return fragments[position];
+            } else {
+                return null;
             }
         }
 

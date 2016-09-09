@@ -1,6 +1,7 @@
 package com.appartoo.utils;
 
 import android.support.annotation.NonNull;
+import android.telephony.PhoneNumberUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,12 +25,21 @@ public class TextValidator {
         return !stringToVerify.replaceAll("\\s", "").equals("");
     }
 
-    public static boolean haveText(String[] stringsToVerify){
-        for(int i = 0 ; i < stringsToVerify.length ; i++) {
-            if(stringsToVerify[i] != null && stringsToVerify[i].replaceAll("\\s", "").equals("")) {
+    public static boolean haveText(String[] stringsToVerify) {
+        for (int i = 0; i < stringsToVerify.length; i++) {
+            if (stringsToVerify[i] != null && stringsToVerify[i].replaceAll("\\s", "").equals("")) {
                 return false;
             }
         }
         return true;
+    }
+
+
+    public static boolean isPhone(@NonNull String phone) {
+        String expression = "^\\+?[0-9 \\-]{0,20}$";
+
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 }

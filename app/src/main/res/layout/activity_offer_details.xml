@@ -31,7 +31,7 @@
                 android:id="@+id/offerDetailContainer"
                 android:visibility="gone">
                 <fragment
-                    android:name="com.appartoo.general.OfferDetailsFragment"
+                    android:name="com.appartoo.misc.OfferDetailsFragment"
                     android:id="@+id/offerDetailsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:id="@+id/offerFlatImage">
                     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
-                        class="com.appartoo.general.WorkaroundMapFragment"
+                        class="com.appartoo.misc.WorkaroundMapFragment"
                         android:layout_height="0dp"
                         android:layout_width="0dp"
                         app:layout_widthPercent="100%"
