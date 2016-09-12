@@ -30,6 +30,7 @@ public class AddOfferKeywordFragment extends ValidationFragment {
     @Override
     public void onStart(){
         super.onStart();
+
         keyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

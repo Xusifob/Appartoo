@@ -51,10 +51,11 @@ public class CompleteUserModel extends UserProfileModel {
         this.user = user;
     }
 
+
     @Override
     public String toString() {
         return "CompleteUserModel{" +
                 "user=" + user +
-                '}';
+                '}' + super.toString();
     }
 }

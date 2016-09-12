@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpProfileActivity extends FragmentActivity {
 
-    private static final int NUM_PAGES = 12;
     private NonSwipeableViewPager pager;
-    private PagerAdapter pagerAdapter;
+    private ScreenSlidePagerAdapter pagerAdapter;
     private RestService restService;
     private Button updateProfile;
 
@@ -62,7 +60,7 @@ public class SignUpProfileActivity extends FragmentActivity {
     @Override
     public void onStart() {
         super.onStart();
-        pager.setOffscreenPageLimit(NUM_PAGES - 1);
+        pager.setOffscreenPageLimit(pagerAdapter.getCount() - 1);
     }
 
     @Override
@@ -70,7 +68,7 @@ public class SignUpProfileActivity extends FragmentActivity {
         if(pager.getCurrentItem() == 0) {
             startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
-        } else if (pager.getCurrentItem() < NUM_PAGES-1){
+        } else if (pager.getCurrentItem() < pagerAdapter.getCount()-1){
             pager.setCurrentItem(pager.getCurrentItem()-1);
         }
     }
@@ -90,10 +88,10 @@ public class SignUpProfileActivity extends FragmentActivity {
      */
 
     public void nextView(View v){
-        if(pager.getCurrentItem() == NUM_PAGES - 1) {
+        if(pager.getCurrentItem() == pagerAdapter.getCount() - 1) {
             startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
-        } else if(pager.getCurrentItem() == NUM_PAGES - 2) {
+        } else if(pager.getCurrentItem() == pagerAdapter.getCount() - 2) {
             updateProfile = (Button) v;
             updateUserProfile();
         } else {
@@ -107,6 +105,8 @@ public class SignUpProfileActivity extends FragmentActivity {
 
     private void updateUserProfile(){
         final CompleteUserModel profileUpdateModel = getProfileUpdateModel();
+        System.out.println(profileUpdateModel);
+
         updateProfile.setEnabled(false);
 
         if(profileUpdateModel != null && Appartoo.LOGGED_USER_PROFILE != null) {
@@ -118,7 +118,7 @@ public class SignUpProfileActivity extends FragmentActivity {
                     if(response.isSuccessful()) {
 
                         updateUserLoggedModel(profileUpdateModel);
-                        pager.setCurrentItem(NUM_PAGES-1);
+                        pager.setCurrentItem(pagerAdapter.getCount()-1);
                         updateProfile.setEnabled(true);
 
                     } else {
@@ -144,13 +144,18 @@ public class SignUpProfileActivity extends FragmentActivity {
 
     private CompleteUserModel getProfileUpdateModel(){
         CompleteUserModel updateModel = new CompleteUserModel();
-        setToggleViewsInformations(updateModel);
 
-        String society = ((EditText) findViewById(R.id.signUpConfigureSociety)).getText().toString();
-        String function = ((EditText) findViewById(R.id.signUpConfigureFunction)).getText().toString();
-        String contract = findViewById(R.id.signUpConfigureContract).getTag().toString();
-        String incomeStr = ((EditText) findViewById(R.id.signUpConfigureIncome)).getText().toString();
-        String description = ((EditText) findViewById(R.id.signUpConfigureDescription)).getText().toString();
+        updateModel.setInRelationship(pagerAdapter.getItemFromClass(SignUpProfileRelationshipFragment.class).getInRelationship());
+        updateModel.setSmoker(pagerAdapter.getItemFromClass(SignUpProfileSmokerFragment.class).getSmoker());
+        updateModel.setGender(pagerAdapter.getItemFromClass(SignUpProfileGenderFragment.class).getGender());
+
+        String society = pagerAdapter.getItemFromClass(SignUpProfileSocietyFragment.class).getSociety();
+        String function = pagerAdapter.getItemFromClass(SignUpProfileFunctionFragment.class).getFunction();
+        String contract = pagerAdapter.getItemFromClass(SignUpProfileContractFragment.class).getContract();
+        String incomeStr = pagerAdapter.getItemFromClass(SignUpProfileIncomeFragment.class).getIncome();
+        String description = pagerAdapter.getItemFromClass(SignUpProfileDescriptionFragment.class).getDescription();
+
+        System.out.println(society + " " + function);
 
         if(TextValidator.haveText(society)) updateModel.setSociety(society.trim());
         if(TextValidator.haveText(function)) updateModel.setFunction(function.trim());
@@ -159,22 +164,6 @@ public class SignUpProfileActivity extends FragmentActivity {
         if(TextValidator.haveText(incomeStr)) updateModel.setIncome(Double.valueOf(incomeStr));
 
         return updateModel;
-    }
-
-    private void setToggleViewsInformations(CompleteUserModel updateModel){
-        boolean man = findViewById(R.id.signUpConfigureMan).isSelected();
-        boolean woman = findViewById(R.id.signUpConfigureWoman).isSelected();
-        boolean single = findViewById(R.id.signUpConfigureSingle).isSelected();
-        boolean inRelationship = findViewById(R.id.signUpConfigureInRelationship).isSelected();
-        boolean isSmoker = findViewById(R.id.signUpConfigureIsSmoker).isSelected();
-        boolean isNotSmoker = findViewById(R.id.signUpConfigureIsNotSmoker).isSelected();
-
-        if(man) updateModel.setGender("Male");
-        if(woman) updateModel.setGender("Female");
-        if(single) updateModel.setInRelationship(false);
-        if(inRelationship) updateModel.setInRelationship(true);
-        if(isSmoker) updateModel.setSmoker(true);
-        if(isNotSmoker) updateModel.setSmoker(false);
     }
 
     /**
@@ -190,6 +179,7 @@ public class SignUpProfileActivity extends FragmentActivity {
                 parent.getChildAt(i).setSelected(false);
             }
         }
+        parent.setTag(v.getTag());
 
         //Set the clicked button as selected
         v.setSelected(true);
@@ -213,32 +203,33 @@ public class SignUpProfileActivity extends FragmentActivity {
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
+        private Fragment[] fragments = {new SignUpProfileBeginConfFragment(),
+        new SignUpProfileConfTypeFragment(), new SignUpProfileGenderFragment(),
+        new SignUpProfileRelationshipFragment(), new SignUpProfileSmokerFragment(),
+        new SignUpProfileSocietyFragment(), new SignUpProfileFunctionFragment(),
+        new SignUpProfileContractFragment(), new SignUpProfileIncomeFragment(),
+        new SignUpProfileGarantorFragment(), new SignUpProfileDescriptionFragment(),
+        new SignUpProfileSuccessFragment()};
+
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch(position) {
-                case 0: return new SignUpProfileBeginConfFragment();
-                case 1: return new SignUpProfileConfTypeFragment();
-                case 2: return new SignUpProfileGenderFragment();
-                case 3: return new SignUpProfileStatusFragment();
-                case 4: return new SignUpProfileSmokerFragment();
-                case 5: return new SignUpProfileSocietyFragment();
-                case 6: return new SignUpProfileFunctionFragment();
-                case 7: return new SignUpProfileContractFragment();
-                case 8: return new SignUpProfileIncomeFragment();
-                case 9: return new SignUpProfileGarantorFragment();
-                case 10: return new SignUpProfileDescriptionFragment();
-                case 11: return new SignUpProfileSuccessFragment();
-                default: return new SignUpProfileBeginConfFragment();
+            return fragments[position];
+        }
+
+        public <T> T getItemFromClass(Class<T> fragmentClass) {
+            for(Fragment fragment : fragments) {
+                if(fragment.getClass().equals(fragmentClass)) return (T) fragment;
             }
+            return null;
         }
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return fragments.length;
         }
     }
 }

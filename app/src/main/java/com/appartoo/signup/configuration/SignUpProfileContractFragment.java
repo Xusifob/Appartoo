@@ -49,4 +49,8 @@ public class SignUpProfileContractFragment extends Fragment {
             }
         });
     }
+
+    public String getContract() {
+        return contract.getText().toString();
+    }
 }

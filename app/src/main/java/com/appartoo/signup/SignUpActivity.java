@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.appartoo.R;
@@ -43,7 +42,6 @@ public class SignUpActivity extends FragmentActivity {
     private NonSwipeableViewPager pager;
     private ScreenSlidePagerAdapter pagerAdapter;
     private RestService restService;
-    private Button signUpButton;
     private SharedPreferences sharedPreferences;
     private SignUpModel newUser;
 
@@ -128,12 +126,12 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void finishSignUp(View v){
-        signUpButton = (Button) v;
 
         newUser = getSignUpModel();
         if(getSignUpModel() != null){
 
-            signUpButton.setEnabled(false);
+            ((SignUpFinishFragment) pagerAdapter.getItem(NUM_PAGES-1)).setButtonEnabled(false);
+
             Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName());
 
             //Handle the server response
@@ -144,10 +142,10 @@ public class SignUpActivity extends FragmentActivity {
                     if(response.isSuccessful()) {
                         logUser();
                     } else if(response.code() == 402) {
-                        signUpButton.setEnabled(true);
+                        ((SignUpFinishFragment) pagerAdapter.getItem(NUM_PAGES-1)).setButtonEnabled(true);
                         Toast.makeText(getApplicationContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
                     } else {
-                        signUpButton.setEnabled(true);
+                        ((SignUpFinishFragment) pagerAdapter.getItem(NUM_PAGES-1)).setButtonEnabled(true);
                         try {
                             Log.v("SignUpActivity", "finishSignUp: " + String.valueOf(response.code()));
                             Log.v("SignUpActivity", "finishSignUp: " + response.errorBody().string());
@@ -163,7 +161,7 @@ public class SignUpActivity extends FragmentActivity {
 
                     Log.v("SignUpActivity", "finishSignUp: " + t.getMessage());
                     Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
-                    signUpButton.setEnabled(true);
+                    ((SignUpFinishFragment) pagerAdapter.getItem(NUM_PAGES-1)).setButtonEnabled(true);
                 }
             });
         }

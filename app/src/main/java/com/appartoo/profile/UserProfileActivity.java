@@ -1,5 +1,6 @@
 package com.appartoo.profile;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
 import com.appartoo.utils.Appartoo;
@@ -94,6 +96,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
 
     @Override
     public void onBackPressed(){
+
         if(!mainFragment.isVisible()) {
             fragmentManager.beginTransaction().replace(R.id.userProfileFrame, mainFragment).commit();
             toolbar.setNavigationIcon(R.drawable.ic_drawer);
@@ -107,6 +110,12 @@ import com.appartoo.utils.view.NavigationDrawerView;
                     }
                 }
             });
+
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         } else {
             super.onBackPressed();
         }
@@ -134,6 +143,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
             } else if (v.getTag().equals("my_offers")) {
                 fragmentManager.beginTransaction().replace(R.id.userProfileFrame, offersFragment).commit();
             }
+
             toolbar.setNavigationIcon(R.drawable.left_arrow);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

@@ -90,6 +90,13 @@
                         android:background="@color/colorLightGray"
                         android:id="@+id/offerFlatImagesPager">
                     </android.support.v4.view.ViewPager>
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/offerFlatImagesPagerIndicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignBottom="@+id/offerFlatImagesPager"
+                        app:ci_drawable="@drawable/selected_item_dot"
+                        app:ci_drawable_unselected="@drawable/unselected_item_dot" />
                 </android.support.percent.PercentRelativeLayout>
 
             </RelativeLayout>

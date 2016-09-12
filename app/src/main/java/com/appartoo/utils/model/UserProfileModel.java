@@ -261,6 +261,6 @@ public class UserProfileModel extends UserModel {
                 ", honorificPrefix='" + honorificPrefix + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", nationality=" + nationality +
-                '}';
+                '}' + super.toString();
     }
 }

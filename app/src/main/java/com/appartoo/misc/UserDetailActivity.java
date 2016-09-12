@@ -1,6 +1,7 @@
 package com.appartoo.misc;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -83,8 +85,8 @@ public class UserDetailActivity extends AppCompatActivity {
         sendMessageButton.setVisibility(View.GONE);
 
         if(userModel != null) {
-            userDetailFragment.bindData(userModel);
             bindData(userModel);
+            userDetailFragment.bindData(userModel);
             progressBar.setVisibility(View.GONE);
             userDetailContainer.setVisibility(View.VISIBLE);
         } else if (userId != null) {
@@ -103,8 +105,8 @@ public class UserDetailActivity extends AppCompatActivity {
                     if(response.isSuccessful()) {
 
                         userModel = response.body();
-                        userDetailFragment.bindData(userModel);
                         bindData(userModel);
+                        userDetailFragment.bindData(userModel);
                         userDetailContainer.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                     } else {
@@ -161,7 +163,7 @@ public class UserDetailActivity extends AppCompatActivity {
         });
 
 
-        if(Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(userModel.getId())) {
+        if(userModel.getId() == null || (Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(userModel.getId()))) {
             sendMessageButton.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
             sendMessageButton.setVisibility(View.VISIBLE);
@@ -232,5 +234,15 @@ public class UserDetailActivity extends AppCompatActivity {
                 Log.v("UserDetailActivity", "sendMessageToUser: " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

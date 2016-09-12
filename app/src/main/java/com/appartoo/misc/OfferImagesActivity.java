@@ -1,10 +1,12 @@
 package com.appartoo.misc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
 import com.appartoo.utils.adapter.ImageViewPagerAdapter;
@@ -40,5 +42,15 @@ public class OfferImagesActivity extends Activity {
         //Add the pictures to the view pager
         viewPager.setAdapter(new ImageViewPagerAdapter(this, pictures));
         viewPager.setCurrentItem(currentItem);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

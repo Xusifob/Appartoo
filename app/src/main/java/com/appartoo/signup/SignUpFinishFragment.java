@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.appartoo.R;
 import com.appartoo.utils.ValidationFragment;
@@ -13,8 +14,18 @@ import com.appartoo.utils.ValidationFragment;
  */
 public class SignUpFinishFragment extends ValidationFragment {
 
+    private Button signUpButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return (ViewGroup) inflater.inflate(R.layout.fragment_signup_finish, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_signup_finish, container, false);
+
+        signUpButton = (Button) rootView.findViewById(R.id.finishSignUpButton);
+
+        return rootView;
+    }
+
+    public void setButtonEnabled(boolean enabled){
+        signUpButton.setEnabled(enabled);
     }
 }

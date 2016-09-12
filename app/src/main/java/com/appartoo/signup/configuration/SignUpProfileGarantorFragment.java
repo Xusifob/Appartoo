@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.adapter.GarantorsAdapter;
 import com.appartoo.utils.model.GarantorModel;
 
@@ -56,18 +58,47 @@ public class SignUpProfileGarantorFragment extends Fragment {
             selectContractDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GarantorModel newgarantor = new GarantorModel();
-                    newgarantor.setGivenName(((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString());
-                    newgarantor.setFamilyName(((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString());
-                    newgarantor.setEmail(((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString());
-                    newgarantor.setIncome(Float.valueOf(((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString()));
-                    garantorModels.add(newgarantor);
-                    garantorsAdapter.notifyDataSetChanged();
+                    GarantorModel newgarantor = getGarantorModel(dialogLayout);
+
+                    if(newgarantor != null) {
+                        garantorModels.add(newgarantor);
+                        garantorsAdapter.notifyDataSetChanged();
+                    }
                 }
             });
             selectContractDialog.setNegativeButton(R.string.cancel, null);
             selectContractDialog.show();
             }
         });
+    }
+
+    private GarantorModel getGarantorModel(View dialogLayout){
+        String firstName = ((EditText) dialogLayout.findViewById(R.id.garantorRecordFirstName)).getText().toString();
+        String familyName = ((EditText) dialogLayout.findViewById(R.id.garantorRecordLastName)).getText().toString();
+        String email = ((EditText) dialogLayout.findViewById(R.id.garantorRecordMail)).getText().toString();
+        String income = ((EditText) dialogLayout.findViewById(R.id.garantorRecordIncome)).getText().toString();
+
+        if(!TextValidator.haveText(new String[] {firstName, familyName, email, income})) {
+            Toast.makeText(getActivity().getApplicationContext(), R.string.error_missing_info_garantor, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        if(!TextValidator.isEmail(email)) {
+            Toast.makeText(getActivity().getApplicationContext(), R.string.please_enter_valid_email, Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        GarantorModel model = new GarantorModel();
+        model.setGivenName(firstName);
+        model.setFamilyName(familyName);
+        model.setEmail(email);
+        model.setIncome(Float.valueOf(income));
+
+        return model;
+
+    }
+
+    public ArrayList<GarantorModel> getGarantors() {
+        return garantorModels;
     }
 }

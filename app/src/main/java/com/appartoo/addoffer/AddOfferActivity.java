@@ -154,6 +154,13 @@ public class AddOfferActivity extends AppCompatActivity {
             addOfferButton.setEnabled(false);
             new AsyncOffer().execute();
         } else {
+            if(pagerAdapter.getItem(pager.getCurrentItem()) instanceof AddOfferAddressFragment || pagerAdapter.getItem(pager.getCurrentItem()) instanceof AddOfferDescriptionFragment) {
+                View view = this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
             if (pagerAdapter.getItem(pager.getCurrentItem()).validateFragment(AddOfferActivity.this))
                 pager.setCurrentItem(pager.getCurrentItem()+1);
         }
@@ -173,8 +180,8 @@ public class AddOfferActivity extends AppCompatActivity {
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
         private ValidationFragment fragments[] = {
-                new AddOfferTitleFragment(), new AddOfferKeywordFragment(),
-                new AddOfferAddressFragment(), new AddOfferDatesFragment(),
+                new AddOfferTitleFragment(), new AddOfferAddressFragment(),
+                new AddOfferKeywordFragment(), new AddOfferDatesFragment(),
                 new AddOfferPriceFragment(), new AddOfferRoomsFragment(),
                 new AddOfferPhoneFragment(), new AddOfferDescriptionFragment(),
                 new AddOfferSmokerAnimalsFragment(), new AddOfferResidentsFragment(),

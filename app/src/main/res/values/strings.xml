@@ -238,6 +238,7 @@
 
     <!-- TOAST MESSAGES -->
     <string name="error_missing_info_sign_up">"Veuillez entrer toutes les informations pour compléter l'inscription."</string>
+    <string name="error_missing_info_garantor">"Veuillez entrer toutes les informations pour ajouter un garant."</string>
     <string name="error_password_not_identical">"Les mots de passe que vous avez entré ne correspondent pas entre eux."</string>
     <string name="error_retrieve_user_profile">"Impossible de récupérer vos informations de profil, veuillez réessayer plus tard."</string>
     <string name="error_retrieve_user_informations">"Impossible de récupérer les informations de l'utilisateur, veuillez réessayer plus tard."</string>
