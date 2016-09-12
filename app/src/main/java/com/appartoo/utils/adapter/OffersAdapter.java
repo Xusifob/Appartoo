@@ -109,7 +109,6 @@ public class OffersAdapter extends RecyclerView.Adapter {
                     intent.putExtra("offer", offerModel);
                     intent.putExtra("isOwner", true);
                     context.startActivity(intent);
-                    ((Activity) context).overridePendingTransition(R.anim.left_in, R.anim.left_out);;
                 }
             });
         }

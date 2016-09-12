@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.ValidationFragment;
+import com.appartoo.utils.model.OfferModel;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -21,6 +22,7 @@ import com.appartoo.utils.ValidationFragment;
 public class AddOfferPriceFragment extends ValidationFragment {
 
     private EditText price;
+    private String priceStr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class AddOfferPriceFragment extends ValidationFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(priceStr != null) price.setText(priceStr);
 
         price.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         price.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -59,4 +63,9 @@ public class AddOfferPriceFragment extends ValidationFragment {
         return Integer.valueOf(price.getText().toString());
     }
 
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+        this.priceStr = offerModel.getPrice().toString();
+    }
 }

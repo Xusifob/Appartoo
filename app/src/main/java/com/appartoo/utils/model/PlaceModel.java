@@ -18,6 +18,8 @@ public class PlaceModel {
         this.placeId = autocompletePrediction.getPlaceId();
     }
 
+    public PlaceModel() {}
+
     public String getPrimaryText() {
         return primaryText;
     }

@@ -159,7 +159,7 @@ public class UserProfileModifyFragment extends Fragment {
             }
 
             if(imageBitmap != null) {
-                profilePictureFile = ImageManager.transformFile(imageBitmap, getActivity());
+                profilePictureFile = ImageManager.bitmapToFile(imageBitmap, getActivity());
                 userProfilePic.setImageBitmap(ImageManager.transformSquare(imageBitmap));
             }
         }

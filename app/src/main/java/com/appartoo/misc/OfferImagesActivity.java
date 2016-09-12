@@ -5,11 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
-import com.appartoo.utils.adapter.ImageViewPagerAdapter;
+import com.appartoo.utils.adapter.ImageModelViewPagerAdapter;
 import com.appartoo.utils.model.ImageModel;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class OfferImagesActivity extends Activity {
         super.onStart();
 
         //Add the pictures to the view pager
-        viewPager.setAdapter(new ImageViewPagerAdapter(this, pictures));
+        viewPager.setAdapter(new ImageModelViewPagerAdapter(this, pictures));
         viewPager.setCurrentItem(currentItem);
     }
 

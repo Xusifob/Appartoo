@@ -16,7 +16,6 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,9 +23,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.addoffer.AddOfferActivity;
 import com.appartoo.message.MessageActivity;
-import com.appartoo.utils.adapter.ImageViewPagerAdapter;
-import com.appartoo.utils.model.ImageModel;
+import com.appartoo.utils.adapter.ImageModelViewPagerAdapter;
 import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.OfferModelWithDate;
 import com.appartoo.utils.Appartoo;
@@ -41,9 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import me.relex.circleindicator.CircleIndicator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -137,9 +134,9 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                     if (response.isSuccessful()) {
 
                         offer = response.body();
+                        bindData();
                         offerDetailsFragment.bindData(offer);
                         mapFragment.getMapAsync(OfferDetailsActivity.this);
-                        bindData();
                         offerDetailContainer.setVisibility(View.VISIBLE);
                         offerDetailSendMessageButton.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
@@ -211,7 +208,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         });
 
         if(offer.getImages().size() > 0) {
-            ImageViewPagerAdapter imagesAdapter = new ImageViewPagerAdapter(this, offer.getImages());
+            ImageModelViewPagerAdapter imagesAdapter = new ImageModelViewPagerAdapter(this, offer.getImages());
             viewPager.setAdapter(imagesAdapter);
         }
 
@@ -221,16 +218,10 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
-                            .setMessage("Fonctionnalité bientôt disponible.")
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .show();
+                    Intent intent = new Intent(OfferDetailsActivity.this, AddOfferActivity.class);
+                    intent.putExtra("modify", true);
+                    intent.putExtra("offer", offer);
+                    startActivity(intent);
                 }
             });
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
@@ -271,7 +262,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 Intent intent = new Intent(OfferDetailsActivity.this, UserDetailActivity.class);
                 intent.putExtra("user", offer.getOwner());
                 startActivity(intent);
-                overridePendingTransition(R.anim.left_in, R.anim.left_out);
             }
         });
     }
@@ -328,11 +318,5 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
         }
-    }
-
-    @Override
-    public void finish(){
-        super.finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
     }
 }

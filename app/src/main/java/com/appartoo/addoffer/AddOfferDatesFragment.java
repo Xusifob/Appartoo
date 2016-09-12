@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.ValidationFragment;
+import com.appartoo.utils.model.OfferModel;
+import com.appartoo.utils.model.OfferModelWithDate;
+import com.appartoo.utils.model.OfferModelWithDetailledDate;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +35,9 @@ public class AddOfferDatesFragment extends ValidationFragment {
     private EditText availabilityEnd;
     private Calendar calendar;
 
+    private Date startDate;
+    private Date endDate;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_dates, container, false);
@@ -47,6 +53,10 @@ public class AddOfferDatesFragment extends ValidationFragment {
     @Override
     public void onStart(){
         super.onStart();
+
+        if(startDate != null) availabilityStart.setText(dateFormat.format(startDate));
+        if(endDate != null) availabilityEnd.setText(dateFormat.format(endDate));
+
         availabilityStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,5 +118,19 @@ public class AddOfferDatesFragment extends ValidationFragment {
 
     public Date getEndDate() {
         return (Date) availabilityEnd.getTag();
+    }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+        if(offerModel instanceof OfferModelWithDate) {
+            OfferModelWithDate offer = (OfferModelWithDate) offerModel;
+            if (offer.getAvailabilityStarts() != null) startDate = offer.getAvailabilityStarts();
+            if (offer.getAvailabilityEnds() != null) endDate = offer.getAvailabilityEnds();
+        } else if(offerModel instanceof OfferModelWithDetailledDate) {
+            OfferModelWithDetailledDate offer = (OfferModelWithDetailledDate) offerModel;
+            if (offer.getAvailabilityStarts() != null) startDate = offer.getAvailabilityStarts().getDate();
+            if (offer.getAvailabilityEnds() != null) endDate = offer.getAvailabilityEnds().getDate();
+        }
     }
 }

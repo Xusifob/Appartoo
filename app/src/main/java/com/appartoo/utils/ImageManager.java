@@ -54,10 +54,10 @@ public class ImageManager {
         try {
             imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), selectedImage);
             imageBitmap = rotateImageIfRequired(imageBitmap, selectedImage);
-            imageBitmap = ImageManager.transformResize(imageBitmap, 1280);
+            imageBitmap = transformResize(imageBitmap, 1280);
         } catch (IOException e) {
             imageBitmap = null;
-            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_gallery, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -72,9 +72,10 @@ public class ImageManager {
         try {
             imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri );
             imageBitmap = rotateImageIfRequired(imageBitmap, uri);
-            imageBitmap = ImageManager.transformResize(imageBitmap, 1280);
+            imageBitmap = transformResize(imageBitmap, 1280);
         } catch (IOException e) {
             imageBitmap = null;
+            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 
@@ -154,7 +155,7 @@ public class ImageManager {
         return rotatedImg;
     }
 
-    public static File transformFile(Bitmap bitmap, Activity activity){
+    public static File bitmapToFile(Bitmap bitmap, Activity activity){
         File filesDir = activity.getFilesDir();
         File imageFile = new File(filesDir, String.valueOf(bitmap.hashCode()) + ".jpg");
         OutputStream outputStream;
@@ -172,7 +173,7 @@ public class ImageManager {
         return imageFile;
     }
 
-    public static void downloadPictureIntoView(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, String transformation){
+    public static void downloadPictureIntoView(@NonNull final Context context, @NonNull final ImageView imageView, @NonNull String url, final String transformation){
         final String imageUrl = Appartoo.SERVER_URL + RestService.REST_URL + "/upload/" + url;
 
         RequestCreator requestCreator = Picasso.with(context)
@@ -192,10 +193,12 @@ public class ImageManager {
                     public void onError() {
                         Log.v("Picasso","Could not fetch image, trying again.");
                         //Try again online if cache failed
-                        Picasso.with(context)
-                                .load(imageUrl)
-                                .transform(new CropSquareTransformation())
-                                .into(imageView, new com.squareup.picasso.Callback() {
+                        RequestCreator requestCreatorOnline = Picasso.with(context).load(imageUrl);
+
+                        if(transformation == TRANFORM_SQUARE) requestCreatorOnline.transform(new CropSquareTransformation());
+                        else if (transformation == TRANFORM_CIRCLE) requestCreatorOnline.transform(new CircleTransformation());
+
+                        requestCreatorOnline.into(imageView, new com.squareup.picasso.Callback() {
                                     @Override
                                     public void onSuccess() {
 

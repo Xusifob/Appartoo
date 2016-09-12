@@ -5,25 +5,37 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.utils.Appartoo;
+import com.appartoo.utils.RestService;
 import com.appartoo.utils.ValidationFragment;
-import com.appartoo.utils.adapter.ImageListViewAdapter;
 import com.appartoo.utils.ImageManager;
+import com.appartoo.utils.adapter.ImageBitmapViewPagerAdapter;
+import com.appartoo.utils.adapter.ImageModelViewPagerAdapter;
+import com.appartoo.utils.model.ImageModel;
+import com.appartoo.utils.model.OfferModel;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -32,23 +44,29 @@ public class AddOfferPicturesFragment extends ValidationFragment {
 
     private View pictureFromCamera;
     private View pictureFromGallery;
-    private ListView pictureContainer;
-    private ArrayList<ImageView> images;
+    private ArrayList<Bitmap> images;
     private ArrayList<File> files;
-    private ImageListViewAdapter picturesAdapter;
+    private ViewPager imagePager;
+    private CircleIndicator circleIndicator;
+    private ImageBitmapViewPagerAdapter pagerAdapter;
     private Uri cameraUri;
-    private int photoNumber;
+    private ArrayList<ImageModel> imagesModels;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_pictures, container, false);
-        pictureContainer = (ListView) rootView.findViewById(R.id.pictureContainer);
+        imagePager = (ViewPager) rootView.findViewById(R.id.addOfferPicturesPager);
         pictureFromCamera = rootView.findViewById(R.id.pictureFromCamera);
         pictureFromGallery = rootView.findViewById(R.id.pictureFromGallery);
+        circleIndicator = (CircleIndicator) rootView.findViewById(R.id.offerFlatImagesPagerIndicator);
 
         images = new ArrayList<>();
         files = new ArrayList<>();
-        picturesAdapter = new ImageListViewAdapter(getActivity(), images);
+        pagerAdapter = new ImageBitmapViewPagerAdapter(getActivity(), images, files);
+
+        imagePager.setAdapter(pagerAdapter);
+        circleIndicator.setViewPager(imagePager);
+        pagerAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
         return rootView;
     }
@@ -57,29 +75,52 @@ public class AddOfferPicturesFragment extends ValidationFragment {
     public void onStart(){
         super.onStart();
 
-        pictureContainer.setAdapter(picturesAdapter);
-        pictureContainer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final int position = i;
-                android.app.AlertDialog.Builder removePictureDialog = new android.app.AlertDialog.Builder(getActivity());
+        if(imagesModels != null) {
+            for(final ImageModel image : imagesModels) {
+                final ImageView pic = new ImageView(getActivity());
+                pic.setAdjustViewBounds(true);
+                pic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                pic.setTag(image.getContentUrl());
 
-                removePictureDialog.setTitle("Retirer l'image ?");
-                removePictureDialog.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                final String imageUrl = Appartoo.SERVER_URL + RestService.REST_URL + "/upload/" + image.getContentUrl();
+
+                RequestCreator requestCreator = Picasso.with(getActivity().getApplicationContext())
+                        .load(imageUrl)
+                        .networkPolicy(NetworkPolicy.OFFLINE);
+
+                requestCreator.into(pic, new com.squareup.picasso.Callback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        images.remove(position);
-                        files.remove(position);
-                        picturesAdapter.notifyDataSetChanged();
+                    public void onSuccess() {
+                        images.add(0, ((BitmapDrawable) pic.getDrawable()).getBitmap());
+                        files.add(ImageManager.bitmapToFile(((BitmapDrawable)pic.getDrawable()).getBitmap(), getActivity()));
+                        pagerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.v("Picasso","Could not fetch image, trying again.");
+                        //Try again online if cache failed
+                        Picasso.with(getActivity().getApplicationContext())
+                                .load(imageUrl)
+                                .into(pic, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        images.add(0, ((BitmapDrawable) pic.getDrawable()).getBitmap());
+                                        files.add(ImageManager.bitmapToFile(((BitmapDrawable)pic.getDrawable()).getBitmap(), getActivity()));
+                                        pagerAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
                     }
                 });
-
-                removePictureDialog.setNegativeButton("Non", null);
-                removePictureDialog.show();
-
-                return true;
             }
-        });
+
+            imagesModels.clear();
+        }
 
         pictureFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,15 +165,9 @@ public class AddOfferPicturesFragment extends ValidationFragment {
             }
 
             if(imageBitmap != null) {
-                ImageView pic = new ImageView(getActivity());
-                pic.setAdjustViewBounds(true);
-                pic.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                pic.setImageBitmap(imageBitmap);
-                images.add(0, pic);
-
-                files.add(ImageManager.transformFile(imageBitmap, getActivity()));
-
-                picturesAdapter.notifyDataSetChanged();
+                images.add(0, ImageManager.transformSquare(imageBitmap));
+                files.add(ImageManager.bitmapToFile(imageBitmap, getActivity()));
+                pagerAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -140,4 +175,12 @@ public class AddOfferPicturesFragment extends ValidationFragment {
     public ArrayList<File> getFiles(){
         return files;
     }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+        this.imagesModels = offerModel.getImages();
+    }
+
+
 }

@@ -1,19 +1,10 @@
 package com.appartoo.search;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,21 +18,15 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.addoffer.AddOfferActivity;
 import com.appartoo.utils.GeocoderResponse;
 import com.appartoo.utils.GoogleServices;
-import com.appartoo.utils.ImageManager;
-import com.appartoo.utils.RestService;
 import com.appartoo.utils.adapter.PlacesAdapter;
-import com.appartoo.utils.model.AddressComponent;
 import com.appartoo.utils.model.AddressInformationsModel;
 import com.appartoo.utils.model.PlaceModel;
-import com.appartoo.utils.model.UserModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallbacks;
@@ -51,10 +36,8 @@ import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

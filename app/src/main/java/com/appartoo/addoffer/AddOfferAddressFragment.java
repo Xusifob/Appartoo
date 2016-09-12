@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.signup.SignUpActivity;
 import com.appartoo.utils.ValidationFragment;
 import com.appartoo.utils.adapter.PlacesAdapter;
+import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.PlaceModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,6 +46,7 @@ public class AddOfferAddressFragment extends ValidationFragment implements Googl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_address, container, false);
+
         places = new ArrayList<>();
         placesAdapter = new PlacesAdapter(getActivity(), 0, places);
         placesAutocomplete = (AutoCompleteTextView) rootView.findViewById(R.id.addOfferAddress);
@@ -65,8 +66,12 @@ public class AddOfferAddressFragment extends ValidationFragment implements Googl
     public void onStart(){
         super.onStart();
         googleApiClient.connect();
-        placesAutocomplete.setAdapter(placesAdapter);
 
+        if(selectedPlace != null) {
+            placesAutocomplete.setText(selectedPlace.getFullText());
+        }
+
+        placesAutocomplete.setAdapter(placesAdapter);
         placesAutocomplete.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -151,5 +156,15 @@ public class AddOfferAddressFragment extends ValidationFragment implements Googl
 
     public PlaceModel getSelectedPlace() {
         return selectedPlace;
+    }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+
+        this.selectedPlace = new PlaceModel();
+
+        selectedPlace.setPlaceId(offerModel.getAddress().getPlaceId());
+        selectedPlace.setFullText(offerModel.getAddress().getFormattedAddress());
     }
 }

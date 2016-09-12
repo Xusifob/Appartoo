@@ -19,12 +19,12 @@ import uk.co.senab.photoview.PhotoView;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class ImageViewPagerAdapter extends PagerAdapter {
+public class ImageModelViewPagerAdapter extends PagerAdapter {
 
     private Context context;
     private ArrayList<ImageModel> pictures;
 
-    public ImageViewPagerAdapter(Context context, ArrayList<ImageModel> pictures) {
+    public ImageModelViewPagerAdapter(Context context, ArrayList<ImageModel> pictures) {
         this.pictures = pictures;
         this.context = context;
     }

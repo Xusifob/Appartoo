@@ -1,7 +1,6 @@
 package com.appartoo.addoffer;
 
 import android.content.Context;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.ValidationFragment;
+import com.appartoo.utils.model.OfferModel;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -22,6 +22,7 @@ import com.appartoo.utils.ValidationFragment;
 public class AddOfferTitleFragment extends ValidationFragment {
 
     private EditText title;
+    private String titleStr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class AddOfferTitleFragment extends ValidationFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(titleStr != null) title.setText(titleStr);
 
         title.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         title.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -58,5 +61,12 @@ public class AddOfferTitleFragment extends ValidationFragment {
 
     public String getTitle() {
         return title.getText().toString();
+    }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+
+        this.titleStr = offerModel.getName();
     }
 }

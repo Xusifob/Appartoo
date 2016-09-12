@@ -134,12 +134,6 @@ public class UserDetailActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void finish(){
-        super.finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
-    }
-
     private void bindData(UserModel userModel) {
         ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

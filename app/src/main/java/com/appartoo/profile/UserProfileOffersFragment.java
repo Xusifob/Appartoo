@@ -47,7 +47,7 @@ public class UserProfileOffersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (RecyclerView) view.findViewById(R.id.offersList);
-        addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListAddOfferButton);
+        addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListaddOfferButton);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         offersList = new ArrayList<>();

@@ -193,6 +193,7 @@
     <string name="take_a_picture">Caméra</string>
     <string name="choose_from_gallery">Gallerie</string>
     <string name="unable_to_load_camera">"Impossible de charger l'appareil photo"</string>
+    <string name="unable_to_load_gallery">"Impossible de charger la gallerie"</string>
     <string name="add_residents">Ajouter des résidents</string>
     <string name="add_resident">Ajouter un résident</string>
     <string name="add_photos">Ajouter des photos</string>
@@ -210,6 +211,8 @@
         <item name="with_camera">Prendre une photo avec la caméra</item>
         <item name="from_gallery">Choisir une photo depuis la gallerie</item>
     </string-array>
+    <string name="finish_add_offer">"Ajouter l'annonce"</string>
+    <string name="update_offer">"Metter à jour l'annonce"</string>
 
     <!-- IMAGES DESCRIPTIONS -->
     <string name="user_profile_picture">Image de profil</string>

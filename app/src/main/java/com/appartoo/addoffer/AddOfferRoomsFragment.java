@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.appartoo.R;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.ValidationFragment;
+import com.appartoo.utils.model.OfferModel;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -21,7 +22,7 @@ import com.appartoo.utils.ValidationFragment;
 public class AddOfferRoomsFragment extends ValidationFragment {
 
     private EditText rooms;
-
+    private String roomsStr;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_rooms, container, false);
@@ -34,6 +35,8 @@ public class AddOfferRoomsFragment extends ValidationFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(roomsStr != null) rooms.setText(roomsStr);
 
         rooms.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         rooms.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -62,5 +65,11 @@ public class AddOfferRoomsFragment extends ValidationFragment {
 
     public Integer getRooms() {
         return Integer.valueOf(rooms.getText().toString());
+    }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+        this.roomsStr = offerModel.getRooms().toString();
     }
 }

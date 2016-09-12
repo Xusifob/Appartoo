@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.utils.ValidationFragment;
+import com.appartoo.utils.model.OfferModel;
 
 /**
  * Created by alexandre on 16-07-12.
@@ -19,30 +20,30 @@ import com.appartoo.utils.ValidationFragment;
 public class AddOfferDescriptionFragment extends ValidationFragment {
 
     private EditText description;
+    private String descriptionStr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_description, container, false);
 
         description = (EditText) rootView.findViewById(R.id.addOfferDescription);
+
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        description.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        description.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddOfferActivity) ((AddOfferActivity) getActivity()).nextView(textView);
-                return true;
-            }
-        });
+        if(descriptionStr != null) description.setText(descriptionStr);
     }
 
     public String getDescription() {
         return description.getText().toString();
+    }
+
+    @Override
+    public void setData(OfferModel offerModel) {
+        super.setData(offerModel);
+        this.descriptionStr = offerModel.getDescription();
     }
 }

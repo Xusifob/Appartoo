@@ -105,7 +105,6 @@ public class SignUpProfileActivity extends FragmentActivity {
 
     private void updateUserProfile(){
         final CompleteUserModel profileUpdateModel = getProfileUpdateModel();
-        System.out.println(profileUpdateModel);
 
         updateProfile.setEnabled(false);
 

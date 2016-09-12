@@ -52,7 +52,7 @@ public class OffersAndProfilesListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersAndProfiles = (RecyclerView) view.findViewById(R.id.offersList);
-        addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListAddOfferButton);
+        addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListaddOfferButton);
 
         offersAndProfilesList = new ArrayList<>();
         offersAndProfilesAdapter = new OffersAndProfilesAdapter(getActivity(), offersAndProfilesList);

@@ -13,10 +13,6 @@ public class OfferModelWithDate extends OfferModel implements Parcelable {
     private Date availabilityEnds;
     private Date availabilityStarts;
 
-    public OfferModelWithDate() {
-        super();
-    };
-
     protected OfferModelWithDate(Parcel in) {
         super(in);
 

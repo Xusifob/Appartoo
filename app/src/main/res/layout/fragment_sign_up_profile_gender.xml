@@ -47,7 +47,7 @@
                 android:layout_marginEnd="16dp"
                 android:onClick="toggleView"
                 android:id="@+id/signUpConfigureMan"
-                android:tag="Male">
+                android:tag="male">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:background="@drawable/toggle_rounded_bordered_square"
                 android:onClick="toggleView"
                 android:id="@+id/signUpConfigureWoman"
-                android:tag="Female">
+                android:tag="female">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

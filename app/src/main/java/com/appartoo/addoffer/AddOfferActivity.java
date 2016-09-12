@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
@@ -59,12 +58,14 @@ public class AddOfferActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 12;
     private NonSwipeableViewPager pager;
-    private ScreenSlidePagerAdapter pagerAdapter;
+    private addOfferPagerAdapter pagerAdapter;
     private Button addOfferButton;
     private GoogleServices googleGeocodingService;
     private RestService restService;
     private ArrayList<File> files;
     private ProgressDialog progressDialog;
+    private OfferModel offerModel;
+    private String offerId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,8 +73,11 @@ public class AddOfferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_offer);
 
         pager = (NonSwipeableViewPager) findViewById(R.id.addOfferPager);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        addOfferButton = (Button) findViewById(R.id.finishAddOfferButton);
+        pagerAdapter = new addOfferPagerAdapter(getSupportFragmentManager());
+        addOfferButton = (Button) findViewById(R.id.finishaddOfferButton);
+
+        offerModel = getIntent().getParcelableExtra("offer");
+        offerId = getIntent().getStringExtra("id");
 
         pager.setAdapter(pagerAdapter);
 
@@ -82,7 +86,14 @@ public class AddOfferActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
         pager.setOffscreenPageLimit(NUM_PAGES - 1);
+
+        if(offerModel != null) {
+            for (int i = 0; i < pagerAdapter.getCount(); i++) {
+                pagerAdapter.getItem(i).setData(offerModel);
+            }
+        }
 
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -109,35 +120,6 @@ public class AddOfferActivity extends AppCompatActivity {
             finish();
         } else if (pager.getCurrentItem() < NUM_PAGES-1){
             pager.setCurrentItem(pager.getCurrentItem()-1);
-        }
-    }
-
-    public void toggleView(View v) {
-        ImageView animals = (ImageView) v.findViewById(R.id.addOfferImageAnimals);
-        ImageView smoker = (ImageView) v.findViewById(R.id.addOfferImageSmoker);
-
-        if(animals != null) {
-            Boolean acceptAnimals = Boolean.valueOf(animals.getTag().toString());
-            if(acceptAnimals) {
-                animals.setTag("false");
-                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.dont_accept_animals_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.i_dont_accept_animals);
-            } else {
-                animals.setTag("true");
-                animals.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.accept_animals_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextAnimals)).setText(R.string.i_accept_animals);
-            }
-        } else if (smoker != null) {
-            Boolean acceptSmoker = Boolean.valueOf(smoker.getTag().toString());
-            if(acceptSmoker) {
-                smoker.setTag("false");
-                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_not_smoker_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.i_dont_accept_smokers);
-            } else {
-                smoker.setTag("true");
-                smoker.setImageDrawable(ResourcesCompat.getDrawable(v.getResources(), R.drawable.is_smoker_big, null));
-                ((TextView) v.findViewById(R.id.addOfferTextSmoker)).setText(R.string.i_accept_smokers);
-            }
         }
     }
 
@@ -177,7 +159,7 @@ public class AddOfferActivity extends AppCompatActivity {
     /**
      * A simple adapter to associate with the view pager
      */
-    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+    private class addOfferPagerAdapter extends FragmentPagerAdapter {
 
         private ValidationFragment fragments[] = {
                 new AddOfferTitleFragment(), new AddOfferAddressFragment(),
@@ -188,7 +170,7 @@ public class AddOfferActivity extends AppCompatActivity {
                 new AddOfferPicturesFragment(), new AddOfferSuccessFragment()
         };
 
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        public addOfferPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -286,7 +268,8 @@ public class AddOfferActivity extends AppCompatActivity {
                                 offerModel.setStreetAddress(selectedPlace.getPrimaryText());
                                 offerModel.setPlaceId(selectedPlace.getPlaceId());
 
-                                sendOfferToServer(offerModel);
+                                if(offerId == null) sendOfferToServer(offerModel);
+                                else updateOfferModel();
                             } else {
                                 Toast.makeText(getApplicationContext(), R.string.error_predicate_place, Toast.LENGTH_SHORT).show();
                             }
@@ -302,6 +285,10 @@ public class AddOfferActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext().getApplicationContext(), R.string.error_address_unselected, Toast.LENGTH_SHORT).show();
             }
+        }
+
+        private void updateOfferModel(){
+            System.out.println(getOfferModel());
         }
 
         private void sendOfferToServer(OfferToCreateModel offerModel) {

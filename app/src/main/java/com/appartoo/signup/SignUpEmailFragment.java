@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.addoffer.AddOfferActivity;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.ValidationFragment;
 

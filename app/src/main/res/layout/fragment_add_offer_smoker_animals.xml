@@ -63,7 +63,6 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:background="@drawable/toggle_rounded_bordered_square"
-                        android:onClick="toggleView"
                         android:id="@+id/addOfferAllowSmoker">
 
                         <TextView
@@ -81,7 +80,6 @@
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
                             android:layout_above="@+id/addOfferTextSmoker"
-                            android:tag="false"
                             android:id="@+id/addOfferImageSmoker"
                             android:src="@drawable/is_not_smoker_big" />
                     </RelativeLayout>
@@ -97,7 +95,6 @@
                         android:padding="4dp"
                         android:clickable="true"
                         android:background="@drawable/toggle_rounded_bordered_square"
-                        android:onClick="toggleView"
                         android:id="@+id/addOfferAcceptAnimals">
                         <TextView
                             android:layout_width="wrap_content"
@@ -113,7 +110,6 @@
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
                             android:adjustViewBounds="true"
-                            android:tag="false"
                             android:layout_above="@+id/addOfferTextAnimals"
                             android:layout_centerInParent="true"
                             android:id="@+id/addOfferImageAnimals"
