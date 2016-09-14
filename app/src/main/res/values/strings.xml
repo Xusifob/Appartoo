@@ -101,6 +101,8 @@
     <string name="title_activity_login">Connexion</string>
     <string name="title_activity_sign_up">Inscription</string>
 
+    <string name="continue_without_login"><u>Continuer sans connexion</u></string>
+
     <!-- SEARCH STRINGS -->
     <string name="accept_animals">Animaux acceptés</string>
     <string name="doesnt_accept_animals">Animaux non acceptés</string>

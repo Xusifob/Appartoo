@@ -253,6 +253,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
             offerDetailDesactivate.setVisibility(View.VISIBLE);
             if(!offer.getActive()) offerDetailDesactivate.setText(R.string.activate_offer);
+
             offerDetailDesactivate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -285,21 +286,26 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             });
 
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
-            new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
-                    .setMessage(R.string.you_must_log_to_continue)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .show();
+            offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
+                            .setMessage(R.string.you_must_log_to_continue)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            });
         } else {
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override

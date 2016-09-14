@@ -95,6 +95,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startMainActivity(View v) {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    }
+
     private void retrieveUserProfile(){
         //Build a retrofit request
         Retrofit retrofit = new Retrofit.Builder()

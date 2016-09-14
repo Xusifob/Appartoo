@@ -9,12 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.misc.OfferDetailsActivity;
+import com.appartoo.utils.model.ObjectHolderModel;
+import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.ImageManager;
+import com.appartoo.utils.model.UserProfileModel;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 
@@ -25,10 +30,15 @@ public class OffersAdapter extends RecyclerView.Adapter {
 
     private ArrayList<OfferModelWithDetailledDate> offersModels;
     private Context context;
+    private int footerVisibility;
+
+    private static final int OFFER_TYPE = 0;
+    private static final int FOOTER_TYPE = 1;
 
     public OffersAdapter(Context context, ArrayList<OfferModelWithDetailledDate> om) {
         this.context = context;
         this.offersModels = om;
+        this.footerVisibility = View.VISIBLE;
     }
 
     @Override
@@ -38,24 +48,62 @@ public class OffersAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return offersModels.size();
+        return offersModels.size() + 1;
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View offerView = LayoutInflater.from(context).inflate(R.layout.list_item_offers, null);
-        return new ViewHolder(offerView);
+        switch (viewType) {
+            case OFFER_TYPE:
+                View offerView = LayoutInflater.from(context).inflate(R.layout.list_item_offers, null);
+                return new ViewHolder(offerView);
+            case FOOTER_TYPE:
+                View progressBar = LayoutInflater.from(context).inflate(R.layout.progress_bar, parent, false);
+                return new FooterProgressBarViewHolder(progressBar);
+            default:
+                return null;
+        }
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if(position == offersModels.size()) {
+            return FOOTER_TYPE;
+        } else {
+            return OFFER_TYPE;
+        }
+    }
+
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder) holder).bindData(offersModels.get(position), context);
+        if(position < offersModels.size()) {
+            ((ViewHolder) holder).bindData(offersModels.get(position), context);
+        } else {
+            ((FooterProgressBarViewHolder) holder).progressBar.setVisibility(footerVisibility);
+        }
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void setFooterVisibility(int visibility) {
+        if(visibility == View.VISIBLE || visibility == View.INVISIBLE || visibility == View.GONE) {
+            footerVisibility = visibility;
+            notifyDataSetChanged();
+        }
+    }
+
+    static class FooterProgressBarViewHolder extends RecyclerView.ViewHolder {
+        ProgressBar progressBar;
+
+        public FooterProgressBarViewHolder(View itemView) {
+            super(itemView);
+            this.progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

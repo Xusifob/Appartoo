@@ -161,21 +161,26 @@ public class UserDetailActivity extends AppCompatActivity {
             sendMessageButton.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
             sendMessageButton.setVisibility(View.VISIBLE);
-            new AlertDialog.Builder(UserDetailActivity.this)
-                    .setMessage("Vous devez être inscrit pour pouvoir envoyer un message.")
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .show();
+            sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlertDialog.Builder(UserDetailActivity.this)
+                            .setMessage("Vous devez être inscrit pour pouvoir envoyer un message.")
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            });
         } else {
             sendMessageButton.setVisibility(View.VISIBLE);
             sendMessageButton.setOnClickListener(new View.OnClickListener() {

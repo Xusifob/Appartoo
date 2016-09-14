@@ -68,13 +68,24 @@
         <TextView
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:padding="12dp"
+            android:layout_marginTop="4dp"
+            android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:onClick="signUp"
             android:text="@string/signup" />
+        <TextView
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:onClick="startMainActivity"
+            android:text="@string/continue_without_login" />
     </LinearLayout>
 
     <LinearLayout

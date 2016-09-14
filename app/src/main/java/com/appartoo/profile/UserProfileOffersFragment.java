@@ -38,8 +38,9 @@ public class UserProfileOffersFragment extends Fragment {
     private RecyclerView offersListView;
     private ArrayList<OfferModelWithDetailledDate> offersList;
     private OffersAdapter offersAdapter;
-    private ProgressBar progressBar;
     private FloatingActionButton addOfferButton;
+    private Integer position;
+    private Integer offset;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +49,6 @@ public class UserProfileOffersFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (RecyclerView) view.findViewById(R.id.offersList);
         addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListaddOfferButton);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         offersList = new ArrayList<>();
         offersAdapter = new OffersAdapter(getActivity(), offersList);
@@ -67,12 +67,25 @@ public class UserProfileOffersFragment extends Fragment {
 
     @Override
     public void onStart() {
-        progressBar.setIndeterminate(true);
         offersListView.setAdapter(offersAdapter);
 
         getOffers();
 
         super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        position = ((LinearLayoutManager) offersListView.getLayoutManager()).findLastVisibleItemPosition();
+        offset = offersListView.findViewHolderForAdapterPosition(position).itemView.getTop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(offset != null && position != null)
+            ((LinearLayoutManager) offersListView.getLayoutManager()).scrollToPositionWithOffset(position, offset);
     }
 
 
@@ -117,7 +130,7 @@ public class UserProfileOffersFragment extends Fragment {
         callback.enqueue(new Callback<ArrayList<OfferModelWithDetailledDate>>(){
             @Override
             public void onResponse(Call<ArrayList<OfferModelWithDetailledDate>> call, Response<ArrayList<OfferModelWithDetailledDate>> response) {
-                progressBar.setVisibility(View.GONE);
+                offersAdapter.setFooterVisibility(View.GONE);
 
                 if(response.isSuccessful()) {
                     offersList.clear();
@@ -141,7 +154,7 @@ public class UserProfileOffersFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<OfferModelWithDetailledDate>> call, Throwable t) {
 
-                progressBar.setVisibility(View.GONE);
+                offersAdapter.setFooterVisibility(View.GONE);
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);

@@ -23,8 +23,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private final int ID_MENU_SEARCH = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        if(query == null) {
+        if(query == null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             getSupportActionBar().setTitle(Appartoo.APP_NAME);
             navigationDrawerView.setDrawerLayout(drawerLayout);
 
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-        } else {
+        } else if(query != null){
             getSupportActionBar().setTitle(R.string.drawer_search);
             toolbar.setNavigationIcon(R.drawable.left_arrow);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appartoo.R;
@@ -32,14 +33,17 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
     private ArrayList<ObjectHolderModel> offersAndProfilesModels;
     private Context context;
     private Gson gson;
+    private int footerVisibility;
 
     private static final int OFFER_TYPE = 0;
     private static final int PROFILE_TYPE = 1;
+    private static final int FOOTER_TYPE = 2;
 
     public OffersAndProfilesAdapter(Context context, ArrayList<ObjectHolderModel> om) {
         this.context = context;
         this.offersAndProfilesModels = om;
         this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS").create();
+        this.footerVisibility = View.VISIBLE;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return offersAndProfilesModels.size();
+        return offersAndProfilesModels.size() + 1;
     }
 
     @Override
@@ -61,6 +65,9 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
             case PROFILE_TYPE:
                 View profileView = LayoutInflater.from(context).inflate(R.layout.list_item_profiles, null);
                 return new ProfileViewHolder(profileView);
+            case FOOTER_TYPE:
+                View progressBar = LayoutInflater.from(context).inflate(R.layout.progress_bar, parent, false);
+                return new FooterProgressBarViewHolder(progressBar);
             default:
                 return null;
         }
@@ -69,19 +76,26 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final int itemType = getItemViewType(position);
-        final ObjectHolderModel object = offersAndProfilesModels.get(position);
-        final LinkedTreeMap<?,?> treeMap = (LinkedTreeMap) object.getSource();
 
-        if (itemType == OFFER_TYPE) {
-            ((OfferViewHolder)holder).bindData(gson.fromJson(gson.toJson(treeMap), OfferModel.class), context, object.getId().toString());
-        } else if (itemType == PROFILE_TYPE) {
-            ((ProfileViewHolder)holder).bindData(gson.fromJson(gson.toJson(treeMap), UserProfileModel.class), context, object.getId().toString());
+        if(position < offersAndProfilesModels.size()) {
+            final ObjectHolderModel object = offersAndProfilesModels.get(position);
+            final LinkedTreeMap<?, ?> treeMap = (LinkedTreeMap) object.getSource();
+
+            if (itemType == OFFER_TYPE) {
+                ((OfferViewHolder) holder).bindData(gson.fromJson(gson.toJson(treeMap), OfferModel.class), context, object.getId().toString());
+            } else if (itemType == PROFILE_TYPE) {
+                ((ProfileViewHolder) holder).bindData(gson.fromJson(gson.toJson(treeMap), UserProfileModel.class), context, object.getId().toString());
+            }
+        } else {
+            ((FooterProgressBarViewHolder) holder).progressBar.setVisibility(footerVisibility);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(offersAndProfilesModels.get(position).getType().equals("offer")) {
+        if(position == offersAndProfilesModels.size()) {
+            return FOOTER_TYPE;
+        } else if(offersAndProfilesModels.get(position).getType().equals("offer")) {
             return OFFER_TYPE;
         } else {
             return PROFILE_TYPE;
@@ -91,6 +105,22 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void setFooterVisibility(int visibility) {
+        if(visibility == View.VISIBLE || visibility == View.INVISIBLE || visibility == View.GONE) {
+            footerVisibility = visibility;
+            notifyDataSetChanged();
+        }
+    }
+
+    static class FooterProgressBarViewHolder extends RecyclerView.ViewHolder {
+        ProgressBar progressBar;
+
+        public FooterProgressBarViewHolder(View itemView) {
+            super(itemView);
+            this.progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+        }
     }
 
     static class ProfileViewHolder extends RecyclerView.ViewHolder {

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
@@ -41,10 +40,15 @@ public class OffersAndProfilesListFragment extends Fragment {
     private ArrayList<ObjectHolderModel> offersAndProfilesList;
     private OffersAndProfilesAdapter offersAndProfilesAdapter;
     private FloatingActionButton addOfferButton;
-    private ProgressBar progressBar;
     private HashMap<String, Object> query;
     private int nextPage;
     private int pageNumber;
+    private Integer offset;
+    private Integer position;
+    private boolean isLoading;
+    private LinearLayoutManager linearLayoutManager;
+
+    public static int LIMIT = 20;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,18 +60,35 @@ public class OffersAndProfilesListFragment extends Fragment {
 
         offersAndProfilesList = new ArrayList<>();
         offersAndProfilesAdapter = new OffersAndProfilesAdapter(getActivity(), offersAndProfilesList);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         offersAndProfiles.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         offersAndProfiles.setLayoutManager(linearLayoutManager);
+        isLoading = false;
 
         query = (HashMap<String, Object>) getActivity().getIntent().getSerializableExtra("query");
+        if(query == null) {
+            query = new HashMap<>();
+            query.put("limit", LIMIT);
+        }
 
         if (container != null) {
             container.removeAllViews();
         }
+
+        offersAndProfiles.clearOnScrollListeners();
+        offersAndProfiles.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                Integer currentPosition = linearLayoutManager.findLastVisibleItemPosition();
+
+                if(offersAndProfilesAdapter.getItemCount() - currentPosition < 2 && nextPage > 0 && !isLoading) {
+                    isLoading = true;
+                    getOffersAndProfiles(nextPage);
+                }
+            }
+        });
 
         pageNumber = 0;
 
@@ -77,12 +98,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     @Override
     public void onStart() {
 
-        if(query == null) {
-            query = new HashMap<>();
-            query.put("start", 0);
-        }
-
-        progressBar.setIndeterminate(true);
+        if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) addOfferButton.setVisibility(View.GONE);
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,12 +107,27 @@ public class OffersAndProfilesListFragment extends Fragment {
         });
 
         offersAndProfiles.setAdapter(offersAndProfilesAdapter);
-
-        if(offersAndProfilesAdapter.getItemCount() == 0) {
+        if(offersAndProfilesAdapter.getItemCount() == 1) {
             getOffersAndProfiles(pageNumber);
         }
 
         super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        position = ((LinearLayoutManager) offersAndProfiles.getLayoutManager()).findLastVisibleItemPosition();
+        if(offersAndProfiles.findViewHolderForAdapterPosition(position) != null) {
+            offset = offersAndProfiles.findViewHolderForAdapterPosition(position).itemView.getTop();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(offset != null && position != null)
+            ((LinearLayoutManager) offersAndProfiles.getLayoutManager()).scrollToPositionWithOffset(position, offset);
     }
 
     public void refreshOffers() {
@@ -113,6 +144,7 @@ public class OffersAndProfilesListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                offersAndProfilesAdapter.setFooterVisibility(View.VISIBLE);
                 refreshOffers();
             }
         });
@@ -127,18 +159,20 @@ public class OffersAndProfilesListFragment extends Fragment {
 
         RestService restService = retrofit.create(RestService.class);
 
+        query.put("start", page*LIMIT);
+
         String token;
         if(Appartoo.TOKEN != null) token = "Bearer " + Appartoo.TOKEN;
         else token = "";
 
         System.out.println(query);
-
         Call<ObjectHolderModelReceiver> callback = restService.getOffersOrProfiles(token, query);
-
 
         callback.enqueue(new Callback<ObjectHolderModelReceiver>(){
             @Override
             public void onResponse(Call<ObjectHolderModelReceiver> call, Response<ObjectHolderModelReceiver> response) {
+
+                isLoading = false;
 
                 if(response.isSuccessful()) {
 
@@ -151,12 +185,14 @@ public class OffersAndProfilesListFragment extends Fragment {
 
                     nextPage = page + 1;
 
-                    if(nextPage * 20 >= response.body().getTotal()) {
-                        progressBar.setVisibility(View.GONE);
+                    if(nextPage * LIMIT >= response.body().getTotal()) {
                         nextPage = -1;
+                        offersAndProfilesAdapter.setFooterVisibility(View.GONE);
                     }
                 } else {
-                    progressBar.setVisibility(View.GONE);
+
+                    nextPage = -1;
+
                     try {
                         Log.v("OffersAndProfilesListFr", "getOffersAndProfiles: " + String.valueOf(response.code()));
                         Log.v("OffersAndProfilesListFr", "getOffersAndProfiles: " + response.errorBody().string());
@@ -173,6 +209,8 @@ public class OffersAndProfilesListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ObjectHolderModelReceiver> call, Throwable t) {
+
+                nextPage = -1;
 
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);

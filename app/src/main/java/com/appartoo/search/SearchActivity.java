@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.misc.MainActivity;
+import com.appartoo.misc.OffersAndProfilesListFragment;
+import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.view.NavigationDrawerView;
 import com.appartoo.utils.view.NonSwipeableViewPager;
 
@@ -30,14 +32,10 @@ public class SearchActivity extends AppCompatActivity {
     private NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
-    private int colorBlue;
-    private int colorWhite;
     private Integer currentPage;
     private SearchViewPagerAdapter adapter;
-    private HashMap<String, Object> offerQuery;
-    private HashMap<String, Object> profileQuery;
-    private HashMap<View, View> toggleViews;
-
+    private int colorBlue;
+    private int colorWhite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class SearchActivity extends AppCompatActivity {
         navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
         tabLayout = (TabLayout) findViewById(R.id.searchTabs);
         viewPager = (NonSwipeableViewPager) findViewById(R.id.searchViewPager);
-        toggleViews = new HashMap<>();
 
         colorBlue = ContextCompat.getColor(SearchActivity.this, R.color.colorBlue);
         colorWhite = ContextCompat.getColor(SearchActivity.this, R.color.colorWhite);
@@ -68,30 +65,39 @@ public class SearchActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.drawer_search);
-        navigationDrawerView.setDrawerLayout(drawerLayout);
 
-        toolbar.setNavigationIcon(R.drawable.ic_drawer);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                } else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
+        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            navigationDrawerView.setDrawerLayout(drawerLayout);
+
+            toolbar.setNavigationIcon(R.drawable.ic_drawer);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    } else {
+                        drawerLayout.openDrawer(Gravity.LEFT);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            toolbar.setNavigationIcon(R.drawable.left_arrow);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
     public void launchSearch(View v) {
 
-        System.out.println("Launching research");
-
         SearchOffersFragment offersFragment = (SearchOffersFragment) adapter.getItem(0);
         SearchProfilesFragment profilesFragment = (SearchProfilesFragment) adapter.getItem(1);
 
-        offerQuery = offersFragment.getOfferQuery();
-        profileQuery = profilesFragment.getProfileQuery();
+        HashMap<String, Object> offerQuery = offersFragment.getOfferQuery();
+        HashMap<String, Object> profileQuery = profilesFragment.getProfileQuery();
         HashMap<String, Object> query = new HashMap<>();
 
         if(offerQuery != null) query.putAll(offerQuery);
@@ -103,6 +109,8 @@ public class SearchActivity extends AppCompatActivity {
 
         if(query != null) {
             Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+            query.put("start", 0);
+            query.put("limit", OffersAndProfilesListFragment.LIMIT);
             intent.putExtra("query", query);
             startActivity(intent);
         }
