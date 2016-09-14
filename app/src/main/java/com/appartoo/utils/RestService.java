@@ -6,7 +6,9 @@ import com.appartoo.utils.model.ObjectHolderModelReceiver;
 import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.OfferModelWithDate;
 import com.appartoo.utils.model.OfferModelWithDetailledDate;
+import com.appartoo.utils.model.OfferToCreateModel;
 import com.appartoo.utils.model.UserModel;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,6 +17,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -56,6 +59,10 @@ public interface RestService {
     @POST
     Call<ResponseBody> acceptCandidateToOffer(@Url String url, @Header("Authorization") String bearerToken, @Field("profile_id") String ownerProfileId, @Field("conversationId") String conversationId);
 
+    @FormUrlEncoded
+    @POST
+    Call<ResponseBody> addAddressToServer(@Url String url, @Header("Authorization") String bearerToken, @FieldMap Map<String, String> addressModel);
+
     @Multipart
     @POST
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
@@ -66,11 +73,8 @@ public interface RestService {
     @GET(REST_URL + "/me")
     Call<CompleteUserModel> getLoggedUserProfile(@Header("Authorization") String bearerToken);
 
-    @GET(REST_URL + "/search/offer")
-    Call<ResponseBody> searchOffer();
-
-    @GET
-    Call<ArrayList<OfferModelWithDetailledDate>> getUserOffers(@Url String url);
+    @GET(REST_URL + "/profiles/offers/my")
+    Call<ArrayList<OfferModelWithDetailledDate>> getLoggedUserOffers(@Header("Authorization") String bearerToken);
 
     @GET
     Call<UserModel> getUserInformationsById(@Url String profileId);
@@ -80,6 +84,12 @@ public interface RestService {
 
     @PUT
     Call<CompleteUserModel> updateUserProfile(@Url String url, @Header("Authorization") String bearerToken, @Body CompleteUserModel updateModel);
+
+    @PUT
+    Call<OfferModelWithDate> updateOffer(@Url String url, @Header("Authorization") String bearerToken, @Body OfferModelWithDate offerToUpdate);
+
+    @DELETE
+    Call<ResponseBody> deleteImage(@Url String url, @Header("Authorization") String bearerToken);
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", hasBody = true)

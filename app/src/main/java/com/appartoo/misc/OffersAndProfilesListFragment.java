@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.addoffer.AddOfferActivity;
+import com.appartoo.addoffer.AddModifyOfferActivity;
 import com.appartoo.utils.adapter.OffersAndProfilesAdapter;
 import com.appartoo.utils.model.ObjectHolderModel;
 import com.appartoo.utils.model.ObjectHolderModelReceiver;
@@ -49,7 +49,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_offers_and_profiles_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersAndProfiles = (RecyclerView) view.findViewById(R.id.offersList);
         addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListaddOfferButton);
@@ -86,7 +86,7 @@ public class OffersAndProfilesListFragment extends Fragment {
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity().getApplicationContext(), AddOfferActivity.class));
+                startActivity(new Intent(getActivity().getApplicationContext(), AddModifyOfferActivity.class));
             }
         });
 

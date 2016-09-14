@@ -11,7 +11,7 @@ public class OfferModelWithDetailledDate extends OfferModel implements Parcelabl
     private DetailledDateModel availabilityEnds;
     private DetailledDateModel availabilityStarts;
 
-    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
+    public OfferModelWithDetailledDate(OfferModel offerModel) {};
 
     protected OfferModelWithDetailledDate(Parcel in) {
         super(in);
@@ -57,5 +57,16 @@ public class OfferModelWithDetailledDate extends OfferModel implements Parcelabl
 
     public void setAvailabilityStarts(DetailledDateModel availabilityStarts) {
         this.availabilityStarts = availabilityStarts;
+    }
+
+    public OfferModelWithDate toOfferModelWithDate() {
+        OfferModelWithDate offer = new OfferModelWithDate();
+
+        offer.setOfferModel(this.getOfferModel());
+
+        if(availabilityEnds != null) offer.setAvailabilityEnds(this.availabilityEnds.getDate());
+        if(availabilityStarts != null) offer.setAvailabilityStarts(this.availabilityStarts.getDate());
+
+        return offer;
     }
 }

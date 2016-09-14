@@ -17,7 +17,7 @@ import com.appartoo.utils.model.OfferModel;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferKeywordFragment extends ValidationFragment {
+public class AddModifyOfferKeywordFragment extends ValidationFragment {
 
     private EditText keyword;
     private String keywordStr;

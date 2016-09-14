@@ -19,7 +19,7 @@ import com.appartoo.utils.model.OfferModel;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferRoomsFragment extends ValidationFragment {
+public class AddModifyOfferRoomsFragment extends ValidationFragment {
 
     private EditText rooms;
     private String roomsStr;
@@ -42,7 +42,7 @@ public class AddOfferRoomsFragment extends ValidationFragment {
         rooms.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddOfferActivity) ((AddOfferActivity) getActivity()).nextView(textView);
+                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddModifyOfferActivity) ((AddModifyOfferActivity) getActivity()).nextView(textView);
                 return true;
             }
         });

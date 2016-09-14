@@ -28,7 +28,7 @@ import java.util.Locale;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferDatesFragment extends ValidationFragment {
+public class AddModifyOfferDatesFragment extends ValidationFragment {
 
     private SimpleDateFormat dateFormat;
     private EditText availabilityStart;
@@ -74,7 +74,7 @@ public class AddOfferDatesFragment extends ValidationFragment {
         availabilityEnd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddOfferActivity) ((AddOfferActivity) getActivity()).nextView(textView);
+                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddModifyOfferActivity) ((AddModifyOfferActivity) getActivity()).nextView(textView);
                 return true;
             }
         });

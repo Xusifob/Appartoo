@@ -35,7 +35,7 @@ import java.util.Iterator;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferAddressFragment extends ValidationFragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class AddModifyOfferAddressFragment extends ValidationFragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private AutoCompleteTextView placesAutocomplete;
     private PlacesAdapter placesAdapter;
@@ -117,7 +117,7 @@ public class AddOfferAddressFragment extends ValidationFragment implements Googl
         placesAutocomplete.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddOfferActivity) ((AddOfferActivity) getActivity()).nextView(textView);
+                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddModifyOfferActivity) ((AddModifyOfferActivity) getActivity()).nextView(textView);
                 return true;
             }
         });
@@ -162,9 +162,11 @@ public class AddOfferAddressFragment extends ValidationFragment implements Googl
     public void setData(OfferModel offerModel) {
         super.setData(offerModel);
 
-        this.selectedPlace = new PlaceModel();
-
-        selectedPlace.setPlaceId(offerModel.getAddress().getPlaceId());
-        selectedPlace.setFullText(offerModel.getAddress().getFormattedAddress());
+        if(offerModel.getAddress() != null) {
+            this.selectedPlace = new PlaceModel();
+            selectedPlace.setPlaceId(offerModel.getAddress().getPlaceId());
+            selectedPlace.setPrimaryText(offerModel.getAddress().getStreetAddress());
+            selectedPlace.setFullText(offerModel.getAddress().getFormattedAddress());
+        }
     }
 }

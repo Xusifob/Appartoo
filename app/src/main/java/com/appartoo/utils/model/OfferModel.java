@@ -20,6 +20,9 @@ public class OfferModel implements Parcelable {
     private Boolean isActive;
     private Boolean isSmoker;
     private Boolean acceptAnimal;
+
+    @SerializedName("id")
+    private Integer idNumber;
     private Integer price;
     private Integer rooms;
     private UserModel owner;
@@ -43,6 +46,7 @@ public class OfferModel implements Parcelable {
         isActive = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         isSmoker = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
         acceptAnimal = (Boolean) in.readValue(BOOLEAN_CLASS_LOADER);
+        idNumber = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         price = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         rooms = (Integer) in.readValue(INTEGER_CLASS_LOADER);
         owner = in.readParcelable(USERMODEL_CLASS_LOADER);
@@ -60,6 +64,7 @@ public class OfferModel implements Parcelable {
         dest.writeValue(isActive);
         dest.writeValue(isSmoker);
         dest.writeValue(acceptAnimal);
+        dest.writeValue(idNumber);
         dest.writeValue(price);
         dest.writeValue(rooms);
         dest.writeParcelable(owner, flags);
@@ -189,10 +194,40 @@ public class OfferModel implements Parcelable {
         this.owner = owner;
     }
 
+    public Integer getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(Integer idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public OfferModel getOfferModel() {
+        return this;
+    }
+
+    public void setOfferModel(OfferModel offerModel) {
+        this.id = offerModel.getId();
+        this.description = offerModel.getDescription();
+        this.name = offerModel.getName();
+        this.keyword = offerModel.getKeyword();
+        this.isActive = offerModel.getActive();
+        this.isSmoker = offerModel.getSmoker();
+        this.acceptAnimal = offerModel.getAcceptAnimal();
+        this.idNumber = offerModel.getIdNumber();
+        this.price = offerModel.getPrice();
+        this.rooms = offerModel.getRooms();
+        this.owner = offerModel.getOwner();
+        this.address = offerModel.getAddress();
+        this.images = offerModel.getImages();
+        this.resident = offerModel.getResident();
+    }
+
     @Override
     public String toString() {
         return "OfferModel{" +
                 "id='" + id + '\'' +
+                ", idNumber=" + idNumber +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +

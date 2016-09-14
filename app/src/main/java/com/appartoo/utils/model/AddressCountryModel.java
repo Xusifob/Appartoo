@@ -14,6 +14,8 @@ public class AddressCountryModel implements Parcelable {
     String id;
     String name;
 
+    public AddressCountryModel() {}
+
     protected AddressCountryModel(Parcel in) {
         id = in.readString();
         name = in.readString();

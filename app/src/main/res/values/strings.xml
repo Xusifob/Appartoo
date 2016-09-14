@@ -47,6 +47,11 @@
     <string name="profiles">Profils</string>
     <string name="offers">Annonces</string>
     <string name="place">Lieu</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="activated">Activée</string>
+    <string name="desactivated">Désactivée</string>
+
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -172,6 +177,15 @@
         <item name="shareflat">Colocation</item>
     </string-array>
 
+    <!-- OFFER DETAILS STRINGS -->
+    <string name="desactivate_offer">"Désactiver l'annonce"</string>
+    <string name="modify_offer">"Modifier l'annonce"</string>
+    <string name="activate_offer">"Activer l'annonce"</string>
+    <string name="confirm_desactivate">"Êtes-vous sûr de vouloir désactiver l'annonce ?"</string>
+    <string name="confirm_activate">"Êtes-vous sûr de vouloir activer l'annonce ?"</string>
+    <string name="offer_is_now_activated">"L'offre est maintenant active."</string>
+    <string name="offer_is_now_desactivated">"L'offre est maintenant desactivée."</string>
+
     <!-- SEARCH OFFER STRINGS -->
     <string name="more_options">"Plus d'options"</string>
     <string name="search">Rechercher</string>
@@ -196,23 +210,34 @@
     <string name="unable_to_load_gallery">"Impossible de charger la gallerie"</string>
     <string name="add_residents">Ajouter des résidents</string>
     <string name="add_resident">Ajouter un résident</string>
+    <string name="add_resident_modify">Modifiez la liste des résidents</string>
     <string name="add_photos">Ajouter des photos</string>
+    <string name="add_photos_modify">Modifiez les photos</string>
     <string name="add_offer_title">"Ajoutez un titre à l'annonce"</string>
+    <string name="add_offer_title_modify">"Modifiez le titre de l'annonce"</string>
     <string name="add_offer_type">"Définissez le type d'annonce"</string>
     <string name="add_offer_address">"Définissez l'addresse du logement"</string>
     <string name="add_offer_dates">Définissez les dates de disponibilité du logement</string>
     <string name="add_offer_price">Définissez le prix (par mois) du loyer</string>
     <string name="add_offer_rooms">Définissez le nombre de chambres disponibles</string>
     <string name="add_offer_phone">Ajoutez un numéro de téléphone</string>
+    <string name="add_offer_phone_modify">Modifiez votre numéro de téléphone</string>
     <string name="add_offer_description">Ajoutez une description</string>
+    <string name="add_offer_description_modify">Modifiez la description</string>
     <string name="add_offer_specs">Définissez les spécificités de votre logement ?</string>
     <string name="end_of_add_offer">Votre annonce a été mise en ligne avec succès !</string>
+    <string name="end_of_modify_offer">Votre annonce a été mise à jour avec succès !</string>
     <string-array name="picture_actions">
         <item name="with_camera">Prendre une photo avec la caméra</item>
         <item name="from_gallery">Choisir une photo depuis la gallerie</item>
     </string-array>
     <string name="finish_add_offer">"Ajouter l'annonce"</string>
-    <string name="update_offer">"Metter à jour l'annonce"</string>
+    <string name="update_offer">"Mettre à jour l'annonce"</string>
+    <string name="updating_offer">"Mise à jour des informations de l'annonce"</string>
+    <string name="updating_address">"Mise à jour de l'adresse"</string>
+    <string name="updating_user_phone">"Mise à jour de votre numéro de téléphone"</string>
+    <string name="end_of_modify_offer_button">"Retourner sur l'annonce"</string>
+    <string name="add_offer_pictures_button">"Modifier l'annonce"</string>
 
     <!-- IMAGES DESCRIPTIONS -->
     <string name="user_profile_picture">Image de profil</string>
@@ -252,6 +277,7 @@
     <string name="error_missing_info_add_offer">"Veuillez entrer toutes les informations pour mettre l'annonce en ligne."</string>
     <string name="error_dates_add_offer">"Veuillez entrer des dates valides."</string>
     <string name="error_address_unselected">"Veuillez sélectionner une adresse."</string>
+    <string name="error_missing_description">"Veuillez entrer une description pour l'annonce."</string>
     <string name="error_identify_address">"Impossible d'identifier votre adresse, veuillez réessayer plus tard."</string>
     <string name="connection_error">"Erreur de connexion au serveur, veuillez réessayer plus tard."</string>
     <string name="no_offer_found">"Vous n'avez mis aucune annonce en ligne."</string>
@@ -260,17 +286,23 @@
     <string name="success_add_offer">"Votre annonce a été mise en ligne avec succès !"</string>
     <string name="success_update_user_profile">"Votre profil a été enregistré avec succès !"</string>
     <string name="please_enter_valid_email">"Veuillez entrer une adresse email valide."</string>
-    <string name="please_enter_valid_givenname">"Veuillez entrer votre prénom"</string>
-    <string name="please_enter_valid_familyname">"Veuillez enter votre nom de famille"</string>
-    <string name="please_enter_passwords">"Veuillez entrer un mot de passe"</string>
+    <string name="please_enter_valid_givenname">"Veuillez entrer votre prénom."</string>
+    <string name="please_enter_valid_familyname">"Veuillez enter votre nom de famille."</string>
+    <string name="please_enter_passwords">"Veuillez entrer un mot de passe."</string>
     <string name="error_password_length">"Votre mot de passe doit avoir une longueur de 8 charactères minimum."</string>
-    <string name="error_missing_rooms">"Veuillez entrer le nombre de chambres disponibles"</string>
-    <string name="error_max_rooms">"Le nombre maximum de chambres est de 10"</string>
-    <string name="error_missing_title">"Veuillez entrer le titre de l'annonce"</string>
-    <string name="error_missing_keyword">"Veuillez entrer le type de l'annonce"</string>
-    <string name="error_missing_place">"Veuillez entrer l'adresse de l'annonce"</string>
-    <string name="error_missing_start_date">"Veuillez entrer la date où commence l'annonce"</string>
-    <string name="error_missing_price">"Veuillez entrer le prix par mois de l'annonce"</string>
-    <string name="error_missing_phone">"Veuillez entrer votre numéro de téléphone"</string>
-    <string name="error_correct_phone">"Veuillez entrer un numéro de téléphone valide"</string>
+    <string name="error_missing_rooms">"Veuillez entrer le nombre de chambres disponibles."</string>
+    <string name="error_max_rooms">"Le nombre maximum de chambres est de 10."</string>
+    <string name="error_missing_title">"Veuillez entrer le titre de l'annonce."</string>
+    <string name="error_missing_keyword">"Veuillez entrer le type de l'annonce."</string>
+    <string name="error_missing_place">"Veuillez entrer l'adresse de l'annonce."</string>
+    <string name="error_missing_start_date">"Veuillez entrer la date où commence l'annonce."</string>
+    <string name="error_missing_price">"Veuillez entrer le prix par mois de l'annonce."</string>
+    <string name="error_missing_phone">"Veuillez entrer votre numéro de téléphone."</string>
+    <string name="error_correct_phone">"Veuillez entrer un numéro de téléphone valide."</string>
+    <string name="you_must_log_to_continue">"Vous devez être connecté pour pouvoir utiliser cette fonctionnalité."</string>
+    <string name="error_conversation_creation">"Erreur lors de la création de la conversation. Veuillez réessayer plus tard."</string>
+    <string name="error_updating_offer">"Erreur lors de la mise à jour des informations de l'annonce. Veuillez réessayer plus tard."</string>
+    <string name="error_deleting_photos">"Erreur lors de la supression des photos. Veuillez réessayer plus tard."</string>
+    <string name="error_updating_address">"Erreur lors de la mise à jour de l'adresse. Veuillez réessayer plus tard."</string>
+    <string name="error_updating_phone">"Erreur lors de la mise à jour du numéro de téléphone. Veuillez réessayer plus tard."</string>
 </resources>

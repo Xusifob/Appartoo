@@ -111,9 +111,31 @@
         app:backgroundTint="@color/colorWhite"
         app:layout_anchor="@id/offerDetailsAppBar"
         app:layout_anchorGravity="bottom|right|end"/>
-    <Button
-        style="@style/ButtonSalmon"
-        android:text="@string/apply_to_offer"
-        android:id="@+id/offerDetailSendMessage"
-        android:layout_gravity="bottom"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorSalmon"
+            android:layout_weight="1"
+            android:text="@string/apply_to_offer"
+            android:id="@+id/offerDetailSendMessage" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/rounded_square_green"
+            android:layout_weight="1"
+            android:text="@string/desactivate_offer"
+            android:id="@+id/offerDetailDesactivate"
+            android:visibility="gone"
+            android:layout_gravity="bottom"/>
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -22,6 +22,7 @@
             android:paddingLeft="30dp"
             android:paddingBottom="10dp"
             android:textColor="@color/colorSalmon"
+            android:id="@+id/endOfAddModifyOffer"
             android:text="@string/end_of_add_offer"
             android:layout_centerInParent="true"/>
 
@@ -31,6 +32,7 @@
             android:text="@string/go_to_offer_list"
             android:layout_alignParentBottom="true"
             android:onClick="nextView"
+            android:id="@+id/endOfAddModifyOfferButton"
             android:background="@drawable/square_salmon" />
     </RelativeLayout>
 </ScrollView>

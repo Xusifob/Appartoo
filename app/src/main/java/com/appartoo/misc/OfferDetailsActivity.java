@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.addoffer.AddOfferActivity;
+import com.appartoo.addoffer.AddModifyOfferActivity;
 import com.appartoo.message.MessageActivity;
 import com.appartoo.utils.adapter.ImageModelViewPagerAdapter;
 import com.appartoo.utils.model.OfferModel;
@@ -61,6 +61,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private ImageButton offerDetailOwnerPicture;
     private ViewPager viewPager;
     private Button offerDetailSendMessageButton;
+    private Button offerDetailDesactivate;
     private ProgressDialog progressDialog;
     private OfferModel offer;
     private RestService restService;
@@ -68,6 +69,9 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private View offerDetailContainer;
     private ProgressBar progressBar;
     private boolean isOwner;
+
+    public static final int REQUEST_MODIFY = 10;
+    public static final int IS_UPDATED = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         viewPager = (ViewPager) findViewById(R.id.offerFlatImagesPager);
         offerDetailOwnerPicture = (ImageButton) findViewById(R.id.offerDetailOwnerPicture);
         offerDetailSendMessageButton = (Button) findViewById(R.id.offerDetailSendMessage);
+        offerDetailDesactivate = (Button) findViewById(R.id.offerDetailDesactivate);
         offerId = getIntent().getStringExtra("offerId");
         offer = getIntent().getParcelableExtra("offer");
         isOwner = getIntent().getBooleanExtra("isOwner", false);
@@ -101,6 +106,16 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_MODIFY && resultCode == IS_UPDATED) {
+            offerId = offer.getIdNumber().toString();
+            progressDialog = ProgressDialog.show(this, "Mise à jour des informations de l'annonce", "Veuillez patienter...", true);
+            getOfferDetails();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         View view = this.getCurrentFocus();
@@ -114,52 +129,15 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     public void onStart(){
         super.onStart();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        restService = retrofit.create(RestService.class);
+
         if(offer == null) {
-            offerDetailContainer.setVisibility(View.GONE);
-            offerDetailSendMessageButton.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Appartoo.SERVER_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            restService = retrofit.create(RestService.class);
-
-            Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + offerId);
-
-            callback.enqueue(new Callback<OfferModelWithDate>() {
-                @Override
-                public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {
-                    if (response.isSuccessful()) {
-
-                        offer = response.body();
-                        bindData();
-                        offerDetailsFragment.bindData(offer);
-                        mapFragment.getMapAsync(OfferDetailsActivity.this);
-                        offerDetailContainer.setVisibility(View.VISIBLE);
-                        offerDetailSendMessageButton.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        try {
-                            Log.v("OfferDetailsActivity", "onStart: " + String.valueOf(response.code()));
-                            Log.v("OfferDetailsActivity", "onStart: " + response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
-                    Log.v("OfferDetailsActivity", "onStart: " + t.getMessage());
-                }
-            });
+            getOfferDetails();
         } else {
             offerDetailsFragment.bindData(offer);
             mapFragment.getMapAsync(OfferDetailsActivity.this);
@@ -182,6 +160,55 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onTouch() {
                 scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+    }
+
+    private void getOfferDetails() {
+        offerDetailContainer.setVisibility(View.GONE);
+        offerDetailSendMessageButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        System.out.println(offerId);
+
+        Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + offerId);
+
+        callback.enqueue(new Callback<OfferModelWithDate>() {
+            @Override
+            public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {
+
+                if(progressDialog != null) progressDialog.dismiss();
+
+                if (response.isSuccessful()) {
+
+                    offer = response.body();
+                    bindData();
+                    offerDetailsFragment.bindData(offer);
+                    mapFragment.getMapAsync(OfferDetailsActivity.this);
+                    offerDetailContainer.setVisibility(View.VISIBLE);
+                    offerDetailSendMessageButton.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    try {
+                        Log.v("OfferDetailsActivity", "getOfferDetails: " + String.valueOf(response.code()));
+                        Log.v("OfferDetailsActivity", "getOfferDetails: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
+                if(progressDialog != null) progressDialog.dismiss();
+
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
+                Log.v("OfferDetailsActivity", "getOfferDetails: " + t.getMessage());
             }
         });
     }
@@ -214,19 +241,52 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
 
         if((Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(offer.getOwner().getId())) || isOwner) {
 
-            offerDetailSendMessageButton.setText("Modifier votre annonce");
+            offerDetailSendMessageButton.setText(R.string.modify_offer);
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(OfferDetailsActivity.this, AddOfferActivity.class);
-                    intent.putExtra("modify", true);
+                    Intent intent = new Intent(OfferDetailsActivity.this, AddModifyOfferActivity.class);
                     intent.putExtra("offer", offer);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_MODIFY);
                 }
             });
+
+            offerDetailDesactivate.setVisibility(View.VISIBLE);
+            if(!offer.getActive()) offerDetailDesactivate.setText(R.string.activate_offer);
+            offerDetailDesactivate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                    if(offer.getActive()) {
+                        dialog.setMessage(getString(R.string.confirm_desactivate)).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                activateOffer(false);
+                            }
+                        });
+                    } else {
+                        dialog.setMessage(getString(R.string.confirm_activate)).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                activateOffer(true);
+                            }
+                        });
+                    }
+
+                    dialog.show();
+                }
+            });
+
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
             new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
-                    .setMessage("Vous devez être inscrit et connecté pour pouvoir postuler à une annonce.")
+                    .setMessage(R.string.you_must_log_to_continue)
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -269,12 +329,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private void applyToOffer(){
         progressDialog = ProgressDialog.show(this, "Création de la conversation", "Veuillez patienter...", true);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RestService restService = retrofit.create(RestService.class);
-
         Call<ConversationIdReceiver> callback = restService.sendMessageToUser("Bearer " + Appartoo.TOKEN, offer.getOwner().getIdNumber().toString());
         callback.enqueue(new Callback<ConversationIdReceiver>() {
             @Override
@@ -287,7 +341,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                     intent.putExtra("conversationName", offer.getOwner().getGivenName() + " (" + offer.getName() + ")");
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Erreur lors de la création de la conversation. Veuillez réessayer plus tard.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.error_conversation_creation, Toast.LENGTH_SHORT).show();
                     try {
                         Log.v("OfferDetailsActivity", "applyToOffer: " + String.valueOf(response.code()));
                         Log.v("OfferDetailsActivity", "applyToOffer: " + response.errorBody().string());
@@ -318,5 +372,46 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             googleMap.animateCamera(CameraUpdateFactory.zoomIn());
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
         }
+    }
+
+    private void activateOffer(final boolean activate) {
+
+        OfferModelWithDate offerToUpdate = new OfferModelWithDate();
+        offerToUpdate.setActive(activate);
+
+        Call<OfferModelWithDate> callback = restService.updateOffer(RestService.REST_URL + "/offers/" + String.valueOf(offer.getIdNumber()), "Bearer " + Appartoo.TOKEN, offerToUpdate);
+
+        callback.enqueue(new Callback<OfferModelWithDate>() {
+            @Override
+            public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {
+                if(response.isSuccessful()) {
+                    offer.setActive(activate);
+
+                    if(activate) {
+                        Toast.makeText(OfferDetailsActivity.this, R.string.offer_is_now_activated, Toast.LENGTH_SHORT).show();
+                        offerDetailDesactivate.setText(R.string.desactivate_offer);
+                    } else {
+                        Toast.makeText(OfferDetailsActivity.this, R.string.offer_is_now_desactivated, Toast.LENGTH_SHORT).show();
+                        offerDetailDesactivate.setText(R.string.activate_offer);
+                    }
+                } else {
+                    Toast.makeText(OfferDetailsActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+                    try {
+                        Log.v("OfferDetailsActivity", "activateOffer");
+                        Log.v("OfferDetailsActivity", String.valueOf(response.code()));
+                        Log.v("OfferDetailsActivity", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
+                Toast.makeText(OfferDetailsActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+                Log.v("OfferDetailsActivity", String.valueOf("activateOffer"));
+                Log.v("OfferDetailsActivity", String.valueOf(t.getMessage()));
+            }
+        });
     }
 }

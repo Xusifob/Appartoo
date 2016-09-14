@@ -15,7 +15,7 @@ import com.appartoo.utils.model.OfferModel;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferSmokerAnimalsFragment extends ValidationFragment {
+public class AddModifyOfferSmokerAnimalsFragment extends ValidationFragment {
 
     private View acceptAnimals;
     private View allowSmoker;
@@ -53,7 +53,7 @@ public class AddOfferSmokerAnimalsFragment extends ValidationFragment {
             }
         });
 
-        if(getActivity() instanceof AddOfferActivity) {
+        if(getActivity() instanceof AddModifyOfferActivity) {
             if (acceptAnimalsBool != null && acceptAnimalsBool)
                 toggleAnimal();
 

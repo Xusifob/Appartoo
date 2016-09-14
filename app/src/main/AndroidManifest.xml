@@ -89,7 +89,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             />
         <activity
-            android:name=".addoffer.AddOfferActivity"
+            android:name=".addoffer.AddModifyOfferActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"

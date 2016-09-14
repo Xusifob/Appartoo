@@ -19,16 +19,16 @@ import com.appartoo.utils.model.OfferModel;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferTitleFragment extends ValidationFragment {
+public class AddModifyOfferPriceFragment extends ValidationFragment {
 
-    private EditText title;
-    private String titleStr;
+    private EditText price;
+    private String priceStr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_title, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_offer_price, container, false);
 
-        title = (EditText) rootView.findViewById(R.id.addOfferTitle);
+        price = (EditText) rootView.findViewById(R.id.addOfferPrice);
 
         return rootView;
     }
@@ -37,13 +37,13 @@ public class AddOfferTitleFragment extends ValidationFragment {
     public void onStart() {
         super.onStart();
 
-        if(titleStr != null) title.setText(titleStr);
+        if(priceStr != null) price.setText(priceStr);
 
-        title.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        title.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        price.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        price.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddOfferActivity) ((AddOfferActivity) getActivity()).nextView(textView);
+                if(i == EditorInfo.IME_ACTION_NEXT && getActivity() instanceof AddModifyOfferActivity) ((AddModifyOfferActivity) getActivity()).nextView(textView);
                 return true;
             }
         });
@@ -51,22 +51,21 @@ public class AddOfferTitleFragment extends ValidationFragment {
 
     @Override
     public boolean validateFragment(Context context) {
-        if(!TextValidator.haveText(title.getText().toString())) {
-            Toast.makeText(context, R.string.error_missing_title, Toast.LENGTH_SHORT).show();
+        if(!TextValidator.haveText(price.getText().toString())) {
+            Toast.makeText(context, R.string.error_missing_price, Toast.LENGTH_SHORT).show();
             return false;
         }
 
         return true;
     }
 
-    public String getTitle() {
-        return title.getText().toString();
+    public Integer getPrice() {
+        return Integer.valueOf(price.getText().toString());
     }
 
     @Override
     public void setData(OfferModel offerModel) {
         super.setData(offerModel);
-
-        this.titleStr = offerModel.getName();
+        this.priceStr = offerModel.getPrice().toString();
     }
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.utils.ValidationFragment;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by alexandre on 16-07-12.
  */
-public class AddOfferResidentsFragment extends ValidationFragment {
+public class AddModifyOfferResidentsFragment extends ValidationFragment {
 
     //TODO add residents to offer;
 
@@ -26,6 +27,8 @@ public class AddOfferResidentsFragment extends ValidationFragment {
     private AddResidentAdapter residentsAdapter;
     private ListView residentsListView;
     private ImageView addresidentButton;
+    private TextView fragmentTitle;
+    private Integer textReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class AddOfferResidentsFragment extends ValidationFragment {
         residentModels = new ArrayList<>();
         residentsListView = (ListView) rootView.findViewById(R.id.addOfferResidentList);
         addresidentButton = (ImageView) rootView.findViewById(R.id.addResidentButton);
+        fragmentTitle = (TextView) rootView.findViewById(R.id.addOfferResidentTitle);
         residentsAdapter = new AddResidentAdapter(getActivity(), residentModels);
         return rootView;
     }
@@ -41,6 +45,8 @@ public class AddOfferResidentsFragment extends ValidationFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if(textReference != null) fragmentTitle.setText(textReference);
 
         residentsListView.setAdapter(residentsAdapter);
         /*addresidentButton.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +65,8 @@ public class AddOfferResidentsFragment extends ValidationFragment {
                         newresident.setFamilyName(((EditText) dialogLayout.findViewById(R.id.residentRecordLastName)).getText().toString());
                         newresident.setEmail(((EditText) dialogLayout.findViewById(R.id.residentRecordMail)).getText().toString());
                         residentModels.add(newresident);
-                        if(getActivity() instanceof AddOfferActivity){
-                            ((AddOfferActivity) getActivity()).setResidents(residentModels);
+                        if(getActivity() instanceof AddModifyOfferActivity){
+                            ((AddModifyOfferActivity) getActivity()).setResidents(residentModels);
                         }
                         residentsAdapter.notifyDataSetChanged();
                     }
@@ -69,5 +75,11 @@ public class AddOfferResidentsFragment extends ValidationFragment {
                 addGarantorDialog.show();
             }
         });*/
+    }
+
+    @Override
+    public void modifyViews() {
+        super.modifyViews();
+        textReference = R.string.add_resident_modify;
     }
 }

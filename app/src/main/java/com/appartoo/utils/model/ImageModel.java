@@ -14,11 +14,16 @@ public class ImageModel implements Parcelable {
     private String id;
     private String caption;
     private String contentUrl;
+    @SerializedName("id")
+    private String idNumber;
+
+    private static final ClassLoader INTEGER_CLASS_LOADER = Integer.class.getClassLoader();
 
     protected ImageModel(Parcel in) {
         id = in.readString();
         caption = in.readString();
         contentUrl = in.readString();
+        idNumber = in.readString();
     }
 
     @Override
@@ -26,6 +31,7 @@ public class ImageModel implements Parcelable {
         dest.writeString(id);
         dest.writeString(caption);
         dest.writeString(contentUrl);
+        dest.writeString(idNumber);
     }
 
     @Override
@@ -67,6 +73,14 @@ public class ImageModel implements Parcelable {
 
     public void setContentUrl(String contentUrl) {
         this.contentUrl = contentUrl;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 
     @Override

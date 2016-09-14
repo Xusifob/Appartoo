@@ -64,6 +64,7 @@ public class OffersAdapter extends RecyclerView.Adapter {
         TextView keyword;
         TextView rooms;
         TextView price;
+        TextView offerActivated;
         ImageView ownerImageThumbnail;
         ImageView flatImage;
         View itemView;
@@ -76,6 +77,7 @@ public class OffersAdapter extends RecyclerView.Adapter {
             this.rooms = (TextView) itemView.findViewById(R.id.offerRooms);
             this.keyword = (TextView) itemView.findViewById(R.id.offerKeyword);
             this.price = (TextView) itemView.findViewById(R.id.offerPrice);
+            this.offerActivated = (TextView) itemView.findViewById(R.id.offerActivated);
             this.flatImage = (ImageView) itemView.findViewById(R.id.offerFlatImage);
             this.ownerImageThumbnail = (ImageView) itemView.findViewById(R.id.offerOwnerImage);
         }
@@ -95,6 +97,16 @@ public class OffersAdapter extends RecyclerView.Adapter {
                 ImageManager.downloadPictureIntoView(context, ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
             else
                 ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.default_profile_picture, null));
+
+            offerActivated.setVisibility(View.VISIBLE);
+            if(offerModel.getActive()) {
+                offerActivated.setText(R.string.activated);
+                offerActivated.setBackgroundColor(ResourcesCompat.getColor(this.itemView.getResources(), R.color.colorAlphaGreen, null));
+            }
+            else {
+                offerActivated.setText(R.string.desactivated);
+                offerActivated.setBackgroundColor(ResourcesCompat.getColor(this.itemView.getResources(), R.color.colorAlphaSalmon, null));
+            }
 
             try {
                 city.setText(String.valueOf(offerModel.getAddress().getCity()));

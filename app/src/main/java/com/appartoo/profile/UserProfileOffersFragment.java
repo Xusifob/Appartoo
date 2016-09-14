@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.addoffer.AddOfferActivity;
+import com.appartoo.addoffer.AddModifyOfferActivity;
 import com.appartoo.utils.adapter.OffersAdapter;
 import com.appartoo.utils.model.OfferModelWithDetailledDate;
 import com.appartoo.utils.Appartoo;
@@ -44,7 +44,7 @@ public class UserProfileOffersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_offers_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_offers_and_profiles_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshOffers);
         offersListView = (RecyclerView) view.findViewById(R.id.offersList);
         addOfferButton = (FloatingActionButton) view.findViewById(R.id.offerListaddOfferButton);
@@ -83,7 +83,7 @@ public class UserProfileOffersFragment extends Fragment {
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity().getApplicationContext(), AddOfferActivity.class));
+                startActivity(new Intent(getActivity().getApplicationContext(), AddModifyOfferActivity.class));
             }
         });
 
@@ -112,7 +112,7 @@ public class UserProfileOffersFragment extends Fragment {
                 .build();
 
         RestService restService = retrofit.create(RestService.class);
-        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getUserOffers(Appartoo.LOGGED_USER_PROFILE.getId() + "/offers");
+        Call<ArrayList<OfferModelWithDetailledDate>> callback = restService.getLoggedUserOffers("Bearer " + Appartoo.TOKEN);
 
         callback.enqueue(new Callback<ArrayList<OfferModelWithDetailledDate>>(){
             @Override

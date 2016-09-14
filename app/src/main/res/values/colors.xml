@@ -17,7 +17,9 @@
     <color name="colorSubLightGray">#E8E8E8</color>
     <color name="colorBlack">#000000</color>
     <color name="colorLightAlpha">#2c000000</color>
-    <color name="colorAlpha">#80000000</color>
+    <color name="colorAlpha">#A0000000</color>
+    <color name="colorAlphaGreen">#A04DBA9D</color>
+    <color name="colorAlphaSalmon">#A0EF785A</color>
     <color name="colorAlphaDark">#B7000000</color>
     <color name="colorTransparent">#00000000</color>
     <color name="black_overlay">#66000000</color>
