@@ -134,7 +134,7 @@ public class UserDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void bindData(UserModel userModel) {
+    private void bindData(final UserModel userModel) {
         ImageManager.downloadPictureIntoView(getApplicationContext(), userProfilePic, userModel.getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
 
@@ -164,21 +164,10 @@ public class UserDetailActivity extends AppCompatActivity {
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new AlertDialog.Builder(UserDetailActivity.this)
-                            .setMessage("Vous devez être inscrit pour pouvoir envoyer un message.")
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .show();
+                        Intent intent = new Intent(UserDetailActivity.this, MessageActivity.class);
+                        intent.putExtra("userId", userModel.getIdNumber().toString());
+                        intent.putExtra("conversationName", userModel.getGivenName());
+                        startActivity(intent);
                 }
             });
         } else {

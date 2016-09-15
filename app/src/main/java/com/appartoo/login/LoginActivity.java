@@ -59,8 +59,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    super.run();
-                    sleep(2000);
+                    if (getIntent().getBooleanExtra("logout", false) || getIntent().getStringExtra("userId") == null) {
+                        super.run();
+                        sleep(2000);
+                    }
                 } catch (Exception e) {
 
                 } finally {
@@ -68,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                         NavigationDrawerView.setHeaderInformations(sharedPreferences.getString(Appartoo.KEY_GIVEN_NAME, "") + " " + sharedPreferences.getString(Appartoo.KEY_FAMILY_NAME, ""), sharedPreferences.getString(Appartoo.KEY_EMAIL, ""));
                         retrieveUserProfile();
                     } else {
-
                         fragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                 .replace(R.id.logInFragments, logInFragment)

@@ -1,5 +1,6 @@
 package com.appartoo.login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.message.MessageActivity;
 import com.appartoo.misc.MainActivity;
+import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
@@ -103,12 +106,12 @@ public class LogInFragment extends Fragment {
 
                 //If the login is successful
                 if (response.isSuccessful()) {
+
                     //Retrieve the user token
                     Appartoo.TOKEN = response.body().getToken();
 
                     //Stock the token in shared preferences
                     sharedPreferences.edit().putString(Appartoo.KEY_TOKEN, Appartoo.TOKEN).apply();
-
                     if (Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
                         retrieveUserProfile();
                     }
@@ -171,9 +174,17 @@ public class LogInFragment extends Fragment {
                     
                     NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
                     Appartoo.initiateFirebase();
+
+                    if(getActivity().getIntent().getStringExtra("userId") != null) {
+                        applyToOffer();
+                    } else {
+                        getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
+                    }
+                } else {
+                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                    getActivity().finish();
                 }
-                getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish();
             }
 
             @Override
@@ -181,6 +192,41 @@ public class LogInFragment extends Fragment {
                 t.printStackTrace();
                 getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                 getActivity().finish();
+            }
+
+        });
+    }
+
+    private void applyToOffer(){
+        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "Création de la conversation", "Veuillez patienter...", true);
+
+        Call<ConversationIdReceiver> callback = restService.sendMessageToUser("Bearer " + Appartoo.TOKEN, getActivity().getIntent().getStringExtra("userId"));
+        callback.enqueue(new Callback<ConversationIdReceiver>() {
+            @Override
+            public void onResponse(Call<ConversationIdReceiver> call, Response<ConversationIdReceiver> response) {
+                logInButton.setEnabled(true);
+                progressDialog.dismiss();
+                if(response.isSuccessful()){
+                    Intent intent = new Intent();
+                    intent.putExtra("conversationId", response.body().getIdConversation());
+                    getActivity().setResult(MessageActivity.IS_LOGGED, intent);
+                    getActivity().finish();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.error_conversation_creation, Toast.LENGTH_SHORT).show();
+                    try {
+                        Log.v("LoginActivity", "applyToOffer: " + String.valueOf(response.code()));
+                        Log.v("LoginActivity", "applyToOffer: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
+                logInButton.setEnabled(true);
+                progressDialog.dismiss();
+                Log.v("LoginActivity", "applyToOffer: " + t.getMessage());
             }
         });
     }

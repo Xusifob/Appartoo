@@ -289,29 +289,18 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new AlertDialog.Builder(new ContextThemeWrapper(OfferDetailsActivity.this, R.style.AppThemeDialog))
-                            .setMessage(R.string.you_must_log_to_continue)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .show();
+                    Intent intent = new Intent(OfferDetailsActivity.this, MessageActivity.class);
+                    intent.putExtra("userId", offer.getOwner().getIdNumber().toString());
+                    intent.putExtra("conversationName", offer.getOwner().getGivenName() + " (" + offer.getName() + ")");
+                    startActivity(intent);
                 }
             });
         } else {
             offerDetailSendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    offerDetailSendMessageButton.setEnabled(false);
-                    applyToOffer();
+                        offerDetailSendMessageButton.setEnabled(false);
+                        applyToOffer();
                 }
             });
         }

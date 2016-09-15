@@ -114,7 +114,7 @@ public class MessagesListFragment extends Fragment{
                     Collections.sort(conversationModels, new Comparator<ConversationModel>() {
                         @Override
                         public int compare(ConversationModel conversationModel, ConversationModel t1) {
-                            if(t1 != null && conversationModel != null)
+                            if(t1 != null && conversationModel != null && t1.getLastMessageTime() != null && conversationModel.getLastMessageTime() != null)
                                 return t1.getLastMessageTime().compareTo(conversationModel.getLastMessageTime());
                             else
                                 return 0;

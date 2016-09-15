@@ -77,7 +77,6 @@ public class OffersAndProfilesListFragment extends Fragment {
             container.removeAllViews();
         }
 
-        offersAndProfiles.clearOnScrollListeners();
         offersAndProfiles.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -135,6 +134,12 @@ public class OffersAndProfilesListFragment extends Fragment {
         pageNumber = 0;
         getOffersAndProfiles(pageNumber);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        offersAndProfiles.clearOnScrollListeners();
     }
 
     @Override

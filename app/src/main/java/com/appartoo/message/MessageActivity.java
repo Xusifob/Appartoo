@@ -1,5 +1,6 @@
 package com.appartoo.message;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
 import com.appartoo.utils.model.ConversationModel;
@@ -41,6 +43,9 @@ public class MessageActivity extends AppCompatActivity {
     private ProgressDialog loading;
     private AlertDialog.Builder preExecutionDialog;
     private AlertDialog.Builder postExecutionDialog;
+
+    public static final int REQUEST_LOGIN_FOR_CONVERSATION = 20;
+    public static final int IS_LOGGED = 21;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,13 @@ public class MessageActivity extends AppCompatActivity {
 
     public void setToolbarTitle(String title) {
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(toolbar.getWindowToken(), 0);
     }
 
     @Override

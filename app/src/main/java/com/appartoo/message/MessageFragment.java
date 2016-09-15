@@ -1,5 +1,6 @@
 package com.appartoo.message;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appartoo.R;
+import com.appartoo.login.LoginActivity;
 import com.appartoo.utils.adapter.MessageAdapter;
 import com.appartoo.utils.model.ConversationModel;
 import com.appartoo.utils.model.MessageModel;
@@ -54,6 +56,8 @@ public class MessageFragment extends Fragment{
     private TextWatcher textWatcher;
     private boolean isTyping;
     private TextView typingTextView;
+    private String userId;
+    private String message;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,17 +73,41 @@ public class MessageFragment extends Fragment{
 
         conversationId = getActivity().getIntent().getStringExtra("conversationId");
         conversationName = getActivity().getIntent().getStringExtra("conversationName");
-        conversationReference = Appartoo.databaseReference.getRoot().child("conversations/" + conversationId);
-        isTyping = false;
+        userId = getActivity().getIntent().getStringExtra("userId");
 
-        messages = new ArrayList<>();
-        messageAdapter = new MessageAdapter(getActivity().getApplicationContext(), messages, Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString());
+        if(conversationId != null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            initiateConversation();
+        }
 
         if (container != null) {
             container.removeAllViews();
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION && resultCode == MessageActivity.IS_LOGGED) {
+            conversationId = data.getStringExtra("conversationId");
+            initiateConversation();
+        }
+    }
+
+    private void initiateConversation() {
+        setValueEventListener();
+        setChildEventListener();
+        setTextWatcher();
+        conversationReference = Appartoo.databaseReference.getRoot().child("conversations/" + conversationId);
+        conversationReference.child("/messages").addChildEventListener(childEventListener);
+        conversationReference.addValueEventListener(valueEventListener);
+        messageEdit.addTextChangedListener(textWatcher);
+
+        isTyping = false;
+
+        messages = new ArrayList<>();
+        messageAdapter = new MessageAdapter(getActivity().getApplicationContext(), messages, Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString());
     }
 
     @Override
@@ -100,35 +128,44 @@ public class MessageFragment extends Fragment{
         messageList.addFooterView(messageFooter);
         messageList.setAdapter(messageAdapter);
 
-        setValueEventListener();
-        setChildEventListener();
-        setTextWatcher();
-        conversationReference.child("/messages").addChildEventListener(childEventListener);
-        conversationReference.addValueEventListener(valueEventListener);
-        messageEdit.addTextChangedListener(textWatcher);
+        if(message != null) messageEdit.setText(message);
 
-        sendMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if(conversationId != null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            sendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                Long time = Calendar.getInstance().getTimeInMillis();
-                ConversationModel conversation = getConversationModel(time);
-                MessageModel messageModel = getMessageModel(time);
+                    Long time = Calendar.getInstance().getTimeInMillis();
+                    ConversationModel conversation = getConversationModel(time);
+                    MessageModel messageModel = getMessageModel(time);
 
-                if (conversation != null && messageModel != null) {
-                    Map<String, Object> updates = new HashMap<>();
+                    if (conversation != null && messageModel != null) {
+                        Map<String, Object> updates = new HashMap<>();
 
-                    updates.put("/hasAnswered", conversation.getHasAnswered());
-                    updates.put("/isRead", conversation.getIsRead());
-                    updates.put("/lastMessageTime", conversation.getLastMessageTime());
+                        updates.put("/hasAnswered", conversation.getHasAnswered());
+                        updates.put("/isRead", conversation.getIsRead());
+                        updates.put("/lastMessageTime", conversation.getLastMessageTime());
 
-                    conversationReference.updateChildren(updates);
-                    conversationReference.child("/messages").push().setValue(messageModel);
+                        conversationReference.updateChildren(updates);
+                        conversationReference.child("/messages").push().setValue(messageModel);
 
-                    messageEdit.setText("");
+                        messageEdit.setText("");
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            sendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!messageEdit.getText().toString().equals("") && userId != null) {
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.putExtra("conversationName", conversationName);
+                        intent.putExtra("userId", userId);
+                        startActivityForResult(intent, MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION);
+                    }
+                }
+            });
+        }
     }
 
     private void setValueEventListener() {

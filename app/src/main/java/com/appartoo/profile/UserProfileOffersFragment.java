@@ -78,7 +78,7 @@ public class UserProfileOffersFragment extends Fragment {
     public void onPause() {
         super.onPause();
         position = ((LinearLayoutManager) offersListView.getLayoutManager()).findLastVisibleItemPosition();
-        offset = offersListView.findViewHolderForAdapterPosition(position).itemView.getTop();
+        if(offersListView.findViewHolderForAdapterPosition(position) != null) offset = offersListView.findViewHolderForAdapterPosition(position).itemView.getTop();
     }
 
     @Override

@@ -157,6 +157,7 @@ public class NavigationDrawerView extends NavigationView {
 
                         ((Activity) context).finish();
                         Intent intent = new Intent(context, LoginActivity.class);
+                        intent.putExtra("logout", true);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
