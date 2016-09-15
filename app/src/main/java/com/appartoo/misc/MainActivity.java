@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
+import com.appartoo.login.LoginActivity;
 import com.appartoo.search.SearchActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.view.NavigationDrawerView;
@@ -23,11 +24,16 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int ID_MENU_SEARCH = 1;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
     private HashMap<String, Object> query;
+
+    private static final int ID_MENU_SEARCH = 1;
+    private static final int ID_MENU_CONNECT = 2;
+
+    public static final int SIMPLE_LOGIN = 30;
+    public static final int HAS_LOGGED_IN = 31;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         View view = this.getCurrentFocus();
+
+        navigationDrawerView.updateHeader();
+
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -90,8 +99,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) menu.add(Menu.NONE, ID_MENU_CONNECT, Menu.NONE, "Connect").setIcon(R.drawable.connection_small).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         if(query == null) menu.add(Menu.NONE, ID_MENU_SEARCH, Menu.NONE, "Search").setIcon(R.drawable.search_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SIMPLE_LOGIN && resultCode == HAS_LOGGED_IN) {
+            System.out.println("RESULT");
+            ((OffersAndProfilesListFragment) getSupportFragmentManager().findFragmentByTag("offersAndProfiles")).refreshOffers();
+        }
     }
 
     @Override
@@ -101,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
             case ID_MENU_SEARCH:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 return true;
+            case ID_MENU_CONNECT:
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.putExtra("connection", true);
+                startActivityForResult(intent, SIMPLE_LOGIN);
             default:
                 return super.onOptionsItemSelected(item);
         }

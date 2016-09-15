@@ -41,6 +41,7 @@
                     android:id="@+id/offerDetailsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:tag="offersAndProfiles"
                     tools:layout="@layout/fragment_offers_and_profiles_list" />
             </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>

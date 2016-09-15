@@ -9,4 +9,4 @@
     android:background="@color/colorWhite"
     android:gravity="center"
     android:id="@+id/addOfferPager"
-    tools:context=".addOffer.addOfferActivity" />
+    tools:context=".addoffer.AddModifyOfferActivity" />

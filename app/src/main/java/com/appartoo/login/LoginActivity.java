@@ -12,8 +12,10 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
+import com.appartoo.message.MessageActivity;
 import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.signup.SignUpActivity;
@@ -59,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    if (getIntent().getBooleanExtra("logout", false) || getIntent().getStringExtra("userId") == null) {
+                    if (!getIntent().getBooleanExtra("logout", false) && getIntent().getStringExtra("userId") == null && !getIntent().getBooleanExtra("connection", false)) {
                         super.run();
                         sleep(2000);
                     }
@@ -91,13 +93,39 @@ public class LoginActivity extends AppCompatActivity {
      * Launch the signup activity
      * @param v - the button to launch the activity
      */
-    public void signUp(View v){
-        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-        startActivity(intent);
+    public void signUp(View v) {
+        if (getIntent().getStringExtra("userId") != null) {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            intent.putExtra("userId", getIntent().getStringExtra("userId"));
+            startActivityForResult(intent, MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION);
+        } else if(getIntent().getBooleanExtra("connection", false)) {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            intent.putExtra("connection", getIntent().getBooleanExtra("connection", false));
+            startActivityForResult(intent, MainActivity.SIMPLE_LOGIN);
+        } else {
+            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION && resultCode == MessageActivity.IS_LOGGED) {
+            Intent intent = new Intent();
+            intent.putExtra("conversationId", data.getStringExtra("conversationId"));
+            setResult(MessageActivity.IS_LOGGED, intent);
+            finish();
+        }
+
+        if(requestCode == MainActivity.SIMPLE_LOGIN && resultCode == MainActivity.HAS_LOGGED_IN) {
+            setResult(MainActivity.HAS_LOGGED_IN);
+            finish();
+        }
     }
 
     public void startMainActivity(View v) {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     private void retrieveUserProfile(){
@@ -135,7 +163,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                if(getIntent().getBooleanExtra("connection", false)) {
+                    setResult(MainActivity.HAS_LOGGED_IN);
+                } else {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
                 finish();
             }
 
@@ -143,7 +176,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
 
                 Log.v("LoginActivity", "retrieveUserProfile: " + t.getMessage());
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if(getIntent().getBooleanExtra("connection", false)) {
+                    setResult(MainActivity.HAS_LOGGED_IN);
+                } else {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
                 finish();
             }
         });

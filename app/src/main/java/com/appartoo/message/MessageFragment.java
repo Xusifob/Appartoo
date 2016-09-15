@@ -365,9 +365,11 @@ public class MessageFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        conversationReference.removeEventListener(childEventListener);
-        conversationReference.removeEventListener(valueEventListener);
-        messageEdit.removeTextChangedListener(textWatcher);
+        if(conversationReference != null) {
+            conversationReference.removeEventListener(childEventListener);
+            conversationReference.removeEventListener(valueEventListener);
+            messageEdit.removeTextChangedListener(textWatcher);
+        }
     }
 
     private class DataChangedTask extends AsyncTask<DataSnapshot, Void, ConversationModel> {

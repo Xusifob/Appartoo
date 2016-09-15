@@ -48,7 +48,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     private boolean isLoading;
     private LinearLayoutManager linearLayoutManager;
 
-    public static int LIMIT = 20;
+    public static int LIMIT = 30;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

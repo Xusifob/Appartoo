@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -142,6 +143,13 @@ public class LogInFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(passwordEdit.getWindowToken(), 0);
+    }
+
     /**
      * Check if the login form is valid
      * @return true if the form is correctly filled, false if not
@@ -178,11 +186,19 @@ public class LogInFragment extends Fragment {
                     if(getActivity().getIntent().getStringExtra("userId") != null) {
                         applyToOffer();
                     } else {
-                        getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                        if(getActivity().getIntent().getBooleanExtra("connection", false)) {
+                            getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                        } else {
+                            getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                        }
                         getActivity().finish();
                     }
                 } else {
-                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                    if(getActivity().getIntent().getBooleanExtra("connection", false)) {
+                        getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                    } else {
+                        getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                    }
                     getActivity().finish();
                 }
             }
@@ -190,7 +206,11 @@ public class LogInFragment extends Fragment {
             @Override
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                 t.printStackTrace();
-                getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                if(getActivity().getIntent().getBooleanExtra("connection", false)) {
+                    getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                } else {
+                    getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+                }
                 getActivity().finish();
             }
 

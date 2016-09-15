@@ -154,6 +154,8 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                     inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.single, null));
                 else
                     inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.couple, null));
+            } else {
+                inRelationship.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.untold_relationship, null));
             }
 
             if(userModel.getSmoker() != null) {
@@ -161,6 +163,8 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                     smoker.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.is_smoker, null));
                 else
                     smoker.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.is_not_smoker, null));
+            } else {
+                smoker.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.untold_smoker, null));
             }
 
             if(userModel.getAcceptAnimal() != null) {
@@ -168,6 +172,8 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                     acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.accept_animals, null));
                 else
                     acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.dont_accept_animals, null));
+            } else {
+                acceptAnimals.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.untold_accept_animals, null));
             }
 
             this.itemView.setOnClickListener(new View.OnClickListener() {
