@@ -1,9 +1,13 @@
 package com.appartoo.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -15,7 +19,9 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -47,31 +53,14 @@ public class ImageManager {
     public static final String TRANFORM_SQUARE = "square";
     public static final String TRANFORM_CIRCLE = "circle";
 
-    public static Bitmap getPictureFromGallery(Intent data, Activity activity){
-        Bitmap imageBitmap;
-        Uri selectedImage = data.getData();
-
-        try {
-            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), selectedImage);
-            imageBitmap = rotateImageIfRequired(imageBitmap, selectedImage);
-            imageBitmap = transformResize(imageBitmap, 1280);
-        } catch (IOException e) {
-            imageBitmap = null;
-            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_gallery, Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-
-        return imageBitmap;
-    }
-
-    public static Bitmap getPictureFromCamera(Activity activity, Uri uri) throws IOException {
+    public static Bitmap getPictureFromCamera(Activity activity, Uri uri) {
 
         activity.getContentResolver().notifyChange(uri, null);
-
         Bitmap imageBitmap;
+
         try {
-            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri );
-            imageBitmap = rotateImageIfRequired(imageBitmap, uri);
+            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+            imageBitmap = rotateImageIfRequired(imageBitmap, uri, null);
             imageBitmap = transformResize(imageBitmap, 1280);
         } catch (IOException e) {
             imageBitmap = null;
@@ -82,10 +71,35 @@ public class ImageManager {
         return imageBitmap;
     }
 
-    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
+    public static Bitmap getPictureFromGallery(Activity activity, Uri uri) {
 
-        ExifInterface ei = new ExifInterface(selectedImage.getPath());
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        activity.getContentResolver().notifyChange(uri, null);
+        Bitmap imageBitmap;
+
+        try {
+            imageBitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+            imageBitmap = rotateImageIfRequired(imageBitmap, uri, activity);
+            imageBitmap = transformResize(imageBitmap, 1280);
+        } catch (IOException e) {
+            imageBitmap = null;
+            Toast.makeText(activity.getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+        return imageBitmap;
+    }
+
+
+
+    private static Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage, Activity activity) throws IOException {
+
+        ExifInterface ei;
+        System.out.println("SO !");
+        if(activity != null) ei = new ExifInterface(getRealPathFromURI(activity, selectedImage));
+        else ei = new ExifInterface(selectedImage.getPath());
+        System.out.println("FUCK YOU ! FUCK YOU ! FUCK YOU !!!!!");
+
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
@@ -316,7 +330,17 @@ public class ImageManager {
                 storageDir      /* directory */
         );
 
-        image.getAbsolutePath();
         return image;
+    }
+
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(context, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 }

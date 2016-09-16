@@ -67,6 +67,9 @@ public interface RestService {
     @POST
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);
 
+    @POST
+    Call<ResponseBody> notifyNewMessage(@Url String url, @Header("Authorization") String bearerToken);
+
     @GET(REST_URL + "/searchGeneral")
     Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @QueryMap Map<String, Object> queryParam);
 

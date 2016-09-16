@@ -13,6 +13,6 @@ public abstract class ValidationFragment extends Fragment {
     public boolean validateFragment(Context context) {
         return true;
     }
-    public void modifyViews() {};
+    public void modifyViews() {}
     public void setData(OfferModel offerModel){}
 }

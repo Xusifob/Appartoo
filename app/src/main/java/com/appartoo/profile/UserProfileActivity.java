@@ -128,6 +128,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
     public void switchFragment(View v) {
         if(Appartoo.LOGGED_USER_PROFILE != null) {
             if (v.getTag().equals("my_settings")) {
+                //TODO app settings
                 new AlertDialog.Builder(UserProfileActivity.this)
                         .setMessage("Fonctionnalité bientôt disponible.")
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

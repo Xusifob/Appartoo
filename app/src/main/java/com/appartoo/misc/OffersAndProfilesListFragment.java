@@ -116,7 +116,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        position = ((LinearLayoutManager) offersAndProfiles.getLayoutManager()).findLastVisibleItemPosition();
+        position = linearLayoutManager.findLastVisibleItemPosition();
         if(offersAndProfiles.findViewHolderForAdapterPosition(position) != null) {
             offset = offersAndProfiles.findViewHolderForAdapterPosition(position).itemView.getTop();
         }
@@ -126,11 +126,13 @@ public class OffersAndProfilesListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(offset != null && position != null)
-            ((LinearLayoutManager) offersAndProfiles.getLayoutManager()).scrollToPositionWithOffset(position, offset);
+            linearLayoutManager.scrollToPositionWithOffset(position, offset);
     }
 
     public void refreshOffers() {
         swipeRefreshLayout.setRefreshing(true);
+        position = 0;
+        offset = 0;
         pageNumber = 0;
         getOffersAndProfiles(pageNumber);
 

@@ -126,10 +126,9 @@ public class UserProfileModifyFragment extends Fragment {
 
                                 break;
                             case 1:
-                                intent = new Intent();
+                                intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                 intent.setType("image/*");
-                                intent.setAction(Intent.ACTION_GET_CONTENT);
-                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), ImageManager.REQUEST_PICK_IMAGE);
+                                startActivityForResult(Intent.createChooser(intent, "Select Photo"), ImageManager.REQUEST_PICK_IMAGE);
                                 break;
                             default:
                                 break;
@@ -148,14 +147,9 @@ public class UserProfileModifyFragment extends Fragment {
         if(resultCode == Activity.RESULT_OK) {
             Bitmap imageBitmap = null;
             if (requestCode == ImageManager.REQUEST_IMAGE_CAPTURE) {
-                try {
-                    imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
-                } catch (IOException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+                imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
             } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {
-                imageBitmap = ImageManager.getPictureFromGallery(data, getActivity());
+                imageBitmap = ImageManager.getPictureFromGallery(getActivity(), data.getData());
             }
 
             if(imageBitmap != null) {

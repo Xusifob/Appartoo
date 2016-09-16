@@ -5,35 +5,26 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.utils.Appartoo;
-import com.appartoo.utils.RestService;
 import com.appartoo.utils.ValidationFragment;
 import com.appartoo.utils.ImageManager;
-import com.appartoo.utils.adapter.ImageModelViewPagerAdapter;
 import com.appartoo.utils.adapter.ImageViewViewPagerAdapter;
 import com.appartoo.utils.model.ImageModel;
 import com.appartoo.utils.model.OfferModel;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.io.File;
 import java.io.IOException;
@@ -143,7 +134,7 @@ public class AddModifyOfferPicturesFragment extends ValidationFragment {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), ImageManager.REQUEST_PICK_IMAGE);
+                startActivityForResult(Intent.createChooser(intent, "Choose Picture"), ImageManager.REQUEST_PICK_IMAGE);
             }
         });
     }
@@ -154,14 +145,9 @@ public class AddModifyOfferPicturesFragment extends ValidationFragment {
         if(resultCode == Activity.RESULT_OK) {
             Bitmap imageBitmap = null;
             if (requestCode == ImageManager.REQUEST_IMAGE_CAPTURE) {
-                try {
-                    imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.unable_to_load_camera, Toast.LENGTH_SHORT).show();
-                }
+                imageBitmap = ImageManager.getPictureFromCamera(getActivity(), cameraUri);
             } else if (requestCode == ImageManager.REQUEST_PICK_IMAGE) {
-                imageBitmap = ImageManager.getPictureFromGallery(data, getActivity());
+                imageBitmap = ImageManager.getPictureFromGallery(getActivity(), data.getData());
             }
 
             if(imageBitmap != null) {

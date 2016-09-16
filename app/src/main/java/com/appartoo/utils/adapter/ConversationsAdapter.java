@@ -1,6 +1,7 @@
 package com.appartoo.utils.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -168,6 +170,16 @@ public class ConversationsAdapter extends RecyclerView.Adapter {
 
             if (lastMessage != null) snippet.setText(lastMessage.getMessage());
             else snippet.setText("");
+
+            if(!conversationModel.getIsRead().get(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+                snippet.setTypeface(null, Typeface.BOLD);
+                name.setTypeface(null, Typeface.BOLD);
+                lastMessageHour.setTypeface(null, Typeface.BOLD);
+            } else {
+                snippet.setTypeface(null, Typeface.NORMAL);
+                name.setTypeface(null, Typeface.NORMAL);
+                lastMessageHour.setTypeface(null, Typeface.NORMAL);
+            }
 
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

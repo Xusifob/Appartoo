@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.appartoo.R;
 import com.appartoo.login.LoginActivity;
+import com.appartoo.utils.RestService;
 import com.appartoo.utils.adapter.MessageAdapter;
 import com.appartoo.utils.model.ConversationModel;
 import com.appartoo.utils.model.MessageModel;
@@ -34,6 +35,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-28.
@@ -57,7 +65,7 @@ public class MessageFragment extends Fragment{
     private boolean isTyping;
     private TextView typingTextView;
     private String userId;
-    private String message;
+    private RestService restService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +82,12 @@ public class MessageFragment extends Fragment{
         conversationId = getActivity().getIntent().getStringExtra("conversationId");
         conversationName = getActivity().getIntent().getStringExtra("conversationName");
         userId = getActivity().getIntent().getStringExtra("userId");
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .build();
+
+        restService = retrofit.create(RestService.class);
 
         if(conversationId != null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             initiateConversation();
@@ -128,8 +142,6 @@ public class MessageFragment extends Fragment{
         messageList.addFooterView(messageFooter);
         messageList.setAdapter(messageAdapter);
 
-        if(message != null) messageEdit.setText(message);
-
         if(conversationId != null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             sendMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,6 +162,10 @@ public class MessageFragment extends Fragment{
                         conversationReference.child("/messages").push().setValue(messageModel);
 
                         messageEdit.setText("");
+
+                        for(String userId : conversationModel.getParticipants().keySet()) {
+                            restService.notifyNewMessage("/conversations/" + userId + "/message/new", "Bearer " + Appartoo.TOKEN);
+                        }
                     }
                 }
             });

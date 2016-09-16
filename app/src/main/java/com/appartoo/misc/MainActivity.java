@@ -1,8 +1,12 @@
 package com.appartoo.misc;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
 
         query = (HashMap<String, Object>) getIntent().getSerializableExtra("query");
+
     }
 
     @Override
@@ -108,13 +113,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SIMPLE_LOGIN && resultCode == HAS_LOGGED_IN) {
-            System.out.println("RESULT");
             ((OffersAndProfilesListFragment) getSupportFragmentManager().findFragmentByTag("offersAndProfiles")).refreshOffers();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         //Define the action to do according to the selected menu
         switch (item.getItemId()) {
             case ID_MENU_SEARCH:
