@@ -8,6 +8,9 @@
     <string name="action_settings">Réglages</string>
     <string name="apply_to_offer">"Postuler à l'annonce"</string>
     <string name="action_send_message">Envoyer un message</string>
+    <string name="write_comment">Ecrire un commentaire</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="note">Note globale</string>
     <string name="age">ans</string>
     <string name="connection_failed">La connexion au serveur a échouée.</string>
     <string name="progress_bar_title">Connexion au serveur</string>
@@ -65,7 +68,7 @@
     <string name="status_configure_profile">Quel est votre statut ?</string>
     <string name="smoker_configure_profile">Fumez-vous ?</string>
     <string name="finish_signup">"Terminer l'inscription"</string>
-    <string name="configure_profile">Configurer mon profil</string>
+    <string name="complete_profile">Compléter mon profil</string>
     <string name="congratulations">Félicitations !</string>
     <string name="end_of_signup">"Vous êtes maintenant inscrit. Vous pouvez configurer votre profil ou appuyer sur le bouton \"Terminer l'inscription\" pour vous connecter."</string>
     <string name="not_informed">Non renseigné</string>

@@ -29,7 +29,7 @@
                 android:text="@string/end_of_signup"/>
             <Button
                 style="@style/ButtonSalmon"
-                android:text="@string/configure_profile"
+                android:text="@string/complete_profile"
                 android:onClick="nextView"
                 android:background="@drawable/square_salmon" />
         </LinearLayout>

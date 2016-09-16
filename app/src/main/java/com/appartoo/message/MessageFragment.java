@@ -147,9 +147,14 @@ public class MessageFragment extends Fragment{
                 @Override
                 public void onClick(View view) {
 
+                    System.out.println("CLICKED");
+
                     Long time = Calendar.getInstance().getTimeInMillis();
                     ConversationModel conversation = getConversationModel(time);
                     MessageModel messageModel = getMessageModel(time);
+
+                    System.out.println(conversation.toString());
+                    System.out.println(messageModel.toString());
 
                     if (conversation != null && messageModel != null) {
                         Map<String, Object> updates = new HashMap<>();

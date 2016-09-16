@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            style="@style/Paragraph"
+            android:id="@+id/commentName"
+            android:text="Paqwz"
+            android:textStyle="bold"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"/>
+        <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:stepSize="1"
+            android:numStars="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentNoteStars"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18/01/70 02:12"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/commentDate"
+        android:layout_marginBottom="4dp"/>
+    <TextView
+        style="@style/Paragraph"
+        android:text="@string/error_retrieve_user_informations"
+        android:id="@+id/commentDescription"/>
+</LinearLayout>

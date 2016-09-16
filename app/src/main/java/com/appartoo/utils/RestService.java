@@ -1,6 +1,9 @@
 package com.appartoo.utils;
 
+import com.appartoo.utils.model.CommentModel;
+import com.appartoo.utils.model.CommentsReceiver;
 import com.appartoo.utils.model.CompleteUserModel;
+import com.appartoo.utils.model.HasLikedReceiver;
 import com.appartoo.utils.model.ImageModel;
 import com.appartoo.utils.model.ObjectHolderModelReceiver;
 import com.appartoo.utils.model.OfferModel;
@@ -69,6 +72,15 @@ public interface RestService {
 
     @POST
     Call<ResponseBody> notifyNewMessage(@Url String url, @Header("Authorization") String bearerToken);
+
+    @POST
+    Call<ResponseBody> likeProfile(@Url String url, @Header("Authorization") String bearerToken);
+
+    @GET
+    Call<HasLikedReceiver> hasLiked(@Url String url, @Header("Authorization") String bearerToken);
+
+    @GET
+    Call<CommentsReceiver> getUserComments(@Url String url);
 
     @GET(REST_URL + "/searchGeneral")
     Call<ObjectHolderModelReceiver> getOffersOrProfiles(@Header("Authorization") String bearerToken, @QueryMap Map<String, Object> queryParam);

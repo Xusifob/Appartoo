@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/background_light"
     android:padding="8dp">
@@ -138,7 +138,6 @@
             android:orientation="vertical"
             android:gravity="center">
             <ImageView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -173,19 +172,81 @@
     <View
         style="@style/Separator"
         android:layout_margin="8dp" />
-    <ImageView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+            <TextView
+                style="@style/Paragraph"
+                android:layout_marginBottom="4dp"
+                android:text="@string/recommendations"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/score_icon"
+                    android:id="@+id/likeButton"
+                    android:layout_gravity="center"
+                    android:src="@drawable/thumb_up_gray_big"/>
+                <TextView
+                    style="@style/Paragraph"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    android:text="23"
+                    android:id="@+id/userDetailRecommendation" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1">
+            <TextView
+                style="@style/Paragraph"
+                android:layout_marginBottom="4dp"
+                android:text="@string/note"/>
+                <TextView
+                    style="@style/Paragraph"
+                    android:layout_gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingStart="8dp"
+                    android:text="4,7/5"
+                    android:id="@+id/userDetailGlobalNote" />
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:stepSize="0.1"
+                    android:numStars="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/commentNoteStars"/>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        style="@style/Separator"
+        android:id="@+id/commentSeparator"
         android:layout_margin="8dp"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/score_icon"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/thumb_big"/>
-    <TextView
-        style="@style/Paragraph"
-        android:paddingBottom="8dp"
-        android:text="@string/zero"
-        android:layout_gravity="center_horizontal" />
-
+        android:visibility="gone"/>
+    <com.appartoo.utils.view.NonScrollableListView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userDetailComments"
+        tools:listitem="@layout/list_item_comments"
+        android:visibility="gone"/>
 </LinearLayout>

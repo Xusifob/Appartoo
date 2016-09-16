@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.appartoo.R;
 import com.appartoo.message.MessageActivity;
+import com.appartoo.utils.model.CommentModel;
 import com.appartoo.utils.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ConversationIdReceiver;
@@ -28,6 +29,7 @@ import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,6 +54,7 @@ public class UserDetailActivity extends AppCompatActivity {
     private RestService restService;
     private ProgressBar progressBar;
     private View userDetailContainer;
+    private Button userDetailWriteComment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class UserDetailActivity extends AppCompatActivity {
         userProfilePic = (ImageView) findViewById(R.id.userDetailProfilePic);
         sendMessageButton = (Button) findViewById(R.id.userDetailSendMessage);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        userDetailWriteComment = (Button) findViewById(R.id.userDetailWriteComment);
 
         userDetailContainer = findViewById(R.id.userDetailContainer);
         userDetailFragment = (UserDetailFragment) getSupportFragmentManager().findFragmentById(R.id.userDetailFragment);
@@ -83,6 +87,7 @@ public class UserDetailActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         userDetailContainer.setVisibility(View.GONE);
         sendMessageButton.setVisibility(View.GONE);
+        userDetailWriteComment.setVisibility(View.GONE);
 
         if(userModel != null) {
             bindData(userModel);
@@ -159,6 +164,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         if(userModel.getId() == null || (Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(userModel.getId()))) {
             sendMessageButton.setVisibility(View.GONE);
+            userDetailWriteComment.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
             sendMessageButton.setVisibility(View.VISIBLE);
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +176,7 @@ public class UserDetailActivity extends AppCompatActivity {
                         startActivity(intent);
                 }
             });
+            userDetailWriteComment.setVisibility(View.VISIBLE);
         } else {
             sendMessageButton.setVisibility(View.VISIBLE);
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +186,7 @@ public class UserDetailActivity extends AppCompatActivity {
                     sendMessageToUser();
                 }
             });
+            userDetailWriteComment.setVisibility(View.VISIBLE);
         }
     }
 
