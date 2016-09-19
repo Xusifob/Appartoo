@@ -2,6 +2,9 @@ package com.appartoo.utils.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +33,14 @@ public class CommentsAdapter extends BaseAdapter {
 
     private ArrayList<CommentModel> commentModels;
     private LayoutInflater layoutInflater;
+    private Context context;
     private SimpleDateFormat dateFormat;
 
     public CommentsAdapter(Context context, ArrayList<CommentModel> cm) {
         this.commentModels = cm;
+        this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
-        this.dateFormat = new SimpleDateFormat("dd/MM/yy hh:mm", Locale.getDefault());
+        this.dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault());
     }
 
     @Override

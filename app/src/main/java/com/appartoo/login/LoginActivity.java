@@ -189,12 +189,7 @@ public class LoginActivity extends AppCompatActivity {
     public void alertUser(View v) {
         new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppThemeDialog))
                 .setMessage("Fonctionnalité bientôt disponible.")
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .show();
     }
 }

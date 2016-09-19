@@ -39,6 +39,7 @@
         android:gravity="center"
         android:layout_alignParentBottom="true">
         <EditText
+            android:background="@color/colorWhite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -46,6 +47,7 @@
             android:isScrollContainer="true"
             android:inputType="textMultiLine"
             android:gravity="bottom"
+            android:hint="@string/write_message"
             android:id="@+id/conversationNewMessage"
             android:maxLines="5"
             android:layout_weight="1" />

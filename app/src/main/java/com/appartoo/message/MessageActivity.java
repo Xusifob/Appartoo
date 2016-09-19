@@ -83,20 +83,10 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         postExecutionDialog = new AlertDialog.Builder(MessageActivity.this)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                .setPositiveButton(R.string.ok, null);
 
         preExecutionDialog = new AlertDialog.Builder(MessageActivity.this)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                .setNegativeButton(R.string.cancel, null);
     }
 
     public void setToolbarTitle(String title) {

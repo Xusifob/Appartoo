@@ -4,23 +4,31 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
 import com.appartoo.message.MessageActivity;
+import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.model.CommentModel;
 import com.appartoo.utils.model.UserModel;
 import com.appartoo.utils.Appartoo;
@@ -28,9 +36,12 @@ import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,6 +66,7 @@ public class UserDetailActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private View userDetailContainer;
     private Button userDetailWriteComment;
+    private String userName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +87,7 @@ public class UserDetailActivity extends AppCompatActivity {
         userDetailFragment = (UserDetailFragment) getSupportFragmentManager().findFragmentById(R.id.userDetailFragment);
 
         userModel = getIntent().getParcelableExtra("user");
+        userName = getIntent().getStringExtra("userName");
         userId = getIntent().getStringExtra("profileId");
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -152,7 +165,7 @@ public class UserDetailActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle("Détail de l'utilisateur");
+                    collapsingToolbarLayout.setTitle(userModel.getGivenName() + " " + userModel.getFamilyName());
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");
@@ -161,8 +174,7 @@ public class UserDetailActivity extends AppCompatActivity {
             }
         });
 
-
-        if(userModel.getId() == null || (Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getId().equals(userModel.getId()))) {
+        if(userModel.getId() == null || (Appartoo.LOGGED_USER_PROFILE != null && Appartoo.LOGGED_USER_PROFILE.getIdNumber().equals(userModel.getIdNumber()))) {
             sendMessageButton.setVisibility(View.GONE);
             userDetailWriteComment.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
@@ -186,8 +198,85 @@ public class UserDetailActivity extends AppCompatActivity {
                     sendMessageToUser();
                 }
             });
+
+            userDetailWriteComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    userDetailWriteComment.setEnabled(false);
+                    sendCommentToUser();
+                }
+            });
             userDetailWriteComment.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void sendCommentToUser() {
+        final View alertdialogView = View.inflate(UserDetailActivity.this, R.layout.alert_dialog_comment, null);
+
+        final AlertDialog dialog = new AlertDialog.Builder(UserDetailActivity.this)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setTitle(R.string.write_comment)
+                .setView(alertdialogView)
+                .create();
+
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                String comment = ((TextView) alertdialogView.findViewById(R.id.newCommentText)).getText().toString();
+                Float rating = ((RatingBar) alertdialogView.findViewById(R.id.newCommentRating)).getRating();
+
+                if(!TextValidator.haveText(comment)) {
+                    Toast.makeText(UserDetailActivity.this, R.string.please_comment_user, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(rating == 0) {
+                    Toast.makeText(UserDetailActivity.this, R.string.please_note_user, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                userDetailWriteComment.setEnabled(true);
+                sendComment(comment, rating.intValue());
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void sendComment(final String message, final Integer rating) {
+        Call<ResponseBody> callback = restService.addCommentToUser(RestService.REST_URL + "/opinion/" + userModel.getIdNumber(), "Bearer " + Appartoo.TOKEN, rating, message);
+
+        callback.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(!response.isSuccessful()) {
+                    Toast.makeText(UserDetailActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+                    System.out.println(response.code());
+                    try {
+                        System.out.println(response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    ((UserDetailFragment) getSupportFragmentManager().findFragmentById(R.id.userDetailFragment)).addComment(new CommentModel(rating, message));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(UserDetailActivity.this, R.string.connection_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void sendMessageToUser(){

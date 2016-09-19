@@ -66,6 +66,10 @@ public interface RestService {
     @POST
     Call<ResponseBody> addAddressToServer(@Url String url, @Header("Authorization") String bearerToken, @FieldMap Map<String, String> addressModel);
 
+    @FormUrlEncoded
+    @POST
+    Call<ResponseBody> addCommentToUser(@Url String url, @Header("Authorization") String bearerToken, @Field("note") Integer note, @Field("description") String description);
+
     @Multipart
     @POST
     Call<ImageModel> addImageToServer(@Url String url, @Header("Authorization") String bearerToken, @Part MultipartBody.Part file);

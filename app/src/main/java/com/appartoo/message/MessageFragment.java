@@ -147,14 +147,9 @@ public class MessageFragment extends Fragment{
                 @Override
                 public void onClick(View view) {
 
-                    System.out.println("CLICKED");
-
                     Long time = Calendar.getInstance().getTimeInMillis();
                     ConversationModel conversation = getConversationModel(time);
                     MessageModel messageModel = getMessageModel(time);
-
-                    System.out.println(conversation.toString());
-                    System.out.println(messageModel.toString());
 
                     if (conversation != null && messageModel != null) {
                         Map<String, Object> updates = new HashMap<>();
@@ -168,8 +163,10 @@ public class MessageFragment extends Fragment{
 
                         messageEdit.setText("");
 
-                        for(String userId : conversationModel.getParticipants().keySet()) {
-                            restService.notifyNewMessage("/conversations/" + userId + "/message/new", "Bearer " + Appartoo.TOKEN);
+                        if(conversation.getParticipants() != null) {
+                            for (String userId : conversation.getParticipants().keySet()) {
+                                restService.notifyNewMessage("/conversations/" + userId + "/message/new", "Bearer " + Appartoo.TOKEN);
+                            }
                         }
                     }
                 }
@@ -193,7 +190,6 @@ public class MessageFragment extends Fragment{
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 new DataChangedTask().execute(dataSnapshot);
             }
 
@@ -290,6 +286,7 @@ public class MessageFragment extends Fragment{
     public ConversationModel getConversationModel(Long time){
 
         if(conversationModel == null) {
+            System.out.println("conversationModel null");
             return null;
         }
 
@@ -401,8 +398,12 @@ public class MessageFragment extends Fragment{
             if(dataSnapshots[0].getValue(true) != null) {
                 HashMap<String, ?> json = (HashMap<String, ?>) dataSnapshots[0].getValue(true);
                 Gson gson = new Gson();
-                conversationModel = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
-                conversationModel.setId(conversationId);
+                ConversationModel model = gson.fromJson(gson.toJson(gson.toJsonTree(json)), ConversationModel.class);
+
+                if(model != null) {
+                    conversationModel = model;
+                    conversationModel.setId(conversationId);
+                }
 
                 return conversationModel;
             } else {

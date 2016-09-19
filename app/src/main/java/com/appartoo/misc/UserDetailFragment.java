@@ -1,6 +1,9 @@
 package com.appartoo.misc;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.appartoo.utils.view.NonScrollableListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
@@ -55,6 +60,8 @@ public class UserDetailFragment extends Fragment {
     private Integer plus;
     private CommentsAdapter adapter;
     private View commentSeparator;
+    private TextView globalNote;
+    private RatingBar ratingBar;
     private ArrayList<CommentModel> comments;
 
     @Override
@@ -72,6 +79,8 @@ public class UserDetailFragment extends Fragment {
         userRecommandation = (TextView) rootView.findViewById(R.id.userDetailRecommendation);
         listView = (NonScrollableListView) rootView.findViewById(R.id.userDetailComments);
         commentSeparator = rootView.findViewById(R.id.commentSeparator);
+        globalNote = (TextView) rootView.findViewById(R.id.userDetailGlobalNote);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.commentNoteStars);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
@@ -153,7 +162,7 @@ public class UserDetailFragment extends Fragment {
 
 
     private void getComments() {
-        Call<CommentsReceiver> commentCallback = restService.getUserComments(RestService.REST_URL + "/opinion/" + userId);
+        final Call<CommentsReceiver> commentCallback = restService.getUserComments(RestService.REST_URL + "/opinion/" + userId);
         commentCallback.enqueue(new Callback<CommentsReceiver>() {
             @Override
             public void onResponse(Call<CommentsReceiver> call, Response<CommentsReceiver> response) {
@@ -164,6 +173,12 @@ public class UserDetailFragment extends Fragment {
                         comments.clear();
                         comments.addAll(response.body().getHits());
                         adapter.notifyDataSetChanged();
+
+                        DecimalFormat df = new DecimalFormat("#.#");
+                        Float note = getUserGlobalNote(comments);
+
+                        globalNote.setText(df.format(note) + "/5");
+                        ratingBar.setRating(note);
                     }
 
                     System.out.println(adapter.getCount());
@@ -177,6 +192,29 @@ public class UserDetailFragment extends Fragment {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void addComment(CommentModel commentModel) {
+        commentSeparator.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.VISIBLE);
+        comments.add(commentModel);
+        adapter.notifyDataSetChanged();
+
+        DecimalFormat df = new DecimalFormat("#.#");
+        Float note = getUserGlobalNote(comments);
+
+        globalNote.setText(df.format(note) + "/5");
+        ratingBar.setRating(note);
+    }
+
+    private Float getUserGlobalNote(ArrayList<CommentModel> commentModels) {
+        Float note = 0f;
+        for(CommentModel comment : commentModels) {
+            note += comment.getNote();
+        }
+
+        note /= commentModels.size();
+        return note;
     }
 
     @Override

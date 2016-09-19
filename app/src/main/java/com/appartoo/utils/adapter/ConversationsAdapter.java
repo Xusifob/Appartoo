@@ -171,7 +171,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter {
             if (lastMessage != null) snippet.setText(lastMessage.getMessage());
             else snippet.setText("");
 
-            if(!conversationModel.getIsRead().get(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
+            if(conversationModel.getIsRead() != null && !conversationModel.getIsRead().get(Appartoo.LOGGED_USER_PROFILE.getIdNumber().toString())) {
                 snippet.setTypeface(null, Typeface.BOLD);
                 name.setTypeface(null, Typeface.BOLD);
                 lastMessageHour.setTypeface(null, Typeface.BOLD);

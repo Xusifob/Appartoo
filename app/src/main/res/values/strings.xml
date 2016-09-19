@@ -54,7 +54,9 @@
     <string name="no">Non</string>
     <string name="activated">Activée</string>
     <string name="desactivated">Désactivée</string>
-
+    <string name="comment">Commentaire</string>
+    <string name="no_note">Aucune note</string>
+    <string name="write_message">Ecrivez un message</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -310,4 +312,6 @@
     <string name="error_deleting_photos">"Erreur lors de la supression des photos. Veuillez réessayer plus tard."</string>
     <string name="error_updating_address">"Erreur lors de la mise à jour de l'adresse. Veuillez réessayer plus tard."</string>
     <string name="error_updating_phone">"Erreur lors de la mise à jour du numéro de téléphone. Veuillez réessayer plus tard."</string>
+    <string name="please_note_user">"Veuillez noter l'utilisateur."</string>
+    <string name="please_comment_user">"Veuillez écrire un commentaire."</string>
 </resources>

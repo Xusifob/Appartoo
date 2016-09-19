@@ -141,7 +141,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
             this.smoker = (ImageView) itemView.findViewById(R.id.profileSmoker);
         }
 
-        public void bindData(UserProfileModel userModel, final Context context, final String id){
+        public void bindData(final UserProfileModel userModel, final Context context, final String id){
             name.setText(userModel.getGivenName() + " " + userModel.getFamilyName());
 
             if(userModel.getImages() != null && userModel.getImages().size() > 0)
@@ -181,6 +181,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, UserDetailActivity.class);
                     intent.putExtra("profileId", id);
+                    intent.putExtra("userName", userModel.getGivenName() + " " + userModel.getFamilyName());
                     context.startActivity(intent);
                 }
             });

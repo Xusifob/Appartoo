@@ -12,28 +12,25 @@
         <TextView
             style="@style/Paragraph"
             android:id="@+id/commentName"
-            android:text="Paqwz"
             android:textStyle="bold"
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"/>
         <RatingBar
-            style="?android:attr/ratingBarStyleSmall"
+            style="@style/RatingBarSmall"
+            android:focusable="false"
             android:stepSize="1"
             android:numStars="5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:isIndicator="true"
             android:id="@+id/commentNoteStars"/>
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="18/01/70 02:12"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:id="@+id/commentDate"
         android:layout_marginBottom="4dp"/>
     <TextView
         style="@style/Paragraph"
-        android:text="@string/error_retrieve_user_informations"
         android:id="@+id/commentDescription"/>
 </LinearLayout>

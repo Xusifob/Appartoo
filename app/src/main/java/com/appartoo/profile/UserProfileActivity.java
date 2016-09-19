@@ -131,12 +131,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
                 //TODO app settings
                 new AlertDialog.Builder(UserProfileActivity.this)
                         .setMessage("Fonctionnalité bientôt disponible.")
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
+                        .setPositiveButton(R.string.ok, null)
                         .show();
 //                fragmentManager.beginTransaction().replace(R.id.userProfileFrame, settingsFragment).commit();
             } else if (v.getTag().equals("modify_profile")) {
@@ -176,12 +171,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
     public void alertUser(View v) {
         new AlertDialog.Builder(new ContextThemeWrapper(UserProfileActivity.this, R.style.AppThemeDialog))
                 .setMessage("Fonctionnalité bientôt disponible.")
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .show();
     }
 }
