@@ -23,6 +23,8 @@ import com.appartoo.search.SearchActivity;
 import com.appartoo.profile.UserProfileActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 /**
  * Created by alexandre on 16-07-13.
@@ -61,6 +63,10 @@ public class NavigationDrawerView extends NavigationView {
     }
 
     public void setDrawerLayout(DrawerLayout drawerLayout) { this.drawerLayout = drawerLayout; }
+
+    public static void removeProfilePicture() {
+        profilePicture.setImageDrawable(null);
+    }
 
     public static void setHeaderInformations(String fullName, String email){
         userName = fullName;
@@ -144,6 +150,7 @@ public class NavigationDrawerView extends NavigationView {
                     case R.id.drawer_logout:
 
                         Appartoo.setUserIsOnline(false);
+                        LoginManager.getInstance().logOut();
 
                         context.getSharedPreferences(Appartoo.APP_NAME, Context.MODE_PRIVATE).edit()
                                 .remove("token")
@@ -158,7 +165,6 @@ public class NavigationDrawerView extends NavigationView {
                         ((Activity) context).finish();
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.putExtra("logout", true);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);

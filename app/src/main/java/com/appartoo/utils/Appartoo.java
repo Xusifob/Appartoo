@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 
 import com.appartoo.R;
 import com.appartoo.utils.model.CompleteUserModel;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,6 +68,9 @@ public class Appartoo extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        FacebookSdk.sdkInitialize(this);
+        AppEventsLogger.activateApp(this);
 
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));

@@ -487,31 +487,5 @@
             android:text="@string/save_infos"
             android:id="@+id/userProfileModifySaveSettings"
             android:background="@drawable/square_salmon" />
-        <LinearLayout
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/rounded_square_blue"
-            android:id="@+id/userProfileFacebookButton"
-            android:onClick="alertUser">
-            <ImageView
-                android:layout_margin="8dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/facebook_white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:text="@string/connect_with_fb"/>
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

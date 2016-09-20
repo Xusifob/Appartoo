@@ -138,7 +138,7 @@ public class SignUpActivity extends FragmentActivity {
 
             ((SignUpFinishFragment) pagerAdapter.getItem(NUM_PAGES-1)).setButtonEnabled(false);
 
-            Call<ResponseBody> callback = restService.postUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName());
+            Call<ResponseBody> callback = restService.registerUser(newUser.getEmail(), newUser.getPassword(), newUser.getGivenName(), newUser.getFamilyName());
 
             //Handle the server response
             callback.enqueue(new Callback<ResponseBody>() {
@@ -174,7 +174,7 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     private void logUser() {
-        Call<TokenReceiver> newCallback = restService.postLogIn(newUser.getEmail(), newUser.getPassword());
+        Call<TokenReceiver> newCallback = restService.logInWithAPI(newUser.getEmail(), newUser.getPassword());
 
         newCallback.enqueue(new Callback<TokenReceiver>() {
             @Override
@@ -277,7 +277,6 @@ public class SignUpActivity extends FragmentActivity {
 
     private void launchActivityWithoutHistory(Class activityClass){
         Intent intent = new Intent(SignUpActivity.this, activityClass);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

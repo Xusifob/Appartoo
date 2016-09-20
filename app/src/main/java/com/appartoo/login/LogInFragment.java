@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appartoo.R;
@@ -25,11 +24,16 @@ import com.appartoo.utils.RestService;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.TokenReceiver;
 import com.appartoo.utils.view.NavigationDrawerView;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +52,8 @@ public class LogInFragment extends Fragment {
     private EditText passwordEdit;
     private RestService restService;
     private SharedPreferences sharedPreferences;
+    private CallbackManager callbackManager;
+    private LoginButton facebookLogin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +62,12 @@ public class LogInFragment extends Fragment {
         logInButton = (Button) view.findViewById(R.id.connectButton);
         mailEdit = ((EditText) view.findViewById(R.id.logInMail));
         passwordEdit = ((EditText) view.findViewById(R.id.logInPassword));
+        facebookLogin = (LoginButton) view.findViewById(R.id.logInFacebook);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        facebookLogin.setReadPermissions(Arrays.asList(new String[] {"email","user_about_me","user_friends","user_birthday"}));
+        facebookLogin.setFragment(this);
 
         if (container != null) {
             container.removeAllViews();
@@ -83,6 +95,7 @@ public class LogInFragment extends Fragment {
                 password = passwordEdit.getText().toString();
 
                 if (isFormValid()) {
+                    facebookLogin.setEnabled(false);
                     logInButton.setEnabled(false);
                     logIn();
                 } else {
@@ -91,19 +104,96 @@ public class LogInFragment extends Fragment {
             }
         });
 
+        facebookLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                facebookLogin.setEnabled(false);
+                logInButton.setEnabled(false);
+            }
+        });
+
+        facebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                System.out.println("LOGIN");
+                loginWithFacebook(loginResult.getAccessToken().getToken());
+            }
+
+            @Override
+            public void onCancel() {
+                facebookLogin.setEnabled(true);
+                logInButton.setEnabled(true);
+                System.out.println("CANCEL");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                System.out.println("ERROR");
+                exception.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void loginWithFacebook(String accessToken) {
+
+        facebookLogin.setEnabled(false);
+        logInButton.setEnabled(false);
+
+        Call<TokenReceiver> callback = restService.logInWithFacebook(accessToken);
+
+        callback.enqueue(new Callback<TokenReceiver>() {
+            @Override
+            public void onResponse(Call<TokenReceiver> call, Response<TokenReceiver> response) {
+
+                //If the login is successful
+                if (response.isSuccessful()) {
+
+                    //Retrieve the user token
+                    Appartoo.TOKEN = response.body().getToken();
+
+                    //Stock the token in shared preferences
+                    sharedPreferences.edit().putString(Appartoo.KEY_TOKEN, Appartoo.TOKEN).apply();
+                    if (Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+                        retrieveUserProfile();
+                    }
+
+                    //If the user didn't send the right credentials
+                } else {
+                    facebookLogin.setEnabled(true);
+                    logInButton.setEnabled(true);
+                    try {
+                        Log.v("LoginFragment", "logIn: " + String.valueOf(response.code()));
+                        Log.v("LoginFragment", "logIn: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenReceiver> call, Throwable t) {
+                Log.v("LoginFragment", "logIn: " + t.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                facebookLogin.setEnabled(true);
+                logInButton.setEnabled(true);
+            }
+        });
     }
 
     public void logIn() {
 
         //Disable the login button
+        facebookLogin.setEnabled(false);
         logInButton.setEnabled(false);
 
-        Call<TokenReceiver> callback = restService.postLogIn(mail, password);
+        Call<TokenReceiver> callback = restService.logInWithAPI(mail, password);
 
         //Handle the server response
         callback.enqueue(new Callback<TokenReceiver>() {
@@ -124,10 +214,12 @@ public class LogInFragment extends Fragment {
 
                     //If the user didn't send the right credentials
                 } else if (response.code() == 401) {
+                    facebookLogin.setEnabled(true);
                     logInButton.setEnabled(true);
                     Toast.makeText(getActivity().getApplicationContext(), R.string.error_login_password, Toast.LENGTH_SHORT).show();
                     //If the server isn't responding
                 } else {
+                    facebookLogin.setEnabled(true);
                     logInButton.setEnabled(true);
                     try {
                         Log.v("LoginFragment", "logIn: " + String.valueOf(response.code()));
@@ -143,6 +235,7 @@ public class LogInFragment extends Fragment {
             public void onFailure(Call<TokenReceiver> call, Throwable t) {
                 Log.v("LoginFragment", "logIn: " + t.getMessage());
                 Toast.makeText(getActivity().getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                facebookLogin.setEnabled(true);
                 logInButton.setEnabled(true);
             }
         });
@@ -229,6 +322,7 @@ public class LogInFragment extends Fragment {
         callback.enqueue(new Callback<ConversationIdReceiver>() {
             @Override
             public void onResponse(Call<ConversationIdReceiver> call, Response<ConversationIdReceiver> response) {
+                facebookLogin.setEnabled(true);
                 logInButton.setEnabled(true);
                 progressDialog.dismiss();
                 if(response.isSuccessful()){
@@ -249,6 +343,7 @@ public class LogInFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ConversationIdReceiver> call, Throwable t) {
+                facebookLogin.setEnabled(true);
                 logInButton.setEnabled(true);
                 progressDialog.dismiss();
                 Log.v("LoginActivity", "applyToOffer: " + t.getMessage());

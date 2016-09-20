@@ -23,6 +23,8 @@ import com.appartoo.signup.SignUpActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.view.NavigationDrawerView;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -47,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         //Retrieve login button and shared preferences

@@ -62,7 +62,6 @@ public class UserProfileModifyFragment extends Fragment {
     private ImageView userProfilePic;
     private RestService restService;
     private NavigationDrawerView navigationDrawerView;
-    private LinearLayout facebookLink;
     private File profilePictureFile;
     private Uri cameraUri;
 
@@ -335,7 +334,6 @@ public class UserProfileModifyFragment extends Fragment {
         isManiac = (Switch) view.findViewById(R.id.userProfileModifyIsManiac);
         isWorker = (Switch) view.findViewById(R.id.userProfileModifyIsWorker);
         saveSettings = (Button) view.findViewById(R.id.userProfileModifySaveSettings);
-        facebookLink = (LinearLayout) view.findViewById(R.id.userProfileFacebookButton);
     }
 
     @Override

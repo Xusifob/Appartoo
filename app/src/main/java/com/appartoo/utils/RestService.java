@@ -44,11 +44,15 @@ public interface RestService {
 
     @FormUrlEncoded
     @POST(REST_URL + "/login")
-    Call<TokenReceiver> postLogIn(@Field("username") String username, @Field("password") String password);
+    Call<TokenReceiver> logInWithAPI(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST(REST_URL + "/login/facebook")
+    Call<TokenReceiver> logInWithFacebook(@Field("access_token") String accessToken);
 
     @FormUrlEncoded
     @POST(REST_URL + "/register")
-    Call<ResponseBody> postUser(@Field(Appartoo.KEY_EMAIL) String mail, @Field("password") String password, @Field(Appartoo.KEY_GIVEN_NAME) String givenName, @Field(Appartoo.KEY_FAMILY_NAME) String familyName);
+    Call<ResponseBody> registerUser(@Field(Appartoo.KEY_EMAIL) String mail, @Field("password") String password, @Field(Appartoo.KEY_GIVEN_NAME) String givenName, @Field(Appartoo.KEY_FAMILY_NAME) String familyName);
 
     @FormUrlEncoded
     @POST(REST_URL + "/offer/create")

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/header"
-        android:layout_weight="1">
+        android:layout_weight="2">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_weight="1">
+        android:layout_weight="2">
         <EditText
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -94,31 +94,15 @@
         android:orientation="vertical"
         android:gravity="bottom"
         android:layout_weight="1">
-        <LinearLayout
-            android:layout_margin="16dp"
-            android:text="@string/connect_with_fb"
-            android:textAllCaps="true"
+        <com.facebook.login.widget.LoginButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:background="@drawable/rounded_square_blue"
-            android:id="@+id/logInFacebook"
-            android:onClick="alertUser">
-            <ImageView
-                android:layout_margin="8dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/facebook_logo"
-                android:src="@drawable/facebook_white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:text="@string/connect_with_fb"/>
-        </LinearLayout>
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:textAllCaps="true"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:id="@+id/logInFacebook" />
     </LinearLayout>
 </LinearLayout>
