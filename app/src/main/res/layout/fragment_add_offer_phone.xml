@@ -57,7 +57,7 @@
                 android:drawableLeft="@drawable/phone_gray"
                 android:drawablePadding="4dp"
                 android:id="@+id/addOfferPhone"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
         </LinearLayout>
 
         <Button

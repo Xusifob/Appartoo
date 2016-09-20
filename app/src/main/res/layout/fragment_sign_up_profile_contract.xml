@@ -43,7 +43,7 @@
             android:gravity="center"
             android:hint="@string/contract"
             android:tag=""
-            android:singleLine="true"
+            android:maxLines="1"
             android:focusable="false"
             android:id="@+id/signUpConfigureContract"/>
 

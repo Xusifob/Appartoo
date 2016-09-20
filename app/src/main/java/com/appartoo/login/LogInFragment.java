@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.message.MessageActivity;
 import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.model.CompleteUserModel;
@@ -28,6 +27,8 @@ import com.appartoo.utils.TokenReceiver;
 import com.appartoo.utils.view.NavigationDrawerView;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +48,6 @@ public class LogInFragment extends Fragment {
     private EditText passwordEdit;
     private RestService restService;
     private SharedPreferences sharedPreferences;
-    private LinearLayout facebookButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +56,6 @@ public class LogInFragment extends Fragment {
         logInButton = (Button) view.findViewById(R.id.connectButton);
         mailEdit = ((EditText) view.findViewById(R.id.logInMail));
         passwordEdit = ((EditText) view.findViewById(R.id.logInPassword));
-        facebookButton = (LinearLayout) view.findViewById(R.id.logInFacebook);
 
         if (container != null) {
             container.removeAllViews();
@@ -91,6 +90,12 @@ public class LogInFragment extends Fragment {
                 }
             }
         });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void logIn() {
@@ -187,7 +192,7 @@ public class LogInFragment extends Fragment {
                         applyToOffer();
                     } else {
                         if(getActivity().getIntent().getBooleanExtra("connection", false)) {
-                            getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                            getActivity().setResult(Appartoo.IS_LOGGED);
                         } else {
                             getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                         }
@@ -195,7 +200,7 @@ public class LogInFragment extends Fragment {
                     }
                 } else {
                     if(getActivity().getIntent().getBooleanExtra("connection", false)) {
-                        getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                        getActivity().setResult(Appartoo.IS_LOGGED);
                     } else {
                         getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                     }
@@ -207,7 +212,7 @@ public class LogInFragment extends Fragment {
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                 t.printStackTrace();
                 if(getActivity().getIntent().getBooleanExtra("connection", false)) {
-                    getActivity().setResult(MainActivity.HAS_LOGGED_IN);
+                    getActivity().setResult(Appartoo.IS_LOGGED);
                 } else {
                     getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
                 }
@@ -229,7 +234,7 @@ public class LogInFragment extends Fragment {
                 if(response.isSuccessful()){
                     Intent intent = new Intent();
                     intent.putExtra("conversationId", response.body().getIdConversation());
-                    getActivity().setResult(MessageActivity.IS_LOGGED, intent);
+                    getActivity().setResult(Appartoo.IS_LOGGED_FOR_CONVERSATION, intent);
                     getActivity().finish();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), R.string.error_conversation_creation, Toast.LENGTH_SHORT).show();

@@ -1,12 +1,8 @@
 package com.appartoo.misc;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +11,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.appartoo.R;
@@ -32,12 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationDrawerView navigationDrawerView;
     private HashMap<String, Object> query;
+    private String tempToken;
 
     private static final int ID_MENU_SEARCH = 1;
     private static final int ID_MENU_CONNECT = 2;
-
-    public static final int SIMPLE_LOGIN = 30;
-    public static final int HAS_LOGGED_IN = 31;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,14 +103,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SIMPLE_LOGIN && resultCode == HAS_LOGGED_IN) {
-            ((OffersAndProfilesListFragment) getSupportFragmentManager().findFragmentByTag("offersAndProfiles")).refreshOffers();
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //Define the action to do according to the selected menu
@@ -128,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             case ID_MENU_CONNECT:
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 intent.putExtra("connection", true);
-                startActivityForResult(intent, SIMPLE_LOGIN);
+                startActivityForResult(intent, Appartoo.REQUEST_SIMPLE_LOGIN);
             default:
                 return super.onOptionsItemSelected(item);
         }

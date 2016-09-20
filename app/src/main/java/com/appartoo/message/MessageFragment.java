@@ -36,12 +36,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexandre on 16-07-28.
@@ -103,7 +98,7 @@ public class MessageFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION && resultCode == MessageActivity.IS_LOGGED) {
+        if(requestCode == Appartoo.REQUEST_LOGIN_FOR_CONVERSATION && resultCode == Appartoo.IS_LOGGED_FOR_CONVERSATION) {
             conversationId = data.getStringExtra("conversationId");
             initiateConversation();
         }
@@ -179,7 +174,7 @@ public class MessageFragment extends Fragment{
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         intent.putExtra("conversationName", conversationName);
                         intent.putExtra("userId", userId);
-                        startActivityForResult(intent, MessageActivity.REQUEST_LOGIN_FOR_CONVERSATION);
+                        startActivityForResult(intent, Appartoo.REQUEST_LOGIN_FOR_CONVERSATION);
                     }
                 }
             });

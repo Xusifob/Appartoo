@@ -56,7 +56,7 @@
                 android:drawableLeft="@drawable/bed_gray"
                 android:drawablePadding="4dp"
                 android:id="@+id/addOfferRooms"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
         </LinearLayout>
 
         <Button

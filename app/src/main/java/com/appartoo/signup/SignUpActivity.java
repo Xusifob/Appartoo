@@ -14,9 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.login.LogInFragment;
-import com.appartoo.login.LoginActivity;
-import com.appartoo.message.MessageActivity;
 import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.ConversationIdReceiver;
 import com.appartoo.utils.ValidationFragment;
@@ -230,7 +227,7 @@ public class SignUpActivity extends FragmentActivity {
                     if (getIntent().getStringExtra("userId") != null) {
                         applyToOffer();
                     } else if(getIntent().getBooleanExtra("connection", false)) {
-                        setResult(MainActivity.HAS_LOGGED_IN);
+                        setResult(Appartoo.IS_LOGGED);
                         finish();
                     } else {
                         launchActivityWithoutHistory(SignUpProfileActivity.class);
@@ -250,7 +247,7 @@ public class SignUpActivity extends FragmentActivity {
                     NavigationDrawerView.setHeaderInformations(newUser.getGivenName() + " " + newUser.getFamilyName(), newUser.getEmail());
 
                     if(getIntent().getBooleanExtra("connection", false)) {
-                        setResult(MainActivity.HAS_LOGGED_IN);
+                        setResult(Appartoo.IS_LOGGED);
                         finish();
                     } else {
                         launchActivityWithoutHistory(MainActivity.class);
@@ -261,7 +258,7 @@ public class SignUpActivity extends FragmentActivity {
             @Override
             public void onFailure(Call<CompleteUserModel> call, Throwable t) {
                 if(getIntent().getBooleanExtra("connection", false)) {
-                    setResult(MainActivity.HAS_LOGGED_IN);
+                    setResult(Appartoo.IS_LOGGED);
                     finish();
                 } else {
                     launchActivityWithoutHistory(MainActivity.class);
@@ -323,7 +320,7 @@ public class SignUpActivity extends FragmentActivity {
                 if(response.isSuccessful()){
                     Intent intent = new Intent();
                     intent.putExtra("conversationId", response.body().getIdConversation());
-                    setResult(MessageActivity.IS_LOGGED, intent);
+                    setResult(Appartoo.IS_LOGGED_FOR_CONVERSATION, intent);
                     finish();
                 } else {
                     Toast.makeText(SignUpActivity.this, R.string.error_conversation_creation, Toast.LENGTH_SHORT).show();

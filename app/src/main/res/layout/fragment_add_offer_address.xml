@@ -55,7 +55,7 @@
                 android:id="@+id/addOfferAddress"
                 android:drawableStart="@drawable/marker_gray"
                 android:drawableLeft="@drawable/marker_gray"
-                android:singleLine="true" />
+                android:maxLines="1" />
         </LinearLayout>
 
         <Button

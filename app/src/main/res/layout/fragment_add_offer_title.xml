@@ -52,7 +52,7 @@
                 android:layout_margin="4dp"
                 android:gravity="center_horizontal"
                 android:id="@+id/addOfferTitle"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
         </LinearLayout>
 
         <Button

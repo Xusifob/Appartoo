@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.login.LoginActivity;
 import com.appartoo.message.MessageActivity;
 import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.model.CommentModel;
@@ -102,19 +103,19 @@ public class UserDetailActivity extends AppCompatActivity {
         sendMessageButton.setVisibility(View.GONE);
         userDetailWriteComment.setVisibility(View.GONE);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Appartoo.SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        restService = retrofit.create(RestService.class);
+
         if(userModel != null) {
             bindData(userModel);
             userDetailFragment.bindData(userModel);
             progressBar.setVisibility(View.GONE);
             userDetailContainer.setVisibility(View.VISIBLE);
         } else if (userId != null) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Appartoo.SERVER_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            restService = retrofit.create(RestService.class);
-
             Call<UserModel> callback = restService.getUserInformationsById(RestService.REST_URL + "/profiles/" + userId);
 
             callback.enqueue(new Callback<UserModel>() {
@@ -179,6 +180,8 @@ public class UserDetailActivity extends AppCompatActivity {
             userDetailWriteComment.setVisibility(View.GONE);
         } else if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
             sendMessageButton.setVisibility(View.VISIBLE);
+            userDetailWriteComment.setVisibility(View.VISIBLE);
+
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -188,7 +191,13 @@ public class UserDetailActivity extends AppCompatActivity {
                         startActivity(intent);
                 }
             });
-            userDetailWriteComment.setVisibility(View.VISIBLE);
+
+            userDetailWriteComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendCommentToUser();
+                }
+            });
         } else {
             sendMessageButton.setVisibility(View.VISIBLE);
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +211,6 @@ public class UserDetailActivity extends AppCompatActivity {
             userDetailWriteComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    userDetailWriteComment.setEnabled(false);
                     sendCommentToUser();
                 }
             });
@@ -227,8 +235,8 @@ public class UserDetailActivity extends AppCompatActivity {
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
+
                 String comment = ((TextView) alertdialogView.findViewById(R.id.newCommentText)).getText().toString();
                 Float rating = ((RatingBar) alertdialogView.findViewById(R.id.newCommentRating)).getRating();
 
@@ -242,13 +250,18 @@ public class UserDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                userDetailWriteComment.setEnabled(true);
-                sendComment(comment, rating.intValue());
+                if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
+                    Intent intent = new Intent(UserDetailActivity.this, LoginActivity.class);
+                    intent.putExtra("connection", true);
+                    startActivityForResult(intent, Appartoo.REQUEST_SIMPLE_LOGIN);
+                } else {
+                    sendComment(comment, rating.intValue());
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                dialog.dismiss();
+                    dialog.dismiss();
+                }
             }
         });
     }
@@ -268,7 +281,7 @@ public class UserDetailActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    ((UserDetailFragment) getSupportFragmentManager().findFragmentById(R.id.userDetailFragment)).addComment(new CommentModel(rating, message));
+                    userDetailFragment.getComments();
                 }
             }
 

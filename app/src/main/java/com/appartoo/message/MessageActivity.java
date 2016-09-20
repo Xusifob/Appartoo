@@ -44,8 +44,6 @@ public class MessageActivity extends AppCompatActivity {
     private AlertDialog.Builder preExecutionDialog;
     private AlertDialog.Builder postExecutionDialog;
 
-    public static final int REQUEST_LOGIN_FOR_CONVERSATION = 20;
-    public static final int IS_LOGGED = 21;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

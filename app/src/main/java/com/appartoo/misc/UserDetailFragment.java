@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appartoo.R;
+import com.appartoo.login.LoginActivity;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.RestService;
 import com.appartoo.utils.adapter.CommentsAdapter;
@@ -98,9 +99,12 @@ public class UserDetailFragment extends Fragment {
         if(user.getPlus() == null) userRecommandation.setText("0");
         else userRecommandation.setText(String.valueOf(user.getPlus()));
 
-        comments = new ArrayList<>();
-        adapter = new CommentsAdapter(getActivity(), comments);
-        listView.setAdapter(adapter);
+        if(comments == null || comments.size() == 0) {
+            comments = new ArrayList<>();
+            adapter = new CommentsAdapter(getActivity(), comments);
+            listView.setAdapter(adapter);
+            getComments();
+        }
 
         String job = "";
         if(user.getSociety() != null) job += user.getSociety() + ", ";
@@ -125,10 +129,24 @@ public class UserDetailFragment extends Fragment {
         else if (user.getInRelationship() != null) userIsInRelationship.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.single_big, null));
 
         if(user.getContract() != null && user.getContract().equals("worker")) userIsWorker.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.worker_big, null));
+    }
 
-        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("") && Appartoo.LOGGED_USER_PROFILE != null) defineLikeButton();
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        getComments();
+        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
+            defineLikeButton();
+        } else {
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    intent.putExtra("connection", true);
+                    startActivityForResult(intent, Appartoo.REQUEST_SIMPLE_LOGIN);
+                }
+            });
+        }
     }
 
     private void defineLikeButton() {
@@ -141,6 +159,7 @@ public class UserDetailFragment extends Fragment {
                     if(response.isSuccessful()) {
                         if(response.body().getResult()) {
                             likeButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.thumb_up_big, null));
+                            likeButton.setEnabled(false);
                         } else {
                             likeButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -160,8 +179,7 @@ public class UserDetailFragment extends Fragment {
             });
     }
 
-
-    private void getComments() {
+    public void getComments() {
         final Call<CommentsReceiver> commentCallback = restService.getUserComments(RestService.REST_URL + "/opinion/" + userId);
         commentCallback.enqueue(new Callback<CommentsReceiver>() {
             @Override

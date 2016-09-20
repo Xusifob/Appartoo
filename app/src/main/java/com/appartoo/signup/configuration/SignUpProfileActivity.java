@@ -6,13 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.appartoo.R;
+import com.appartoo.addoffer.AddModifyOfferActivity;
 import com.appartoo.misc.MainActivity;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.Appartoo;
@@ -21,12 +22,16 @@ import com.appartoo.utils.TextValidator;
 import com.appartoo.utils.view.NonSwipeableViewPager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class SignUpProfileActivity extends FragmentActivity {
 
@@ -88,19 +93,43 @@ public class SignUpProfileActivity extends FragmentActivity {
      */
 
     public void nextView(View v){
-        if(pager.getCurrentItem() == pagerAdapter.getCount() - 1) {
+        int currentFragment = pager.getCurrentItem();
+
+        if(pagerAdapter.getItem(currentFragment) instanceof SignUpProfileConfTypeFragment) {
+            if (((SignUpProfileConfTypeFragment) pagerAdapter.getItem(currentFragment)).getConfigurationType() != null && ((SignUpProfileConfTypeFragment) pagerAdapter.getItem(currentFragment)).getConfigurationType() == SignUpProfileConfTypeFragment.PROPOSE_OFFER_CONFIGURATION) {
+                Intent intent = new Intent(SignUpProfileActivity.this, AddModifyOfferActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                pager.setCurrentItem(currentFragment + 1);
+            }
+        } else if (pagerAdapter.getItem(currentFragment) instanceof SignUpProfileBirthdateFragment) {
+            if(((SignUpProfileBirthdateFragment) pagerAdapter.getItem(currentFragment)).validateFragment(SignUpProfileActivity.this)) {
+                pager.setCurrentItem(currentFragment + 1);
+            }
+        } else if (pagerAdapter.getItem(currentFragment) instanceof SignUpProfileWorkerFragment) {
+            if(((SignUpProfileWorkerFragment) pagerAdapter.getItem(currentFragment)).getWorker() != null && ((SignUpProfileWorkerFragment) pagerAdapter.getItem(currentFragment)).getWorker().equals("worker")) {
+                pager.setCurrentItem(currentFragment + 1);
+            }
+            else pager.setCurrentItem(pagerAdapter.getItemPositionFromClass(SignUpProfileGarantorFragment.class));
+        } else if(pagerAdapter.getItem(currentFragment) instanceof SignUpProfileSuccessFragment) {
             startActivity(new Intent(SignUpProfileActivity.this, MainActivity.class));
             finish();
-        } else if(pager.getCurrentItem() == pagerAdapter.getCount() - 2) {
+        } else if(pagerAdapter.getItem(currentFragment) instanceof SignUpProfileDescriptionFragment) {
             updateProfile = (Button) v;
             updateUserProfile();
         } else {
-            pager.setCurrentItem(pager.getCurrentItem()+1);
+            pager.setCurrentItem(currentFragment + 1);
         }
     }
 
     public void previousView(View v){
-        pager.setCurrentItem(pager.getCurrentItem()-1);
+        if(pagerAdapter.getItem(pager.getCurrentItem()) instanceof SignUpProfileGarantorFragment
+                && (pagerAdapter.getItemFromClass(SignUpProfileWorkerFragment.class).getWorker() == null
+                || !pagerAdapter.getItemFromClass(SignUpProfileWorkerFragment.class).getWorker().equals("worker")))
+            pager.setCurrentItem(pagerAdapter.getItemPositionFromClass(SignUpProfileWorkerFragment.class));
+        else
+            pager.setCurrentItem(pager.getCurrentItem()-1);
     }
 
     private void updateUserProfile(){
@@ -144,6 +173,7 @@ public class SignUpProfileActivity extends FragmentActivity {
     private CompleteUserModel getProfileUpdateModel(){
         CompleteUserModel updateModel = new CompleteUserModel();
 
+        updateModel.setBirthDate(pagerAdapter.getItemFromClass(SignUpProfileBirthdateFragment.class).getBirthdate());
         updateModel.setInRelationship(pagerAdapter.getItemFromClass(SignUpProfileRelationshipFragment.class).getInRelationship());
         updateModel.setSmoker(pagerAdapter.getItemFromClass(SignUpProfileSmokerFragment.class).getSmoker());
         updateModel.setGender(pagerAdapter.getItemFromClass(SignUpProfileGenderFragment.class).getGender());
@@ -153,8 +183,6 @@ public class SignUpProfileActivity extends FragmentActivity {
         String contract = pagerAdapter.getItemFromClass(SignUpProfileContractFragment.class).getContract();
         String incomeStr = pagerAdapter.getItemFromClass(SignUpProfileIncomeFragment.class).getIncome();
         String description = pagerAdapter.getItemFromClass(SignUpProfileDescriptionFragment.class).getDescription();
-
-        System.out.println(society + " " + function);
 
         if(TextValidator.haveText(society)) updateModel.setSociety(society.trim());
         if(TextValidator.haveText(function)) updateModel.setFunction(function.trim());
@@ -178,6 +206,7 @@ public class SignUpProfileActivity extends FragmentActivity {
                 parent.getChildAt(i).setSelected(false);
             }
         }
+
         parent.setTag(v.getTag());
 
         //Set the clicked button as selected
@@ -202,13 +231,13 @@ public class SignUpProfileActivity extends FragmentActivity {
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        private Fragment[] fragments = {new SignUpProfileBeginConfFragment(),
-        new SignUpProfileConfTypeFragment(), new SignUpProfileGenderFragment(),
-        new SignUpProfileRelationshipFragment(), new SignUpProfileSmokerFragment(),
-        new SignUpProfileSocietyFragment(), new SignUpProfileFunctionFragment(),
-        new SignUpProfileContractFragment(), new SignUpProfileIncomeFragment(),
-        new SignUpProfileGarantorFragment(), new SignUpProfileDescriptionFragment(),
-        new SignUpProfileSuccessFragment()};
+        private Fragment[] fragments = {new SignUpProfileBeginConfFragment(), new SignUpProfileConfTypeFragment(),
+                new SignUpProfileGenderFragment(), new SignUpProfileRelationshipFragment(),
+                new SignUpProfileSmokerFragment(), new SignUpProfileBirthdateFragment(),
+                new SignUpProfileWorkerFragment(), new SignUpProfileSocietyFragment(),
+                new SignUpProfileFunctionFragment(), new SignUpProfileContractFragment(),
+                new SignUpProfileIncomeFragment(), new SignUpProfileGarantorFragment(),
+                new SignUpProfileDescriptionFragment(), new SignUpProfileSuccessFragment()};
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -224,6 +253,13 @@ public class SignUpProfileActivity extends FragmentActivity {
                 if(fragment.getClass().equals(fragmentClass)) return (T) fragment;
             }
             return null;
+        }
+
+        public int getItemPositionFromClass(Class fragmentClass) {
+            for(int i = 0 ; i < fragments.length ; i++) {
+                if(fragments[i].getClass().equals(fragmentClass)) return i;
+            }
+            return 0;
         }
 
         @Override

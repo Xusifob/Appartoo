@@ -54,6 +54,15 @@ public class Appartoo extends Application{
     public static DatabaseReference databaseReference;
     public static ArrayList<String> conversationsIds;
 
+
+    public static final int REQUEST_MODIFY_OFFER = 10;
+    public static final int REQUEST_LOGIN_FOR_CONVERSATION = 20;
+    public static final int REQUEST_SIMPLE_LOGIN = 30;
+
+    public static final int HAS_UPDATED_OFFER = 11;
+    public static final int IS_LOGGED_FOR_CONVERSATION = 21;
+    public static final int IS_LOGGED = 31;
+
     @Override
     public void onCreate() {
         super.onCreate();

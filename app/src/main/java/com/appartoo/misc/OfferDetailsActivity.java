@@ -70,9 +70,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     private ProgressBar progressBar;
     private boolean isOwner;
 
-    public static final int REQUEST_MODIFY = 10;
-    public static final int IS_UPDATED = 0;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +105,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_MODIFY && resultCode == IS_UPDATED) {
+        if(requestCode == Appartoo.REQUEST_MODIFY_OFFER && resultCode == Appartoo.HAS_UPDATED_OFFER) {
             offerId = offer.getIdNumber().toString();
             progressDialog = ProgressDialog.show(this, "Mise à jour des informations de l'annonce", "Veuillez patienter...", true);
             getOfferDetails();
@@ -247,7 +244,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
                 public void onClick(View view) {
                     Intent intent = new Intent(OfferDetailsActivity.this, AddModifyOfferActivity.class);
                     intent.putExtra("offer", offer);
-                    startActivityForResult(intent, REQUEST_MODIFY);
+                    startActivityForResult(intent, Appartoo.REQUEST_MODIFY_OFFER);
                 }
             });
 

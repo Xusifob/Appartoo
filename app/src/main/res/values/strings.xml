@@ -67,6 +67,8 @@
     <string name="ask_informations">Entrez vos informations</string>
     <string name="confirm_password_signup">Confirmez le mot de passe</string>
     <string name="gender_configure_profile">Quel est votre sexe ?</string>
+    <string name="worker_configure_profile">Quel est votre situation ?</string>
+    <string name="birthdate_configure_profile">Quel est la date de votre anniversaire ?</string>
     <string name="status_configure_profile">Quel est votre statut ?</string>
     <string name="smoker_configure_profile">Fumez-vous ?</string>
     <string name="finish_signup">"Terminer l'inscription"</string>
@@ -314,4 +316,7 @@
     <string name="error_updating_phone">"Erreur lors de la mise à jour du numéro de téléphone. Veuillez réessayer plus tard."</string>
     <string name="please_note_user">"Veuillez noter l'utilisateur."</string>
     <string name="please_comment_user">"Veuillez écrire un commentaire."</string>
+    <string name="error_age_under_15">"Désolé, mais vous êtes trop jeune pour pouvoir vous inscrire."</string>
+    <string name="error_age_over_130">"Êtes-vous en train de me faire croire que vous êtes plus vieux que le doyen de l'humanité ?"</string>
+    <string name="facebook_app_id">646549368726774</string>
 </resources>

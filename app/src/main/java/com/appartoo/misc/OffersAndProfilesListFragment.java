@@ -46,6 +46,7 @@ public class OffersAndProfilesListFragment extends Fragment {
     private Integer offset;
     private Integer position;
     private boolean isLoading;
+    private String tempToken;
     private LinearLayoutManager linearLayoutManager;
 
     public static int LIMIT = 30;
@@ -97,7 +98,6 @@ public class OffersAndProfilesListFragment extends Fragment {
     @Override
     public void onStart() {
 
-        if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) addOfferButton.setVisibility(View.GONE);
         addOfferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +120,8 @@ public class OffersAndProfilesListFragment extends Fragment {
         if(offersAndProfiles.findViewHolderForAdapterPosition(position) != null) {
             offset = offersAndProfiles.findViewHolderForAdapterPosition(position).itemView.getTop();
         }
+
+        tempToken = Appartoo.TOKEN;
     }
 
     @Override
@@ -127,10 +129,16 @@ public class OffersAndProfilesListFragment extends Fragment {
         super.onResume();
         if(offset != null && position != null)
             linearLayoutManager.scrollToPositionWithOffset(position, offset);
+
+        if(tempToken != null && !tempToken.equals(Appartoo.TOKEN)) {
+            offersAndProfilesList.clear();
+            offersAndProfilesAdapter.notifyDataSetChanged();
+            refreshOffers(false);
+        }
     }
 
-    public void refreshOffers() {
-        swipeRefreshLayout.setRefreshing(true);
+    public void refreshOffers(boolean refreshLayoutAnimation) {
+        swipeRefreshLayout.setRefreshing(refreshLayoutAnimation);
         position = 0;
         offset = 0;
         pageNumber = 0;
@@ -152,7 +160,7 @@ public class OffersAndProfilesListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 offersAndProfilesAdapter.setFooterVisibility(View.VISIBLE);
-                refreshOffers();
+                refreshOffers(true);
             }
         });
     }

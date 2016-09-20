@@ -59,8 +59,8 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_margin="16dp"
             android:id="@+id/offerOwnerImage"
             android:contentDescription="@string/user_profile_picture"

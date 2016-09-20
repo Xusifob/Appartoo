@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-feature android:name="android.hardware.camera2" android:required="true" />
-    
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,6 +14,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
         <!-- LOGIN AND SIGN UP ACTIVITIES -->
         <activity
@@ -39,7 +41,8 @@
             android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize" >
+        </activity>
 
         <!-- BROWSING ACTIVITIES -->
         <activity

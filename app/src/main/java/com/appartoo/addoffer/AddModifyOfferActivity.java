@@ -2,10 +2,8 @@ package com.appartoo.addoffer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,11 +17,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.appartoo.R;
-import com.appartoo.misc.OfferDetailsActivity;
+import com.appartoo.login.LoginActivity;
 import com.appartoo.utils.ValidationFragment;
 import com.appartoo.utils.model.AddressComponent;
 import com.appartoo.utils.model.AddressInformationsModel;
-import com.appartoo.utils.model.AddressModel;
 import com.appartoo.utils.model.CompleteUserModel;
 import com.appartoo.utils.model.ImageModel;
 import com.appartoo.utils.model.OfferModel;
@@ -124,7 +121,7 @@ public class AddModifyOfferActivity extends AppCompatActivity {
             if(offerModel != null) {
                 Intent intent = new Intent();
                 intent.putExtra("offerId", String.valueOf(offerModel.getIdNumber()));
-                setResult(OfferDetailsActivity.IS_UPDATED, intent);
+                setResult(Appartoo.HAS_UPDATED_OFFER, intent);
             }
             finish();
         } else if (pager.getCurrentItem() < NUM_PAGES-1){
@@ -143,7 +140,14 @@ public class AddModifyOfferActivity extends AppCompatActivity {
         } else if(pager.getCurrentItem() == NUM_PAGES - 2) {
             addOfferButton = (Button) v;
             addOfferButton.setEnabled(false);
-            if(offerModel == null) {
+
+
+            if(Appartoo.TOKEN == null || Appartoo.TOKEN.equals("")) {
+                Intent intent = new Intent(AddModifyOfferActivity.this, LoginActivity.class);
+                intent.putExtra("connection", true);
+                startActivityForResult(intent, Appartoo.REQUEST_SIMPLE_LOGIN);
+                addOfferButton.setEnabled(true);
+            } else if(offerModel == null) {
                 progressDialog = ProgressDialog.show(AddModifyOfferActivity.this, "Création de l'annonce", "Veuillez patienter...", true);
                 createOffer();
             } else {

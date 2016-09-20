@@ -33,12 +33,10 @@ public class CommentsAdapter extends BaseAdapter {
 
     private ArrayList<CommentModel> commentModels;
     private LayoutInflater layoutInflater;
-    private Context context;
     private SimpleDateFormat dateFormat;
 
     public CommentsAdapter(Context context, ArrayList<CommentModel> cm) {
         this.commentModels = cm;
-        this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault());
     }
