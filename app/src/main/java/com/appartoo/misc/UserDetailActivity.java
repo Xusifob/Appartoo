@@ -111,6 +111,7 @@ public class UserDetailActivity extends AppCompatActivity {
         restService = retrofit.create(RestService.class);
 
         if(userModel != null) {
+            System.out.println(userModel.toString());
             bindData(userModel);
             userDetailFragment.bindData(userModel);
             progressBar.setVisibility(View.GONE);
@@ -166,7 +167,7 @@ public class UserDetailActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(userModel.getGivenName() + " " + userModel.getFamilyName());
+                    collapsingToolbarLayout.setTitle(userModel.getGivenName());
                     isShow = true;
                 } else if(isShow) {
                     collapsingToolbarLayout.setTitle("");

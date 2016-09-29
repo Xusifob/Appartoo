@@ -142,7 +142,7 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
         }
 
         public void bindData(final UserProfileModel userModel, final Context context, final String id){
-            name.setText(userModel.getGivenName() + " " + userModel.getFamilyName());
+            name.setText(userModel.getGivenName());
 
             if(userModel.getImages() != null && userModel.getImages().size() > 0)
                 ImageManager.downloadPictureIntoView(context, image, userModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);

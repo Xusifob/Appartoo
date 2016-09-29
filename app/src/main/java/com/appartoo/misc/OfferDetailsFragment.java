@@ -109,7 +109,7 @@ public class OfferDetailsFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), UserDetailActivity.class);
-                    intent.putExtra("user", offer.getResident().get(position));
+                    intent.putExtra("profileId", offer.getResident().get(position).getProfileId().toString());
                     startActivity(intent);
                 }
             });

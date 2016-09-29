@@ -94,6 +94,8 @@ public class UserDetailFragment extends Fragment {
     }
 
     public void bindData(UserModel user){
+        System.out.println(user.toString());
+
         userName.setText(user.getGivenName());
         userId = user.getIdNumber();
         if(user.getPlus() == null) userRecommandation.setText("0");
@@ -129,11 +131,6 @@ public class UserDetailFragment extends Fragment {
         else if (user.getInRelationship() != null) userIsInRelationship.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.single_big, null));
 
         if(user.getContract() != null && user.getContract().equals("worker")) userIsWorker.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.worker_big, null));
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             defineLikeButton();
@@ -151,12 +148,14 @@ public class UserDetailFragment extends Fragment {
 
     private void defineLikeButton() {
 
+        System.out.println("Setting like button");
         String url = RestService.REST_URL + "/profiles/" + userId + "/recommendations/" + Appartoo.LOGGED_USER_PROFILE.getIdNumber();
         Call<HasLikedReceiver> call = restService.hasLiked(url, "Bearer " + Appartoo.TOKEN);
         call.enqueue(new Callback<HasLikedReceiver>() {
                 @Override
                 public void onResponse(Call<HasLikedReceiver> call, Response<HasLikedReceiver> response) {
                     if(response.isSuccessful()) {
+                        System.out.println("Success");
                         if(response.body().getResult()) {
                             likeButton.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.thumb_up_big, null));
                             likeButton.setEnabled(false);
@@ -169,12 +168,14 @@ public class UserDetailFragment extends Fragment {
                                 }
                             });
                         }
+                    } else {
+                        System.out.println(response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<HasLikedReceiver> call, Throwable t) {
-
+                    t.printStackTrace();
                 }
             });
     }
@@ -198,8 +199,6 @@ public class UserDetailFragment extends Fragment {
                         globalNote.setText(df.format(note) + "/5");
                         ratingBar.setRating(note);
                     }
-
-                    System.out.println(adapter.getCount());
                 } else {
                     Toast.makeText(getActivity(), response.code(), Toast.LENGTH_LONG).show();
                 }
@@ -210,19 +209,6 @@ public class UserDetailFragment extends Fragment {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public void addComment(CommentModel commentModel) {
-        commentSeparator.setVisibility(View.VISIBLE);
-        listView.setVisibility(View.VISIBLE);
-        comments.add(commentModel);
-        adapter.notifyDataSetChanged();
-
-        DecimalFormat df = new DecimalFormat("#.#");
-        Float note = getUserGlobalNote(comments);
-
-        globalNote.setText(df.format(note) + "/5");
-        ratingBar.setRating(note);
     }
 
     private Float getUserGlobalNote(ArrayList<CommentModel> commentModels) {

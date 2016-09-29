@@ -69,6 +69,10 @@ public class UserProfileOffersFragment extends Fragment {
     public void onStart() {
         offersListView.setAdapter(offersAdapter);
 
+
+        if(getActivity() instanceof UserProfileActivity) {
+            ((UserProfileActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_offers);
+        }
         getOffers();
 
         super.onStart();
@@ -116,7 +120,7 @@ public class UserProfileOffersFragment extends Fragment {
 
     private void getOffers(){
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyy-MM-dd HH:mm:ss.SSSSSS")
+                .setDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS")
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()

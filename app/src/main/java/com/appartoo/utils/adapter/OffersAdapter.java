@@ -166,7 +166,7 @@ public class OffersAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, OfferDetailsActivity.class);
-                    intent.putExtra("offer", offerModel);
+                    intent.putExtra("offerId", offerModel.getIdNumber().toString());
                     intent.putExtra("isOwner", true);
                     context.startActivity(intent);
                 }

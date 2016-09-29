@@ -35,6 +35,7 @@ public class UserModel implements Parcelable {
     private Boolean isSmoker;
     private Boolean inRelationship;
     private Boolean acceptAnimals;
+    private Integer profileId;
     private Integer plus;
     private Double income;
     private Object birthDate;
@@ -113,6 +114,14 @@ public class UserModel implements Parcelable {
             return new UserModel[size];
         }
     };
+
+    public Integer getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(Integer profileId) {
+        this.profileId = profileId;
+    }
 
     public String getId() {
         return id;

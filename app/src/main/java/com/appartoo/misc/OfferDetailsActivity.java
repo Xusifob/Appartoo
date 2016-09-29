@@ -38,6 +38,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -126,9 +128,13 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
     public void onStart(){
         super.onStart();
 
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         restService = retrofit.create(RestService.class);
@@ -166,8 +172,6 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
         offerDetailSendMessageButton.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        System.out.println(offerId);
-
         Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + offerId);
 
         callback.enqueue(new Callback<OfferModelWithDate>() {
@@ -202,7 +206,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onFailure(Call<OfferModelWithDate> call, Throwable t) {
                 if(progressDialog != null) progressDialog.dismiss();
-
+                t.printStackTrace();
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(OfferDetailsActivity.this, R.string.error_retrieve_offer, Toast.LENGTH_SHORT).show();
                 Log.v("OfferDetailsActivity", "getOfferDetails: " + t.getMessage());
@@ -312,7 +316,7 @@ public class OfferDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OfferDetailsActivity.this, UserDetailActivity.class);
-                intent.putExtra("user", offer.getOwner());
+                intent.putExtra("profileId", offer.getOwner().getIdNumber().toString());
                 startActivity(intent);
             }
         });
