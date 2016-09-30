@@ -413,6 +413,7 @@ public class MessageFragment extends Fragment{
                     sendMessage.setImageResource(R.drawable.send_message_gray);
                     messageEdit.setText("");
                     messageEdit.setEnabled(false);
+                    messageEdit.setBackgroundColor(Color.argb(255, 232, 232, 232));
                     messageLayout.setBackgroundColor(Color.argb(255, 232, 232, 232));
                     messageEdit.setHint(R.string.conversation_disabled);
                 }

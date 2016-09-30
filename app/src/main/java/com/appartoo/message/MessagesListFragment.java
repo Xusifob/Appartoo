@@ -29,7 +29,7 @@ import java.util.HashMap;
  * Created by alexandre on 16-07-28.
  */
 public class MessagesListFragment extends Fragment{
-    
+
     private ArrayList<ConversationModel> userConversations;
     private RecyclerView conversationsList;
     private ConversationsAdapter conversationsAdapter;

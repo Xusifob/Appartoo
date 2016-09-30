@@ -18,6 +18,8 @@ import com.appartoo.utils.model.UserModel;
 import com.appartoo.utils.Appartoo;
 import com.appartoo.utils.ImageManager;
 import com.appartoo.utils.RestService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -56,9 +58,13 @@ public class ConversationsAdapter extends RecyclerView.Adapter {
         this.context = context;
         this.conversationModels = conversationModels;
 
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Appartoo.SERVER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         restService = retrofit.create(RestService.class);
@@ -206,7 +212,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter {
     public void retrieveOfferPicture(final ConversationViewHolder holder, final String id) {
         if (id != null && !id.equals("")) {
             Call<OfferModelWithDate> callback = restService.getOfferById(RestService.REST_URL + "/offers/" + id);
-
             callback.enqueue(new Callback<OfferModelWithDate>() {
                 @Override
                 public void onResponse(Call<OfferModelWithDate> call, Response<OfferModelWithDate> response) {

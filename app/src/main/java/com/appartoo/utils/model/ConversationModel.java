@@ -116,7 +116,13 @@ public class ConversationModel {
     }
 
     public Long getLastMessageTime() {
-        return lastMessageTime;
+
+        if(lastMessageTime.toString().length() == 13) {
+            return lastMessageTime;
+        } else {
+            double pow = 13 - lastMessageTime.toString().length();
+            return lastMessageTime * (long) Math.pow(10.0d, pow);
+        }
     }
 
     public void setLastMessageTime(Long lastMessageTime) {
