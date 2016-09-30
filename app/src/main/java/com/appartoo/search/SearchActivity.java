@@ -31,7 +31,6 @@ public class SearchActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
-    private NavigationDrawerView navigationDrawerView;
     private Integer currentPage;
     private SearchViewPagerAdapter adapter;
     private int colorBlue;
@@ -47,7 +46,6 @@ public class SearchActivity extends AppCompatActivity {
         //Retrieve the drawer elements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        navigationDrawerView = (NavigationDrawerView) findViewById(R.id.navigationDrawer);
         tabLayout = (TabLayout) findViewById(R.id.searchTabs);
         viewPager = (NonSwipeableViewPager) findViewById(R.id.searchViewPager);
 
@@ -66,29 +64,13 @@ public class SearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.drawer_search);
 
-        if(Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
-            navigationDrawerView.setDrawerLayout(drawerLayout);
-
-            toolbar.setNavigationIcon(R.drawable.ic_drawer);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        drawerLayout.closeDrawer(Gravity.LEFT);
-                    } else {
-                        drawerLayout.openDrawer(Gravity.LEFT);
-                    }
-                }
-            });
-        } else {
-            toolbar.setNavigationIcon(R.drawable.left_arrow);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
+        toolbar.setNavigationIcon(R.drawable.left_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void launchSearch(View v) {
@@ -136,9 +118,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-
         if(currentPage != null) viewPager.setCurrentItem(currentPage);
-        navigationDrawerView.updateHeader();
     }
 
     @Override

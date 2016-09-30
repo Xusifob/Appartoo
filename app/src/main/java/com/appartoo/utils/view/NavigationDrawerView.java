@@ -64,10 +64,6 @@ public class NavigationDrawerView extends NavigationView {
 
     public void setDrawerLayout(DrawerLayout drawerLayout) { this.drawerLayout = drawerLayout; }
 
-    public static void removeProfilePicture() {
-        profilePicture.setImageDrawable(null);
-    }
-
     public static void setHeaderInformations(String fullName, String email){
         userName = fullName;
         userMail = email;
@@ -75,10 +71,8 @@ public class NavigationDrawerView extends NavigationView {
 
     public void updateHeader() {
         View header = getHeaderView(0);
-        if(userMail != null && userName != null) {
-            ((TextView) header.findViewById(R.id.drawerUserName)).setText(userName);
-            ((TextView) header.findViewById(R.id.drawerUserEmail)).setText(userMail);
-        }
+        if(userName != null) ((TextView) header.findViewById(R.id.drawerUserName)).setText(userName);
+        if(userMail != null) ((TextView) header.findViewById(R.id.drawerUserEmail)).setText(userMail);
 
         profilePicture = (ImageView) header.findViewById(R.id.drawerUserProfilePic);
 

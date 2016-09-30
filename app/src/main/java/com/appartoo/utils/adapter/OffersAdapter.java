@@ -107,12 +107,12 @@ public class OffersAdapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView owner;
+        TextView ownerAndKeyword;
         TextView city;
-        TextView keyword;
         TextView rooms;
         TextView price;
         TextView offerActivated;
+        TextView name;
         ImageView ownerImageThumbnail;
         ImageView flatImage;
         View itemView;
@@ -120,21 +120,21 @@ public class OffersAdapter extends RecyclerView.Adapter {
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            this.owner = (TextView) itemView.findViewById(R.id.offerOwner);
-            this.city = (TextView) itemView.findViewById(R.id.offerCity);
-            this.rooms = (TextView) itemView.findViewById(R.id.offerRooms);
-            this.keyword = (TextView) itemView.findViewById(R.id.offerKeyword);
-            this.price = (TextView) itemView.findViewById(R.id.offerPrice);
-            this.offerActivated = (TextView) itemView.findViewById(R.id.offerActivated);
-            this.flatImage = (ImageView) itemView.findViewById(R.id.offerFlatImage);
-            this.ownerImageThumbnail = (ImageView) itemView.findViewById(R.id.offerOwnerImage);
+            this.ownerAndKeyword = (TextView) itemView.findViewById(R.id.cardOfferOwnerAndKeyword);
+            this.city = (TextView) itemView.findViewById(R.id.cardOfferCity);
+            this.rooms = (TextView) itemView.findViewById(R.id.cardOfferRooms);
+            this.price = (TextView) itemView.findViewById(R.id.cardOfferPrice);
+            this.offerActivated = (TextView) itemView.findViewById(R.id.cardOfferActivated);
+            this.name = (TextView) itemView.findViewById(R.id.cardOfferName);
+            this.flatImage = (ImageView) itemView.findViewById(R.id.cardOfferFlatImage);
+            this.ownerImageThumbnail = (ImageView) itemView.findViewById(R.id.cardOfferOwnerImage);
         }
 
         public void bindData(final OfferModelWithDetailledDate offerModel, final Context context){
-            owner.setText(offerModel.getOwner().getGivenName());
-            keyword.setText(offerModel.getKeyword());
+            ownerAndKeyword.setText(offerModel.getKeyword());
             rooms.setText(Integer.toString(offerModel.getRooms()));
             price.setText(Integer.toString(offerModel.getPrice()) + " " + context.getString(R.string.euro));
+            name.setText(offerModel.getName());
 
             if (offerModel.getImages().size() > 0)
                 ImageManager.downloadPictureIntoView(context, flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);

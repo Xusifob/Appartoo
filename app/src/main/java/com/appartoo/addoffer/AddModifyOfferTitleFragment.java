@@ -60,6 +60,11 @@ public class AddModifyOfferTitleFragment extends ValidationFragment {
             return false;
         }
 
+        if(title.getText().toString().length() > 255) {
+            Toast.makeText(context, R.string.error_title_over_255_characters, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 

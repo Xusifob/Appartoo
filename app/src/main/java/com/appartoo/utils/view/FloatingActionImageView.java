@@ -5,6 +5,7 @@ package com.appartoo.utils.view;
  */
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,7 @@ import com.appartoo.utils.ImageManager;
  */
 public class FloatingActionImageView extends FloatingActionButton {
     private Context context;
+    private int borderSize;
 
     public FloatingActionImageView(Context context) {
         super(context);
@@ -67,10 +69,8 @@ public class FloatingActionImageView extends FloatingActionButton {
 
         int w = getWidth();
 
-        int border = (int) ImageManager.convertDpToPixel(4, context);
-        Bitmap roundBitmap = ImageManager.getCroppedBitmap(bitmap, w - border*2);
-        canvas.drawBitmap(roundBitmap, border, border, null);
-
-
+        borderSize = (int) ImageManager.convertDpToPixel((int) ((float) w/72.0f), context);
+        Bitmap roundBitmap = ImageManager.getCroppedBitmap(bitmap, w - borderSize*2);
+        canvas.drawBitmap(roundBitmap, borderSize, borderSize, null);
     }
 }

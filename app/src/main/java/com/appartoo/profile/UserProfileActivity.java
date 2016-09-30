@@ -99,6 +99,7 @@ import com.appartoo.utils.view.NavigationDrawerView;
 
         if(!mainFragment.isVisible()) {
             fragmentManager.beginTransaction().replace(R.id.userProfileFrame, mainFragment).commit();
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
             toolbar.setNavigationIcon(R.drawable.ic_drawer);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,10 +134,13 @@ import com.appartoo.utils.view.NavigationDrawerView;
                         .setMessage("Fonctionnalité bientôt disponible.")
                         .setPositiveButton(R.string.ok, null)
                         .show();
+//                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //                fragmentManager.beginTransaction().replace(R.id.userProfileFrame, settingsFragment).commit();
             } else if (v.getTag().equals("modify_profile")) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 fragmentManager.beginTransaction().replace(R.id.userProfileFrame, modifyFragment).commit();
             } else if (v.getTag().equals("my_offers")) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 fragmentManager.beginTransaction().replace(R.id.userProfileFrame, offersFragment).commit();
             }
 

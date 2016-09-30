@@ -166,7 +166,7 @@ public class UserProfileModifyFragment extends Fragment {
 
         userFirstName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getGivenName()));
         userLastName.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getFamilyName()));
-        userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getUser().getEmail()));
+        userMail.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getEmail()));
 
         if(Appartoo.LOGGED_USER_PROFILE.getTelephone() != null) userPhone.setText(String.valueOf(Appartoo.LOGGED_USER_PROFILE.getTelephone()));
         if(Appartoo.LOGGED_USER_PROFILE.getContract() != null && (Appartoo.LOGGED_USER_PROFILE.getContract().equals("salary") || Appartoo.LOGGED_USER_PROFILE.getContract().equals("freelance"))) isWorker.setChecked(true);

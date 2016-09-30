@@ -115,7 +115,6 @@ public class LogInFragment extends Fragment {
         facebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                System.out.println("LOGIN");
                 loginWithFacebook(loginResult.getAccessToken().getToken());
             }
 
@@ -123,12 +122,10 @@ public class LogInFragment extends Fragment {
             public void onCancel() {
                 facebookLogin.setEnabled(true);
                 logInButton.setEnabled(true);
-                System.out.println("CANCEL");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                System.out.println("ERROR");
                 exception.printStackTrace();
             }
         });
@@ -275,10 +272,10 @@ public class LogInFragment extends Fragment {
 
                     sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString(Appartoo.KEY_FAMILY_NAME, Appartoo.LOGGED_USER_PROFILE.getFamilyName())
-                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getEmail())
                             .apply();
                     
-                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(),Appartoo.LOGGED_USER_PROFILE.getEmail());
                     Appartoo.initiateFirebase();
 
                     if(getActivity().getIntent().getStringExtra("userId") != null) {

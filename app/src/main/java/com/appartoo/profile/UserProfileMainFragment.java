@@ -110,10 +110,10 @@ public class UserProfileMainFragment extends Fragment {
 
                     sharedPreferences.edit().putString(Appartoo.KEY_GIVEN_NAME, Appartoo.LOGGED_USER_PROFILE.getGivenName())
                             .putString(Appartoo.KEY_FAMILY_NAME, Appartoo.LOGGED_USER_PROFILE.getFamilyName())
-                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getUser().getEmail())
+                            .putString(Appartoo.KEY_EMAIL, Appartoo.LOGGED_USER_PROFILE.getEmail())
                             .apply();
 
-                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(), Appartoo.LOGGED_USER_PROFILE.getUser().getEmail());
+                    NavigationDrawerView.setHeaderInformations(Appartoo.LOGGED_USER_PROFILE.getGivenName() + " " + Appartoo.LOGGED_USER_PROFILE.getFamilyName(), Appartoo.LOGGED_USER_PROFILE.getEmail());
                     Appartoo.initiateFirebase();
                     bindData();
 

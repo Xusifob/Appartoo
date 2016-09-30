@@ -26,7 +26,7 @@
     <string name="couple">En couple</string>
     <string name="smoker">Fumeur</string>
     <string name="non_smoker">Non fumeur</string>
-    <string name="student">Etudiant</string>
+    <string name="student">Étudiant</string>
     <string name="birthdate">Date de naissance</string>
     <string name="description">Description</string>
     <string name="title">Titre</string>
@@ -57,6 +57,14 @@
     <string name="comment">Commentaire</string>
     <string name="no_note">Aucune note</string>
     <string name="write_message">Ecrivez un message</string>
+    <string name="location">Localisation</string>
+    <string name="price">Prix</string>
+    <string name="freelancer">Indépendant</string>
+    <string name="retired">Retraité</string>
+    <string name="salary">Salarié</string>
+    <string name="unemployed">Sans emploi</string>
+    <string name="search_results">Résultats de la recherche</string>
+    <string name="facebook_user">Connecté avec Facebook</string>
 
     <!-- SIGN UP STRINGS -->
     <string name="join_appartoo">Rejoignez Appartoo</string>
@@ -274,6 +282,7 @@
     <string name="my_messages">Mes messages</string>
 
     <!-- TOAST MESSAGES -->
+    <string name="error_title_over_255_characters">"Le titre de l'annonce de doit pas excéder 255 charactères."</string>
     <string name="error_missing_info_sign_up">"Veuillez entrer toutes les informations pour compléter l'inscription."</string>
     <string name="error_missing_info_garantor">"Veuillez entrer toutes les informations pour ajouter un garant."</string>
     <string name="error_password_not_identical">"Les mots de passe que vous avez entré ne correspondent pas entre eux."</string>

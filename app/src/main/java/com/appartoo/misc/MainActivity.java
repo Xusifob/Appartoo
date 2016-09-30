@@ -55,9 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         if(query == null && Appartoo.TOKEN != null && !Appartoo.TOKEN.equals("")) {
             getSupportActionBar().setTitle(Appartoo.APP_NAME);
             navigationDrawerView.setDrawerLayout(drawerLayout);
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
 
             toolbar.setNavigationIcon(R.drawable.ic_drawer);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else if(query != null){
-            getSupportActionBar().setTitle(R.string.drawer_search);
+            getSupportActionBar().setTitle(R.string.search_results);
             toolbar.setNavigationIcon(R.drawable.left_arrow);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

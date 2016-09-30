@@ -1,6 +1,5 @@
 package com.appartoo.utils.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
@@ -19,11 +18,14 @@ import com.appartoo.utils.model.ObjectHolderModel;
 import com.appartoo.utils.model.OfferModel;
 import com.appartoo.utils.model.UserProfileModel;
 import com.appartoo.utils.ImageManager;
+import com.appartoo.utils.view.FloatingActionImageView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by alexandre on 16-07-05.
@@ -125,6 +127,8 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
 
     static class ProfileViewHolder extends RecyclerView.ViewHolder {
         TextView name;
+        TextView description;
+        TextView job;
         ImageView image;
         ImageView inRelationship;
         ImageView smoker;
@@ -135,6 +139,8 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
             super(itemView);
             this.itemView = itemView;
             this.name = (TextView) itemView.findViewById(R.id.profileName);
+            this.description = (TextView) itemView.findViewById(R.id.profileDescription);
+            this.job = (TextView) itemView.findViewById(R.id.profileJob);
             this.image = (ImageView) itemView.findViewById(R.id.profileImage);
             this.acceptAnimals = (ImageView) itemView.findViewById(R.id.profileAcceptsAnimals);
             this.inRelationship = (ImageView) itemView.findViewById(R.id.profileRelationship);
@@ -143,6 +149,23 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
 
         public void bindData(final UserProfileModel userModel, final Context context, final String id){
             name.setText(userModel.getGivenName());
+            if(userModel.getJobTitle() != null) {
+                if (userModel.getJobTitle().equals("student")) job.setText(R.string.student);
+                else if (userModel.getJobTitle().equals("retired")) job.setText(R.string.retired);
+                else if (userModel.getJobTitle().equals("freelancer")) job.setText(R.string.freelancer);
+                else if (userModel.getJobTitle().equals("salary")) job.setText(R.string.salary);
+                else if (userModel.getJobTitle().equals("unemployed")) job.setText(R.string.unemployed);
+                else job.setText(userModel.getJobTitle());
+            } else {
+                job.setText("Emploi non renseigné");
+            }
+
+            if(userModel.getDescription() != null) {
+                description.setVisibility(View.VISIBLE);
+                description.setText(userModel.getDescription());
+            } else {
+                description.setVisibility(View.GONE);
+            }
 
             if(userModel.getImages() != null && userModel.getImages().size() > 0)
                 ImageManager.downloadPictureIntoView(context, image, userModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
@@ -189,11 +212,11 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
     }
 
     static class OfferViewHolder extends RecyclerView.ViewHolder {
-        TextView owner;
+        TextView ownerAndKeyword;
         TextView city;
-        TextView keyword;
         TextView rooms;
         TextView price;
+        TextView offerName;
         ImageView ownerImageThumbnail;
         ImageView flatImage;
         View itemView;
@@ -201,33 +224,31 @@ public class OffersAndProfilesAdapter extends RecyclerView.Adapter {
         public OfferViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            this.owner = (TextView) itemView.findViewById(R.id.offerOwner);
-            this.city = (TextView) itemView.findViewById(R.id.offerCity);
-            this.rooms = (TextView) itemView.findViewById(R.id.offerRooms);
-            this.keyword = (TextView) itemView.findViewById(R.id.offerKeyword);
-            this.price = (TextView) itemView.findViewById(R.id.offerPrice);
-            this.flatImage = (ImageView) itemView.findViewById(R.id.offerFlatImage);
-            this.ownerImageThumbnail = (ImageView) itemView.findViewById(R.id.offerOwnerImage);
+            this.ownerAndKeyword = (TextView) itemView.findViewById(R.id.cardOfferOwnerAndKeyword);
+            this.city = (TextView) itemView.findViewById(R.id.cardOfferCity);
+            this.rooms = (TextView) itemView.findViewById(R.id.cardOfferRooms);
+            this.price = (TextView) itemView.findViewById(R.id.cardOfferPrice);
+            this.offerName = (TextView) itemView.findViewById(R.id.cardOfferName);
+            this.flatImage = (ImageView) itemView.findViewById(R.id.cardOfferFlatImage);
+            this.ownerImageThumbnail = (CircleImageView) itemView.findViewById(R.id.cardOfferOwnerImage);
         }
         
         public void bindData(OfferModel offerModel, final Context context, final String id){
-            owner.setText(offerModel.getOwner().getGivenName());
-            keyword.setText(offerModel.getKeyword());
+            ownerAndKeyword.setText(offerModel.getKeyword() + " proposée par " + offerModel.getOwner().getGivenName());
             rooms.setText(Integer.toString(offerModel.getRooms()));
             price.setText(Integer.toString(offerModel.getPrice()) + " " + context.getString(R.string.euro));
+            offerName.setText(offerModel.getName());
 
             if (offerModel.getImages().size() > 0)
                 ImageManager.downloadPictureIntoView(context, flatImage, offerModel.getImages().get(0).getContentUrl(), ImageManager.TRANFORM_SQUARE);
             else
                 flatImage.setImageDrawable(null);
 
-            if (offerModel.getOwner().getImage() != null)
-                ImageManager.downloadPictureIntoView(context, ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
-            else
-                ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.default_profile_picture, null));
+            if (offerModel.getOwner().getImage() != null) ImageManager.downloadPictureIntoView(context, ownerImageThumbnail, offerModel.getOwner().getImage().getContentUrl(), ImageManager.TRANFORM_SQUARE);
+            else ownerImageThumbnail.setImageDrawable(ResourcesCompat.getDrawable(this.itemView.getResources(), R.drawable.default_profile_picture, null));
 
             try {
-                city.setText(String.valueOf(offerModel.getAddress().getCity()));
+                city.setText(String.valueOf(offerModel.getAddress().getAddressLocality()));
             } catch (Exception e) {
                 city.setText(R.string.unknown_city);
             }
